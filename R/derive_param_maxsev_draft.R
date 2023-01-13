@@ -1,9 +1,9 @@
 #' Title: DERIVE_PARAM_MAXSEV 
-#' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#' @description                                                                 +
-#' This derive_param_maxsev function is used to derive the maximum severity for +
-#'  each administrative and Systemic events.                                    + 
-#' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#' @description                                                                   +
+#' This 'derive_param_maxsev' function is used to derive the maximum severity for +
+#'  each administrative and Systemic events.                                      + 
+#' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #' @details 
 #' 
 #' Pre_processing:
@@ -55,7 +55,7 @@ derive_param_maxsev <- function(
   testcd_sev = 'SEV',
   by_vars = NULL
 ){
-  # vars check
+  # assertions
   assert_data_frame(dataset,
                     required_vars = vars(USUBJID, PARCAT2, ATPTREF, AVAL, AVALC, 
                                          FAOBJ, FATEST, FATESTCD))
