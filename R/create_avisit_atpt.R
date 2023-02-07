@@ -12,7 +12,7 @@ is_suppis <- combine_supp(is, suppis)
 
 is_suppis <- convert_blanks_to_na(is_suppis)
 
-ADIS <- is_suppis %>%
+adis <- is_suppis %>%
   mutate(
     AVISITN = as.numeric(VISITNUM),
     AVISIT = case_when(
