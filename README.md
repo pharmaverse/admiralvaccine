@@ -29,7 +29,8 @@ The package is currently on development stage.
 -   All functions are created based upon the ADaM Implementation Guide
     and aim to facilitate the programming of ADaM dataset standards.
 -   Initially the package will focus on creating the reactogenecity and
-    immunogenecity domain following flat model as per CBER guidelines.
+    immunogenecity domain following flat model as per CBER guidelines.In
+    future we will make enhancements as we get updates on CBER.
 
 ## Expectations
 
