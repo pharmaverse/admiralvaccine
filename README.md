@@ -34,7 +34,7 @@ sem1 2023.
 </tr>
 <tr class="odd">
 <td></td>
-<td></td>
+<td>ADFACE,ADCE,ADIS</td>
 </tr>
 <tr class="even">
 <td>Q2-2023</td>
@@ -42,11 +42,11 @@ sem1 2023.
 </tr>
 <tr class="odd">
 <td></td>
-<td>Validation and release</td>
+<td>Validation and</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>to CRAN</td>
+<td>release to CRAN</td>
 </tr>
 </tbody>
 </table>
