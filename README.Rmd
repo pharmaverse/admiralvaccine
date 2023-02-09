@@ -45,6 +45,20 @@ admiral_homepage <- "https://pharmaverse.github.io/admiral"
 [![Test Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml)
 <!-- badges: end -->
 
+## Release Schedule
+
+`{admiralvaccine}` initial release is tentatively targeted for end of sem1 2023.
+
+
+| Release Schedule | Phase 1- Date              |  
+| ---------------- | -------------------------- |  
+| Q1-2023          |  March end                 | 
+|                  |    Complete development    | 
+|                  |                            | 
+| Q2-2023          |  June end                  | 
+|                  |     Validation and release | 
+|                  |        to CRAN             |
+
 
 Vaccine extension package for ADaM in R Asset Library `{admiral}`
 
