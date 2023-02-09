@@ -11,6 +11,46 @@ status](https://www.r-pkg.org/badges/version/admiralvaccine)](https://CRAN.R-pro
 Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml)
 <!-- badges: end -->
 
+## Release Schedule
+
+`{admiralvaccine}` initial release is tentatively targeted for end of
+sem1 2023.
+
+<table>
+<thead>
+<tr class="header">
+<th>Release Schedule</th>
+<th>Phase 1- Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Q1-2023</td>
+<td>March end</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Complete development</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Q2-2023</td>
+<td>June end</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Validation and release</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>to CRAN</td>
+</tr>
+</tbody>
+</table>
+
 Vaccine extension package for ADaM in R Asset Library `{admiral}`
 
 ## Purpose
