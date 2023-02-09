@@ -54,10 +54,10 @@ admiral_homepage <- "https://pharmaverse.github.io/admiral"
 | ---------------- | -------------------------- |  
 | Q1-2023          |  March end                 | 
 |                  |    Complete development    | 
-|                  |                            | 
+|                  |      ADFACE,ADCE,ADIS      | 
 | Q2-2023          |  June end                  | 
-|                  |     Validation and release | 
-|                  |        to CRAN             |
+|                  |     Validation and         | 
+|                  |        release to CRAN     |
 
 
 Vaccine extension package for ADaM in R Asset Library `{admiral}`
