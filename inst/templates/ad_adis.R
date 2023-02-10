@@ -5,6 +5,7 @@
 # Input: xx, xx, xx
 library(admiral)
 library(admiral.test) # Contains example datasets from the CDISC pilot project
+library(metatools)
 
 # Add your template ADaM script code
 

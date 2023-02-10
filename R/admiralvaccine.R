@@ -1,3 +1,4 @@
+#' @importFrom utils data
 #' @keywords internal
 #' @family internal
 #' @importFrom dplyr arrange bind_rows case_when desc ends_with filter full_join group_by
