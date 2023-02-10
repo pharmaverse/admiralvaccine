@@ -27,4 +27,5 @@
 #' @importFrom hms as_hms
 #' @importFrom lifecycle deprecate_warn deprecated deprecate_stop
 #' @importFrom admiral derive_vars_dy
+#' @importFrom admiraldev assert_logical_scalar
 "_PACKAGE"

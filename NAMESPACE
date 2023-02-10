@@ -2,6 +2,7 @@
 
 export(hello_admiral)
 importFrom(admiral,derive_vars_dy)
+importFrom(admiraldev,assert_logical_scalar)
 importFrom(assertthat,"on_failure<-")
 importFrom(assertthat,assert_that)
 importFrom(assertthat,is.number)
