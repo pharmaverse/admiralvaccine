@@ -7,6 +7,7 @@ library(admiral)
 library(admiral.test) # Contains example datasets from the CDISC pilot project
 install.packages("metatools", repos = "https://cloud.r-project.org")
 library(metatools)
+library(dplyr)
 
 # Add your template ADaM script code
 
