@@ -13,4 +13,9 @@ is
 \description{
 A SDTM IS dataset
 }
-\keyword{datasets}
+\seealso{
+Other dataset: 
+\code{\link{suppis}}
+}
+\concept{dataset}
+\keyword{dataset}
