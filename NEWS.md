@@ -1,8 +1,8 @@
-# admiralext 0.0.1
+# admiralvaccine 0.0.1
 
 ## New Features
 
-- You can link the GitHub Issue to Changelog by using (#ISSUE-NUMBER)
+- Created SDTM dummy data IS, SUPPIS for ADIS (#31, #26)
 
 ## Updates of Existing Functions
 
