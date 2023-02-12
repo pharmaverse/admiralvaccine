@@ -5,9 +5,6 @@
 <!-- badges: start -->
 
 [<img src="http://pharmaverse.org/shields/admiralvaccine.svg">](https://pharmaverse.org)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/admiralvaccine)](https://CRAN.R-project.org/package=admiralvaccine)
-[![Test
-Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml)
-
+[![CRAN status](https://www.r-pkg.org/badges/version/admiralvaccine)](https://CRAN.R-project.org/package=admiralvaccine)
+[![Test Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml)
 <!-- badges: end -->
