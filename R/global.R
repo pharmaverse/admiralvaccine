@@ -73,5 +73,15 @@ globalVariables(c(
   "CDISC_VALUE",
   "DOSE_WINDOW",
   "DOSE_COUNT",
-  "CONVERSION_FACTOR"
+  "CONVERSION_FACTOR",
+  "ATPTREF",
+  "FAOBJ",
+  "FATEST",
+  "PARCAT2",
+  "testcd_sev",
+  "pp",
+  "by_var",
+  'DTYPE = "MAXIMUM"',
+  'FATESTCD = "MAXSEV"',
+  'FATEST = "MAXIMUM SEVERITY"'
 ))
