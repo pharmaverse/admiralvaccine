@@ -31,6 +31,21 @@
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/admiralvaccine-package.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/ae.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/ce.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/dm.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/ex.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/face.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/hello_admiral.html</loc>
   </url>
   <url>
@@ -41,5 +56,8 @@
   </url>
   <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/suppis.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vs.html</loc>
   </url>
 </urlset>
