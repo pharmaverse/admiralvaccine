@@ -38,38 +38,40 @@
 #' @family der_adxx
 #'
 #'
-derive_param_maxsev <- function(
-  dataset = NULL,
-  testcd_sev = 'SEV',
-  by_vars = NULL
-){
+derive_param_maxsev <- function(dataset = NULL,
+                                testcd_sev = "SEV",
+                                by_vars = NULL) {
   # assertions
   assert_data_frame(dataset,
-                    required_vars = vars(USUBJID, PARCAT2, ATPTREF, AVAL, AVALC,
-                                         FAOBJ, FATEST, FATESTCD))
-  assert_character_vector(testcd_sev,optional = FALSE)
+    required_vars = vars(
+      USUBJID, PARCAT2, ATPTREF, AVAL, AVALC,
+      FAOBJ, FATEST, FATESTCD
+    )
+  )
+  assert_character_vector(testcd_sev, optional = FALSE)
   assert_vars(by_vars)
 
   # filtering the severity record
 
   pp <- dataset %>%
     filter(FATESTCD %in% testcd_sev &
-             PARCAT2  %in% c("ADMINISTRATION SITE", "SYSTEMIC")) %>%
+      PARCAT2 %in% c("ADMINISTRATION SITE", "SYSTEMIC")) %>%
     mutate(
-   # AVAL derivation
+      # AVAL derivation
       AVAL = case_when(
         AVALC == "NONE" ~ 0,
         AVALC == "MILD" ~ 1,
         AVALC == "MODERATE" ~ 2,
         AVALC == "SEVERE" ~ 3,
-        AVALC == "GRADE4" ~ 4 )
+        AVALC == "GRADE4" ~ 4
+      )
     )
 
   # deriving the maximum severity
 
   maxsev <- pp %>%
     group_by(!!!by_vars) %>%
-    summarise(AVAL = max(AVAL))%>%
+    summarise(AVAL = max(AVAL)) %>%
     mutate(
       AVALC = case_when(
         AVAL == 0 ~ "NONE",
@@ -84,4 +86,3 @@ derive_param_maxsev <- function(
 
   return(maxsev)
 }
-
