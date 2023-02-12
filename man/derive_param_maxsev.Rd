@@ -23,7 +23,7 @@ Dataframe which has Maxsev records (with DTYPE as "MAXIMUM", Derived AVAL
 and AVALC and some grouping vars and updated FATESTCD and FATEST.)
 }
 \description{
-Derive the maximum severity for each administrative and Systemic events.                                      +
+Derive the maximum severity for each administrative and Systemic events.
 }
 \details{
 Pre_processing:

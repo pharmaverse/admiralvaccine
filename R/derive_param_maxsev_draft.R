@@ -1,6 +1,6 @@
 #' Derive Maximum Severity
 #'
-#' Derive the maximum severity for each administrative and Systemic events.                                      +
+#' Derive the maximum severity for each administrative and Systemic events.
 #'
 #' @details
 #'
