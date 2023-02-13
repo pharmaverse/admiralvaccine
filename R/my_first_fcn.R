@@ -19,6 +19,8 @@
 #' @examples
 #' hello_admiral(hw = FALSE)
 hello_admiral <- function(hw = TRUE) {
+  hw <- assert_logical_scalar(hw)
+
   if (hw) {
     message("Welcome to the admiral family!")
   } else {
