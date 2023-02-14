@@ -22,8 +22,8 @@
 #' *Default: "DIAMETER"*
 #' *Permitted Value*: A character scalar.
 #'
-#' Helps to filter the diameter records to derive the severity records by 
-#' passing the `FATESTCD` value for diameter  which is corresponding to the 
+#' Helps to filter the diameter records to derive the severity records by
+#' passing the `FATESTCD` value for diameter  which is corresponding to the
 #' specified events in `filter_faobj`.
 #'
 #' @param testcd_sev `FATESTCD`value for severity
@@ -34,7 +34,7 @@
 #' Assign the value for `FATESTCD` variable to indicate the severity records.
 #' Ignore the argument if you want to set the default value.
 #'
-#' *Note*: This argument value will be used to check whether input data set has 
+#' *Note*: This argument value will be used to check whether input data set has
 #' Severity records for specified `filter_faobj` event. If it has, those records
 #' will be removed and new severity records will be derived from diameters.
 #'
@@ -52,7 +52,7 @@
 #' *Default: c(0,2)*
 #' *Permitted value*: A Numeric vector
 #'
-#' The `none` and the following arguments(`mild`, `mode` and `sev` ) will be 
+#' The `none` and the following arguments(`mild`, `mode` and `sev` ) will be
 #' used for assigning the diameter limits to derive the `AVALC`(severity grade).
 #'
 #'  *Note: Use the limit reference to pass the values in argument*
@@ -81,17 +81,17 @@
 #' *Permitted value*: A Numeric vector
 #'
 #' @details
-#' 1. Pass the Input data set in `dataset` with required variables and `AVAL` 
-#' should have the diameter values for the events(`FAOBJ`) specified in 
+#' 1. Pass the Input data set in `dataset` with required variables and `AVAL`
+#' should have the diameter values for the events(`FAOBJ`) specified in
 #' `filter_faobj`.
-#' 2. If the SDTM data set has severity record for redness and swelling, User 
+#' 2. If the SDTM data set has severity record for redness and swelling, User
 #' can skip this function to keep the SDTM level severity records for further
 #'  derivation.
 #' 3. If User want to derive the severity records from the diameter records even
 #'  that data set has severity records for Redness and swelling. This function
-#'  will remove the existing severity records and it will create the new 
-#'  severity records as`AVALC` which is derived from diameter. and `AVAL` will 
-#'  be derived as numeric severity grade to get the maximum severity records 
+#'  will remove the existing severity records and it will create the new
+#'  severity records as`AVALC` which is derived from diameter. and `AVAL` will
+#'  be derived as numeric severity grade to get the maximum severity records
 #'  which will be derived by `derive_param_maxsev.R`.
 #' 4. Pass the values in severity grade arguments(`none`, `mild`, `mod`, `sev`)
 #'  as per the study needs.
@@ -100,12 +100,17 @@
 #'  grade limits.
 #'
 #' @return
-#' The Input data with the new severity records for Redness and swelling which 
+#' The Input data with the new severity records for Redness and swelling which
 #' is specified in `filter_faobj` and AVAL, AVALC will be derived and fatestcd,
 #'  fatest will be changed as per the values
 #' @export
 #'
 #' @examples
+#' library(tidyverse)
+#' library(dplyr)
+#' library(admiral)
+#' library(admiraldev)
+#' library(tibble)
 #' Input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF,
 #'   "XYZ1001", "REDNESS", 7.5, 7.5, "VACCINATION 1",
@@ -141,7 +146,8 @@
 #'   testcd_sev = "SEV",
 #'   test_sev = "Severity"
 #' )
-#'
+#' @keywords der_adxx
+#' @family der_adxx
 derive_param_diam_to_sev <- function(dataset = NULL,
                                      filter_diam = "DIAMETER",
                                      filter_faobj = c("REDNESS", "SWELLING"),
@@ -154,29 +160,27 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   #-------------------------------------------------------------------------------
   # assertion checks
   #-----------------------------------------------------------------------------
-  assert_data_frame(dataset,
+  admiraldev::assert_data_frame(dataset,
     required_vars = vars(
       USUBJID, AVAL, AVALC,
       FAOBJ, FATEST, FATESTCD
     )
   )
-
-  assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
-
-  assert_character_vector(
-    arg = c(filter_diam, filter_faobj, testcd_sev, test_sev),
+  admiraldev::assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
+  admiraldev::assert_character_vector(
+    arg = c(
+      filter_diam, filter_faobj, testcd_sev,
+      test_sev
+    ),
     optional = FALSE
   )
-
   #----------------------------------------------------------------------------
   # Checking & Removing the records which has severity records for the FAOBJ
   #-----------------------------------------------------------------------------
-  diam <- dataset %>% filter(FAOBJ %in% filter_faobj)
-
+  diam <- dataset %>% dplyr::filter(FAOBJ %in% filter_faobj)
   if (testcd_sev %in% diam$FATESTCD) {
-    fil_rec <-
-      dataset %>% filter(FATESTCD != testcd_sev &
-        !(FAOBJ %in% filter_faobj))
+    fil_rec <- dataset %>% dplyr::filter(FATESTCD != testcd_sev &
+      !(FAOBJ %in% filter_faobj))
   } else {
     fil_rec <- dataset
   }
@@ -185,16 +189,13 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   #-----------------------------------------------------------------------------
   if (filter_diam %in% diam$FATESTCD) {
     fil_rec <- dataset
-
-    sev <-
-      fil_rec %>%
-      filter(FATESTCD %in% filter_diam &
+    sev <- fil_rec %>%
+      dplyr::filter(FATESTCD %in% filter_diam &
         FAOBJ %in% filter_faobj) %>%
-      mutate(
+      dplyr::mutate(
         FATESTCD = testcd_sev,
         FATEST = test_sev,
         DTYPE = "DERIVED",
-        # Deriving AVALC
         AVALC = if_else(
           none[1] <= AVAL & AVAL <= none[2],
           "NONE",
@@ -218,8 +219,7 @@ derive_param_diam_to_sev <- function(dataset = NULL,
         AVAL = as.numeric(AVAL)
       )
     # binding with Input data set
-    finalsev <- bind_rows(sev, fil_rec)
-
+    finalsev <- dplyr::bind_rows(sev, fil_rec)
     return(data.frame(finalsev))
   } else {
     print(paste0(filter_diam, " ", "doesn't exist in the filtered record"))
