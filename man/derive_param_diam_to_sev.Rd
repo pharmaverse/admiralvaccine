@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_param_diam_to_sev.R
 \name{derive_param_diam_to_sev}
 \alias{derive_param_diam_to_sev}
-\title{Creating severity records for Redness and Swelling from Diameters}
+\title{Creating severity records from Diameters}
 \usage{
 derive_param_diam_to_sev(
   dataset = NULL,
@@ -98,8 +98,8 @@ is specified in \code{filter_faobj} and AVAL, AVALC will be derived and fatestcd
 fatest will be changed as per the values
 }
 \description{
-To derive the severity records for Redness and swelling from the diameter
-records per subject per event per period.
+To derive the severity records from the diameter records per subject per
+event per period.
 }
 \details{
 \enumerate{
@@ -123,7 +123,6 @@ grade limits.
 }
 }
 \examples{
-library(tidyverse)
 library(dplyr)
 library(admiral)
 library(admiraldev)
