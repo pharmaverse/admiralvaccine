@@ -1,8 +1,8 @@
-#' Creating severity records for Redness and Swelling from Diameters
+#' Creating severity records from Diameters
 #'
 #' @description
-#' To derive the severity records for Redness and swelling from the diameter
-#' records per subject per event per period.
+#' To derive the severity records from the diameter records per subject per
+#' event per period.
 #'
 #' @param dataset Input data set
 #'
@@ -106,7 +106,6 @@
 #' @export
 #'
 #' @examples
-#' library(tidyverse)
 #' library(dplyr)
 #' library(admiral)
 #' library(admiraldev)
@@ -196,21 +195,21 @@ derive_param_diam_to_sev <- function(dataset = NULL,
         FATESTCD = testcd_sev,
         FATEST = test_sev,
         DTYPE = "DERIVED",
-        AVALC = if_else(
+        AVALC = dplyr::if_else(
           none[1] <= AVAL & AVAL <= none[2],
           "NONE",
-          if_else(
+          dplyr::if_else(
             mild[1] < AVAL & AVAL <= mild[2],
             "MILD",
-            if_else(
+            dplyr::if_else(
               mod[1] < AVAL & AVAL <= mod[2],
               "MODERATE",
-              if_else(sev[1] < AVAL, "SEVERE", AVALC)
+              dplyr::if_else(sev[1] < AVAL, "SEVERE", AVALC)
             )
           )
         ),
         # Deriving AVAL
-        AVAL = case_when(
+        AVAL = dplyr::case_when(
           AVALC == "NONE" ~ 0,
           AVALC == "MILD" ~ 1,
           AVALC == "MODERATE" ~ 2,
