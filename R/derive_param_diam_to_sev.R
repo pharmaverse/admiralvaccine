@@ -103,50 +103,50 @@
 #' The Input data with the new severity records for Redness and swelling which
 #' is specified in `filter_faobj` and AVAL, AVALC will be derived and fatestcd,
 #'  fatest will be changed as per the values
-#' @export
 #'
 #' @examples
+#' 
 #' library(dplyr)
 #' library(admiral)
-#' library(admiraldev)
 #' library(tibble)
-#' Input <- tribble(
-#'   ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF,
-#'   "XYZ1001", "REDNESS", 7.5, 7.5, "VACCINATION 1",
-#'   "XYZ1001", "REDNESS", 3.5, 3.5, "VACCINATION 1",
-#'   "XYZ1001", "REDNESS", 2, 2, "VACCINATION 1",
-#'   "XYZ1001", "REDNESS", 1.8, 1.8, "VACCINATION 1",
-#'   "XYZ1001", "REDNESS", 1.4, 1.4, "VACCINATION 1",
-#'   "XYZ1002", "REDNESS", 11.1, 11.1, "VACCINATION 2",
-#'   "XYZ1002", "REDNESS", 7.4, 7.4, "VACCINATION 2",
-#'   "XYZ1002", "REDNESS", 6, 6, "VACCINATION 2",
-#'   "XYZ1002", "REDNESS", 2.1, 2.1, "VACCINATION 2",
-#'   "XYZ1002", "REDNESS", 1.1, 1.1, "VACCINATION 2",
-#'   "XYZ1001", "SWELLING", 5.5, 5.5, "VACCINATION 1",
-#'   "XYZ1001", "SWELLING", 2.5, 2.5, "VACCINATION 1",
-#'   "XYZ1001", "SWELLING", 2, 2, "VACCINATION 1",
-#'   "XYZ1001", "SWELLING", 1.8, 1.8, "VACCINATION 1",
-#'   "XYZ1001", "SWELLING", 1.4, 1.4, "VACCINATION 1",
-#'   "XYZ1002", "SWELLING", 10.1, 10.1, "VACCINATION 2",
-#'   "XYZ1002", "SWELLING", 7.1, 7.1, "VACCINATION 2",
-#'   "XYZ1002", "SWELLING", 5, 5, "VACCINATION 2",
-#'   "XYZ1002", "SWELLING", 1.8, 1.8, "VACCINATION 2",
-#'   "XYZ1002", "SWELLING", 1.4, 1.4, "VACCINATION 2"
-#' ) %>% mutate(
-#'   AVALC = as.character(AVALC),
-#'   FATEST = "Diameter",
-#'   FATESTCD = "DIAMETER"
-#' )
+#' 
+#' input <- tribble(
+#'  ~USUBJID,  ~FAOBJ,   ~AVAL, ~AVALC,  ~ATPTREF,      ~FATEST,     ~FATESTCD,
+#'  "XYZ1001","REDNESS",  7.5,  "7.5", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1001","REDNESS",  3.5,  "3.5", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1001","REDNESS",    2,    "2", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1001","REDNESS",  1.8,  "1.8", "VACCINATION 1", "Diameter",  "DIAMETER", 
+#'  "XYZ1001","REDNESS",  1.4,  "1.4", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1002","REDNESS", 11.1, "11.1", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1002","REDNESS",  7.4,  "7.4", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1002","REDNESS",    6,    "6", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1002","REDNESS",  2.1,  "2.1", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1002","REDNESS",  1.1,  "1.1", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1001","SWELLING", 5.5,  "5.5", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1001","SWELLING", 2.5,  "2.5", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1001","SWELLING",   2,    "2", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1001","SWELLING", 1.8,  "1.8", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1001","SWELLING", 1.4,  "1.4", "VACCINATION 1", "Diameter",  "DIAMETER",
+#'  "XYZ1002","SWELLING",10.1, "10.1", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1002","SWELLING", 7.1,  "7.1", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1002","SWELLING",   5,    "5", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1002","SWELLING", 1.8,  "1.8", "VACCINATION 2", "Diameter",  "DIAMETER",
+#'  "XYZ1002","SWELLING", 1.4,  "1.4", "VACCINATION 2", "Diameter",  "DIAMETER"
+#'   )
 #'
-#' output <- derive_param_diam_to_sev(
-#'   dataset = Input,
-#'   filter_faobj = c("REDENSS", "SWELLING"),
-#'   filter_diam = "DIAMETER",
-#'   testcd_sev = "SEV",
-#'   test_sev = "Severity"
-#' )
+#'derive_param_diam_to_sev(
+#'dataset = Input,
+#'filter_faobj = c("REDENSS", "SWELLING"),
+#'filter_diam = "DIAMETER",
+#'testcd_sev = "SEV",
+#'test_sev = "Severity"
+#')
+#'
+#' @export
+#' 
 #' @keywords der_adxx
 #' @family der_adxx
+#' 
 derive_param_diam_to_sev <- function(dataset = NULL,
                                      filter_diam = "DIAMETER",
                                      filter_faobj = c("REDNESS", "SWELLING"),
@@ -156,17 +156,17 @@ derive_param_diam_to_sev <- function(dataset = NULL,
                                      mild = c(2, 5),
                                      mod = c(5, 10),
                                      sev = 10) {
-  #-------------------------------------------------------------------------------
+  #-----------------------------------------------------------------------------
   # assertion checks
   #-----------------------------------------------------------------------------
-  admiraldev::assert_data_frame(dataset,
+ assert_data_frame(dataset,
     required_vars = vars(
       USUBJID, AVAL, AVALC,
       FAOBJ, FATEST, FATESTCD
     )
   )
-  admiraldev::assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
-  admiraldev::assert_character_vector(
+  assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
+  assert_character_vector(
     arg = c(
       filter_diam, filter_faobj, testcd_sev,
       test_sev
@@ -176,9 +176,9 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   #----------------------------------------------------------------------------
   # Checking & Removing the records which has severity records for the FAOBJ
   #-----------------------------------------------------------------------------
-  diam <- dataset %>% dplyr::filter(FAOBJ %in% filter_faobj)
+  diam <- dataset %>% filter(FAOBJ %in% filter_faobj)
   if (testcd_sev %in% diam$FATESTCD) {
-    fil_rec <- dataset %>% dplyr::filter(FATESTCD != testcd_sev &
+    fil_rec <- dataset %>% filter(FATESTCD != testcd_sev &
       !(FAOBJ %in% filter_faobj))
   } else {
     fil_rec <- dataset
@@ -189,27 +189,27 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   if (filter_diam %in% diam$FATESTCD) {
     fil_rec <- dataset
     sev <- fil_rec %>%
-      dplyr::filter(FATESTCD %in% filter_diam &
+      filter(FATESTCD %in% filter_diam &
         FAOBJ %in% filter_faobj) %>%
-      dplyr::mutate(
+      mutate(
         FATESTCD = testcd_sev,
         FATEST = test_sev,
         DTYPE = "DERIVED",
-        AVALC = dplyr::if_else(
+        AVALC = if_else(
           none[1] <= AVAL & AVAL <= none[2],
           "NONE",
-          dplyr::if_else(
+          if_else(
             mild[1] < AVAL & AVAL <= mild[2],
             "MILD",
-            dplyr::if_else(
+            if_else(
               mod[1] < AVAL & AVAL <= mod[2],
               "MODERATE",
-              dplyr::if_else(sev[1] < AVAL, "SEVERE", AVALC)
+              if_else(sev[1] < AVAL, "SEVERE", AVALC)
             )
           )
         ),
         # Deriving AVAL
-        AVAL = dplyr::case_when(
+        AVAL = case_when(
           AVALC == "NONE" ~ 0,
           AVALC == "MILD" ~ 1,
           AVALC == "MODERATE" ~ 2,
@@ -218,7 +218,7 @@ derive_param_diam_to_sev <- function(dataset = NULL,
         AVAL = as.numeric(AVAL)
       )
     # binding with Input data set
-    finalsev <- dplyr::bind_rows(sev, fil_rec)
+    finalsev <- bind_rows(sev, fil_rec)
     return(data.frame(finalsev))
   } else {
     print(paste0(filter_diam, " ", "doesn't exist in the filtered record"))
