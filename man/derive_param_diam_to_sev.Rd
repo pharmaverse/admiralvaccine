@@ -125,43 +125,40 @@ grade limits.
 \examples{
 library(dplyr)
 library(admiral)
-library(admiraldev)
 library(tibble)
-Input <- tribble(
-  ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF,
-  "XYZ1001", "REDNESS", 7.5, 7.5, "VACCINATION 1",
-  "XYZ1001", "REDNESS", 3.5, 3.5, "VACCINATION 1",
-  "XYZ1001", "REDNESS", 2, 2, "VACCINATION 1",
-  "XYZ1001", "REDNESS", 1.8, 1.8, "VACCINATION 1",
-  "XYZ1001", "REDNESS", 1.4, 1.4, "VACCINATION 1",
-  "XYZ1002", "REDNESS", 11.1, 11.1, "VACCINATION 2",
-  "XYZ1002", "REDNESS", 7.4, 7.4, "VACCINATION 2",
-  "XYZ1002", "REDNESS", 6, 6, "VACCINATION 2",
-  "XYZ1002", "REDNESS", 2.1, 2.1, "VACCINATION 2",
-  "XYZ1002", "REDNESS", 1.1, 1.1, "VACCINATION 2",
-  "XYZ1001", "SWELLING", 5.5, 5.5, "VACCINATION 1",
-  "XYZ1001", "SWELLING", 2.5, 2.5, "VACCINATION 1",
-  "XYZ1001", "SWELLING", 2, 2, "VACCINATION 1",
-  "XYZ1001", "SWELLING", 1.8, 1.8, "VACCINATION 1",
-  "XYZ1001", "SWELLING", 1.4, 1.4, "VACCINATION 1",
-  "XYZ1002", "SWELLING", 10.1, 10.1, "VACCINATION 2",
-  "XYZ1002", "SWELLING", 7.1, 7.1, "VACCINATION 2",
-  "XYZ1002", "SWELLING", 5, 5, "VACCINATION 2",
-  "XYZ1002", "SWELLING", 1.8, 1.8, "VACCINATION 2",
-  "XYZ1002", "SWELLING", 1.4, 1.4, "VACCINATION 2"
-) \%>\% mutate(
-  AVALC = as.character(AVALC),
-  FATEST = "Diameter",
-  FATESTCD = "DIAMETER"
+
+input <- tribble(
+  ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
+  "XYZ1001", "REDNESS", 7.5, "7.5", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1001", "REDNESS", 3.5, "3.5", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1001", "REDNESS", 2, "2", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1001", "REDNESS", 1.8, "1.8", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1001", "REDNESS", 1.4, "1.4", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1002", "REDNESS", 11.1, "11.1", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1002", "REDNESS", 7.4, "7.4", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1002", "REDNESS", 6, "6", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1002", "REDNESS", 2.1, "2.1", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1002", "REDNESS", 1.1, "1.1", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1001", "SWELLING", 5.5, "5.5", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1001", "SWELLING", 2.5, "2.5", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1001", "SWELLING", 2, "2", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1001", "SWELLING", 1.8, "1.8", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1001", "SWELLING", 1.4, "1.4", "VACCINATION 1", "Diameter", "DIAMETER",
+  "XYZ1002", "SWELLING", 10.1, "10.1", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1002", "SWELLING", 7.1, "7.1", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1002", "SWELLING", 5, "5", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1002", "SWELLING", 1.8, "1.8", "VACCINATION 2", "Diameter", "DIAMETER",
+  "XYZ1002", "SWELLING", 1.4, "1.4", "VACCINATION 2", "Diameter", "DIAMETER"
 )
 
-output <- derive_param_diam_to_sev(
+derive_param_diam_to_sev(
   dataset = Input,
   filter_faobj = c("REDENSS", "SWELLING"),
   filter_diam = "DIAMETER",
   testcd_sev = "SEV",
   test_sev = "Severity"
 )
+
 }
 \seealso{
 ADXX Functions that returns variable appended to dataset: 
