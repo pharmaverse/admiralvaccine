@@ -31,5 +31,4 @@
 #' @importFrom admiraldev assert_logical_scalar assert_character_vector assert_vars
 #'             assert_data_frame assert_numeric_vector assert_character_scalar
 #'
-#'             
 "_PACKAGE"
