@@ -134,7 +134,7 @@
 #' )
 #'
 #' derive_param_diam_to_sev(
-#'   dataset = Input,
+#'   dataset = input,
 #'   filter_faobj = c("REDENSS", "SWELLING"),
 #'   filter_diam = "DIAMETER",
 #'   testcd_sev = "SEV",
