@@ -105,48 +105,46 @@
 #'  fatest will be changed as per the values
 #'
 #' @examples
-#' 
 #' library(dplyr)
 #' library(admiral)
 #' library(tibble)
-#' 
-#' input <- tribble(
-#'  ~USUBJID,  ~FAOBJ,   ~AVAL, ~AVALC,  ~ATPTREF,      ~FATEST,     ~FATESTCD,
-#'  "XYZ1001","REDNESS",  7.5,  "7.5", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1001","REDNESS",  3.5,  "3.5", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1001","REDNESS",    2,    "2", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1001","REDNESS",  1.8,  "1.8", "VACCINATION 1", "Diameter",  "DIAMETER", 
-#'  "XYZ1001","REDNESS",  1.4,  "1.4", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1002","REDNESS", 11.1, "11.1", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1002","REDNESS",  7.4,  "7.4", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1002","REDNESS",    6,    "6", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1002","REDNESS",  2.1,  "2.1", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1002","REDNESS",  1.1,  "1.1", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1001","SWELLING", 5.5,  "5.5", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1001","SWELLING", 2.5,  "2.5", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1001","SWELLING",   2,    "2", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1001","SWELLING", 1.8,  "1.8", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1001","SWELLING", 1.4,  "1.4", "VACCINATION 1", "Diameter",  "DIAMETER",
-#'  "XYZ1002","SWELLING",10.1, "10.1", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1002","SWELLING", 7.1,  "7.1", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1002","SWELLING",   5,    "5", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1002","SWELLING", 1.8,  "1.8", "VACCINATION 2", "Diameter",  "DIAMETER",
-#'  "XYZ1002","SWELLING", 1.4,  "1.4", "VACCINATION 2", "Diameter",  "DIAMETER"
-#'   )
 #'
-#'derive_param_diam_to_sev(
-#'dataset = Input,
-#'filter_faobj = c("REDENSS", "SWELLING"),
-#'filter_diam = "DIAMETER",
-#'testcd_sev = "SEV",
-#'test_sev = "Severity"
-#')
+#' input <- tribble(
+#'   ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
+#'   "XYZ1001", "REDNESS", 7.5, "7.5", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1001", "REDNESS", 3.5, "3.5", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1001", "REDNESS", 2, "2", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1001", "REDNESS", 1.8, "1.8", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1001", "REDNESS", 1.4, "1.4", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1002", "REDNESS", 11.1, "11.1", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1002", "REDNESS", 7.4, "7.4", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1002", "REDNESS", 6, "6", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1002", "REDNESS", 2.1, "2.1", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1002", "REDNESS", 1.1, "1.1", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1001", "SWELLING", 5.5, "5.5", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1001", "SWELLING", 2.5, "2.5", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1001", "SWELLING", 2, "2", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1001", "SWELLING", 1.8, "1.8", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1001", "SWELLING", 1.4, "1.4", "VACCINATION 1", "Diameter", "DIAMETER",
+#'   "XYZ1002", "SWELLING", 10.1, "10.1", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1002", "SWELLING", 7.1, "7.1", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1002", "SWELLING", 5, "5", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1002", "SWELLING", 1.8, "1.8", "VACCINATION 2", "Diameter", "DIAMETER",
+#'   "XYZ1002", "SWELLING", 1.4, "1.4", "VACCINATION 2", "Diameter", "DIAMETER"
+#' )
+#'
+#' derive_param_diam_to_sev(
+#'   dataset = Input,
+#'   filter_faobj = c("REDENSS", "SWELLING"),
+#'   filter_diam = "DIAMETER",
+#'   testcd_sev = "SEV",
+#'   test_sev = "Severity"
+#' )
 #'
 #' @export
-#' 
 #' @keywords der_adxx
 #' @family der_adxx
-#' 
+#'
 derive_param_diam_to_sev <- function(dataset = NULL,
                                      filter_diam = "DIAMETER",
                                      filter_faobj = c("REDNESS", "SWELLING"),
@@ -159,7 +157,7 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   #-----------------------------------------------------------------------------
   # assertion checks
   #-----------------------------------------------------------------------------
- assert_data_frame(dataset,
+  assert_data_frame(dataset,
     required_vars = vars(
       USUBJID, AVAL, AVALC,
       FAOBJ, FATEST, FATESTCD
