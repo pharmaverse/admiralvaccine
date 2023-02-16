@@ -59,11 +59,10 @@ unless otherwise specified.*
 
 -   [Read in Data](#readdata)
 -   [Derive fever records from VS domain](#input)
--   [Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADY`, `ADTF`, `ATMF`)](#datetime)
 -   [Derive `AVAL`,`AVALC`](#aval)
--   [Derive severity records](#sev)
+-   [Derive severity records for Redness and swelling](#sev)
 -   [Derive maximum severity records](#maxsev)
--   [Derive maximun diameter records for Redness and swelling](#maxdiam)
+-   [Derive maximun diameter records](#maxdiam)
 -   [Derive maximum temperature records](#maxtemp)
 -   [Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`](#paramcd)
 -   [Derive maximum severity flag](#maxflag)
