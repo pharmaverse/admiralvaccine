@@ -76,13 +76,68 @@ from the  AVAL by USUBJID and by_vars.
 Below variables will be created with the values mentioned below.
 'DTYPE = "MAXIMUM", FATESTCD = "MAXSEV" and FATEST = "MAXIMUM SEVERITY".'
 }
+\examples{
+input <- tribble(
+  ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
+  "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 1, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 1, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 3, "SEVERE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 0, "NONE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 0, "NONE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "CHILLS", 2, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 1, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 1, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 2, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", 2, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", 2, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC"
+)
+
+derive_param_maxsev(
+  dataset = input,
+  filter_sev = "SEV",
+  exclude_events = "REDNESS",
+  test_maxsev = "Maximum severity",
+  testcd_maxsev = "MAXSEV"
+)
+
+}
 \seealso{
 ADXX Functions that returns variable appended to dataset: 
-\code{\link{derive_param_diam_to_sev}()},
 \code{\link{hello_admiral}()}
 }
 \author{
 Arjun Rubalingam
 }
 \concept{der_adxx}
+\concept{der_adxx
+Creating the function}
 \keyword{der_adxx}
