@@ -60,7 +60,7 @@ unless otherwise specified.*
 -   [Read in Data](#readdata)
 -   [Derive fever records from VS domain](#input)
 -   [Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADY`, `ADTF`, `ATMF`)](#datetime)
--   [Derive AVAL,AVALC](#aval)
+-   [Derive `AVAL`,`AVALC`](#aval)
 -   [Derive severity records](#sev)
 -   [Derive maximum severity records](#maxsev)
 -   [Derive maximun diameter records for Redness and swelling](#maxdiam)
@@ -69,5 +69,6 @@ unless otherwise specified.*
 -   [Derive maximum severity flag](#maxflag)
 -   [Derive event occurrence flag](#eventflag)
 -   [Add ADSL variables](#adsl_vars)
+
 
 
