@@ -59,6 +59,10 @@
 #' @export
 #'
 #' @examples
+#' library(tibble)
+#' library(admiral)
+#' library(dplyr)
+#'
 #' input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
 #'   "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
