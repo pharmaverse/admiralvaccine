@@ -1,88 +1,202 @@
-#' Derive Maximum Severity
+#' Creating Maximum Severity Records
 #'
-#' Derive the maximum severity for each administrative and Systemic events.
+#' Creating the maximum severity records per subject per event per period.
+#' Maximum severity records will be derived for the Administration and systemic
+#' events which has severity records `FATESTCD = "SEV"`.
 #'
-#' @details
+#' @param dataset input data set
 #'
-#' Pre_processing:
+#'  The variables `USUBJID`, `APTPTREF`, `FAOBJ`, `FASCAT`, `AVALC`, `FAOBJ`,
+#'  `FATESTCD` and `FATEST` are expected for input data set.(`dataset`)
 #'
-#' Severity records for Administrative and systemic events will be filtered
-#' from the input data set and AVAL will be derived in a data_frame pp
+#' @param exclude_events To exclude the events
 #'
-#' Maximum severity derivation:
+#'  Helps to exclude the events which user doesn't want to derive the maximum
+#'  severity. Pass the event name in quotes which is from `FAOBJ`.
 #'
-#' Once the pre-processing is done. The maximum severity records will be derived
-#' from the  AVAL by USUBJID and by_vars.
-#' Below variables will be created with the values mentioned below.
-#' 'DTYPE = "MAXIMUM", FATESTCD = "MAXSEV" and FATEST = "MAXIMUM SEVERITY".'
+#' *Default: NULL*
+#' *Permitted Value*: A character vector.
 #'
-#' @param dataset
-#' The Input data frame for this function
-#' required variables for Input data freame :USUBJID, ATPTREF(FATPTREF),
-#' PARCAT2(FASCAT), AVAL(FASTRESN),AVALC(FASTRESC),FAOBJ,FATESTCD,FATEST.
+#' @param filter_sev severity record filter
 #'
-#' @param testcd_sev
-#' In testcd_sev, Pass the testcd in the quotes ("SEV") which is representing
-#' the severity records.if you have more than one testcd, pass it as a list in
-#' the testcd_sev arugument.
+#' *Default: "SEV"*
+#' *Permitted Value*: A character scalar
 #'
-#' @param by_vars
-#' In by_vars, pass the inside vars() grouping variables to derive the Maximum severity
-#' eg: by_vars= vars(USUBJID,FAOBJ, ATPTREF)
+#' To filter the severity records to derive the maximum severity by passing the
+#' `FATESTCD` value for severity in quotes `"SEV"` for this argument.
 #'
+#' @param test_maxsev FATEST value for maximum severity records
 #'
-#' @return Dataframe which has Maxsev records (with DTYPE as "MAXIMUM", Derived AVAL
-#' and AVALC and some grouping vars and updated FATESTCD and FATEST.)
+#' *Default: "Maximum severity"*
+#' *Permitted Value*: A character scalar
+#'
+#' Assign the value for `FATEST` variable to indicate the maximum severity
+#' records. Ignore the argument if you want to set the value as mentioned in
+#' default.
+#'
+#' @param testcd_maxsev FATESTCD value for maximum severity records
+#'
+#' *Default: "MAXSEV"*
+#' *Permitted Value*: A character scalar
+#'
+#' Assign the value for `FATESTCD` variable to indicate the maximum severity
+#' records. Ignore the argument if you want to set the value as mentioned in
+#' default.
+#'
+#' @param by_vars Grouping variables
+#'
+#' *Default: vars(USUBJID, FAOBJ, ATPTREF)*
+#'
+#' Based on the variables which will be passed on this `by_vars` argument, The
+#' maximum severity records will be derived from AVAL.
+#' *Note:* Pass the variables in `vars()`.
+#'
+#' @return The input data set with new records `FATESTCD = MAXSEV`indicating the
+#' maximum severity records for the specified variables in `by_vars`. `DTYPE`
+#' will be populated as `MAXIMUM`. `FATEST`will be populated as specified in
+#' `test_maxsev`and `FATESCD` will be populated as specified in `testcd_maxsev`.
+#'
+#' @export
+#'
+#' @examples
+#' input <- tribble(
+#'   ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
+#'   "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 1, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 1, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 3, "SEVERE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 2, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 0, "NONE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 0, "NONE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "CHILLS", 2, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 1, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 1, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 2, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", 2, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", 2, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC"
+#' )
+#'
+#' derive_param_maxsev(
+#'   dataset = input,
+#'   filter_sev = "SEV",
+#'   exclude_events = "REDNESS",
+#'   test_maxsev = "Maximum severity",
+#'   testcd_maxsev = "MAXSEV"
+#' )
+#'
+#' @author Arjun Rubalingam
+#'
+#' @export
 #'
 #' @keywords der_adxx
 #' @family der_adxx
 #'
-#'
 derive_param_maxsev <- function(dataset = NULL,
-                                testcd_sev = "SEV",
-                                by_vars = NULL) {
+                                exclude_events = NULL,
+                                filter_sev = "SEV",
+                                test_maxsev = "Maximum Severity",
+                                testcd_maxsev = "MAXSEV",
+                                by_vars = vars(USUBJID, FAOBJ, ATPTREF)) {
   # assertions
   assert_data_frame(dataset,
     required_vars = vars(
-      USUBJID, PARCAT2, ATPTREF, AVAL, AVALC,
-      FAOBJ, FATEST, FATESTCD
+      USUBJID, FASCAT, AVALC, FAOBJ,
+      ATPTREF, FATEST, FATESTCD
     )
   )
-  assert_character_vector(testcd_sev, optional = FALSE)
-  assert_vars(by_vars)
+  assert_character_scalar(filter_sev, optional = FALSE)
+  assert_character_vector(exclude_events, optional = TRUE)
+  assert_character_scalar(test_maxsev, optional = FALSE)
+  assert_character_scalar(testcd_maxsev, optional = FALSE)
+  assert_vars(by_vars, optional = FALSE)
 
-  # filtering the severity record
+  # pre-processing
 
-  pp <- dataset %>%
-    filter(FATESTCD %in% testcd_sev &
-      PARCAT2 %in% c("ADMINISTRATION SITE", "SYSTEMIC")) %>%
-    mutate(
-      # AVAL derivation
-      AVAL = case_when(
-        AVALC == "NONE" ~ 0,
-        AVALC == "MILD" ~ 1,
-        AVALC == "MODERATE" ~ 2,
-        AVALC == "SEVERE" ~ 3,
-        AVALC == "GRADE4" ~ 4
-      )
+  maxsev_pp <- dataset %>%
+    filter(FATESTCD == filter_sev &
+      grepl("ADMIN|SYS", FASCAT))
+
+  # events exclusions
+  if (is.null(exclude_events)) {
+    pp <- maxsev_pp
+  } else {
+    pp <- maxsev_pp %>% filter(!(FAOBJ %in% exclude_events))
+  }
+  # retaining variables for summary record
+
+  retain_vars <-
+    c(
+      "USUBJID",
+      "FAOBJ",
+      "ATPTREF",
+      "FALNKGRP",
+      "STUDYID",
+      "SRCDOM",
+      "EXDOSE",
+      "EXDOSU",
+      "EXSTDTC",
+      "EXENDTC",
+      "EXTRT",
+      "AVAL",
+      "AVALC",
+      "FATEST",
+      "FATESTCD",
+      "DTYPE",
+      "AVISIT",
+      "AVISITN",
+      "FASCAT",
+      "FACAT"
     )
 
-  # deriving the maximum severity
+  # maximum severity derivation
 
   maxsev <- pp %>%
+    mutate(AVAL = case_when(
+      AVALC == "NONE" ~ 0,
+      AVALC == "MILD" ~ 1,
+      AVALC == "MODERATE" ~ 2,
+      AVALC == "SEVERE" ~ 3
+    )) %>%
     group_by(!!!by_vars) %>%
-    summarise(AVAL = max(AVAL)) %>%
+    filter(!is.na(AVAL)) %>%
+    filter(AVAL == max(AVAL)) %>%
+    select(any_of(retain_vars)) %>%
+    distinct() %>%
     mutate(
-      AVALC = case_when(
-        AVAL == 0 ~ "NONE",
-        AVAL == 1 ~ "MILD",
-        AVAL == 2 ~ "MODERATE",
-        AVAL == 3 ~ "SEVERE"
-      ),
       DTYPE = "MAXIMUM",
-      FATESTCD = "MAXSEV",
-      FATEST = "Maximum Severity"
+      FATEST = test_maxsev,
+      FATESTCD = testcd_maxsev
     )
+  # binding with input data
 
-  return(maxsev)
+  maxsev_final <- bind_rows(dataset, maxsev)
+
+  return(data.frame(maxsev_final))
 }
