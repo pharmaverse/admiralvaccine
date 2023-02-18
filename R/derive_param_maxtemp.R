@@ -50,40 +50,43 @@
 #' @export
 #'
 #' @examples
+#' library(tibble)
+#' library(admiral)
+#' library(dplyr)
+#' input <- tribble(
+#'   ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
+#'   "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 1", "Y", 2, 39.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 1", "Y", 3, 39.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 1", "Y", 4, 39.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 1", "N", 5, 33.1, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 1", "Y", 6, 36.0, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 2", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 2", "Y", 2, 37.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 2", "Y", 3, 37.3, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 2", "Y", 4, 36.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 2", "N", 5, 36.1, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1001", "FEVER", "VACC 2", "Y", 6, 34.0, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 1", "N", 1, 36.7, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 1", "Y", 2, 38.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 1", "Y", 3, 35.5, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 1", "Y", 4, 38.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 1", "Y", 5, 37.5, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 1", "Y", 6, 37.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 2", "Y", 1, 38.0, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 2", "N", 2, 37.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 2", "N", 3, 37.4, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 2", "Y", 4, 38.2, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 2", "N", 5, 36.1, "Occurrence Indicator", "OCCUR",
+#'   "XYZ1002", "FEVER", "VACC 2", "N", 6, 36.2, "Occurrence Indicator", "OCCUR"
+#' )
 #'
-# input <- tribble(
-# ~USUBJID,     ~FAOBJ,    ~ATPTREF,          ~AVALC,    ~ ATPT,   ~VSSTRESN,
-# "XYZ1001",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-1",   38.9,
-# "XYZ1001",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-2",   39.2,
-# "XYZ1001",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-3",   39.2,
-# "XYZ1001",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-4",   39.2,
-# "XYZ1001",    "FEVER",   "VACCINATION 1",     "N",     "DAY-5",   33.1,
-# "XYZ1001",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-6",   36.0,
-# "XYZ1001",    "FEVER",   "VACCINATION 2",     "Y",     "DAY-1",   38.9,
-# "XYZ1001",    "FEVER",   "VACCINATION 2",     "Y",     "DAY-2",   37.2,
-# "XYZ1001",    "FEVER",   "VACCINATION 2",     "Y",     "DAY-3",   37.3,
-# "XYZ1001",    "FEVER",   "VACCINATION 2",     "Y",     "DAY-4",   36.2,
-# "XYZ1001",    "FEVER",   "VACCINATION 2",     "N",     "DAY-5",   36.1,
-# "XYZ1001",    "FEVER",   "VACCINATION 2",     "Y",     "DAY-6",   34.0,
-# "XYZ1002",    "FEVER",   "VACCINATION 1",     "N",     "DAY-1",   36.7,
-# "XYZ1002",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-2",   38.2,
-# "XYZ1002",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-3",   35.5,
-# "XYZ1002",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-4",   38.2,
-# "XYZ1002",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-5",   37.5,
-# "XYZ1002",    "FEVER",   "VACCINATION 1",     "Y",     "DAY-6",   37.2,
-# "XYZ1002",    "FEVER",   "VACCINATION 2",     "Y",     "DAY-1",   38.0,
-# "XYZ1002",    "FEVER",   "VACCINATION 2",     "N",     "DAY-2",   37.2,
-# "XYZ1002",    "FEVER",   "VACCINATION 2",     "N",     "DAY-3",   37.4,
-# "XYZ1002",    "FEVER",   "VACCINATION 2",     "Y",     "DAY-4",   38.2,
-# "XYZ1002",    "FEVER",   "VACCINATION 2",     "N",     "DAY-5",   36.1,
-# "XYZ1002",    "FEVER",   "VACCINATION 2",     "N",     "DAY-6",   36.2
-# ) %>%
-
 #' derive_param_maxtemp(
-#' dataset = input,
-#' filter_faobj = "FEVER",
-#' test_maxtemp = "Maximum Temperature",
-#' testcd_maxtemp = "MAXTEMP"
+#'   dataset = input,
+#'   filter_faobj = "FEVER",
+#'   test_maxtemp = "Maximum Temperature",
+#'   testcd_maxtemp = "MAXTEMP",
+#'   by_vars = vars(USUBJID, FAOBJ, ATPTREF)
 #' )
 #'
 derive_param_maxtemp <- function(
@@ -94,14 +97,14 @@ derive_param_maxtemp <- function(
     testcd_maxtemp = "MAXTEMP") {
   # assertion
 
-  admiral::assert_data_frame(dataset, required_vars = vars(
+  assert_data_frame(dataset, required_vars = vars(
     USUBJID, FAOBJ, VSSTRESN,
     FATEST, FATESTCD, ATPTREF
   ))
-  admiral::assert_vars(by_vars, optional = FALSE)
-  admiral::assert_character_scalar(testcd_maxtemp, optional = FALSE)
-  admiral::assert_character_scalar(test_maxtemp, optional = FALSE)
-  admiral::assert_character_scalar(filter_faobj, optional = FALSE)
+  assert_vars(by_vars, optional = FALSE)
+  assert_character_scalar(testcd_maxtemp, optional = FALSE)
+  assert_character_scalar(test_maxtemp, optional = FALSE)
+  assert_character_scalar(filter_faobj, optional = FALSE)
   # retaining variables for summary record
 
   retain_vars <- c(
@@ -114,20 +117,20 @@ derive_param_maxtemp <- function(
   # Deriving maximum temperature
 
   max_temp <- dataset %>%
-    dplyr::filter(FAOBJ == filter_faobj & VSSTRESN > 0) %>%
-    dplyr::group_by(!!!by_vars) %>%
-    dplyr::filter(VSSTRESN == max(VSSTRESN)) %>%
-    dplyr::mutate(
+    filter(FAOBJ == filter_faobj & VSSTRESN > 0) %>%
+    group_by(!!!by_vars) %>%
+    filter(VSSTRESN == max(VSSTRESN)) %>%
+    mutate(
       AVAL = VSSTRESN,
       AVALC = "",
       DTYPE = "MAXIMUM",
       FATEST = test_maxtemp,
       FATESTCD = testcd_maxtemp
     ) %>%
-    dplyr::select(any_of(retain_vars)) %>%
-    dplyr::distinct(USUBJID, AVAL, ATPTREF, .keep_all = TRUE) %>%
+    select(any_of(retain_vars)) %>%
+    distinct(USUBJID, AVAL, ATPTREF, .keep_all = TRUE) %>%
     # binding with input data set
 
-    dplyr::bind_rows(dataset)
+    bind_rows(dataset)
   return(as.data.frame(max_temp))
 }
