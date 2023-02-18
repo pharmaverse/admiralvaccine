@@ -44,7 +44,7 @@ is1 <- is_suppis %>%
       VISITNUM == 30 ~ "Visit 3",
       VISITNUM == 40 ~ "Visit 4",
       is.na(VISITNUM) ~ NA_character_
-      ),
+    ),
     ATPTN = as.numeric(VISITNUM / 10),
     ATPT = case_when(
       VISITNUM == 10 ~ "Visit 1 (Day 1)",
@@ -52,13 +52,13 @@ is1 <- is_suppis %>%
       VISITNUM == 30 ~ "Visit 3 (Day #)",
       VISITNUM == 40 ~ "Visit 4 (Day #)",
       is.na(VISITNUM) ~ NA_character_
-      ),
+    ),
     ATPTREF = case_when(
       VISITNUM %in% c(10, 20) ~ "FIRST TREATMENT",
       VISITNUM %in% c(30, 40) ~ "SECOND TREATMENT",
       is.na(VISITNUM) ~ NA_character_
-      )
     )
+  )
 
 
 # STEP 3: ADT and ADY derivation
@@ -75,19 +75,21 @@ is2_adt <- derive_vars_dt(
   highest_imputation = "M",
   date_imputation = "mid",
   flag_imputation = "none"
-  )
+)
 
 
 # Merge with ADSL to get RFSTDTC info in order to derive ADY
-is2_rf <- derive_var_merged_character(dataset = is2_adt,
-                                      dataset_add = adsl,
-                                      by_vars = exprs(STUDYID, USUBJID),
-                                      new_var = RFSTDTC,
-                                      source_var = RFSTDTC
-                                      ) %>%
-  mutate(ADT = as.Date(ADT),
-         RFSTDTC = as.Date(RFSTDTC)
-         )
+is2_rf <- derive_var_merged_character(
+  dataset = is2_adt,
+  dataset_add = adsl,
+  by_vars = exprs(STUDYID, USUBJID),
+  new_var = RFSTDTC,
+  source_var = RFSTDTC
+) %>%
+  mutate(
+    ADT = as.Date(ADT),
+    RFSTDTC = as.Date(RFSTDTC)
+  )
 
 
 # ADY derivation
@@ -95,4 +97,4 @@ is2_ady <- derive_vars_dy(
   dataset = is2_rf,
   reference_date = RFSTDTC,
   source_vars = exprs(ADT)
-  )
+)
