@@ -14,17 +14,17 @@ library(lubridate)
 # Load source datasets ----
 data("is")
 data("suppis")
-
+data("admiral_adsl")
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
 # as NA values. Further details can be obtained via the following link:
-# https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values
+# https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 
 
 is <- convert_blanks_to_na(is)
 suppis <- convert_blanks_to_na(suppis)
-adsl <- convert_blanks_to_na(adsl)
+adsl <- convert_blanks_to_na(admiral_adsl)
 
 
 # Derivations ----
@@ -91,7 +91,7 @@ is2_adt <- derive_vars_dt(
 # Merge with ADSL to get RFSTDTC info in order to derive ADY
 is2_rf <- derive_var_merged_character(dataset = is2_adt,
                                       dataset_add = adsl,
-                                      by_vars = vars(STUDYID,USUBJID),
+                                      by_vars = exprs(STUDYID,USUBJID),
                                       new_var = RFSTDTC,
                                       source_var = RFSTDTC
                                       ) %>%
@@ -104,5 +104,5 @@ is2_rf <- derive_var_merged_character(dataset = is2_adt,
 is2_ady <- derive_vars_dy(
   dataset = is2_rf,
   reference_date = RFSTDTC,
-  source_vars = vars(ADT)
+  source_vars = exprs(ADT)
   )
