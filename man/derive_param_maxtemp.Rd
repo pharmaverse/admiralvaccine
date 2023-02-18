@@ -59,12 +59,43 @@ specified in \code{test_maxtemp}and \code{FATESCD} will be populated as specifie
 Create a summary record for maximum temperature per subject per period.
 }
 \examples{
+library(tibble)
+library(admiral)
+library(dplyr)
+input <- tribble(
+  ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
+  "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 1", "Y", 2, 39.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 1", "Y", 3, 39.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 1", "Y", 4, 39.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 1", "N", 5, 33.1, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 1", "Y", 6, 36.0, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 2", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 2", "Y", 2, 37.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 2", "Y", 3, 37.3, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 2", "Y", 4, 36.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 2", "N", 5, 36.1, "Occurrence Indicator", "OCCUR",
+  "XYZ1001", "FEVER", "VACC 2", "Y", 6, 34.0, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 1", "N", 1, 36.7, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 1", "Y", 2, 38.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 1", "Y", 3, 35.5, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 1", "Y", 4, 38.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 1", "Y", 5, 37.5, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 1", "Y", 6, 37.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 2", "Y", 1, 38.0, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 2", "N", 2, 37.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 2", "N", 3, 37.4, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 2", "Y", 4, 38.2, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 2", "N", 5, 36.1, "Occurrence Indicator", "OCCUR",
+  "XYZ1002", "FEVER", "VACC 2", "N", 6, 36.2, "Occurrence Indicator", "OCCUR"
+)
 
 derive_param_maxtemp(
-dataset = input,
-filter_faobj = "FEVER",
-test_maxtemp = "Maximum Temperature",
-testcd_maxtemp = "MAXTEMP"
+  dataset = input,
+  filter_faobj = "FEVER",
+  test_maxtemp = "Maximum Temperature",
+  testcd_maxtemp = "MAXTEMP",
+  by_vars = vars(USUBJID, FAOBJ, ATPTREF)
 )
 
 }
