@@ -45,11 +45,11 @@
 #'
 #' @param by_vars Grouping variables
 #'
-#' *Default: vars(USUBJID, FAOBJ, ATPTREF)*
+#' *Default: exprs(USUBJID, FAOBJ, ATPTREF)*
 #'
 #' Based on the variables which will be passed on this `by_vars` argument, The
 #' maximum severity records will be derived from AVAL.
-#' *Note:* Pass the variables in `vars()`.
+#' *Note:* Pass the variables in `exprs()`.
 #'
 #' @return The input data set with new records `FATESTCD = MAXSEV`indicating the
 #' maximum severity records for the specified variables in `by_vars`. `DTYPE`
@@ -125,7 +125,7 @@ derive_param_maxsev <- function(dataset = NULL,
                                 filter_sev = "SEV",
                                 test_maxsev = "Maximum Severity",
                                 testcd_maxsev = "MAXSEV",
-                                by_vars = vars(USUBJID, FAOBJ, ATPTREF)) {
+                                by_vars = exprs(USUBJID, FAOBJ, ATPTREF)) {
   # assertions
   assert_data_frame(dataset,
     required_vars = vars(
@@ -137,7 +137,6 @@ derive_param_maxsev <- function(dataset = NULL,
   assert_character_vector(exclude_events, optional = TRUE)
   assert_character_scalar(test_maxsev, optional = FALSE)
   assert_character_scalar(testcd_maxsev, optional = FALSE)
-  assert_vars(by_vars, optional = FALSE)
 
   # pre-processing
 
