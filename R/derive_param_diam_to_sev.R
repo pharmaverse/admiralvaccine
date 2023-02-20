@@ -1,4 +1,4 @@
-#' Creating severity records from Diameters
+#' Creating Severity Records from Diameters
 #'
 #' @description
 #' To derive the severity records from the diameter records per subject per
@@ -154,26 +154,16 @@ derive_param_diam_to_sev <- function(dataset = NULL,
                                      mild = c(2, 5),
                                      mod = c(5, 10),
                                      sev = 10) {
-  #-----------------------------------------------------------------------------
-  # assertion checks
-  #-----------------------------------------------------------------------------
   assert_data_frame(dataset,
-    required_vars = vars(
-      USUBJID, AVAL, AVALC,
-      FAOBJ, FATEST, FATESTCD
-    )
+    required_vars = vars(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
   )
   assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
   assert_character_vector(
-    arg = c(
-      filter_diam, filter_faobj, testcd_sev,
-      test_sev
-    ),
+    arg = c(filter_diam, filter_faobj, testcd_sev, test_sev),
     optional = FALSE
   )
-  #----------------------------------------------------------------------------
+
   # Checking & Removing the records which has severity records for the FAOBJ
-  #-----------------------------------------------------------------------------
   diam <- dataset %>% filter(FAOBJ %in% filter_faobj)
   if (testcd_sev %in% diam$FATESTCD) {
     fil_rec <- dataset %>% filter(FATESTCD != testcd_sev &
@@ -181,9 +171,8 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   } else {
     fil_rec <- dataset
   }
-  #-----------------------------------------------------------------------------
+
   # Replacing FATESTCD and FATEST for Diameter with Severity
-  #-----------------------------------------------------------------------------
   if (filter_diam %in% diam$FATESTCD) {
     fil_rec <- dataset
     sev <- fil_rec %>%
