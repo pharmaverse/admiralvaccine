@@ -10,7 +10,7 @@ derive_param_maxsev(
   filter_sev = "SEV",
   test_maxsev = "Maximum Severity",
   testcd_maxsev = "MAXSEV",
-  by_vars = vars(USUBJID, FAOBJ, ATPTREF)
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 )
 }
 \arguments{
@@ -55,11 +55,11 @@ default.}
 
 \item{by_vars}{Grouping variables
 
-\emph{Default: vars(USUBJID, FAOBJ, ATPTREF)}
+\emph{Default: exprs(USUBJID, FAOBJ, ATPTREF)}
 
 Based on the variables which will be passed on this \code{by_vars} argument, The
 maximum severity records will be derived from AVAL.
-\emph{Note:} Pass the variables in \code{vars()}.}
+\emph{Note:} Pass the variables in \code{exprs()}.}
 }
 \value{
 The input data set with new records \code{FATESTCD = MAXSEV}indicating the
