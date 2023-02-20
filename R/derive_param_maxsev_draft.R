@@ -56,7 +56,12 @@
 #' will be populated as `MAXIMUM`. `FATEST`will be populated as specified in
 #' `test_maxsev`and `FATESCD` will be populated as specified in `testcd_maxsev`.
 #'
+#' @author Arjun Rubalingam
+#'
 #' @export
+#'
+#' @keywords der_adxx
+#' @family der_adxx
 #'
 #' @examples
 #' library(tibble)
@@ -114,13 +119,6 @@
 #'   test_maxsev = "Maximum severity",
 #'   testcd_maxsev = "MAXSEV"
 #' )
-#'
-#' @author Arjun Rubalingam
-#'
-#' @export
-#'
-#' @keywords der_adxx
-#' @family der_adxx
 #'
 derive_param_maxsev <- function(dataset = NULL,
                                 exclude_events = NULL,
