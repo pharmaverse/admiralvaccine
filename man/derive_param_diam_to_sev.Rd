@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_param_diam_to_sev.R
 \name{derive_param_diam_to_sev}
 \alias{derive_param_diam_to_sev}
-\title{Creating severity records from Diameters}
+\title{Creating Severity Records from Diameters}
 \usage{
 derive_param_diam_to_sev(
   dataset = NULL,
