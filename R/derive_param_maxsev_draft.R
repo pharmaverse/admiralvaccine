@@ -7,7 +7,7 @@
 #' @param dataset input data set
 #'
 #'  The variables `USUBJID`, `APTPTREF`, `FAOBJ`, `FASCAT`, `AVALC`, `FAOBJ`,
-#'  `FATESTCD` and `FATEST` are expected for input data set.(`dataset`)
+#'  `FATESTCD` and `FATEST` are required for the input data set.(`dataset`)
 #'
 #' @param exclude_events To exclude the events
 #'
@@ -67,20 +67,21 @@
 #' library(tibble)
 #' library(admiral)
 #' library(dplyr)
+#' library(rlang)
 #'
 #' input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
 #'   "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
-#'   "XYZ1001", "REDNESS", 1, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
-#'   "XYZ1001", "REDNESS", 1, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1001", "REDNESS", 3, "SEVERE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1001", "REDNESS", 2, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1001", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1001", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
-#'   "XYZ1002", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1002", "REDNESS", 0, "NONE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -88,28 +89,28 @@
 #'   "XYZ1002", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
-#'   "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+#'   "XYZ1002", "REDNESS", 3, "SEVERE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
 #'   "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
-#'   "XYZ1001", "CHILLS", 2, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 1, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 1, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 2, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1001", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", 2, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", 2, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-#'   "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC"
+#'   "XYZ1001", "CHILLS", NA, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1001", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+#'   "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC"
 #' )
 #'
 #' derive_param_maxsev(
@@ -117,7 +118,8 @@
 #'   filter_sev = "SEV",
 #'   exclude_events = "REDNESS",
 #'   test_maxsev = "Maximum severity",
-#'   testcd_maxsev = "MAXSEV"
+#'   testcd_maxsev = "MAXSEV",
+#'   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 #' )
 #'
 derive_param_maxsev <- function(dataset = NULL,
@@ -139,65 +141,64 @@ derive_param_maxsev <- function(dataset = NULL,
   assert_character_scalar(testcd_maxsev, optional = FALSE)
 
   # pre-processing
+  if (filter_sev %in% dataset$FATESTCD) {
+    maxsev_pp <- dataset %>%
+      filter(FATESTCD == filter_sev &
+        grepl("ADMIN|SYS", FASCAT)) %>%
+      # AVAL creation for severity records
+      mutate(AVAL = case_when(
+        AVALC == "NONE" ~ 0,
+        AVALC == "MILD" ~ 1,
+        AVALC == "MODERATE" ~ 2,
+        AVALC == "SEVERE" ~ 3
+      ))
+    # events exclusions
+    if (is.null(exclude_events)) {
+      pp <- maxsev_pp
+    } else {
+      pp <- maxsev_pp %>% filter(!(FAOBJ %in% exclude_events))
+    }
+    # retaining variables for summary record
 
-  maxsev_pp <- dataset %>%
-    filter(FATESTCD == filter_sev &
-      grepl("ADMIN|SYS", FASCAT))
+    retain_vars <-
+      c(
+        "USUBJID",
+        "FAOBJ",
+        "ATPTREF",
+        "FALNKGRP",
+        "STUDYID",
+        "SRCDOM",
+        "EXDOSE",
+        "EXDOSU",
+        "EXTRT",
+        "AVAL",
+        "AVALC",
+        "FATEST",
+        "FATESTCD",
+        "DTYPE",
+        "AVISIT",
+        "AVISITN",
+        "FASCAT",
+        "FACAT"
+      )
 
-  # events exclusions
-  if (is.null(exclude_events)) {
-    pp <- maxsev_pp
+    # maximum severity derivation
+
+    maxsev <- pp %>%
+      group_by(!!!by_vars) %>%
+      filter(!is.na(AVAL) & !(AVAL == "")) %>%
+      filter(AVAL == max(AVAL)) %>%
+      select(any_of(retain_vars)) %>%
+      distinct() %>%
+      mutate(
+        DTYPE = "MAXIMUM",
+        FATEST = test_maxsev,
+        FATESTCD = testcd_maxsev
+      )
+    # binding with input data
+
+    data.frame(bind_rows(maxsev_pp, maxsev))
   } else {
-    pp <- maxsev_pp %>% filter(!(FAOBJ %in% exclude_events))
+    print(paste0(filter_sev, " ", "doesn't exist in the FATESTCD"))
   }
-  # retaining variables for summary record
-
-  retain_vars <-
-    c(
-      "USUBJID",
-      "FAOBJ",
-      "ATPTREF",
-      "FALNKGRP",
-      "STUDYID",
-      "SRCDOM",
-      "EXDOSE",
-      "EXDOSU",
-      "EXSTDTC",
-      "EXENDTC",
-      "EXTRT",
-      "AVAL",
-      "AVALC",
-      "FATEST",
-      "FATESTCD",
-      "DTYPE",
-      "AVISIT",
-      "AVISITN",
-      "FASCAT",
-      "FACAT"
-    )
-
-  # maximum severity derivation
-
-  maxsev <- pp %>%
-    mutate(AVAL = case_when(
-      AVALC == "NONE" ~ 0,
-      AVALC == "MILD" ~ 1,
-      AVALC == "MODERATE" ~ 2,
-      AVALC == "SEVERE" ~ 3
-    )) %>%
-    group_by(!!!by_vars) %>%
-    filter(!is.na(AVAL)) %>%
-    filter(AVAL == max(AVAL)) %>%
-    select(any_of(retain_vars)) %>%
-    distinct() %>%
-    mutate(
-      DTYPE = "MAXIMUM",
-      FATEST = test_maxsev,
-      FATESTCD = testcd_maxsev
-    )
-  # binding with input data
-
-  maxsev_final <- bind_rows(dataset, maxsev)
-
-  return(data.frame(maxsev_final))
 }
