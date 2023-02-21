@@ -17,7 +17,7 @@ derive_param_maxsev(
 \item{dataset}{input data set
 
 The variables \code{USUBJID}, \code{APTPTREF}, \code{FAOBJ}, \code{FASCAT}, \code{AVALC}, \code{FAOBJ},
-\code{FATESTCD} and \code{FATEST} are expected for input data set.(\code{dataset})}
+\code{FATESTCD} and \code{FATEST} are required for the input data set.(\code{dataset})}
 
 \item{exclude_events}{To exclude the events
 
@@ -76,20 +76,21 @@ events which has severity records \code{FATESTCD = "SEV"}.
 library(tibble)
 library(admiral)
 library(dplyr)
+library(rlang)
 
 input <- tribble(
   ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
   "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
-  "XYZ1001", "REDNESS", 1, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
-  "XYZ1001", "REDNESS", 1, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1001", "REDNESS", 3, "SEVERE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1001", "REDNESS", 2, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1001", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1001", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
-  "XYZ1002", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1002", "REDNESS", 0, "NONE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -97,28 +98,28 @@ input <- tribble(
   "XYZ1002", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
-  "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 3, "SEVERE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
   "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
-  "XYZ1001", "CHILLS", 2, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 1, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 1, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 2, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1001", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", 2, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", NA, NA, "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", 0, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", 1, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", 2, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-  "XYZ1002", "CHILLS", 0, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC"
+  "XYZ1001", "CHILLS", NA, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC"
 )
 
 derive_param_maxsev(
@@ -126,7 +127,8 @@ derive_param_maxsev(
   filter_sev = "SEV",
   exclude_events = "REDNESS",
   test_maxsev = "Maximum severity",
-  testcd_maxsev = "MAXSEV"
+  testcd_maxsev = "MAXSEV",
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 )
 
 }
