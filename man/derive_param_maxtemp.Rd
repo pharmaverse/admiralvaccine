@@ -7,7 +7,7 @@
 derive_param_maxtemp(
   dataset = NULL,
   filter_faobj = "FEVER",
-  by_vars = vars(USUBJID, FAOBJ, ATPTREF),
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   test_maxtemp = "Maximum temperatue",
   testcd_maxtemp = "MAXTEMP"
 )
@@ -59,6 +59,8 @@ Create a summary record for maximum temperature per subject per period.
 library(tibble)
 library(admiral)
 library(dplyr)
+library(rlang)
+
 input <- tribble(
   ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
   "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
@@ -92,7 +94,14 @@ derive_param_maxtemp(
   filter_faobj = "FEVER",
   test_maxtemp = "Maximum Temperature",
   testcd_maxtemp = "MAXTEMP",
-  by_vars = vars(USUBJID, FAOBJ, ATPTREF)
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 )
 
 }
+\seealso{
+ADXX Functions that returns variable appended to dataset: 
+\code{\link{derive_param_maxsev}()},
+\code{\link{hello_admiral}()}
+}
+\concept{der_adxx}
+\keyword{der_adxx}
