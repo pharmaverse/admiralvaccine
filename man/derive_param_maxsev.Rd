@@ -40,6 +40,7 @@ Below variables will be created with the values mentioned below.
 }
 \seealso{
 ADXX Functions that returns variable appended to dataset: 
+\code{\link{derive_param_maxtemp}()},
 \code{\link{hello_admiral}()}
 }
 \concept{der_adxx}
