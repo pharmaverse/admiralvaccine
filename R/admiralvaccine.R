@@ -1,3 +1,4 @@
+#' @importFrom utils data
 #' @keywords internal
 #' @family internal
 #' @importFrom dplyr arrange bind_rows case_when desc ends_with filter full_join group_by
@@ -26,4 +27,6 @@
 #' @importFrom hms as_hms
 #' @importFrom lifecycle deprecate_warn deprecated deprecate_stop
 #' @importFrom admiral derive_vars_dy
+#' @importFrom admiraldev assert_logical_scalar assert_character_vector assert_vars
+#'             assert_data_frame
 "_PACKAGE"
