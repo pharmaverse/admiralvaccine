@@ -41,18 +41,20 @@
 #' records. refer the default value.
 #'
 #' @return
-#' The input data set with new records `FATESTCD = MAXTEMP`indicating the
-#' maximum temperature records based on the specified variables in `by_vars`.
-#' `DTYPE` will be populated as `MAXIMUM`. `FATEST`will be populated as
-#' specified in `test_maxtemp`and `FATESCD` will be populated as specified in
-#' `testcd_maxtemp`. Maximum temperature values will be populated in `AVAL`.
+#' The input data set with derived records indicating the maximum temperature
+#' records.
 #'
 #' @export
-#'
+#' 
+#' @family der_adxx
+#' @keywords der_adxx
+#' 
 #' @examples
 #' library(tibble)
 #' library(admiral)
 #' library(dplyr)
+#' library(rlang)
+#' 
 #' input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
 #'   "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
@@ -86,13 +88,13 @@
 #'   filter_faobj = "FEVER",
 #'   test_maxtemp = "Maximum Temperature",
 #'   testcd_maxtemp = "MAXTEMP",
-#'   by_vars = vars(USUBJID, FAOBJ, ATPTREF)
+#'   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 #' )
 #'
 derive_param_maxtemp <- function(
     dataset = NULL,
     filter_faobj = "FEVER",
-    by_vars = vars(USUBJID, FAOBJ, ATPTREF),
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     test_maxtemp = "Maximum temperatue",
     testcd_maxtemp = "MAXTEMP") {
   # assertion
@@ -101,7 +103,6 @@ derive_param_maxtemp <- function(
     USUBJID, FAOBJ, VSSTRESN,
     FATEST, FATESTCD, ATPTREF
   ))
-  assert_vars(by_vars, optional = FALSE)
   assert_character_scalar(testcd_maxtemp, optional = FALSE)
   assert_character_scalar(test_maxtemp, optional = FALSE)
   assert_character_scalar(filter_faobj, optional = FALSE)
@@ -115,7 +116,7 @@ derive_param_maxtemp <- function(
   )
 
   # Deriving maximum temperature
-
+if(filter_faobj %in% dataset$FAOBJ){
   max_temp <- dataset %>%
     filter(FAOBJ == filter_faobj & VSSTRESN > 0) %>%
     group_by(!!!by_vars) %>%
@@ -132,5 +133,9 @@ derive_param_maxtemp <- function(
     # binding with input data set
 
     bind_rows(dataset)
+  
   return(as.data.frame(max_temp))
+}else{
+  print(paste(filter_faobj,"doesn't exist in the FATESTCD varibale.", sep = " "))
+}
 }
