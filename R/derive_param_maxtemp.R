@@ -45,16 +45,16 @@
 #' records.
 #'
 #' @export
-#' 
+#'
 #' @family der_adxx
 #' @keywords der_adxx
-#' 
+#'
 #' @examples
 #' library(tibble)
 #' library(admiral)
 #' library(dplyr)
 #' library(rlang)
-#' 
+#'
 #' input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
 #'   "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
@@ -116,26 +116,26 @@ derive_param_maxtemp <- function(
   )
 
   # Deriving maximum temperature
-if(filter_faobj %in% dataset$FAOBJ){
-  max_temp <- dataset %>%
-    filter(FAOBJ == filter_faobj & VSSTRESN > 0) %>%
-    group_by(!!!by_vars) %>%
-    filter(VSSTRESN == max(VSSTRESN)) %>%
-    mutate(
-      AVAL = VSSTRESN,
-      AVALC = "",
-      DTYPE = "MAXIMUM",
-      FATEST = test_maxtemp,
-      FATESTCD = testcd_maxtemp
-    ) %>%
-    select(any_of(retain_vars)) %>%
-    distinct(USUBJID, AVAL, ATPTREF, .keep_all = TRUE) %>%
-    # binding with input data set
+  if (filter_faobj %in% dataset$FAOBJ) {
+    max_temp <- dataset %>%
+      filter(FAOBJ == filter_faobj & VSSTRESN > 0) %>%
+      group_by(!!!by_vars) %>%
+      filter(VSSTRESN == max(VSSTRESN)) %>%
+      mutate(
+        AVAL = VSSTRESN,
+        AVALC = "",
+        DTYPE = "MAXIMUM",
+        FATEST = test_maxtemp,
+        FATESTCD = testcd_maxtemp
+      ) %>%
+      select(any_of(retain_vars)) %>%
+      distinct(USUBJID, AVAL, ATPTREF, .keep_all = TRUE) %>%
+      # binding with input data set
 
-    bind_rows(dataset)
-  
-  return(as.data.frame(max_temp))
-}else{
-  print(paste(filter_faobj,"doesn't exist in the FATESTCD varibale.", sep = " "))
-}
+      bind_rows(dataset)
+
+    return(as.data.frame(max_temp))
+  } else {
+    print(paste(filter_faobj, "doesn't exist in the FATESTCD varibale.", sep = " "))
+  }
 }
