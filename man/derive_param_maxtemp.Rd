@@ -49,11 +49,8 @@ Pass a value for \code{FATESTCD} which will be indicate the maximum temperature
 records. refer the default value.}
 }
 \value{
-The input data set with new records \code{FATESTCD = MAXTEMP}indicating the
-maximum temperature records based on the specified variables in \code{by_vars}.
-\code{DTYPE} will be populated as \code{MAXIMUM}. \code{FATEST}will be populated as
-specified in \code{test_maxtemp}and \code{FATESCD} will be populated as specified in
-\code{testcd_maxtemp}. Maximum temperature values will be populated in \code{AVAL}.
+The input data set with derived records indicating the maximum temperature
+records.
 }
 \description{
 Create a summary record for maximum temperature per subject per period.
