@@ -82,7 +82,7 @@ is2_adt <- derive_vars_dt(
 is2_rf <- derive_var_merged_character(
   dataset = is2_adt,
   dataset_add = adsl,
-  by_vars = vars(STUDYID, USUBJID),
+  by_vars = exprs(STUDYID, USUBJID),
   new_var = RFSTDTC,
   source_var = RFSTDTC
   ) %>%
@@ -96,7 +96,7 @@ is2_rf <- derive_var_merged_character(
 is2_ady <- derive_vars_dy(
   dataset = is2_rf,
   reference_date = RFSTDTC,
-  source_vars = vars(ADT)
+  source_vars = exprs(ADT)
   )
 
 
@@ -136,13 +136,13 @@ param_lookup <- tribble(
 is3_1 <- derive_vars_merged_lookup(
   dataset = is3,
   dataset_add = param_lookup,
-  new_vars = vars(PARAM),
-  by_vars = vars(PARAMCD)
+  new_vars = exprs(PARAM),
+  by_vars = exprs(PARAMCD)
   )
 
 is4 <- derive_vars_merged_lookup(
   dataset = is3_1,
   dataset_add = param_lookup,
-  new_vars = vars(PARAMN),
-  by_vars = vars(PARAM)
+  new_vars = exprs(PARAMN),
+  by_vars = exprs(PARAM)
   )
