@@ -166,18 +166,16 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   # Checking & Removing the records which has severity records for the FAOBJ
   diam <- dataset %>% filter(FAOBJ %in% filter_faobj)
   if (testcd_sev %in% diam$FATESTCD) {
-    fil_rec <- dataset %>% filter(FATESTCD != testcd_sev &
-      !(FAOBJ %in% filter_faobj))
+    fil_rec <- dataset %>% filter(FATESTCD != testcd_sev)
   } else {
     fil_rec <- dataset
   }
 
+  # filter(FATESTCD %in% filter_diam &
+  #          FAOBJ %in% filter_faobj)
   # Replacing FATESTCD and FATEST for Diameter with Severity
   if (filter_diam %in% diam$FATESTCD) {
-    fil_rec <- dataset
     sev <- fil_rec %>%
-      filter(FATESTCD %in% filter_diam &
-        FAOBJ %in% filter_faobj) %>%
       mutate(
         FATESTCD = testcd_sev,
         FATEST = test_sev,
