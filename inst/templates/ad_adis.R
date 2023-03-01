@@ -75,7 +75,7 @@ is2_adt <- derive_vars_dt(
   highest_imputation = "M",
   date_imputation = "mid",
   flag_imputation = "none"
-  )
+)
 
 
 # Merge with ADSL to get RFSTDTC info in order to derive ADY
@@ -85,11 +85,11 @@ is2_rf <- derive_var_merged_character(
   by_vars = exprs(STUDYID, USUBJID),
   new_var = RFSTDTC,
   source_var = RFSTDTC
-  ) %>%
+) %>%
   mutate(
     ADT = as.Date(ADT),
     RFSTDTC = as.Date(RFSTDTC)
-    )
+  )
 
 
 # ADY derivation
@@ -97,7 +97,7 @@ is2_ady <- derive_vars_dy(
   dataset = is2_rf,
   reference_date = RFSTDTC,
   source_vars = exprs(ADT)
-  )
+)
 
 
 
@@ -115,7 +115,7 @@ is_log <- is2_ady %>%
 
 is3 <- is_log %>%
   mutate(
-    # PARAMCD is set equal to ISTESTCD and to concatenation of ISTESTCD and L for LOG10 parameter values.
+    # PARAMCD: for log values, concatenation of L and ISTESTCD.
     PARAMCD = if_else(is.na(DERIVED), ISTESTCD, paste0(ISTESTCD, "L"))
   )
 
@@ -126,7 +126,6 @@ param_lookup <- tribble(
   "I0019NT", "I0019NT Antibody", 2,
   "M0019LN", "M0019LN Antibody", 3,
   "R0003MA", "R0003MA Antibody", 4,
-  
   "J0033VNL", "LOG10 (J0033VN Antibody)", 11,
   "I0019NTL", "LOG10 (I0019NT Antibody)", 12,
   "M0019LNL", "LOG10 (M0019LN Antibody)", 13,
@@ -138,11 +137,11 @@ is3_1 <- derive_vars_merged_lookup(
   dataset_add = param_lookup,
   new_vars = exprs(PARAM),
   by_vars = exprs(PARAMCD)
-  )
+)
 
 is4 <- derive_vars_merged_lookup(
   dataset = is3_1,
   dataset_add = param_lookup,
   new_vars = exprs(PARAMN),
   by_vars = exprs(PARAM)
-  )
+)
