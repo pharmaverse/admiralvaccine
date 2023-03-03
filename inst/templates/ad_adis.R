@@ -9,6 +9,7 @@ install.packages("metatools", repos = "https://cloud.r-project.org")
 library(metatools)
 library(dplyr)
 library(lubridate)
+library(rlang)
 
 
 # Load source datasets ----
@@ -145,3 +146,13 @@ is4 <- derive_vars_merged_lookup(
   new_vars = exprs(PARAMN),
   by_vars = exprs(PARAM)
 )
+
+
+# STEP 5: PARCAT1 and CUTOFF0x derivations.
+is5 <- is4 %>%
+  mutate(
+    PARCAT1 = ISCAT,
+    # Please, define your additional cutoff values. Delete if not needed.
+    CUTOFF02 = 4,
+    CUTOFF03 = 8
+  )
