@@ -166,13 +166,18 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   # Checking & Removing the records which has severity records for the FAOBJ
   diam <- dataset %>% filter(FAOBJ %in% filter_faobj)
   if (testcd_sev %in% diam$FATESTCD) {
-    fil_rec <- dataset %>% filter(FATESTCD != testcd_sev)
+    fil_rec <- diam %>% filter(FATESTCD != testcd_sev)
   } else {
-    fil_rec <- dataset
+    fil_rec <- diam
   }
 
-  # filter(FATESTCD %in% filter_diam &
-  #          FAOBJ %in% filter_faobj)
+  # check if AVALC is a character vector
+  if (class(fil_rec$AVALC) != "character") {
+    stop(
+      paste0("AVALC must be a character vector")
+    )
+  }
+
   # Replacing FATESTCD and FATEST for Diameter with Severity
   if (filter_diam %in% diam$FATESTCD) {
     sev <- fil_rec %>%
@@ -206,6 +211,8 @@ derive_param_diam_to_sev <- function(dataset = NULL,
     finalsev <- bind_rows(sev, fil_rec)
     return(data.frame(finalsev))
   } else {
-    print(paste0(filter_diam, " ", "doesn't exist in the filtered record"))
+    stop(
+      paste0(filter_diam, " ", "doesn't exist in the filtered record")
+    )
   }
 }
