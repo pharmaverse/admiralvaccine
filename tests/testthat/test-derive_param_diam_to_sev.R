@@ -2,13 +2,11 @@
 library(admiraldev)
 library(rlang)
 library(diffdf)
-library(testthat)
 library(dplyr)
-
 
 ## Test 1: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS`"
 
-test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicating
+testthat::test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS`",{
             input <- tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
@@ -66,7 +64,7 @@ test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicatin
 ## Test 2: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS`
 ## & `SWELLING`"
 
-test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicating
+testthat::test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS` & `SWELLING`",{
             input <- tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
@@ -122,7 +120,7 @@ test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicatin
 
 ##Test 3: Check if the arguments `none`,`mild`,`moderate`,`sev` works correctly"
 
-test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
+testthat::test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
           `mild`,`moderate`,`sev` works correctly",{
             input <- tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
@@ -179,7 +177,7 @@ test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
 ## Test 4: Check if the input dataset has severity records and remove
 ## those records correctly
 
-test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
+testthat::test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
           severity records and remove those records correctly",{
             input <- tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
@@ -242,7 +240,7 @@ test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
 
 ## Test 5: Check if the arguments `test_sev`,`testcd_sev` works correctly
 
-test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
+testthat::test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
           `testcd_sev` works correctly",{
             input <- tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
@@ -299,7 +297,7 @@ test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
 ## Test 6: error is issued if the `filter_diam` to be filtered is not in
 ## the input dataset
 
-test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
+testthat::test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
           to be filtered is not in the input dataset",{
             input <- tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
@@ -309,7 +307,7 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
               "XYZ1001", "REDNESS", 11,  "11",    "VACCINATION 1", "Diameter","DIAMETER"
             )
 
-            expect_error(
+            testthat::expect_error(
               derive_param_diam_to_sev(
                 dataset=input,
                 filter_diam = "DIAM",
@@ -328,7 +326,7 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
           })
 
 #test 7
-test_that("derive_param_diam_to_sev Test 7: error is issued if AVALC is not
+testthat::test_that("derive_param_diam_to_sev Test 7: error is issued if AVALC is not
           a character vector in input dataset",{
             input <- tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
@@ -338,7 +336,7 @@ test_that("derive_param_diam_to_sev Test 7: error is issued if AVALC is not
               "XYZ1001", "REDNESS", 11,  11,    "VACCINATION 1", "Diameter","DIAMETER"
             )
 
-            expect_error(
+            testthat::expect_error(
               derive_param_diam_to_sev(
                 dataset=input,
                 filter_diam = "DIAMETER",
