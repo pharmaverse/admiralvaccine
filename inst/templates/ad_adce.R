@@ -30,7 +30,7 @@ ce01 <- ce %>%
     filter(CECAT=="REACTOGENICITY") #& CEOCCUR=="Y" & !is.na(CETOXGR) & CEGRPID != "IMMEDIATE REACTION")
 
 # Get list of ADSL vars required for derivations
-adsl_vars <- vars(TRTSDT,TRTEDT)
+adsl_vars <- exprs(TRTSDT,TRTEDT)
 
 # Create period dataset - for joining period information onto ce records
 # Need to remove datetime variables as otherwise causes duplicate issues - to be looked into?
@@ -39,7 +39,7 @@ adsl2<- adsl %>%
 
 adperiods <- create_period_dataset(
   adsl2,
-  new_vars = vars(APERSDT = APxxSDT, APEREDT = APxxEDT)
+  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT)
 )
 
 # Derive analysis dates/days
@@ -48,14 +48,14 @@ ce02 <- ce01 %>%
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
-    by = vars(STUDYID, USUBJID)
+    by = exprs(STUDYID, USUBJID)
   ) %>%
   ## Derive analysis start time ----
 derive_vars_dtm(
   dtc = CESTDTC,
   new_vars_prefix = "AST",
   highest_imputation = "M",
-  min_dates = vars(TRTSDT)
+  min_dates = exprs(TRTSDT)
 ) %>%
   ## Derive analysis end time ----
 derive_vars_dtm(
@@ -64,18 +64,18 @@ derive_vars_dtm(
   highest_imputation = "M"
 ) %>%
   ## Derive analysis end/start date ----
-derive_vars_dtm_to_dt(vars(ASTDTM, AENDTM)) %>%
+derive_vars_dtm_to_dt(exprs(ASTDTM, AENDTM)) %>%
   ## Derive analysis start relative day and  analysis end relative day ----
 derive_vars_dy(
   reference_date = TRTSDT,
-  source_vars = vars(ASTDT, AENDT)
+  source_vars = exprs(ASTDT, AENDT)
 )
 
 ce03 <-
   derive_vars_joined(
   ce02,
   dataset_add = adperiods,
-  by_vars = vars(USUBJID),
+  by_vars = exprs(USUBJID),
   filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT
 ) %>%
   mutate(APERSTDY=as.integer(ASTDT-APERSDT)+1,
@@ -94,8 +94,8 @@ ce03 <-
 restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
-    by_vars = vars(USUBJID,APERIOD,ADECOD),
-    order = vars(desc(ATOXGRN), ASTDTM, CESEQ),
+    by_vars = exprs(USUBJID,APERIOD,ADECOD),
+    order = exprs(desc(ATOXGRN), ASTDTM, CESEQ),
     new_var = AOCC01FL,
     mode = "first"
   ),
@@ -106,8 +106,8 @@ ce04 <-
   ## Derive ASEQ ----
 derive_var_obs_number(
   ce03,
-  by_vars = vars(USUBJID, APERIOD),
-  order = vars(ADECOD)
+  by_vars = exprs(USUBJID, APERIOD),
+  order = exprs(ADECOD)
 ) %>%
   ## Derive analysis duration (value and unit) ----
 derive_vars_duration(
@@ -127,7 +127,7 @@ derive_vars_duration(
 adce <- ce04 %>%
   derive_vars_merged(
     dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
-    by_vars = vars(STUDYID, USUBJID)
+    by_vars = exprs(STUDYID, USUBJID)
   ) %>%
   mutate(APERSTDY=as.integer(ASTDT-APERSDT)+1)
 
