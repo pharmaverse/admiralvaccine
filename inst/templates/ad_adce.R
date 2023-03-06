@@ -14,10 +14,8 @@ library(haven)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-#load(file='/home/larmisha/admiralvaccine/data/Pfizer/ce.rda')
-
-adsl <- read_sas("/home/larmisha/admiralvaccine/data/adsl.sas7bdat")
-ce <- read_sas("/home/larmisha/admiralvaccine/data/ce.sas7bdat")
+adsl <- read_sas("./data/adsl.sas7bdat")
+ce <- read_sas("./data/ce.sas7bdat")
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -136,5 +134,5 @@ adce <- ce04 %>%
 
 # Save output ----
 
-dir <- getwd() # Change to whichever directory you want to save the dataset in
+dir <- tempdir() # Change to whichever directory you want to save the dataset in
 saveRDS(adce, file = file.path(dir, "adce.rds"), compress = "bzip2")
