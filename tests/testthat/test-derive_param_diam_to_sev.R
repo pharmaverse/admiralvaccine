@@ -201,7 +201,7 @@ testthat::test_that("derive_param_diam_to_sev Test 4: Check if the input dataset
             }
 
             input <- input %>%
-              filter(FATESTCD != "SEV" & FAOBJ %in% c('REDNESS','SWELLING'))
+              filter(FATESTCD != "SEV")
 
             expected1 <- input %>%
               mutate(FATEST = "Severity",
