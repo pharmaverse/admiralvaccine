@@ -1,159 +1,89 @@
-#' derive_vars_flag
+#' derive_vars_crit
 #' 
 #' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #' @description                                                                   +
-#' Derive charscater flag variable. Relative numeric flag and label variables are +
-#' optionals.                                                                     +
+#' Derive analysis criterion evaluation result variable, paired with character    + 
+#' and numeric flags.                                                             +
 #' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#' 
-#' 
+#'  
 #' @param dataset 
-#' Input dataset in which you want to create the new flag variable.
-#' Variable requested: STUDYID, USUBJID.
+#' Input dataset
 #' 
-#' @param supp_dataset 
-#' Supplemental dataset on which there are relevant variables you want to merge to
-#' its original dataset. 
-#' Variable requested: STUDYID, USUBJID, IDAVR, QNAM, QVAL, IDVARVAL.  
+#' @param new_var 
+#' Variables to add
+#' The analysis criterion evaluation variable's name (i.e., CRIT1)  
+#' This name is also used in order to create both charcater and numeric 
+#' flags variables (i.e., CRIT1FL and CRIT1FN).
+#' Is possible to give a different name, base on needs (i.e., ANL01)
 #' 
+#' @param label_var
+#' Criterion value
+#' A text description defining the condition necessary to satisfy the presence 
+#' of the criterion
 #' 
+#' @param condition
+#' Condition for selecting a subset
+#' The condition specified in order to select a subset from the input dataset
+#' in which the rule is applied.
+#' 
+#' @param criterion
+#' Criterion rule
+#' The criterion that each selected row satisfies or not.
+#' Returns Y or N for character variable and 1 or 0 fro numeric variable
+#' if the criterion is met or not, respectively.
+#' Returns NA for not selected rows (not taken into account from condition)
 #' 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#' @return dataset containing both info from original and supplemental datasets
-#' variables.
+#' @return dataset with criterion variables
 #'
 #' @author Federico Baratin
 #'
 #' @examples
 #' 
-# combine_supp_dom(
-# dataset = is,
-# supp_dataset = suppis)
-#
+#' is2 <- derive_vars_crit(
+#' dataset = is,
+#' new_var = "CRIT1",
+#' label_var = "Value >= Titer",
+#' condition = !is.na(ISSTRESN),
+#' criterion = VISITNUM == 10
+#' )
+#'
 #################################################################################ù
 
+derive_vars_crit <- function(dataset, new_var, label_var, condition, criterion) {
+  condition <- assert_filter_cond(enquo(condition))
+  criterion <- assert_filter_cond(enquo(criterion))
 
+  var_char <- paste0(new_var, "FL")
+  var_num <- paste0(new_var, "FN")
 
-
-test <- function(dataset,var,label_var,whrcl,rule){
-  
-  whrcl <- assert_filter_cond(enquo(whrcl))
-  rule <- assert_filter_cond(enquo(rule))
-  
-  if (!grepl("CRIT",var) & !grepl("ANL",var)) {
-    abort("You need to insert CRIT or ANL as input variables")
-  }
-  
-  if (grepl("CRIT",var)){
-    
-    var_char <- paste0(var,"FL")
-    var_num <- paste0(var,"FN")
-    
-    data <- dataset %>%
-      filter({{whrcl}}) %>%
-      mutate(`:=` (!!var_char,
-                   if_else(!!rule, "Y", "N")),
-             
-             `:=` (!!var_num,
-                   if_else(!!rule, 1, 0)),
-             
-             `:=` (!!var,label_var)
-      ) %>%
-      select(STUDYID,USUBJID,VISITNUM,ISTESTCD,starts_with("CRIT"))
-    
-    data2 <- left_join(dataset, data, by = c("STUDYID","USUBJID","VISITNUM","ISTESTCD"))
-  }
-  
-  
-  if(grepl("ANL",var)){
-    
-    var_char <- paste0(var,"FL")
-    
-    data <- dataset %>%
-      filter({{whrcl}}) %>%
-      mutate(`:=` (!!var_char,
-                   if_else(!!rule, "Y", "N"))
-      ) %>%
-      select(STUDYID,USUBJID,VISITNUM,ISTESTCD,starts_with("ANL"))
-    
-    data2 <- left_join(dataset, data, by = c("STUDYID","USUBJID","VISITNUM","ISTESTCD"))
-  }
-  
-  
-  return(data2)
-}
-
-prova2<-test(dataset = is,
-            var = "CRIT1",
-            label_var = "Value is good",
-            whrcl = !is.na(ISSTRESN),
-            rule = VISITNUM == 10)
-
-prova<-test(dataset = is,
-            var = "ANL01",
-            whrcl = !is.na(ISSTRESN),
-            rule = VISITNUM == 10)
-
-
-
-
-###second way
-test <- function(dataset,var,label_var,whrcl,rule){
-  
-  whrcl <- assert_filter_cond(enquo(whrcl))
-  rule <- assert_filter_cond(enquo(rule))
-  
-  if (grepl("CRIT",var)){
-    
-    var_char <- paste0(var,"FL")
-    var_num <- paste0(var,"FN")
-    
-    data <- dataset %>%
-      mutate(`:=` (!!var_char,
-                   case_when(!(!!whrcl) ~ as.character(NA),
-                             !!rule & !!whrcl ~ "Y",
-                             !(!!rule) & !!whrcl ~ "N")
+  data <- dataset %>%
+    mutate(
+      `:=`(
+        !!var_char,
+        case_when(
+          !(!!condition) ~ as.character(NA),
+          !!criterion & !!condition ~ "Y",
+          !(!!criterion) & !!condition ~ "N"
+        )
       ),
-      
-      `:=` (!!var_num,
-            case_when(!(!!whrcl) ~ as.numeric(NA),
-                      !!rule & !!whrcl ~ 1,
-                      !(!!rule) & !!whrcl ~ 0)
+      `:=`(
+        !!var_num,
+        case_when(
+          !(!!condition) ~ as.numeric(NA),
+          !!criterion & !!condition ~ 1,
+          !(!!criterion) & !!condition ~ 0
+        )
       ),
-      
-      `:=` (!!var,
-            case_when(!(!!whrcl) ~ as.character(NA),
-                      !!rule & !!whrcl ~ label_var,
-                      !(!!rule) & !!whrcl ~ label_var
-            )
+      `:=`(
+        !!new_var,
+        case_when(
+          !(!!condition) ~ as.character(NA),
+          !!criterion & !!condition ~ label_var,
+          !(!!criterion) & !!condition ~ label_var
+        )
       )
-      ) 
-  }
-  
-  
-  if(grepl("ANL",var)){
-    
-    var_char <- paste0(var,"FL")
-    
-    data <- dataset %>%
-      mutate(`:=` (!!var_char,
-                   case_when(!(!!whrcl) ~ as.character(NA),
-                             !!rule & !!whrcl ~ "Y",
-                             !(!!rule) & !!whrcl ~ "N")
-      )
-      )
-  }
-  
-  if (!grepl("CRIT",var) & !grepl("ANL",var)) {
-    abort("You need to insert CRIT or ANL as input variables")
-  }
-  
-  
+    )
+
   return(data)
 }
-
-prova<-test(dataset = is,
-            var = "CRIT1",
-            label_var = "Value is good",
-            whrcl = !is.na(ISSTRESN),
-            rule = VISITNUM == 10)
