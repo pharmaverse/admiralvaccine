@@ -94,8 +94,8 @@ ce03 <-
 restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
-    by_vars = exprs(USUBJID,APERIOD,ADECOD),
-    order = exprs(desc(ATOXGRN), ASTDTM, CESEQ),
+    by_vars = exprs(USUBJID,APERIOD),
+    order = exprs(desc(ATOXGRN), CESTDY, CEDECOD),
     new_var = AOCC01FL,
     mode = "first"
   ),
