@@ -118,18 +118,20 @@ is_log_4fold <- is2_ady %>%
   mutate(DERIVED = "LOG10 4FOLD")
 
 is_derived <- bind_rows(is2_ady, is_log, is_4fold, is_log_4fold) %>%
-  arrange(STUDYID, USUBJID, ISSEQ, !is.na(DERIVED)) %>%
+  arrange(STUDYID, USUBJID, VISITNUM, ISSEQ, !is.na(DERIVED)) %>%
   mutate(DERIVED = if_else(is.na(DERIVED), "ORIG", DERIVED))
 
 
 is3 <- is_derived %>%
   mutate(
     # PARAMCD: for log values, concatenation of L and ISTESTCD.
-    PARAMCD = case_when(DERIVED == "ORIG" ~ ISTESTCD,
-                        DERIVED == "LOG10" ~ paste0(ISTESTCD, "L"),
-                        DERIVED == "4FOLD" ~ paste0(ISTESTCD, "F"),
-                        # As per CDISC rule, PARAMCD should be 8 charcaters long. Please, adapt if needed
-                        DERIVED == "LOG10 4FOLD" ~ paste0(substr(ISTESTCD,1,6), "LF"))
+    PARAMCD = case_when(
+      DERIVED == "ORIG" ~ ISTESTCD,
+      DERIVED == "LOG10" ~ paste0(ISTESTCD, "L"),
+      DERIVED == "4FOLD" ~ paste0(ISTESTCD, "F"),
+      # As per CDISC rule, PARAMCD should be 8 charcaters long. Please, adapt if needed
+      DERIVED == "LOG10 4FOLD" ~ paste0(substr(ISTESTCD, 1, 6), "LF")
+    )
   )
 
 
@@ -181,31 +183,40 @@ is5 <- is4 %>%
 
 
 # STEP 6: AVAL, AVALU, DTYPE and SERCAT1/N derivation
-# Update code when <,<=,>,>= are present in your lab results (in ISSTRESC) and/or ULOQ is present in your study
 # AVAL derivation
 is5_aval <- is5 %>%
   mutate(
     AVAL = case_when(
-      DERIVED == "ORIG" & !is.na(ISLLOQ) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
-      DERIVED == "ORIG" & !is.na(ISLLOQ) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ ISSTRESN,
-      DERIVED == "ORIG" & !is.na(ULLOQ) & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
-      
-      DERIVED == "LOG10" & !is.na(ISLLOQ) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
-      DERIVED == "LOG10" & !is.na(ISLLOQ) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ log10(ISSTRESN),
-      DERIVED == "LOG10" & !is.na(ULLOQ) & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
-      
-      DERIVED == "4FOLD" & !is.na(ISLLOQ) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
-      DERIVED == "4FOLD" & !is.na(ISLLOQ) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ ISSTRESN,
-      DERIVED == "4FOLD" & !is.na(ULLOQ) & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
-      
-      DERIVED == "LOG10 4FOLD" & !is.na(ISLLOQ) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ),
-      DERIVED == "LOG10 4FOLD" & !is.na(ISLLOQ) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ log10(ISSTRESN),
-      DERIVED == "LOG10 4FOLD" & !is.na(ULLOQ) & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ)
+      # ISORRES values without > or <
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ ISSTRESN,
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
+        ISSTRESN < ULLOQ ~ log10(ISSTRESN),
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
+      DERIVED == "4FOLD" & !!is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ ISSTRESN,
+      DERIVED == "4FOLD" & !!is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ),
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
+        ISSTRESN < ULLOQ ~ log10(ISSTRESN),
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
+
+      # ISORRES values with > or <
+      DERIVED == "ORIG" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
+      DERIVED == "ORIG" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ULLOQ,
+      DERIVED == "LOG10" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
+      DERIVED == "LOG10" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ULLOQ),
+      DERIVED == "4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ,
+      DERIVED == "4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ULLOQ,
+      DERIVED == "LOG10 4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ),
+      DERIVED == "LOG10 4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ULLOQ)
     ),
-    
+
     # AVALU derivation (please delete if not needed for your study)
     AVALU = if_else(as.numeric(ISSTRESC) == ISSTRESN, ISORRESU, as.character(NA)),
-    
+
     # SERCAT1 derivation
     SERCAT1 = case_when(
       ISBLFL == "Y" & !is.na(AVAL) & !is.na(ISLLOQ) & AVAL < ISLLOQ ~ "S-",
@@ -227,48 +238,54 @@ param_lookup2 <- tribble(
 is5_sercat1n <- derive_vars_merged_lookup(
   dataset = is5_aval,
   dataset_add = param_lookup2,
-  new_vars = vars(SERCAT1N),
-  by_vars = vars(SERCAT1)
+  new_vars = exprs(SERCAT1N),
+  by_vars = exprs(SERCAT1)
 )
 
 
 # DTYPE derivation.
-# Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC) and/or ULOQ is present in your study
+# Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
+# and/or ULOQ is present in your study
 is6 <- is5_sercat1n %>%
-  mutate(DTYPE = if_else(DERIVED %in% c("ORIG","LOG10") & !is.na(ISLLOQ) & ISSTRESN < ISLLOQ, 
-                         "HALFLLQ",
-                         as.character(NA))
-         )
+  mutate(DTYPE = if_else(DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ISSTRESN < ISLLOQ,
+    "HALFLLQ",
+    as.character(NA)
+  ))
 
 
 
-# STEP 7
+# STEP 7: ABLFL and BASE variables cerivation
 # ABLFL derivation
-is6_ablfl <- derive_var_relative_flag(dataset = is6,
-                                      by_vars = vars(STUDYID,USUBJID,PARAMN),
-                                      order = vars(STUDYID,USUBJID,VISITNUM,PARAMN),
-                                      new_var = ABLFL,
-                                      condition = VISITNUM == 10,
-                                      mode = "first",
-                                      selection = "before",
-                                      inclusive = TRUE)
+is6_ablfl <- derive_var_relative_flag(
+  dataset = is6,
+  by_vars = vars(STUDYID, USUBJID, PARAMN),
+  order = vars(STUDYID, USUBJID, VISITNUM, PARAMN),
+  new_var = ABLFL,
+  condition = VISITNUM == 10,
+  mode = "first",
+  selection = "before",
+  inclusive = TRUE
+)
 
 # BASE derivation
-is6_base <- derive_var_base(dataset = is6_ablfl,
-                            by_vars = vars(STUDYID,USUBJID,PARAMN),
-                            source_var = AVAL,
-                            new_var = BASE,
-                            filter = ABLFL == "Y")
+is6_base <- derive_var_base(
+  dataset = is6_ablfl,
+  by_vars = vars(STUDYID, USUBJID, PARAMN),
+  source_var = AVAL,
+  new_var = BASE,
+  filter = ABLFL == "Y"
+)
 
 # BASETYPE derivation
-is6_basetype <- derive_var_basetype(dataset = is6_base,
-                                    basetypes = exprs("VISIT 1" = AVISITN %in% c(10,30))
+is6_basetype <- derive_var_basetype(
+  dataset = is6_base,
+  basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
 )
 
 
 # BASECAT derivation
 base_data <- is6_basetype %>%
-  select(STUDYID,USUBJID,PARAMCD,VISITNUM,BASE)
+  select(STUDYID, USUBJID, VISITNUM, PARAMCD, BASE)
 
 basecat1 <- function(base) {
   case_when(
@@ -279,9 +296,11 @@ basecat1 <- function(base) {
   )
 }
 
-is7 <- derive_var_merged_cat(dataset = is6_basetype,
-                             dataset_add = base_data,
-                             by_vars = vars(STUDYID,USUBJID,PARAMCD,VISITNUM),
-                             new_var = BASECAT1,
-                             source_var = BASE,
-                             cat_fun = basecat1)
+is7 <- derive_var_merged_cat(
+  dataset = is6_basetype,
+  dataset_add = base_data,
+  by_vars = vars(STUDYID, USUBJID, PARAMCD, VISITNUM),
+  new_var = BASECAT1,
+  source_var = BASE,
+  cat_fun = basecat1
+)
