@@ -43,9 +43,9 @@
 #' is2 <- derive_vars_crit(
 #' dataset = is,
 #' new_var = "CRIT1",
-#' label_var = "Value >= Titer",
-#' condition = !is.na(ISSTRESN),
-#' criterion = VISITNUM == 10
+#' label_var = "Titer >= ISLLOQ",
+#' condition = !is.na(AVAL) & !is.na(ISLLOQ),
+#' criterion = AVAL >= ISLLOQ
 #' )
 #'
 #################################################################################ù
