@@ -181,7 +181,6 @@ is5 <- is4 %>%
   )
 
 
-
 # STEP 6: AVAL, AVALU, DTYPE and SERCAT1/N derivation
 # AVAL derivation
 is5_aval <- is5 %>%
