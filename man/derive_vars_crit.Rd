@@ -46,12 +46,13 @@ and numeric flags.                                                             +
 \examples{
 
 is2 <- derive_vars_crit(
-dataset = is,
-new_var = "CRIT1",
-label_var = "Titer >= ISLLOQ",
-condition = !is.na(AVAL) & !is.na(ISLLOQ),
-criterion = AVAL >= ISLLOQ
+  dataset = is,
+  new_var = "CRIT1",
+  label_var = "Titer >= ISLLOQ",
+  condition = !is.na(AVAL) & !is.na(ISLLOQ),
+  criterion = AVAL >= ISLLOQ
 )
+
 
 }
 \author{
