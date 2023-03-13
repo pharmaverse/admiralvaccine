@@ -201,8 +201,8 @@ testthat::test_that("derive_vars_crit Test 4: Complicated selections and missing
   expected <- input %>%
     mutate(
       CRIT1FL = case_when(
-        !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE) & AVAL >= ISLLOQ & AVAL >= 2*BASE ~ "Y",
-        !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE) & AVAL < ISLLOQ & AVAL >= 2*BASE ~ "N",
+        !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE) & AVAL >= ISLLOQ & AVAL >= 2 * BASE ~ "Y",
+        !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE) & AVAL < ISLLOQ & AVAL >= 2 * BASE ~ "N",
         TRUE ~ as.character(NA)
       ),
       CRIT1FN = if_else(CRIT1FL == "Y", 1, 0),
@@ -216,7 +216,7 @@ testthat::test_that("derive_vars_crit Test 4: Complicated selections and missing
     new_var = "CRIT1",
     label_var = "Titer >= ISLLOQ and Titer >= 2*BASE",
     condition = !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE),
-    criterion = AVAL >= ISLLOQ & AVAL >= 2*BASE
+    criterion = AVAL >= ISLLOQ & AVAL >= 2 * BASE
   )
 
   expect_dfs_equal(actual,
