@@ -134,6 +134,7 @@ derive_param_maxsev(
 }
 \seealso{
 ADXX Functions that returns variable appended to dataset: 
+\code{\link{derive_param_diam_to_sev}()},
 \code{\link{hello_admiral}()}
 }
 \author{
