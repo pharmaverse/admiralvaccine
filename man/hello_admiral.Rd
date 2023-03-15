@@ -23,6 +23,7 @@ hello_admiral(hw = FALSE)
 }
 \seealso{
 ADXX Functions that returns variable appended to dataset: 
+\code{\link{derive_param_diam_to_sev}()},
 \code{\link{derive_param_maxsev}()}
 }
 \author{
