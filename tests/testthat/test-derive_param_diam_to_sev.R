@@ -1,14 +1,8 @@
-#test - derive_param_diam_to_sev
-library(admiraldev)
-library(rlang)
-library(diffdf)
-library(dplyr)
-
 ## Test 1: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS`"
 
 testthat::test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS`",{
-            input <- tribble(
+            input <- tibble::tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
               "XYZ1001", "REDNESS", 7.5,  "7.5",    "VACCINATION 1", "Diameter","DIAMETER",
               "XYZ1001", "REDNESS", 3.5,  "3.5",    "VACCINATION 1", "Diameter","DIAMETER",
@@ -66,7 +60,7 @@ testthat::test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD`
 
 testthat::test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS` & `SWELLING`",{
-            input <- tribble(
+            input <- tibble::tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
               "XYZ1001", "REDNESS", 1.5,   "1.5",  "VACCINATION 1", "Diameter","DIAMETER",
               "XYZ1001", "REDNESS", 11,    "11",   "VACCINATION 1", "Diameter","DIAMETER",
@@ -122,7 +116,7 @@ testthat::test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD`
 
 testthat::test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
           `mild`,`moderate`,`sev` works correctly",{
-            input <- tribble(
+            input <- tibble::tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
               "XYZ1001", "REDNESS", 7.5,  "7.5",    "VACCINATION 1", "Diameter","DIAMETER",
               "XYZ1001", "REDNESS", 3.5,  "3.5",    "VACCINATION 1", "Diameter","DIAMETER",
@@ -179,7 +173,7 @@ testthat::test_that("derive_param_diam_to_sev Test 3: Check if the arguments `no
 
 testthat::test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
           severity records and remove those records correctly",{
-            input <- tribble(
+            input <- tibble::tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
               "XYZ1001", "REDNESS", 1.5,   "1.5",  "VACCINATION 1", "Diameter","DIAMETER",
               "XYZ1001", "REDNESS", 11,    "11",   "VACCINATION 1", "Diameter","DIAMETER",
@@ -242,7 +236,7 @@ testthat::test_that("derive_param_diam_to_sev Test 4: Check if the input dataset
 
 testthat::test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
           `testcd_sev` works correctly",{
-            input <- tribble(
+            input <- tibble::tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
               "XYZ1001", "REDNESS", 7.5,  "7.5",    "VACCINATION 1", "Diameter","DIAMETER",
               "XYZ1001", "REDNESS", 3.5,  "3.5",    "VACCINATION 1", "Diameter","DIAMETER",
@@ -299,7 +293,7 @@ testthat::test_that("derive_param_diam_to_sev Test 5: Check if the arguments `te
 
 testthat::test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
           to be filtered is not in the input dataset",{
-            input <- tribble(
+            input <- tibble::tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
               "XYZ1001", "REDNESS", 7.5,  "7.5",    "VACCINATION 1", "Diameter","DIAMETER",
               "XYZ1001", "REDNESS", 3.5,  "3.5",    "VACCINATION 1", "Diameter","DIAMETER",
@@ -328,7 +322,7 @@ testthat::test_that("derive_param_diam_to_sev Test 6: error is issued if the `fi
 #test 7
 testthat::test_that("derive_param_diam_to_sev Test 7: error is issued if AVALC is not
           a character vector in input dataset",{
-            input <- tribble(
+            input <- tibble::tribble(
               ~USUBJID,  ~FAOBJ,    ~AVAL,  ~AVALC,  ~ATPTREF,       ~FATEST, ~FATESTCD,
               "XYZ1001", "REDNESS", 7.5,  7.5,    "VACCINATION 1", "Diameter","DIAMETER",
               "XYZ1001", "REDNESS", 3.5,  3.5,    "VACCINATION 1", "Diameter","DIAMETER",
