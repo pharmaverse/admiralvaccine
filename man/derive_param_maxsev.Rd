@@ -2,46 +2,143 @@
 % Please edit documentation in R/derive_param_maxsev_draft.R
 \name{derive_param_maxsev}
 \alias{derive_param_maxsev}
-\title{Derive Maximum Severity}
+\title{Creating Maximum Severity Records}
 \usage{
-derive_param_maxsev(dataset = NULL, testcd_sev = "SEV", by_vars = NULL)
+derive_param_maxsev(
+  dataset = NULL,
+  exclude_events = NULL,
+  filter_sev = "SEV",
+  test_maxsev = "Maximum Severity",
+  testcd_maxsev = "MAXSEV",
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
+)
 }
 \arguments{
-\item{dataset}{The Input data frame for this function
-required variables for Input data freame :USUBJID, ATPTREF(FATPTREF),
-PARCAT2(FASCAT), AVAL(FASTRESN),AVALC(FASTRESC),FAOBJ,FATESTCD,FATEST.}
+\item{dataset}{input data set
 
-\item{testcd_sev}{In testcd_sev, Pass the testcd in the quotes ("SEV") which is representing
-the severity records.if you have more than one testcd, pass it as a list in
-the testcd_sev arugument.}
+The variables \code{USUBJID}, \code{APTPTREF}, \code{FAOBJ}, \code{FASCAT}, \code{AVALC}, \code{FAOBJ},
+\code{FATESTCD} and \code{FATEST} are required for the input data set.(\code{dataset})}
 
-\item{by_vars}{In by_vars, pass the inside vars() grouping variables to derive the Maximum severity
-eg: by_vars= vars(USUBJID,FAOBJ, ATPTREF)}
+\item{exclude_events}{To exclude the events
+
+Helps to exclude the events which user doesn't want to derive the maximum
+severity. Pass the event name in quotes which is from \code{FAOBJ}.
+
+\emph{Default: NULL}
+\emph{Permitted Value}: A character vector.}
+
+\item{filter_sev}{severity record filter
+
+\emph{Default: "SEV"}
+\emph{Permitted Value}: A character scalar
+
+To filter the severity records to derive the maximum severity by passing the
+\code{FATESTCD} value for severity in quotes \code{"SEV"} for this argument.}
+
+\item{test_maxsev}{FATEST value for maximum severity records
+
+\emph{Default: "Maximum severity"}
+\emph{Permitted Value}: A character scalar
+
+Assign the value for \code{FATEST} variable to indicate the maximum severity
+records. Ignore the argument if you want to set the value as mentioned in
+default.}
+
+\item{testcd_maxsev}{FATESTCD value for maximum severity records
+
+\emph{Default: "MAXSEV"}
+\emph{Permitted Value}: A character scalar
+
+Assign the value for \code{FATESTCD} variable to indicate the maximum severity
+records. Ignore the argument if you want to set the value as mentioned in
+default.}
+
+\item{by_vars}{Grouping variables
+
+\emph{Default: exprs(USUBJID, FAOBJ, ATPTREF)}
+
+Based on the variables which will be passed on this \code{by_vars} argument, The
+maximum severity records will be derived from AVAL.
+\emph{Note:} Pass the variables in \code{exprs()}.}
 }
 \value{
-Dataframe which has Maxsev records (with DTYPE as "MAXIMUM", Derived AVAL
-and AVALC and some grouping vars and updated FATESTCD and FATEST.)
+The input data set with new records \code{FATESTCD = MAXSEV}indicating the
+maximum severity records for the specified variables in \code{by_vars}. \code{DTYPE}
+will be populated as \code{MAXIMUM}. \code{FATEST}will be populated as specified in
+\code{test_maxsev}and \code{FATESCD} will be populated as specified in \code{testcd_maxsev}.
 }
 \description{
-Derive the maximum severity for each administrative and Systemic events.
+Creating the maximum severity records per subject per event per period.
+Maximum severity records will be derived for the Administration and systemic
+events which has severity records \code{FATESTCD = "SEV"}.
 }
-\details{
-Pre_processing:
+\examples{
+library(tibble)
+library(admiral)
+library(dplyr)
+library(rlang)
 
-Severity records for Administrative and systemic events will be filtered
-from the input data set and AVAL will be derived in a data_frame pp
+input <- tribble(
+  ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
+  "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 3, "SEVERE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 0, "NONE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 0, "NONE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 2, "MODERATE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 1, "MILD", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 3, "SEVERE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1002", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+  "XYZ1001", "CHILLS", NA, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1001", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+  "XYZ1002", "CHILLS", NA, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC"
+)
 
-Maximum severity derivation:
+derive_param_maxsev(
+  dataset = input,
+  filter_sev = "SEV",
+  exclude_events = "REDNESS",
+  test_maxsev = "Maximum severity",
+  testcd_maxsev = "MAXSEV",
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
+)
 
-Once the pre-processing is done. The maximum severity records will be derived
-from the  AVAL by USUBJID and by_vars.
-Below variables will be created with the values mentioned below.
-'DTYPE = "MAXIMUM", FATESTCD = "MAXSEV" and FATEST = "MAXIMUM SEVERITY".'
 }
 \seealso{
 ADXX Functions that returns variable appended to dataset: 
 \code{\link{derive_param_diam_to_sev}()},
 \code{\link{hello_admiral}()}
+}
+\author{
+Arjun Rubalingam
 }
 \concept{der_adxx}
 \keyword{der_adxx}

@@ -98,3 +98,50 @@ is2_ady <- derive_vars_dy(
   reference_date = RFSTDTC,
   source_vars = exprs(ADT)
 )
+
+
+
+# STEP 4: PARAMCD, PARAM and PARAMN derivation
+
+# Create record duplication in order to plot both original and LOG10 parameter values.
+# If this step is not applicable for your purposes then skip to the next code section:
+# (substitute is_log with is2_dy in line 116)
+
+is_log <- is2_ady %>%
+  mutate(DERIVED = "Y") %>%
+  bind_rows(is2_ady) %>%
+  arrange(STUDYID, USUBJID, ISSEQ, !is.na(DERIVED))
+
+
+is3 <- is_log %>%
+  mutate(
+    # PARAMCD: for log values, concatenation of L and ISTESTCD.
+    PARAMCD = if_else(is.na(DERIVED), ISTESTCD, paste0(ISTESTCD, "L"))
+  )
+
+# Update param_lookup dataset with your PARAM values.
+param_lookup <- tribble(
+  ~PARAMCD, ~PARAM, ~PARAMN,
+  "J0033VN", "J0033VN Antibody", 1,
+  "I0019NT", "I0019NT Antibody", 2,
+  "M0019LN", "M0019LN Antibody", 3,
+  "R0003MA", "R0003MA Antibody", 4,
+  "J0033VNL", "LOG10 (J0033VN Antibody)", 11,
+  "I0019NTL", "LOG10 (I0019NT Antibody)", 12,
+  "M0019LNL", "LOG10 (M0019LN Antibody)", 13,
+  "R0003MAL", "LOG10 (R0003MA Antibody)", 14
+)
+
+is3_1 <- derive_vars_merged_lookup(
+  dataset = is3,
+  dataset_add = param_lookup,
+  new_vars = exprs(PARAM),
+  by_vars = exprs(PARAMCD)
+)
+
+is4 <- derive_vars_merged_lookup(
+  dataset = is3_1,
+  dataset_add = param_lookup,
+  new_vars = exprs(PARAMN),
+  by_vars = exprs(PARAM)
+)
