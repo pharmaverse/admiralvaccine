@@ -21,6 +21,10 @@ Something Something
 \examples{
 hello_admiral(hw = FALSE)
 }
+\seealso{
+ADXX Functions that returns variable appended to dataset: 
+\code{\link{derive_param_maxsev}()}
+}
 \author{
 Open Source
 }

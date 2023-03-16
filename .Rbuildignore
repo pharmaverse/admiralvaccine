@@ -28,3 +28,6 @@
 ^admiralext.*\.tgz$
 ^staged_dependencies.yaml$
 ^README.Rmd$
+^admiralvaccine\.Rcheck$
+^admiralvaccine.*\.tar\.gz$
+^admiralvaccine.*\.tgz$
