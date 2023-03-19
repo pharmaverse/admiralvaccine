@@ -154,9 +154,11 @@ derive_param_diam_to_sev <- function(dataset = NULL,
                                      mild = c(2, 5),
                                      mod = c(5, 10),
                                      sev = 10) {
+
   assert_data_frame(dataset,
     required_vars = exprs(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
   )
+
   assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
   assert_character_vector(
     arg = c(filter_diam, filter_faobj, testcd_sev, test_sev),
