@@ -191,12 +191,11 @@ is5_aval <- is5 %>%
       DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ ISSTRESN,
       DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
       DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
-      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
-        ISSTRESN < ULLOQ ~ log10(ISSTRESN),
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ log10(ISSTRESN),
       DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
       DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
-      DERIVED == "4FOLD" & !!is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ ISSTRESN,
-      DERIVED == "4FOLD" & !!is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ ~ ISSTRESN,
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
       DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ),
       DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
         ISSTRESN < ULLOQ ~ log10(ISSTRESN),
@@ -257,8 +256,8 @@ is6 <- is5_sercat1n %>%
 # ABLFL derivation
 is6_ablfl <- derive_var_relative_flag(
   dataset = is6,
-  by_vars = vars(STUDYID, USUBJID, PARAMN),
-  order = vars(STUDYID, USUBJID, VISITNUM, PARAMN),
+  by_vars = exprs(STUDYID, USUBJID, PARAMN),
+  order = exprs(STUDYID, USUBJID, VISITNUM, PARAMN),
   new_var = ABLFL,
   condition = VISITNUM == 10,
   mode = "first",
@@ -269,7 +268,7 @@ is6_ablfl <- derive_var_relative_flag(
 # BASE derivation
 is6_base <- derive_var_base(
   dataset = is6_ablfl,
-  by_vars = vars(STUDYID, USUBJID, PARAMN),
+  by_vars = exprs(STUDYID, USUBJID, PARAMN),
   source_var = AVAL,
   new_var = BASE,
   filter = ABLFL == "Y"
@@ -298,7 +297,7 @@ basecat1 <- function(base) {
 is7 <- derive_var_merged_cat(
   dataset = is6_basetype,
   dataset_add = base_data,
-  by_vars = vars(STUDYID, USUBJID, PARAMCD, VISITNUM),
+  by_vars = exprs(STUDYID, USUBJID, PARAMCD, VISITNUM),
   new_var = BASECAT1,
   source_var = BASE,
   cat_fun = basecat1
