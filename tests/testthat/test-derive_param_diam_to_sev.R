@@ -2,13 +2,12 @@
 
 test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS`", {
-
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
     "XYZ1001", "REDNESS", 7.5, "7.5", "VACCINATION 1", "Diameter", "DIAMETER",
     "XYZ1001", "REDNESS", 3.5, "3.5", "VACCINATION 1", "Diameter", "DIAMETER",
-    "XYZ1001", "REDNESS", 2,   "2",   "VACCINATION 1", "Diameter", "DIAMETER",
-    "XYZ1001", "REDNESS", 11,  "11",  "VACCINATION 1", "Diameter", "DIAMETER"
+    "XYZ1001", "REDNESS", 2, "2", "VACCINATION 1", "Diameter", "DIAMETER",
+    "XYZ1001", "REDNESS", 11, "11", "VACCINATION 1", "Diameter", "DIAMETER"
   )
 
   input <- input %>% select(-ATPTREF)
@@ -58,7 +57,6 @@ test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicatin
     actual_output,
     keys = c("USUBJID", "FAOBJ", "AVAL", "AVALC", "FATEST", "FATESTCD")
   )
-
 })
 
 ## Test 2: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS` & `SWELLING`

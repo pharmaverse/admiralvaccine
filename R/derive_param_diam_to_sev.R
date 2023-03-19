@@ -154,7 +154,6 @@ derive_param_diam_to_sev <- function(dataset = NULL,
                                      mild = c(2, 5),
                                      mod = c(5, 10),
                                      sev = 10) {
-
   assert_data_frame(dataset,
     required_vars = exprs(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
   )
