@@ -12,7 +12,7 @@
 #' @param new_var
 #' Variables to add
 #' The analysis criterion evaluation variable's name (i.e., CRIT1)
-#' This name is also used in order to create both charcater and numeric
+#' This name is also used in order to create both character and numeric
 #' flags variables (i.e., CRIT1FL and CRIT1FN).
 #' Is possible to give a different name, base on needs (i.e., ANL01)
 #'
