@@ -75,7 +75,7 @@
 #'"999999-000003", 30, "IMMUNOLOGY", "J0033VN", 45, 4,
 #'"999999-000003", 30, "IMMUNOLOGY", "I0019NT", 381, 6,
 #'"999999-000003", 30, "IMMUNOLOGY", "M0019LN", 542, 4,
-#'"999999-000003", 30, "IMMUNOLOGY", "R0003MA", NA, 6,
+#'"999999-000003", 30, "IMMUNOLOGY", "R0003MA", NA, 6
 #')
 #'
 #'
@@ -85,7 +85,7 @@
 #'  label_var = "Titer >= ISLLOQ",
 #'  condition = !is.na(AVAL) & !is.na(ISLLOQ),
 #'  criterion = AVAL >= ISLLOQ
-#'
+#'  )
 #################################################################################
 #'
 derive_vars_crit <- function(dataset, new_var, label_var, condition, criterion) {
