@@ -130,7 +130,7 @@ derive_param_maxsev <- function(dataset = NULL,
                                 by_vars = exprs(USUBJID, FAOBJ, ATPTREF)) {
   # assertions
   assert_data_frame(dataset,
-    required_vars = vars(
+    required_vars = exprs(
       USUBJID, FASCAT, AVALC, FAOBJ,
       ATPTREF, FATEST, FATESTCD
     )

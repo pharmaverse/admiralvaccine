@@ -36,6 +36,8 @@
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #' @return dataset with criterion variables
 #'
+#' @export
+#'
 #' @author Federico Baratin
 #' @export
 #' @keywords der_gen
