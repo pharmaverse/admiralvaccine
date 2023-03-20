@@ -79,7 +79,7 @@
 #')
 #'
 #'
-#'is2 <- derive_vars_crit(
+#'output <- derive_vars_crit(
 #'  dataset = input,
 #'  new_var = "CRIT1",
 #'  label_var = "Titer >= ISLLOQ",
