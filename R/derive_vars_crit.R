@@ -50,7 +50,7 @@
 #' library(dplyr)
 #' library(rlang)
 #'
-#' is <- tribble(
+#' input <- tribble(
 #'~USUBJID, ~AVISITN, ~ISCAT, ~PARAMCD, ~AVAL, ~ISLLOQ,
 #'"999999-000001", 10, "IMMUNOLOGY", "J0033VN", 2, 4,
 #'"999999-000001", 10, "IMMUNOLOGY", "I0019NT", 3, 6,
@@ -80,7 +80,7 @@
 #'
 #'
 #'is2 <- derive_vars_crit(
-#'  dataset = is,
+#'  dataset = input,
 #'  new_var = "CRIT1",
 #'  label_var = "Titer >= ISLLOQ",
 #'  condition = !is.na(AVAL) & !is.na(ISLLOQ),
