@@ -74,8 +74,6 @@ events which has severity records \code{FATESTCD = "SEV"}.
 }
 \examples{
 library(tibble)
-library(admiral)
-library(dplyr)
 library(rlang)
 
 input <- tribble(

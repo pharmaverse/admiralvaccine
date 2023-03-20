@@ -4,7 +4,7 @@
 #' @importFrom dplyr arrange bind_rows case_when desc ends_with filter full_join group_by
 #'             if_else mutate mutate_at mutate_if n pull rename rename_at row_number select slice
 #'             starts_with transmute ungroup vars n_distinct union distinct
-#'             summarise_at summarise coalesce bind_cols na_if tibble any_of
+#'             summarise_at summarise coalesce bind_cols na_if tibble any_of slice_tail
 #' @importFrom magrittr %>%
 #' @importFrom rlang := abort arg_match as_function as_string call2 caller_env
 #'             call_name current_env .data enexpr enquo eval_bare eval_tidy expr
@@ -28,5 +28,5 @@
 #' @importFrom lifecycle deprecate_warn deprecated deprecate_stop
 #' @importFrom admiral derive_vars_dy
 #' @importFrom admiraldev assert_logical_scalar assert_character_vector assert_vars
-#'             assert_data_frame assert_character_scalar
+#'             assert_data_frame assert_character_scalar expect_dfs_equal
 "_PACKAGE"

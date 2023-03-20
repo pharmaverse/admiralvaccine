@@ -57,8 +57,6 @@ Create a summary record for maximum temperature per subject per period.
 }
 \examples{
 library(tibble)
-library(admiral)
-library(dplyr)
 library(rlang)
 
 input <- tribble(

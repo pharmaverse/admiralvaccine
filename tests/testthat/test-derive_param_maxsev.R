@@ -1,16 +1,9 @@
-# test_derive_param_maxsev
-
-library(admiraldev)
-library(rlang)
-library(tidyverse)
-library(diffdf)
 # test case 1 -------------------------------------------------------------
-
 # testthat
 testthat::test_that("derive_param_maxsev Test 1: Check whether`AVAL`is derived
                     when AVAL is NA", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -71,7 +64,7 @@ testthat::test_that("derive_param_maxsev Test 1: Check whether`AVAL`is derived
 testthat::test_that("derive_param_maxsev Test 2: Check whether`AVAL`is derived
                     eventhough AVAL is populated", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -85,6 +78,14 @@ testthat::test_that("derive_param_maxsev Test 2: Check whether`AVAL`is derived
     "XYZ1002", "CHILLS", 7, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC"
   )
 
+  format_aval <- function(x) {
+    case_when(
+      x == "NONE" ~ 0,
+      x == "MILD" ~ 1,
+      x == "MODERATE" ~ 2,
+      x == "SEVERE" ~ 3
+    )
+  }
 
   expected1 <- input %>%
     mutate(AVAL = format_aval(AVALC)) %>%
@@ -121,7 +122,7 @@ testthat::test_that("derive_param_maxsev Test 2: Check whether`AVAL`is derived
 testthat::test_that("derive_param_maxsev Test 3: Checking whether the
 `exclude_events` argument excluding the events which is passed", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -135,7 +136,14 @@ testthat::test_that("derive_param_maxsev Test 3: Checking whether the
     "XYZ1002", "CHILLS", 7, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC"
   )
 
-
+  format_aval <- function(x) {
+    case_when(
+      x == "NONE" ~ 0,
+      x == "MILD" ~ 1,
+      x == "MODERATE" ~ 2,
+      x == "SEVERE" ~ 3
+    )
+  }
   expected1 <- input %>%
     mutate(AVAL = format_aval(AVALC)) %>%
     arrange(USUBJID, FATESTCD, FATEST, FASCAT, FAOBJ, ATPTREF, AVAL) %>%
@@ -145,6 +153,7 @@ testthat::test_that("derive_param_maxsev Test 3: Checking whether the
     mutate(DTYPE = "MAXIMUM", FATESTCD = "MAXSEV", FATEST = "Maximum severity")
   # expected dataset
   expected <- bind_rows(input %>% mutate(AVAL = format_aval(AVALC)), expected1)
+
 
 
   # actual dataset
@@ -174,7 +183,7 @@ testthat::test_that("derive_param_maxsev Test 3: Checking whether the
 testthat::test_that("derive_param_maxsev Test 4: Checking when exclude event is
                     null", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "CHILLS", 2, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
     "XYZ1001", "CHILLS", 3, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
@@ -182,6 +191,16 @@ testthat::test_that("derive_param_maxsev Test 4: Checking when exclude event is
     "XYZ1002", "CHILLS", 6, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
     "XYZ1002", "CHILLS", 7, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC"
   )
+
+
+  format_aval <- function(x) {
+    case_when(
+      x == "NONE" ~ 0,
+      x == "MILD" ~ 1,
+      x == "MODERATE" ~ 2,
+      x == "SEVERE" ~ 3
+    )
+  }
 
 
   expected1 <- input %>%
@@ -220,7 +239,7 @@ testthat::test_that("derive_param_maxsev Test 5: Checking whether the variables
 which is listed in the retained_vars are retained and populated for
                     derived records", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -238,6 +257,15 @@ which is listed in the retained_vars are retained and populated for
       EXDOSU = "mg"
     )
 
+
+  format_aval <- function(x) {
+    case_when(
+      x == "NONE" ~ 0,
+      x == "MILD" ~ 1,
+      x == "MODERATE" ~ 2,
+      x == "SEVERE" ~ 3
+    )
+  }
 
   expected1 <- input %>%
     mutate(AVAL = format_aval(AVALC)) %>%
@@ -277,7 +305,7 @@ testthat::test_that("derive_param_maxsev Test 6: Checking whether the variables
 which is not listed in the retained_vars are not populated for the
 summary records but retained", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT, ~SRCDOM,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE", "FA",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE", "FA",
@@ -295,6 +323,14 @@ summary records but retained", {
       EXDOSU = "mg"
     )
 
+  format_aval <- function(x) {
+    case_when(
+      x == "NONE" ~ 0,
+      x == "MILD" ~ 1,
+      x == "MODERATE" ~ 2,
+      x == "SEVERE" ~ 3
+    )
+  }
 
   expected1 <- input %>%
     mutate(AVAL = format_aval(AVALC)) %>%
@@ -305,6 +341,7 @@ summary records but retained", {
     mutate(DTYPE = "MAXIMUM", FATESTCD = "MAXSEV", FATEST = "Maximum severity")
   # expected dataset
   expected <- bind_rows(input %>% mutate(AVAL = format_aval(AVALC)), expected1)
+
 
 
   # actual dataset

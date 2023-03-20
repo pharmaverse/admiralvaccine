@@ -51,8 +51,6 @@
 #'
 #' @examples
 #' library(tibble)
-#' library(admiral)
-#' library(dplyr)
 #' library(rlang)
 #'
 #' input <- tribble(
@@ -91,15 +89,14 @@
 #'   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 #' )
 #'
-derive_param_maxtemp <- function(
-    dataset = NULL,
-    filter_faobj = "FEVER",
-    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
-    test_maxtemp = "Maximum temperatue",
-    testcd_maxtemp = "MAXTEMP") {
+derive_param_maxtemp <- function(dataset = NULL,
+                                 filter_faobj = "FEVER",
+                                 by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+                                 test_maxtemp = "Maximum temperatue",
+                                 testcd_maxtemp = "MAXTEMP") {
   # assertion
 
-  assert_data_frame(dataset, required_vars = vars(
+  assert_data_frame(dataset, required_vars = exprs(
     USUBJID, FAOBJ, VSSTRESN,
     FATEST, FATESTCD, ATPTREF
   ))
