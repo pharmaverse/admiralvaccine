@@ -6,7 +6,7 @@
 library(admiral)
 library(dplyr)
 library(lubridate)
-library(haven)
+
 
 # Load source datasets ----
 
@@ -14,8 +14,13 @@ library(haven)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-adsl <- read_sas("./data/adsl.sas7bdat")
-ce <- read_sas("./data/ce.sas7bdat")
+data("ce")
+data("admiralvaccine_adsl")
+
+
+adsl <- admiralvaccine_adsl
+ce <- ce
+
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -23,6 +28,7 @@ ce <- read_sas("./data/ce.sas7bdat")
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 
 ce <- convert_blanks_to_na(ce)
+adsl <- convert_blanks_to_na(adsl)
 
 # Derivations ----
 # Get CE records
@@ -34,8 +40,13 @@ adsl_vars <- exprs(TRTSDT, TRTEDT)
 
 # Create period dataset - for joining period information onto ce records
 # Need to remove datetime variables as otherwise causes duplicate issues
+
+adslvars <- names(adsl)
+xvars <- adslvars[stringr::str_starts(adslvars, "AP") &
+  stringr::str_ends(adslvars, "DTM")]
+
 adsl2 <- adsl %>%
-  select(-c(AP01SDTM, AP01EDTM, AP02SDTM, AP02EDTM, AP06SDTM, AP06EDTM))
+  select(-all_of(xvars))
 
 adperiods <- create_period_dataset(
   adsl2,
@@ -75,32 +86,39 @@ ce03 <-
   derive_vars_joined(
     ce02,
     dataset_add = adperiods,
-    by_vars = exprs(USUBJID),
+    by_vars = exprs(STUDYID, USUBJID),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT
   ) %>%
   mutate(
     APERSTDY = as.integer(ASTDT - APERSDT) + 1,
     ADECOD = CEDECOD,
-    ATOXGR = CETOXGR,
-    AREL = CEREL # ,
-    # ASEV = AESEV
+    AREL = CEREL
   ) %>%
-  # create numeric value ASEVN for severity and ATOXGRN for toxicity
+  ## depending on collection of TOXGR or SEV in CE domain ----
+  ## Analysis variant of ASEV and ASEVN ----
   mutate(
-    ATOXGRN = as.integer(factor(ATOXGR, levels = c("0", "1", "2", "3", "4"))),
-    # ASEVN = as.integer(factor(ASEV, levels = c("MILD", "MODERATE", "SEVERE", "DEATH THREATENING")))
+    ASEV = CESEV,
+    ASEVN = as.integer(factor(ASEV,
+      levels = c("MILD", "MODERATE", "SEVERE", "DEATH THREATENING")
+    ))
   ) %>%
-  ## Derive occurrence flags: first occurrence of most severe solicited AE
-  ## - Janssen specific
+  ## Analysis variant of ATOXGR and ATOXGRN ----
+  # mutate(
+  # ATOXGR = CETOXGR,
+  # ATOXGRN = as.integer(factor(ATOXGR, levels = c("0", "1", "2", "3", "4"))),
+  # )
+  # ) %>%
+  ## Derive occurrence flags: first occurrence of most severe solicited AE ----
+  ## - Janssen specific ----
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
       by_vars = exprs(USUBJID, APERIOD),
-      order = exprs(desc(ATOXGRN), CESTDY, CEDECOD),
+      order = exprs(desc(ASEVN), ASTDY, CEDECOD),
       new_var = AOCC01FL,
       mode = "first"
     ),
-    filter = !is.na(APERIOD) & !is.na(ATOXGR)
+    filter = !is.na(APERIOD) & !is.na(ASEV)
   )
 
 ce04 <-
