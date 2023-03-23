@@ -5,7 +5,7 @@
 \title{Creating Maximum Severity Records}
 \usage{
 derive_param_maxsev(
-  dataset = NULL,
+  dataset = adface,
   exclude_events = NULL,
   filter_sev = "SEV",
   test_maxsev = "Maximum Severity",
@@ -134,6 +134,15 @@ derive_param_maxsev(
 }
 \seealso{
 ADXX Functions that returns variable appended to dataset: 
+\code{\link{derive_param_diam_to_sev}()},
+\code{\link{derive_param_fever_occur}()},
+\code{\link{derive_param_maxdiam}()},
+\code{\link{derive_param_maxtemp}()},
+\code{\link{derive_vars_event_flag}()},
+\code{\link{derive_vars_max_flag}()},
+\code{\link{derive_vars_merged_vaccine}()},
+\code{\link{derive_vars_params}()},
+\code{\link{derive_vars_vaxdt}()},
 \code{\link{hello_admiral}()}
 }
 \author{
