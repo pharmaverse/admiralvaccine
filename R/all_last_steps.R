@@ -1,15 +1,17 @@
 # STEP 8 Derivation of Change from baseline and Ratio to baseline ----
 is8 <- is7 %>%
-       derive_var_chg %>%
-       derive_var_analysis_ratio(numer_var = AVAL, denom_var = BASE)
+  derive_var_chg() %>%
+  derive_var_analysis_ratio(numer_var = AVAL, denom_var = BASE)
 
 # STEP 9 Derivation of CRITyFL and CRITyFN ----
 
 is9 <- is8 %>%
-  derive_vars_crit(new_var = "CRIT1",
-     label_var = "Titer >= ISLLOQ",
-     condition = !is.na(AVAL) & !is.na(ISLLOQ),
-     criterion = AVAL >= ISLLOQ)
+  derive_vars_crit(
+    new_var = "CRIT1",
+    label_var = "Titer >= ISLLOQ",
+    condition = !is.na(AVAL) & !is.na(ISLLOQ),
+    criterion = AVAL >= ISLLOQ
+  )
 
 # STEP 10  Merge with ADSL ----
 
@@ -25,7 +27,7 @@ is10 <- is9 %>%
 # STEP 11 Derivation of TRTP/A treatment variables ----
 
 is11 <- is10 %>%
-    mutate(TRTP=TRT01P,TRTA=TRT01A)
+  mutate(TRTP = TRT01P, TRTA = TRT01A)
 
 # STEP 12 Derivation of PPSRFL ----
 
