@@ -40,13 +40,8 @@ adsl_vars <- exprs(TRTSDT, TRTEDT)
 
 # Create period dataset - for joining period information onto ce records
 # Need to remove datetime variables as otherwise causes duplicate issues
-
-adslvars <- names(adsl)
-xvars <- adslvars[stringr::str_starts(adslvars, "AP") &
-  stringr::str_ends(adslvars, "DTM")]
-
 adsl2 <- adsl %>%
-  select(-all_of(xvars))
+  select(-c(starts_with("AP") & ends_with("DTM")))
 
 adperiods <- create_period_dataset(
   adsl2,
