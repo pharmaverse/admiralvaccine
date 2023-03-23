@@ -49,7 +49,4 @@ is12b <- is11 %>%
     true_value = "Y"
   )
 
-is12 <- bind_rows(is12a,is12b)
-
-
-
+is12 <- bind_rows(is12a, is12b)
