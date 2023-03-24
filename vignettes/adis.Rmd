@@ -1,0 +1,76 @@
+---
+title: "Creating ADIS"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating ADSL}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(admiral)
+
+link <- function(text, url) {
+  return(
+    paste0(
+      "[", text, "]",
+      "(", url, ")"
+    )
+  )
+}
+
+dyn_link <- function(text,
+                     base_url,
+                     relative_url = "",
+                     # Change to TRUE when admiral adopts multiversion docs
+                     is_multiversion = FALSE,
+                     multiversion_default_ref = "main") {
+  url <- paste(base_url, relative_url, sep = "/")
+  if (is_multiversion) {
+    url <- paste(
+      base_url,
+      Sys.getenv("BRANCH_NAME", multiversion_default_ref),
+      relative_url,
+      sep = "/"
+    )
+  }
+  return(link(text, url))
+}
+# Other variables
+admiral_homepage <- "https://pharmaverse.github.io/admiral"
+library(admiraldev)
+```
+
+# Introduction
+
+This article describes how to create an `ADIS` ADaM domain.
+The parameters derived reflects common vaccine immunogenicity
+endpoints.
+
+Examples are currently presented and tested using `ADSL` (ADaM) and
+`is` and `suppis` (SDTM) inputs.
+
+**Note**: *All examples assume CDISC SDTM and/or ADaM format as input
+unless otherwise specified.*
+
+  # Programming Workflow
+
+  - [Read in Data](#readdata)
+  - [Combine IS with SUPPIS](#combine_supp)
+  - [Derive timing variables](#avisit)
+  - [Derive ADT and ADY variables](#adt)
+  - [Parameters derivation](#param)
+  - [Derive PARCAT1, SERCAT1/N and CUTOFFx variables](#parcat)
+  - [Derive AVAL, AVALU and DTYPE variables](#aval)
+  - [Derive BASE variables](#base)
+  - [Derive CHG and R2BASE variables](#chg)
+  - [Derive CRITx variables](#crit)
+  - [Add ADSL variables](#adsl_vars)
+  - [Derive TRTP/A variables](#trtp)
+  - [Derive PPS record level flag variable](#pps)
