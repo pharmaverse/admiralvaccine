@@ -108,7 +108,7 @@ derive_vars_event_flag <- function(dataset,
     # Derive only `new_var1`
     data_flag <- dataset %>%
       group_by(!!!by_vars) %>%
-      mutate(!!new_var1 := ifelse(any(!(is.na(AVAL)) &
+      mutate(!!new_var1 := if_else(any(!(is.na(AVAL)) &
         AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N"))
   } else if (is.null(new_var1) & !is.null(new_var2)) {
     # Derive only `new_var2`
