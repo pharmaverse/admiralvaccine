@@ -1,14 +1,14 @@
 #' `derive_vars_max_flag.R`
 #'
-#' @param `dataset` Input dataset
+#' @param dataset Input dataset
 #'
-#' @param `flag1` - Flags the maximum record per subject per event per
+#' @param flag1 - Flags the maximum record per subject per event per
 #'                  Vaccination
 #' *Default: "ANL01FL"*
 #' *Permitted value: Any variable name or NULL*
 #' `NULL` denotes not to create the flag
 #'
-#' @param `flag2` - Flags the maximum record per subject per event for Overall
+#' @param flag2 - Flags the maximum record per subject per event for Overall
 #' *Default: "ANL02FL"*
 #' *Permitted value: Any variable name or NULL*
 #' `NULL` denotes not to create the flag
