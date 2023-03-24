@@ -7,6 +7,10 @@
 #'
 #'   The variables specified by the `by_vars` argument are expected.
 #'
+#' @param dataset_adsl Input adsl dataset
+#'
+#'   The vaccination date variables created will be merged with this adsl dataset.
+#'
 #' @param by_vars Grouping variables.
 #'
 #' *Default: exprs(USUBJID, VISITNUM)*
@@ -21,8 +25,7 @@
 #'  The variables order to be specified either in ascending or descending order.
 #'  By default ascending order will be applicable.
 #'
-#' @return the dataset with vaccination date variables which is created
-#' using `EXSTDTC`.
+#' @return the adsl dataset with vaccination date variables added to it.
 #'
 #' @author Vikram S
 #'
@@ -34,8 +37,6 @@
 #'
 #' The number of variables created will be based on the number of vaccinations
 #' per subject per visit.
-#'
-#' The output dataset will have one record per subject.
 #'
 #' @export
 #'
