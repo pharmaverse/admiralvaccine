@@ -89,7 +89,8 @@ testthat::test_that("derive_param_maxsev Test 2: Check whether`AVAL`is derived
       x == "MILD" ~ 1,
       x == "MODERATE" ~ 2,
       x == "SEVERE" ~ 3
-    )}
+    )
+  }
   expected1 <- input %>%
     mutate(AVAL = format_aval(AVALC)) %>%
     arrange(USUBJID, FATESTCD, FATEST, FASCAT, FAOBJ, ATPTREF, AVAL) %>%
@@ -144,7 +145,8 @@ testthat::test_that("derive_param_maxsev Test 3: Checking whether the
       x == "MILD" ~ 1,
       x == "MODERATE" ~ 2,
       x == "SEVERE" ~ 3
-    )}
+    )
+  }
 
   expected1 <- input %>%
     mutate(AVAL = format_aval(AVALC)) %>%
@@ -199,7 +201,8 @@ testthat::test_that("Check whether we get max sev for the SEV recoreds
       x == "MILD" ~ 1,
       x == "MODERATE" ~ 2,
       x == "SEVERE" ~ 3
-    )}
+    )
+  }
 
   expected1 <- input %>%
     mutate(AVAL = format_aval(AVALC)) %>%
@@ -224,40 +227,40 @@ testthat::test_that("Check whether we get max sev for the SEV recoreds
 
   # test_that
   expect_dfs_equal(actual,
-                   expected,
-                   keys = c(
-                     "USUBJID", "FASCAT", "FATESTCD", "FATEST", "FAOBJ",
-                     "ATPTREF", "AVALC", "AVAL"
-                   )
+    expected,
+    keys = c(
+      "USUBJID", "FASCAT", "FATESTCD", "FATEST", "FAOBJ",
+      "ATPTREF", "AVALC", "AVAL"
+    )
   )
 })
 
-testthat::test_that("Check whether its throwing error when passing invalid Category in filter_sev", {
-                      # input data
-                      input <- tribble(
-                        ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
-                        "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
-                        "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
-                        "XYZ1001", "REDNESS", 3, "SEVERE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
-                        "XYZ1001", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
-                        "XYZ1001", "CHILLS", 1, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-                        "XYZ1001", "CHILLS", 2, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
-                        "XYZ1001", "CHILLS", 3, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
-                        "XYZ1002", "CHILLS", 4, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
-                        "XYZ1002", "CHILLS", 6, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
-                        "XYZ1002", "CHILLS", 7, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC"
-                      )
+testthat::test_that("Check whether its throwing error when passing invalid
+                    Category in filter_sev", {
+  # input data
+  input <- tribble(
+    ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
+    "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+    "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+    "XYZ1001", "REDNESS", 3, "SEVERE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
+    "XYZ1001", "REDNESS", 0, "NONE", "VACC2", "Severity", "SEV", "ADMIN-SITE",
+    "XYZ1001", "CHILLS", 1, "MODERATE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+    "XYZ1001", "CHILLS", 2, "MILD", "VACC1", "Severity", "SEV", "SYSTEMIC",
+    "XYZ1001", "CHILLS", 3, "NONE", "VACC1", "Severity", "SEV", "SYSTEMIC",
+    "XYZ1002", "CHILLS", 4, "MILD", "VACC2", "Severity", "SEV", "SYSTEMIC",
+    "XYZ1002", "CHILLS", 6, "NONE", "VACC2", "Severity", "SEV", "SYSTEMIC",
+    "XYZ1002", "CHILLS", 7, "MODERATE", "VACC2", "Severity", "SEV", "SYSTEMIC"
+  )
 
-                      testthat::expect_error(
-                        derive_param_maxsev(
-                        dataset = input,
-                        filter_sev = "SEVERE",
-                        exclude_events = NULL,
-                        test_maxsev = "Maximum severity",
-                        testcd_maxsev = "MAXSEV",
-                        by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
-                      ),
-                      regexp = paste0("SEVERE", " ", "doesn't exist in the FATESTCD"))
-
-                    })
-
+  testthat::expect_error(
+    derive_param_maxsev(
+      dataset = input,
+      filter_sev = "SEVERE",
+      exclude_events = NULL,
+      test_maxsev = "Maximum severity",
+      testcd_maxsev = "MAXSEV",
+      by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
+    ),
+    regexp = paste0("SEVERE", " ", "doesn't exist in the FATESTCD")
+  )
+})
