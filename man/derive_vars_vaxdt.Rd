@@ -11,6 +11,10 @@ derive_vars_vaxdt(dataset, dataset_adsl, by_vars, order)
 
 The variables specified by the \code{by_vars} argument are expected.}
 
+\item{dataset_adsl}{Input adsl dataset
+
+The vaccination date variables created will be merged with this adsl dataset.}
+
 \item{by_vars}{Grouping variables.
 
 \emph{Default: exprs(USUBJID, VISITNUM)}
@@ -26,8 +30,7 @@ The variables order to be specified either in ascending or descending order.
 By default ascending order will be applicable.}
 }
 \value{
-the dataset with vaccination date variables which is created
-using \code{EXSTDTC}.
+the adsl dataset with vaccination date variables added to it.
 }
 \description{
 Creates vaccination date variables from ex domain.A date variable will be
@@ -40,8 +43,6 @@ on the \code{order} argument.
 
 The number of variables created will be based on the number of vaccinations
 per subject per visit.
-
-The output dataset will have one record per subject.
 }
 \examples{
 library(tibble)
