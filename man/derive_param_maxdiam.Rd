@@ -94,7 +94,7 @@ input <- tribble(
 derive_param_maxdiam(
   dataset = input,
   filter = FAOBJ \%in\% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
-  by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   test_maxdiam = "Maximum Diameter",
   testcd_maxdiam = "MAXDIAM"
 )
