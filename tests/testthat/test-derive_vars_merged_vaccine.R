@@ -5,6 +5,7 @@ library(diffdf)
 library(testthat)
 library(metatools)
 library(tibble)
+library(dplyr)
 
 # Test 1: Merging EXTRT variable from EX to FACE
 
