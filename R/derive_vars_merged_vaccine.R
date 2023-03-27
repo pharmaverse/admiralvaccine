@@ -55,7 +55,7 @@
 #'   dataset_ex = ex,
 #'   dataset_supp = NULL,
 #'   dataset_suppex = NULL,
-#'   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ)
+#'   ex_vars = exprs(EXTRT,EXDOSE,EXDOSEU,EXSTDTC,EXENDTC)
 #' )
 #'
 derive_vars_merged_vaccine <- function(dataset,
@@ -99,11 +99,6 @@ derive_vars_merged_vaccine <- function(dataset,
   if (!("FALOC" %in% names(dataset))) {
     dataset <- dataset %>%
       mutate(FALOC = "")
-  }
-
-  if (!("FAEVINTX" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FAEVINTX = "")
   }
 
   if (("FALNKGRP" %in% names(dataset))) {
