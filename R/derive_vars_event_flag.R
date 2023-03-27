@@ -104,13 +104,13 @@ derive_vars_event_flag <- function(dataset,
   assert_numeric_vector(aval_cutoff)
 
 
-  if (!is.null(new_var1) & is.null(new_var2)) {
+  if (!is.null(new_var1) && is.null(new_var2)) {
     # Derive only `new_var1`
     data_flag <- dataset %>%
       group_by(!!!by_vars) %>%
       mutate(!!new_var1 := if_else(any(!(is.na(AVAL)) &
         AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N"))
-  } else if (is.null(new_var1) & !is.null(new_var2)) {
+  } else if (is.null(new_var1) && !is.null(new_var2)) {
     # Derive only `new_var2`
     data_flag <- dataset %>%
       mutate(
@@ -118,7 +118,7 @@ derive_vars_event_flag <- function(dataset,
           AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE"), "Y", "N"),
         !!new_var2 := ifelse(DTYPE == "MAXIMUM", NA_character_, !!new_var2)
       )
-  } else if (!is.null(new_var1) & !is.null(new_var2)) {
+  } else if (!is.null(new_var1) && !is.null(new_var2)) {
     # Derive both `new_var1` and `new_var2`
     data_flag <- dataset %>%
       group_by(!!!by_vars) %>%
