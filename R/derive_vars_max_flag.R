@@ -68,7 +68,7 @@ derive_vars_max_flag <- function(dataset,
   assert_data_frame(dataset,
     required_vars = exprs(USUBJID, FAOBJ)
   )
-  if (is.null(flag1) & is.null(flag2)) {
+  if (is.null(flag1) && is.null(flag2)) {
     stop("Please mention flag name")
   }
 
@@ -92,7 +92,7 @@ derive_vars_max_flag <- function(dataset,
     )
   }
 
-  if (!is.null(flag1) & !is.null(flag2)) {
+  if (!is.null(flag1) && !is.null(flag2)) {
     dataset <- flag(dataset,
       by_vars = exprs(USUBJID, FAOBJ, FATPTREF, PARAMCD),
       by_join = c("USUBJID", "FAOBJ", "FATPTREF", "PARAMCD", "FADTC"),
