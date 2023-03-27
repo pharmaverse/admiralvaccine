@@ -3,9 +3,7 @@ library(admiral.test)
 library(admiraldev)
 library(admiral)
 library(diffdf)
-library(tidyverse)
 library(rlang)
-library(metatools)
 
 # testthat of derive_vars_merged_vaccine (test case 1)------------------------------------------------------------
 testthat::test_that("derive_vars_merged_vaccine test case 1- merge the ex with face on records where FASCAT='SYSTEMIC'  ", {
@@ -23,7 +21,8 @@ testthat::test_that("derive_vars_merged_vaccine test case 1- merge the ex with f
 
   expect_sys <- face1 %>%
     mutate(FATPTREF = "VACCINATION 1") %>%
-    left_join(ex1 %>% mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
+    left_join(ex1 %>%
+                mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
     filter(FASCAT == "SYSTEMIC")
 
   expect_ad <- face1 %>%
@@ -36,7 +35,6 @@ testthat::test_that("derive_vars_merged_vaccine test case 1- merge the ex with f
     mutate(FAEVINTX = "") %>%
     select(-VISIT, -EXLAT, -EXDIR, -EXLOC)
 
-  # debugonce(derive_vars_merged_vaccine)
   actual <- derive_vars_merged_vaccine(
     dataset = face1,
     dataset_ex = ex1,
@@ -69,7 +67,8 @@ testthat::test_that("derive_vars_merged_vaccine test case 2 - merge the ex with 
 
   expect_sys <- face1 %>%
     mutate(FATPTREF = "VACCINATION 1") %>%
-    left_join(ex1 %>% mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
+    left_join(ex1 %>%
+                mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
     filter(FASCAT == "SYSTEMIC") %>%
     select(-EXLAT, -EXDIR, -EXLOC)
 
@@ -117,13 +116,15 @@ testthat::test_that("derive_vars_merged_vaccine test case 3 - merge the face and
 
   expect_sys <- face1 %>%
     mutate(FATPTREF = "VACCINATION 1") %>%
-    left_join(ex1 %>% mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
+    left_join(ex1 %>%
+                mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
     filter(FASCAT == "SYSTEMIC") %>%
     select(-EXLAT, -EXDIR, -EXLOC)
 
   expect_ad <- face1 %>%
     mutate(FATPTREF = "VACCINATION 1") %>%
-    left_join(ex1 %>% mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF", "FALAT" = "EXLAT", "FADIR" = "EXDIR", "FALOC" = "EXLOC")) %>%
+    left_join(ex1 %>%
+                mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF", "FALAT" = "EXLAT", "FADIR" = "EXDIR", "FALOC" = "EXLOC")) %>%
     filter(FASCAT != "SYSTEMIC")
 
   expected <- plyr::rbind.fill(expect_sys, expect_ad) %>%
@@ -164,7 +165,8 @@ testthat::test_that("derive_vars_merged_vaccine test case 4 - if the ex domain h
 
   expect_sys <- face1 %>%
     mutate(FATPTREF = "VACCINATION 1") %>%
-    left_join(ex1 %>% mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
+    left_join(ex1 %>%
+                mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
     filter(FASCAT == "SYSTEMIC") %>%
     select(-EXLAT, -EXDIR, -EXLOC)
 
@@ -206,7 +208,6 @@ testthat::test_that("derive_vars_merged_vaccine test case 5 - merge the face and
     mutate(FATPTREF = "VACCINATION 1") %>%
     left_join(ex1 %>% mutate(EXTPTREF = "VACCINATION 1"), by = c("USUBJID" = "USUBJID", "FATPTREF" = "EXTPTREF")) %>%
     filter(FASCAT == "SYSTEMIC")
-  # select(-EXLAT, -EXDIR, -EXLOC)
 
   expect_ad <- face1 %>%
     mutate(
@@ -245,55 +246,3 @@ testthat::test_that("derive_vars_merged_vaccine test case 5 - merge the face and
 
   expect_dfs_equal(actual, expected, keys = c("USUBJID", "FASCAT"))
 })
-
-
-
-# testthat of derive_vars_merged_vaccine (test case 6) --------------------
-
-# testthat::test_that("derive_vars_merged_vaccine test case 6 - merge the face and ex domain on records by USUBJID and FATPTREF if the FATPTREF, FALAT, FADIR and FALOC variables are not in the face domain.
-#                     This also includes the SUPPFACE",
-#                     {
-#
-#                       face1 <- tibble::tribble(
-#                         ~STUDYID,~DOMAIN, ~USUBJID, ~FASCAT, ~FASEQ,
-#                         'ABC', 'FA', "ABC-1001", "SYSTEMIC", 1,
-#                         'ABC', 'FA', "ABC-1001", "ADMINISTRATION SITE", 2
-#                       )
-#
-#                       suppface1 <- tibble::tribble(
-#                         ~STUDYID, ~RDOMAIN, ~USUBJID, ~IDVAR, ~IDVARVAL, ~QNAM, ~QLABEL, ~QVAL, ~QORIG,
-#                         'ABC', 'FA', "ABC-1001", 'FASEQ', '1', 'CLTYP','Collection Type','DIARY CARD', 'ASSIGNED',
-#                         'ABC', 'FA', "ABC-1001", 'FASEQ', '1', 'FALANG','Language Version of Instrument','ENGLISH', 'eDT'
-#                       )
-#
-#                       ex1 <- tibble::tribble(
-#                         ~USUBJID, ~VISIT, ~EXTRT, ~EXDOSE, ~EXSEQ, ~EXLAT, ~EXDIR, ~EXLOC,
-#                         "ABC-1001","WEEK 1", "VACCINE A", 0.5, 1, NA, NA, NA
-#                       )
-#
-#
-#                       expect_sys <- face1 %>% mutate(FATPTREF='VACCINATION 1') %>%
-#                         left_join(ex1 %>% mutate(EXTPTREF='VACCINATION 1'), by=c('USUBJID'='USUBJID','FATPTREF'='EXTPTREF')) %>%
-#                         filter(FASCAT=='SYSTEMIC') %>%
-#                         select(-EXLAT, -EXDIR, -EXLOC)
-#
-#                       expect_ad <- face1 %>% mutate(FATPTREF='VACCINATION 1') %>%
-#                         filter(FASCAT!='SYSTEMIC')
-#
-#                       expected <- plyr::rbind.fill(expect_sys,expect_ad) %>% mutate(FAEVINTX='') %>%
-#                         select(-VISIT) %>%
-#                         mutate(FALAT='',
-#                                FADIR='',
-#                                FALOC='')
-#
-#                       debugonce(derive_vars_merged_vaccine)
-#                       actual <- derive_vars_merged_vaccine(
-#                         dataset = face1,
-#                         dataset_ex = ex1,
-#                         dataset_supp = suppface1,
-#                         dataset_suppex = NULL,
-#                         ex_vars = exprs(EXTRT,EXDOSE,EXSEQ)
-#                       )
-#
-#                       expect_dfs_equal(actual, expected,keys = c("USUBJID","FASCAT"))
-#                     })
