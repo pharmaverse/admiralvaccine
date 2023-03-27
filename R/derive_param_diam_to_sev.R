@@ -180,9 +180,9 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   }
 
   # Replacing FATESTCD and FATEST for Diameter with Severity
-  if (filter_diam %in% diam$FATESTCD) {
+  if (c(filter_diam) %in% diam$FATESTCD) {
     sev <- fil_rec %>%
-      filter(FAOBJ %in% filter_faobj & FATESTCD == filter_diam) %>%
+      filter(FAOBJ %in% filter_faobj & FATESTCD %in% filter_diam) %>%
       mutate(
         FATESTCD = testcd_sev,
         FATEST = test_sev,
