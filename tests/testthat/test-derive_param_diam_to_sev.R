@@ -30,7 +30,7 @@ test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicatin
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
       DTYPE = "DERIVED",
-      FASEQ=""
+      FASEQ = NA_integer_
     )
 
   format_aval <- function(x) {
@@ -90,7 +90,7 @@ test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicatin
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
       DTYPE = "DERIVED",
-      FASEQ=""
+      FASEQ = NA_integer_
     )
 
   format_aval <- function(x) {
@@ -150,7 +150,7 @@ test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
       DTYPE = "DERIVED",
-      FASEQ=""
+      FASEQ = NA_integer_
     )
 
   format_aval <- function(x) {
@@ -217,7 +217,7 @@ test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
       DTYPE = "DERIVED",
-      FASEQ=""
+      FASEQ = NA_integer_
     )
 
   format_aval <- function(x) {
@@ -277,7 +277,7 @@ test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
       FATESTCD = "SEVERITY/SEV",
       AVALC = format_avalc(AVAL),
       DTYPE = "DERIVED",
-      FASEQ=""
+      FASEQ = NA_integer_
     )
 
   format_aval <- function(x) {
