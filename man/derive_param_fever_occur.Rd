@@ -34,6 +34,8 @@ With temperature values from VSSTRESN we decide if FEVER
 has occurred or not(\code{FAORRES = "Y"/"N"}).
 Since records are derived, these FEVER records are considered
 \code{DTYPE = "DERIVED"}
+if \code{FAOBJ = FEVER} record is present, then input dataset will be
+made as output with no further analysis.
 }
 \examples{
 library(tibble)
