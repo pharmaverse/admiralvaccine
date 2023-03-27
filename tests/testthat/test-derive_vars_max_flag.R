@@ -25,7 +25,7 @@ test_that("derive maximum severity flag varibles", {
     mutate(temp = row_number()) %>%
     mutate(flag1 = if_else(temp == 1, "Y", NA_character_)) %>%
     arrange(FAOBJ, FATESTCD) %>%
-    select(-(temp))
+    select(-temp)
 
   expected2 <- input %>%
     arrange(desc(AVAL), FADTC) %>%
@@ -75,7 +75,7 @@ test_that("derive maximum severity flag variable per event", {
     mutate(temp = row_number()) %>%
     mutate(flag1 = if_else(temp == 1, "Y", NA_character_)) %>%
     arrange(FAOBJ, FATESTCD) %>%
-    select(-(temp)) %>%
+    select(-temp) %>%
     rename(ANL01FL = flag1)
 
 
@@ -123,7 +123,7 @@ in the dataset", {
     mutate(ANL02FL = if_else(temp == 1, "Y", NA_character_)) %>%
     arrange(FAOBJ, FATESTCD) %>%
     ungroup() %>%
-    select(-(temp))
+    select(-temp)
 
 
   actual_output <- derive_vars_max_flag(
