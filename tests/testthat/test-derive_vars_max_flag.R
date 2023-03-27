@@ -1,7 +1,7 @@
 library(admiraldev)
 library(admiral)
 library(rlang)
-library(tidyverse)
+library(tibble)
 library(diffdf)
 library(testthat)
 
@@ -165,3 +165,4 @@ testthat::test_that("derive maximum severity flag varibles", {
     regexp = paste("Please mention flag name")
   )
 })
+
