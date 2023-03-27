@@ -70,10 +70,10 @@ derive_param_fever_occur <- function(dataset,
                                      faobj) {
   # Checking if there are fever records in face
   assert_data_frame(dataset,
-                    required_vars = exprs(USUBJID, FAOBJ)
+    required_vars = exprs(USUBJID, FAOBJ)
   )
   assert_data_frame(source_data,
-                    required_vars = exprs(USUBJID, VSTESTCD)
+    required_vars = exprs(USUBJID, VSTESTCD)
   )
 
   temp1 <- dataset %>% filter(FAOBJ == faobj)
@@ -123,10 +123,9 @@ derive_param_fever_occur <- function(dataset,
       )
     adface <- bind_rows(dataset, fever)
     return(adface)
-  }else
-    if (x > 0){
-      adface <- dataset
-    }
+  } else if (x > 0) {
+    adface <- dataset
+  }
 }
 
 # ________________________END OF THE FUNCTION___________________________________
