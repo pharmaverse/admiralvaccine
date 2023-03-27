@@ -165,4 +165,3 @@ testthat::test_that("derive maximum severity flag varibles", {
     regexp = paste("Please mention flag name")
   )
 })
-
