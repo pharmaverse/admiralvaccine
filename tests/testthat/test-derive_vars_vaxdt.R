@@ -3,7 +3,6 @@ library(admiral)
 library(rlang)
 library(diffdf)
 library(testthat)
-library(tidyverse)
 library(dplyr)
 library(lubridate)
 
