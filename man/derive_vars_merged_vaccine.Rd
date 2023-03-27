@@ -61,7 +61,7 @@ derive_vars_merged_vaccine(
   dataset_ex = ex,
   dataset_supp = NULL,
   dataset_suppex = NULL,
-  ex_vars = exprs(EXTRT, EXDOSE, EXSEQ)
+  ex_vars = exprs(EXTRT, EXDOSE, EXDOSEU, EXSTDTC, EXENDTC)
 )
 
 }
