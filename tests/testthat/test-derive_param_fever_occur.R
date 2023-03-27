@@ -43,8 +43,11 @@ actual <- derive_param_fever_occur(
 )
 
 
-testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset is generated if FAOBJ="FEVER", if the FEVER records are not in FACE',
-                    expect_dfs_equal(actual, expected, keys = c('USUBJID','FAOBJ','FATESTCD','FATEST','FATPT'))
+testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset
+                    is generated if FAOBJ="FEVER", if the FEVER records are not in FACE',
+                    expect_dfs_equal(actual,
+                                     expected,
+                                     keys = c('USUBJID','FAOBJ','FATESTCD','FATEST','FATPT'))
 )
 
 
