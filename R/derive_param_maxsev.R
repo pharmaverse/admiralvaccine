@@ -148,8 +148,8 @@ derive_param_maxsev <- function(dataset,
           FATESTCD == filter_sev & AVALC == "NONE" ~ 0,
           FATESTCD == filter_sev & AVALC == "MILD" ~ 1,
           FATESTCD == filter_sev & AVALC == "MODERATE" ~ 2,
-          FATESTCD == filter_sev & AVALC == "SEVERE" ~ 3
-          ,TRUE ~ AVAL
+          FATESTCD == filter_sev & AVALC == "SEVERE" ~ 3,
+          TRUE ~ AVAL
         )
       )
     # events exclusions
