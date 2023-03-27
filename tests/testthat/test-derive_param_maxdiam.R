@@ -1,7 +1,6 @@
 library(admiraldev)
 library(rlang)
 library(diffdf)
-library(tidyverse)
 library(dplyr)
 
 # testthat
@@ -15,7 +14,6 @@ testthat::test_that("derive_param_maxdiam Test 1: Check if a new record is
     "ABC001", "REDNESS", "VACC 2", 8, "Diameter", "DIAM", "Admin", "REDNESS-VAC2", "DAY2"
   )
 
-  # Expected Output
 
   temp <- input %>%
     group_by(USUBJID, FAOBJ, FASCAT, ATPTREF, FALNKGRP) %>%
@@ -28,7 +26,6 @@ testthat::test_that("derive_param_maxdiam Test 1: Check if a new record is
     )
   expected <- bind_rows(input, temp)
 
-  # Actual Output
   actual <- derive_param_maxdiam(
     dataset = input,
     filter = FAOBJ == "REDNESS" & FATESTCD == "DIAM",
@@ -40,7 +37,7 @@ testthat::test_that("derive_param_maxdiam Test 1: Check if a new record is
   expect_dfs_equal(actual, expected, keys = c("USUBJID", "FAOBJ", "FALNKGRP", "FATPT"))
 })
 
-# testthat
+
 testthat::test_that("derive_param_maxdiam Test 2:Check if filter condition and
                     test/testcd values works fine", {
   input <- tribble(
@@ -53,7 +50,7 @@ testthat::test_that("derive_param_maxdiam Test 2:Check if filter condition and
     "ABC001", "Swelling", "VACC 2", 8, "DIAM", "Admin site", "DAY 2", "Swelling-VAC2"
   )
 
-  # Expected Output
+
   temp <- input %>%
     group_by(USUBJID, FAOBJ, FASCAT, ATPTREF, FALNKGRP) %>%
     filter(FAOBJ %in% c("Redness", "Swelling") & FATESTCD == "DIAM") %>%
@@ -66,7 +63,7 @@ testthat::test_that("derive_param_maxdiam Test 2:Check if filter condition and
     )
   expected <- bind_rows(input, temp)
 
-  # Actual Output
+
   actual <- derive_param_maxdiam(
     dataset = input,
     filter = FAOBJ %in% c("Redness", "Swelling") & FATESTCD == "DIAM",
@@ -78,7 +75,6 @@ testthat::test_that("derive_param_maxdiam Test 2:Check if filter condition and
   expect_dfs_equal(actual, expected, keys = c("USUBJID", "FAOBJ", "FALNKGRP", "FATPT"))
 })
 
-# testthat
 testthat::test_that("derive_param_maxdiam Test 3: Check if there are multiple records with
           maximum diameter within by group then the MAXDIAM record is identified
           correctly", {
@@ -92,7 +88,7 @@ testthat::test_that("derive_param_maxdiam Test 3: Check if there are multiple re
     "ABC001", "Swelling", "VAC2", 9, "DIAM", "Admin site", 6, "2015-02-11", "Swelling-VAC2"
   )
 
-  # Expected Output
+
   temp <- input %>%
     group_by(USUBJID, FAOBJ, FASCAT, ATPTREF, FALNKGRP) %>%
     filter(FAOBJ %in% c("Swelling") & FATESTCD == "DIAM") %>%
@@ -105,7 +101,7 @@ testthat::test_that("derive_param_maxdiam Test 3: Check if there are multiple re
     )
   expected <- bind_rows(input, temp)
 
-  # Actual Output
+
   actual <- derive_param_maxdiam(
     dataset = input,
     filter = FAOBJ %in% c("REDNESS", "Swelling") & FATESTCD == "DIAM",
