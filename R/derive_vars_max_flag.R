@@ -30,7 +30,6 @@
 #'
 #' @examples
 #' library(dplyr)
-#' library(tidyverse)
 #' library(admiraldev)
 #' library(admiral)
 #' library(tibble)
