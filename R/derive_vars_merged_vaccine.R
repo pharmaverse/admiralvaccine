@@ -55,7 +55,7 @@
 #'   dataset_ex = ex,
 #'   dataset_supp = NULL,
 #'   dataset_suppex = NULL,
-#'   ex_vars = exprs(EXTRT,EXDOSE,EXDOSEU,EXSTDTC,EXENDTC)
+#'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSEU, EXSTDTC, EXENDTC)
 #' )
 #'
 derive_vars_merged_vaccine <- function(dataset,
