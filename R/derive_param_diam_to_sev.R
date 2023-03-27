@@ -187,7 +187,7 @@ derive_param_diam_to_sev <- function(dataset = NULL,
         FATESTCD = testcd_sev,
         FATEST = test_sev,
         DTYPE = "DERIVED",
-        FASEQ="",
+        FASEQ=NA_integer_,
         AVALC = if_else(
           none[1] <= AVAL & AVAL <= none[2],
           "NONE",
