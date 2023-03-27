@@ -1,6 +1,9 @@
 library(rlang)
 library(dplyr)
 library(tibble)
+library(diffdf)
+library(testthat)
+library(admiraldev)
 
 test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS`", {
@@ -26,7 +29,8 @@ test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicatin
       FATEST = "Severity/Intensity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED"
+      DTYPE = "DERIVED",
+      FASEQ=""
     )
 
   format_aval <- function(x) {
@@ -85,7 +89,8 @@ test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicatin
       FATEST = "Severity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED"
+      DTYPE = "DERIVED",
+      FASEQ=""
     )
 
   format_aval <- function(x) {
@@ -144,7 +149,8 @@ test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
       FATEST = "Severity/Intensity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED"
+      DTYPE = "DERIVED",
+      FASEQ=""
     )
 
   format_aval <- function(x) {
@@ -210,7 +216,8 @@ test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
       FATEST = "Severity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED"
+      DTYPE = "DERIVED",
+      FASEQ=""
     )
 
   format_aval <- function(x) {
@@ -269,7 +276,8 @@ test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
       FATEST = "Severity/Intensity/Sev",
       FATESTCD = "SEVERITY/SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED"
+      DTYPE = "DERIVED",
+      FASEQ=""
     )
 
   format_aval <- function(x) {
