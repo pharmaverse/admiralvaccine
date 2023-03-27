@@ -27,14 +27,18 @@ vs <- tribble(
   "ABC101", "TEMP", "REACTOGENICITY", 38, "C", "DAY 7"
 )
 
-expected1 <- vs %>% mutate(FAOBJ='FEVER', FATESTCD='OCCUR', FACAT='REACTOGENICITY',
-                           FASCAT='SYSTEMIC', FATEST='Occurrence Indicator',
-                           FAORRES=ifelse(VSSTRESN>=38, 'Y', 'N'),
-                           FASTRESC=ifelse(VSSTRESN>=38, 'Y', 'N'),
-                           DTYPE='DERIVED') %>%
-  rename(FATPT=VSTPT) %>% select(-VSCAT)
+expected1 <- vs %>%
+  mutate(
+    FAOBJ = "FEVER", FATESTCD = "OCCUR", FACAT = "REACTOGENICITY",
+    FASCAT = "SYSTEMIC", FATEST = "Occurrence Indicator",
+    FAORRES = ifelse(VSSTRESN >= 38, "Y", "N"),
+    FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N"),
+    DTYPE = "DERIVED"
+  ) %>%
+  rename(FATPT = VSTPT) %>%
+  select(-VSCAT)
 
-expected <- bind_rows(face,expected1)
+expected <- bind_rows(face, expected1)
 
 actual <- derive_param_fever_occur(
   dataset = face,
@@ -43,11 +47,13 @@ actual <- derive_param_fever_occur(
 )
 
 
-testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset
+testthat::test_that(
+  'derive_param_fever_occur Test 1: how the actual dataset
                     is generated if FAOBJ="FEVER", if the FEVER records are not in FACE',
-                    expect_dfs_equal(actual,
-                                     expected,
-                                     keys = c('USUBJID','FAOBJ','FATESTCD','FATEST','FATPT'))
+  expect_dfs_equal(actual,
+    expected,
+    keys = c("USUBJID", "FAOBJ", "FATESTCD", "FATEST", "FATPT")
+  )
 )
 
 
@@ -57,10 +63,10 @@ testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset
 
 face <- tribble(
   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FACAT, ~FASCAT, ~FATPT, ~FAORRES, ~FASTRESC,
-  "ABC101", "REDNESS", "SEV", "REACTOGENICITY", "ADMINISTRATIVE SITE", "DAY 1",NA, NA,
-  "ABC101", "REDNESS", "DIAM", "REACTOGENICITY", "ADMINISTRATIVE SITE", "DAY 2",NA, NA,
-  "ABC101", "VOMITTING", "SEV", "REACTOGENICITY", "SYSTEMIC", "DAY 1",NA, NA,
-  "ABC101", "FEVER", "OCCUR", "REACTOGENICITY", "SYSTEMIC", "DAY 3",'Y', 'Y',
+  "ABC101", "REDNESS", "SEV", "REACTOGENICITY", "ADMINISTRATIVE SITE", "DAY 1", NA, NA,
+  "ABC101", "REDNESS", "DIAM", "REACTOGENICITY", "ADMINISTRATIVE SITE", "DAY 2", NA, NA,
+  "ABC101", "VOMITTING", "SEV", "REACTOGENICITY", "SYSTEMIC", "DAY 1", NA, NA,
+  "ABC101", "FEVER", "OCCUR", "REACTOGENICITY", "SYSTEMIC", "DAY 3", "Y", "Y",
 )
 
 vs <- tribble(
@@ -83,6 +89,7 @@ actual <- derive_param_fever_occur(
 )
 
 
-testthat::test_that('derive_param_fever_occur Test 2: how the actual dataset is generated if FAOBJ="FEVER", if the FEVER records are  in FACE',
-                    testthat::expect_equal(actual, expected)
+testthat::test_that(
+  'derive_param_fever_occur Test 2: how the actual dataset is generated if FAOBJ="FEVER", if the FEVER records are  in FACE',
+  testthat::expect_equal(actual, expected)
 )
