@@ -38,7 +38,6 @@ utility will throw error and flags will not be created.
 }
 \examples{
 library(dplyr)
-library(tidyverse)
 library(admiraldev)
 library(admiral)
 library(tibble)
