@@ -12,11 +12,14 @@ library(dplyr)
 test_that("derive_vars_merged_vaccine test 1 - Merging EXTRT variable from EX to FACE", {
   face <- tribble(
     ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT, ~FATPTREF,
-    "ABC101", "REACTO", "ADMINISTRATION SITE", "SEV", "Redness", "Severity", "ARM",
+    "ABC101", "REACTO", "ADMINISTRATION SITE", "SEV", "Redness", "Severity",
+    "ARM",
     "RIGHT", "VAC 1",
-    "ABC101", "REACTO", "ADMINISTRATION SITE", "DIAMETER", "Redness", "Diameter", "ARM",
+    "ABC101", "REACTO", "ADMINISTRATION SITE", "DIAMETER", "Redness",
+    "Diameter", "ARM",
     "LEFT", "VAC 1",
-    "ABC101", "REACTO", "ADMINISTRATION SITE", "MAXDIAM", "Redness", "Maximum Diameter",
+    "ABC101", "REACTO", "ADMINISTRATION SITE", "MAXDIAM", "Redness",
+    "Maximum Diameter",
     NA, NA, "VAC 2",
     "ABC101", "REACTO", "SYSTEMIC", "OCCUR", "Fatigue", "Occurrence", "LEG", "LEFT", "VAC 3",
     "ABC101", "REACTO", "ADMINISTRATION SITE", "OCCUR", "Erythema", "Occurrence", "LEG",
