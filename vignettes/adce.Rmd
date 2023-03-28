@@ -67,11 +67,12 @@ otherwise specified.*
 ## Read in Data {#readdata}
 Assumption: The CE domain has already been merged with the SUPPCE dataset. If this is not yet the case, join SUPPCE onto parent CE domain using xxxx.
 
-```{r, eval=FALSE,message=FALSE, warning=FALSE}
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
 library(admiraldev)
 library(admiral)
 library(dplyr)
 library(lubridate)
+library(admiralvaccine)
 
 data("ce")
 data("admiralvaccine_adsl")
