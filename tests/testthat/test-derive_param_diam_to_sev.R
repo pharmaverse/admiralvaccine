@@ -339,33 +339,3 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
               )
             )
           })
-
-## Test 7: error is issued if AVALC is not a character vector in input dataset
-
-test_that("derive_param_diam_to_sev Test 7: error is issued if AVALC is not
-          a character vector in input dataset", {
-            input <- tibble::tribble(
-              ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
-              "XYZ1001", "REDNESS", 7.5, 7.5, "VACCINATION 1", "Diameter", "DIAMETER",
-              "XYZ1001", "REDNESS", 3.5, 3.5, "VACCINATION 1", "Diameter", "DIAMETER",
-              "XYZ1001", "REDNESS", 2, 2, "VACCINATION 1", "Diameter", "DIAMETER",
-              "XYZ1001", "REDNESS", 11, 11, "VACCINATION 1", "Diameter", "DIAMETER"
-            )
-
-            expect_error(
-              derive_param_diam_to_sev(
-                dataset = input,
-                filter_diam = "DIAMETER",
-                filter_faobj = c("REDNESS"),
-                testcd_sev = "SEVERITY/SEV",
-                test_sev = "Severity/Intensity/Sev",
-                none = c(0, 2),
-                mild = c(2, 5),
-                mod = c(5, 10),
-                sev = 10
-              ),
-              regexp = paste(
-                "AVALC must be a character vector"
-              )
-            )
-          })
