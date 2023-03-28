@@ -172,13 +172,6 @@ derive_param_diam_to_sev <- function(dataset = NULL,
     fil_rec <- dataset
   }
 
-  # check if AVALC is a character vector
-  if (class(fil_rec$AVALC) != "character") {
-    stop(
-      paste0("AVALC must be a character vector")
-    )
-  }
-
   # Replacing FATESTCD and FATEST for Diameter with Severity
   if (c(filter_diam) %in% diam$FATESTCD) {
     sev <- fil_rec %>%
