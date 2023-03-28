@@ -49,7 +49,8 @@ actual <- derive_param_fever_occur(
 
 testthat::test_that(
   'derive_param_fever_occur Test 1: how the actual dataset
-                    is generated if FAOBJ="FEVER", if the FEVER records are not in FACE',
+                    is generated if FAOBJ="FEVER", if the FEVER records are not
+  in FACE',
   expect_dfs_equal(actual,
     expected,
     keys = c("USUBJID", "FAOBJ", "FATESTCD", "FATEST", "FATPT")
@@ -63,8 +64,10 @@ testthat::test_that(
 
 face <- tribble(
   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FACAT, ~FASCAT, ~FATPT, ~FAORRES, ~FASTRESC,
-  "ABC101", "REDNESS", "SEV", "REACTOGENICITY", "ADMINISTRATIVE SITE", "DAY 1", NA, NA,
-  "ABC101", "REDNESS", "DIAM", "REACTOGENICITY", "ADMINISTRATIVE SITE", "DAY 2", NA, NA,
+  "ABC101", "REDNESS", "SEV", "REACTOGENICITY", "ADMINISTRATIVE SITE", "DAY 1",
+  NA, NA,
+  "ABC101", "REDNESS", "DIAM", "REACTOGENICITY", "ADMINISTRATIVE SITE", "DAY 2",
+  NA, NA,
   "ABC101", "VOMITTING", "SEV", "REACTOGENICITY", "SYSTEMIC", "DAY 1", NA, NA,
   "ABC101", "FEVER", "OCCUR", "REACTOGENICITY", "SYSTEMIC", "DAY 3", "Y", "Y",
 )
@@ -90,6 +93,7 @@ actual <- derive_param_fever_occur(
 
 
 testthat::test_that(
-  'derive_param_fever_occur Test 2: how the actual dataset is generated if FAOBJ="FEVER", if the FEVER records are  in FACE',
+  'derive_param_fever_occur Test 2: how the actual dataset is generated
+  if FAOBJ="FEVER", if the FEVER records are  in FACE',
   testthat::expect_equal(actual, expected)
 )
