@@ -42,7 +42,10 @@ testthat::test_that("test-1:checking", {
     mutate(
       PARCAT1 = FACAT,
       PARCAT2 = FASCAT,
-      PARAM = gsub("(^[[:space:]]+|[[:space:]]+$)", "", str_to_sentence(paste0(FAOBJ, " ", FATEST)))
+      PARAM = gsub(
+        "(^[[:space:]]+|[[:space:]]+$)", "",
+        str_to_sentence(paste0(FAOBJ, " ", FATEST))
+      )
     )
   expout2 <- expout1 %>%
     distinct(PARAM, .keep_all = FALSE) %>%
@@ -82,14 +85,22 @@ testthat::test_that("test-2:checking whether PARAM  getting concatenated with
 
   input <- tribble(
     ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALAT, ~FALOC, ~FADIR,
-    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Redness", "Severity", "DELTOID MUSCLE", "LEFT", NA,
-    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "DIAMETER", "Redness", "Diameter", "DELTOID MUSCLE", "LEFT", NA,
-    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "MAXDIAM", "Redness", "Maximum Diameter", "DELTOID MUSCLE", "RIGHT", NA,
-    "ABC101", "REACTOGENICITY", "SYSTEMIC", "MAXTEMP", "Fever", "Maximum Temp", NA, NA, NA,
-    "ABC101", "REACTOGENICITY", "SYSTEMIC", "OCCUR", "Fever", "Occurrence", NA, NA, NA,
-    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Erythema", "Occurrence", "RIGHT", NA, NA,
-    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Swelling", "Severity", NA, NA, NA,
-    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Swelling", "Occurrence", NA, "RIGHT", NA
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Redness", "Severity",
+    "DELTOID MUSCLE", "LEFT", NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "DIAMETER", "Redness", "Diameter",
+    "DELTOID MUSCLE", "LEFT", NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "MAXDIAM", "Redness", "Maximum Diameter",
+    "DELTOID MUSCLE", "RIGHT", NA,
+    "ABC101", "REACTOGENICITY", "SYSTEMIC", "MAXTEMP", "Fever", "Maximum Temp",
+    NA, NA, NA,
+    "ABC101", "REACTOGENICITY", "SYSTEMIC", "OCCUR", "Fever", "Occurrence",
+    NA, NA, NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Erythema", "Occurrence",
+    "RIGHT", NA, NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Swelling", "Severity", NA,
+    NA, NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Swelling", "Occurrence",
+    NA, "RIGHT", NA
   )
 
 
