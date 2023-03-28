@@ -71,12 +71,12 @@ derive_vars_merged_vaccine <- function(dataset,
 
   # combine face and suppface dataset
   if (!is.null(dataset_supp)) {
-    dataset <- metatools::combine_supp(dataset, dataset_supp)
+    dataset <- combine_supp(dataset, dataset_supp)
   }
 
   # combine face and suppface dataset
   if (!is.null(dataset_suppex)) {
-    dataset_ex <- metatools::combine_supp(dataset_ex, dataset_suppex)
+    dataset_ex <- combine_supp(dataset_ex, dataset_suppex)
   }
 
   # Variables check for FACE
