@@ -15,6 +15,7 @@ A SDTM CE dataset
 }
 \seealso{
 Other dataset: 
+\code{\link{adsl}},
 \code{\link{ae}},
 \code{\link{dm}},
 \code{\link{ex}},
