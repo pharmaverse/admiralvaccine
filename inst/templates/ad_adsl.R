@@ -9,7 +9,7 @@ library(dplyr)
 library(lubridate)
 library(stringr)
 library(admiraldev)
-
+library(admiralvaccine)
 # Load source datasets
 
 # Use e.g. haven::read_sas to read in .sas7bdat, or other suitable functions
