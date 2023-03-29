@@ -84,5 +84,6 @@ globalVariables(c(
   'DTYPE = "MAXIMUM"',
   'FATESTCD = "MAXSEV"',
   'FATEST = "MAXIMUM SEVERITY"',
-  "FASCAT"
+  "FASCAT",
+  "VISITNUM"
 ))
