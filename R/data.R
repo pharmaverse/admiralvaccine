@@ -68,6 +68,5 @@
 #'
 #' @keywords dataset
 #' @family dataset
-#' Template adsl dataset associated with the `dm` and `ex` datasets
 #'
 "admiralvaccine_adsl"
