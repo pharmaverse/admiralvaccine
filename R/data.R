@@ -69,4 +69,4 @@
 #' @keywords dataset
 #' @family dataset
 #'
-"admiralvaccine_adsl"
+"adsl"
