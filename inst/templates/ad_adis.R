@@ -10,6 +10,7 @@ library(metatools)
 library(dplyr)
 library(lubridate)
 library(rlang)
+library(admiralvaccine)
 
 
 # Load source datasets ----
