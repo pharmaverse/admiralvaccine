@@ -4,7 +4,6 @@ library(rlang)
 library(diffdf)
 library(tidyr)
 library(testthat)
-library(metatools)
 library(tibble)
 library(dplyr)
 
