@@ -61,3 +61,12 @@
 #' @keywords dataset
 #' @family dataset
 "vs"
+
+#' Subject Level Analysis Dataset
+#'
+#' A subject level analysis dataset
+#'
+#' @keywords dataset
+#' @family dataset
+#'
+"adsl"
