@@ -1,7 +1,9 @@
 table_supp <- matrix(NA, nrow = 80, ncol = 10)
 
-colnames(table_supp) <- c("STUDYID", "RDOMAIN", "USUBJID", "IDVAR", "IDVARVAL",
-                          "QNAM", "QLABEL", "QVAL", "QORIG", "QEVAL")
+colnames(table_supp) <- c(
+  "STUDYID", "RDOMAIN", "USUBJID", "IDVAR", "IDVARVAL",
+  "QNAM", "QLABEL", "QVAL", "QORIG", "QEVAL"
+)
 
 table_supp1 <- as.data.frame(table_supp)
 

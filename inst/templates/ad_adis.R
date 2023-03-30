@@ -249,8 +249,8 @@ is5_sercat1n <- derive_vars_merged_lookup(
 # and/or ULOQ is present in your study
 is6 <- is5_sercat1n %>%
   mutate(DTYPE = if_else(DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ISSTRESN < ISLLOQ,
-                         "HALFLLQ",
-                         as.character(NA)
+    "HALFLLQ",
+    as.character(NA)
   ))
 
 # STEP 7: ABLFL and BASE variables derivation
