@@ -283,7 +283,8 @@ is6_basetype <- derive_var_basetype(
 
 # BASECAT derivation
 base_data <- is6_basetype %>%
-  select(STUDYID, USUBJID, VISITNUM, PARAMCD, BASE)
+  select(STUDYID, USUBJID, VISITNUM, PARAMCD, BASE) %>%
+  distinct()
 
 basecat1 <- function(base) {
   case_when(
