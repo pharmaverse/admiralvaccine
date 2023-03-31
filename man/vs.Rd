@@ -23,7 +23,8 @@ Other dataset:
 \code{\link{ex}},
 \code{\link{face}},
 \code{\link{is}},
-\code{\link{suppis}}
+\code{\link{suppis}},
+\code{\link{vx_adsl}}
 }
 \concept{dataset}
 \keyword{dataset}

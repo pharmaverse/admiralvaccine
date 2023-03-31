@@ -80,3 +80,12 @@
 #' @family dataset
 #'
 "adsl"
+
+#' Vx - Subject Level Analysis Dataset
+#'
+#' A subject level analysis dataset
+#'
+#' @keywords dataset
+#' @family dataset
+#'
+"vx_adsl"
