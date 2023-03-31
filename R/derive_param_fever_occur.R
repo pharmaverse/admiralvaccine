@@ -1,6 +1,6 @@
-#' derive_param_fever_occur.R
-#'
-#' Getting `FAOBJ = "FEVER"` records from `SDTM.VS` dataset, if there are no
+#' Creating FEVER records
+#' 
+#' Getting `FAOBJ = "FEVER" and FATESTCD = "OCCUR"` records from `SDTM.VS` dataset, if there are no
 #' FEVER records in input dataset
 #'
 #' @param dataset Input dataset
