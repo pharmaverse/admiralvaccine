@@ -15,7 +15,7 @@ A SDTM VS dataset
 }
 \seealso{
 Other dataset: 
-\code{\link{admiralvaccine_adsl}},
+\code{\link{adsl}},
 \code{\link{ae}},
 \code{\link{ce}},
 \code{\link{dm}},

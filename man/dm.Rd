@@ -15,7 +15,11 @@ A SDTM DM dataset
 }
 \seealso{
 Other dataset: 
+<<<<<<< HEAD
 \code{\link{admiralvaccine_adsl}},
+=======
+\code{\link{adsl}},
+>>>>>>> origin/85-adsl_vaccine@devel
 \code{\link{ae}},
 \code{\link{ce}},
 \code{\link{ex}},
