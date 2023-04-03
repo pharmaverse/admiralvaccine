@@ -1,5 +1,5 @@
-#' `derive_vars_params.R`
-#'
+#' Assigning Parameter variables
+#' 
 #' Creating `PARAMCD` from lookup file and assigning `PARAM`,`PARAMN`,`PARCAT1`,
 #' `PARCAT2` variables
 #'
