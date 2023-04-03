@@ -14,8 +14,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(admiral)
-install.packages("metatools", repos = "https://cloud.r-project.org")
-library(metatools)
 link <- function(text, url) {
   return(
     paste0(
