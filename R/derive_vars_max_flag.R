@@ -1,6 +1,6 @@
 #' Creating Maximum flags
-#' 
-#' Adds Flags variables for maximum record per subject per event for overall 
+#'
+#' Adds Flags variables for maximum record per subject per event for overall
 #' and per vaccination
 #'
 #' @param dataset Input dataset
