@@ -9,4 +9,6 @@ upstream_repos:
     host: https://github.com
   - repo: pharmaverse/admiraldev
     host: https://github.com
+  - repo: pharmaverse/metatools
+    host: https://github.com
 downstream_repos:
