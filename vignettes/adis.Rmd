@@ -85,7 +85,7 @@ devtools::load_all()
 
 library(admiral)
 library(admiral.test)
-#install.packages("metatools", repos = "https://cloud.r-project.org")
+# install.packages("metatools", repos = "https://cloud.r-project.org")
 library(metatools)
 library(dplyr)
 library(lubridate)
@@ -432,7 +432,6 @@ is7 <- derive_var_merged_cat(
   source_var = BASE,
   cat_fun = basecat1
 )
-
 ```
 
 
