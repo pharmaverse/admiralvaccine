@@ -6,8 +6,6 @@ vignette: >
   %\VignetteIndexEntry{Creating ADSL}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
@@ -448,7 +446,7 @@ is8 <- is7 %>%
 
 
 ## Derive CRITx variables {#crit}
-Derive Criteria Evaluation Analysis FLags.
+Derive Criteria Evaluation Analysis Flags.
 
 The function selects a subset of rows from the input dataset and apply to them a
 criterion. If this criterion is met then `CRIT1FL` (or the name you specified in the first argument) is equal to "Y". "N" otherwise.
