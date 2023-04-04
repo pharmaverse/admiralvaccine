@@ -24,7 +24,7 @@ The variables specified by the \code{ex_vars} argument are expected.}
 
 \item{dataset_supp}{Supplementary input dataset
 By default \code{dataset_supp} will be NULL,user has to provide
-supplementary dataset to merge it back with orginal input dataset
+supplementary dataset to merge it back with original input dataset
 if they have supplementary dataset in their case.}
 
 \item{dataset_suppex}{Supplementary EX dataset
