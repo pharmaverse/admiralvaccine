@@ -31,7 +31,8 @@ Imports:
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
     tidyr (>= 1.0.2),
-    tidyselect (>= 1.0.0)
+    tidyselect (>= 1.0.0),
+    metatools
 Suggests:
     admiral.test,
     devtools,
