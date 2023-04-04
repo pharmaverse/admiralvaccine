@@ -192,7 +192,7 @@ is2_ady <- derive_vars_dy(
 
 ## Parameters derivation {#param}
 In this template, duplicated records for `PARAMCD` have been created.
-In particular, you may find 4 different paramters values:
+In particular, you may find 4 different parameters values:
 
 - Original values and relative log10 values;
 
