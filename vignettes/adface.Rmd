@@ -62,7 +62,7 @@ unless otherwise specified.*
 -   [Derive `AVAL`,`AVALC`](#aval)
 -   [Derive severity records for Redness and swelling](#sev)
 -   [Derive maximum severity records](#maxsev)
--   [Derive maximun diameter records](#maxdiam)
+-   [Derive maximum diameter records](#maxdiam)
 -   [Derive maximum temperature records](#maxtemp)
 -   [Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`](#paramcd)
 -   [Derive maximum severity flag](#maxflag)

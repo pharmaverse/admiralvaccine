@@ -69,3 +69,31 @@
 #' @keywords dataset
 #' @family dataset
 "adsl_vax"
+
+#' Subject Level Analysis Dataset
+#'
+#' An example subject level analysis dataset
+#' @keywords dataset
+#' @family dataset
+#' @source
+#' Template adsl dataset associated with the `dm` and `ex` datasets
+#'
+"admiralvaccine_adsl"
+
+#' Subject Level Analysis Dataset
+#'
+#' A subject level analysis dataset
+#'
+#' @keywords dataset
+#' @family dataset
+#'
+"adsl"
+
+#' Vx - Subject Level Analysis Dataset
+#'
+#' A subject level analysis dataset
+#'
+#' @keywords dataset
+#' @family dataset
+#'
+"vx_adsl"
