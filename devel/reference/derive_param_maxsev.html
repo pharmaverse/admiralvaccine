@@ -37,14 +37,6 @@ events which has severity records FATESTCD = "SEV".'><meta property="og:image" c
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -62,7 +54,7 @@ events which has severity records FATESTCD = "SEV".'><meta property="og:image" c
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Creating Maximum Severity Records</h1>
-      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/admiralvaccine/blob/main/R/derive_param_maxsev_draft.R" class="external-link"><code>R/derive_param_maxsev_draft.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pharmaverse/admiralvaccine/blob/main/R/derive_param_maxsev.R" class="external-link"><code>R/derive_param_maxsev.R</code></a></small>
       <div class="d-none name"><code>derive_param_maxsev.Rd</code></div>
     </div>
 
@@ -75,12 +67,12 @@ events which has severity records <code>FATESTCD = "SEV"</code>.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">derive_param_maxsev</span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">dataset</span>,</span>
 <span>  exclude_events <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  filter_sev <span class="op">=</span> <span class="st">"SEV"</span>,</span>
 <span>  test_maxsev <span class="op">=</span> <span class="st">"Maximum Severity"</span>,</span>
 <span>  testcd_maxsev <span class="op">=</span> <span class="st">"MAXSEV"</span>,</span>
-<span>  by_vars <span class="op">=</span> <span class="fu">exprs</span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">FAOBJ</span>, <span class="va">ATPTREF</span><span class="op">)</span></span>
+<span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">FAOBJ</span>, <span class="va">ATPTREF</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -148,6 +140,16 @@ maximum severity records for the specified variables in <code>by_vars</code>. <c
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>ADXX Functions that returns variable appended to dataset: 
+<code><a href="derive_param_diam_to_sev.html">derive_param_diam_to_sev</a>()</code>,
+<code><a href="derive_param_fever_occur.html">derive_param_fever_occur</a>()</code>,
+<code><a href="derive_param_maxdiam.html">derive_param_maxdiam</a>()</code>,
+<code><a href="derive_param_maxtemp.html">derive_param_maxtemp</a>()</code>,
+<code><a href="derive_vars_crit.html">derive_vars_crit</a>()</code>,
+<code><a href="derive_vars_event_flag.html">derive_vars_event_flag</a>()</code>,
+<code><a href="derive_vars_max_flag.html">derive_vars_max_flag</a>()</code>,
+<code><a href="derive_vars_merged_vaccine.html">derive_vars_merged_vaccine</a>()</code>,
+<code><a href="derive_vars_params.html">derive_vars_params</a>()</code>,
+<code><a href="derive_vars_vaxdt.html">derive_vars_vaxdt</a>()</code>,
 <code><a href="hello_admiral.html">hello_admiral</a>()</code></p></div>
     </div>
     <div class="section level2">
@@ -160,17 +162,6 @@ maximum severity records for the specified variables in <code>by_vars</code>. <c
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:admiral’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     vars</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter, lag</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org" class="external-link">rlang</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
@@ -225,14 +216,96 @@ maximum severity records for the specified variables in <code>by_vars</code>. <c
 <span class="r-in"><span>  testcd_maxsev <span class="op">=</span> <span class="st">"MAXSEV"</span>,</span></span>
 <span class="r-in"><span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">FAOBJ</span>, <span class="va">ATPTREF</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in assert_list_of(arg, "symbol", named = expect_names, optional = optional):</span> Each element of `arg` must be an object of class/type 'symbol' but the following are not:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> ✖ Element 1 is an object of class 'quosure'</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> ✖ Element 2 is an object of class 'quosure'</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> ✖ Element 3 is an object of class 'quosure'</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> ✖ Element 4 is an object of class 'quosure'</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> ✖ Element 5 is an object of class 'quosure'</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> ✖ Element 6 is an object of class 'quosure'</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> ✖ Element 7 is an object of class 'quosure'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID   FAOBJ AVAL    AVALC ATPTREF           FATEST FATESTCD     FASCAT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  XYZ1001 REDNESS    1     MILD   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  XYZ1001 REDNESS    2 MODERATE   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  XYZ1001 REDNESS    2 MODERATE   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  XYZ1001 REDNESS    2 MODERATE   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  XYZ1001 REDNESS    3   SEVERE   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  XYZ1001 REDNESS    1     MILD   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  XYZ1001 REDNESS    2 MODERATE   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  XYZ1001 REDNESS    1     MILD   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  XYZ1001 REDNESS    1     MILD   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 XYZ1001 REDNESS    0     NONE   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 XYZ1002 REDNESS    1     MILD   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 XYZ1002 REDNESS    1     MILD   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 XYZ1002 REDNESS    0     NONE   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 XYZ1002 REDNESS    1     MILD   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 XYZ1002 REDNESS    0     NONE   VACC1         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 XYZ1002 REDNESS    2 MODERATE   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 XYZ1002 REDNESS    1     MILD   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 XYZ1002 REDNESS    0     NONE   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 XYZ1002 REDNESS    3   SEVERE   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 XYZ1002 REDNESS    0     NONE   VACC2         Severity      SEV ADMIN-SITE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 XYZ1001  CHILLS    2 MODERATE   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 XYZ1001  CHILLS    1     MILD   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 XYZ1001  CHILLS    0     NONE   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 XYZ1001  CHILLS    1     MILD   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 XYZ1001  CHILLS    0     NONE   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 XYZ1001  CHILLS    2 MODERATE   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 XYZ1001  CHILLS    1     MILD   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 XYZ1001  CHILLS    0     NONE   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 XYZ1001  CHILLS    1     MILD   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 XYZ1001  CHILLS    0     NONE   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 XYZ1002  CHILLS    2 MODERATE   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 XYZ1002  CHILLS    1     MILD   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33 XYZ1002  CHILLS    0     NONE   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34 XYZ1002  CHILLS    0     NONE   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35 XYZ1002  CHILLS    0     NONE   VACC1         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36 XYZ1002  CHILLS    1     MILD   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37 XYZ1002  CHILLS    0     NONE   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38 XYZ1002  CHILLS    0     NONE   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39 XYZ1002  CHILLS    2 MODERATE   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40 XYZ1002  CHILLS    0     NONE   VACC2         Severity      SEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41 XYZ1001  CHILLS    2 MODERATE   VACC1 Maximum severity   MAXSEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42 XYZ1001  CHILLS    2 MODERATE   VACC2 Maximum severity   MAXSEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 XYZ1002  CHILLS    2 MODERATE   VACC1 Maximum severity   MAXSEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 XYZ1002  CHILLS    2 MODERATE   VACC2 Maximum severity   MAXSEV   SYSTEMIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      DTYPE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41 MAXIMUM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42 MAXIMUM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 MAXIMUM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 MAXIMUM</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
