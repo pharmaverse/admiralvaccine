@@ -62,14 +62,6 @@
 #' @family dataset
 "vs"
 
-#' ADSL vaccine Dataset
-#'
-#' An ADaM dataset
-#'
-#' @keywords dataset
-#' @family dataset
-"adsl_vax"
-
 #' Subject Level Analysis Dataset
 #'
 #' An example subject level analysis dataset
