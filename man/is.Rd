@@ -15,13 +15,16 @@ A SDTM IS dataset
 }
 \seealso{
 Other dataset: 
+\code{\link{admiralvaccine_adsl}},
+\code{\link{adsl}},
 \code{\link{ae}},
 \code{\link{ce}},
 \code{\link{dm}},
 \code{\link{ex}},
 \code{\link{face}},
 \code{\link{suppis}},
-\code{\link{vs}}
+\code{\link{vs}},
+\code{\link{vx_adsl}}
 }
 \concept{dataset}
 \keyword{dataset}
