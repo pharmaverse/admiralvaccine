@@ -29,7 +29,7 @@ if they have supplementary dataset in their case.}
 
 \item{dataset_suppex}{Supplementary EX dataset
 By default \code{dataset_suppex} will be NULL,user has to provide
-supplementary dataset to merge it back with orginal EX dataset
+supplementary dataset to merge it back with original EX dataset
 if they have supplementary dataset in their case.}
 
 \item{ex_vars}{Variables to be added to the output dataset from EX dataset}
