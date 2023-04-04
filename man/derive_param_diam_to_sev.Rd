@@ -166,6 +166,7 @@ ADXX Functions that returns variable appended to dataset:
 \code{\link{derive_param_maxdiam}()},
 \code{\link{derive_param_maxsev}()},
 \code{\link{derive_param_maxtemp}()},
+\code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
