@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_param_fever_occur.R
 \name{derive_param_fever_occur}
 \alias{derive_param_fever_occur}
-\title{derive_param_fever_occur.R}
+\title{Creating FEVER records}
 \usage{
 derive_param_fever_occur(dataset, source_data, faobj)
 }
@@ -24,7 +24,7 @@ The output dataset contains records with \code{FATESTCD = "OCCUR"}for
 \code{FAOBJ = FEVER} records.
 }
 \description{
-Getting \code{FAOBJ = "FEVER"} records from \code{SDTM.VS} dataset, if there are no
+Getting \verb{FAOBJ = "FEVER" and FATESTCD = "OCCUR"} records from \code{SDTM.VS} dataset, if there are no
 FEVER records in input dataset
 }
 \details{
@@ -79,7 +79,6 @@ ADXX Functions that returns variable appended to dataset:
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
 \code{\link{hello_admiral}()}
 }
 \author{

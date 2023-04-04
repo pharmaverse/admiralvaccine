@@ -1,4 +1,7 @@
-#' `derive_vars_max_flag.R`
+#' Creating Maximum flags
+#'
+#' Adds Flags variables for maximum record per subject per event for overall
+#' and per vaccination
 #'
 #' @param dataset Input dataset
 #'

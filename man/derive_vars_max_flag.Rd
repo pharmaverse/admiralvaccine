@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_vars_max_flag.R
 \name{derive_vars_max_flag}
 \alias{derive_vars_max_flag}
-\title{\code{derive_vars_max_flag.R}}
+\title{Creating Maximum flags}
 \usage{
 derive_vars_max_flag(dataset, flag1 = "ANL01FL", flag2 = "ANL02FL")
 }
@@ -28,7 +28,8 @@ Vaccination
 The output dataset creates \code{ANLxxFL} flags
 }
 \description{
-\code{derive_vars_max_flag.R}
+Adds Flags variables for maximum record per subject per event for overall
+and per vaccination
 }
 \details{
 This utility flags the maximum record per subject per event
@@ -80,7 +81,6 @@ ADXX Functions that returns variable appended to dataset:
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
 \code{\link{hello_admiral}()}
 }
 \author{

@@ -7,8 +7,8 @@ library(dplyr)
 library(lubridate)
 
 # testthat
-testthat::test_that("testcase-1: Getting Vaccination dates from EX and check if output is
-                    merged with ADSL", {
+testthat::test_that("testcase-1: Getting Vaccination dates from EX and
+check if output is merged with ADSL", {
   input <- tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXLNKGRP, ~VISIT,
     "ABC001", "2015-01-10", 1, "DRUG A", "VAC 1", "VISIT 1",
@@ -40,7 +40,11 @@ testthat::test_that("testcase-1: Getting Vaccination dates from EX and check if 
   expected <- temp %>% rename("USUBJID" = "USUBJIDDT")
   i <- 1
   while (i <= 4) {
-    col_name <- paste(as.character("VAX0"), as.character(i), as.character("DT"), sep = "")
+    col_name <- paste(as.character("VAX0"),
+      as.character(i),
+      as.character("DT"),
+      sep = ""
+    )
     expected[col_name] <- as.Date(expected[[col_name]], format = "%Y-%m-%d")
     i <- i + 1
   }
@@ -97,7 +101,10 @@ testthat::test_that("testcase-2: Check if Vaccination date variables are getting
   expected <- temp %>% rename("USUBJID" = "USUBJIDDT")
   i <- 1
   while (i <= 3) {
-    col_name <- paste(as.character("VAX0"), as.character(i), as.character("DT"), sep = "")
+    col_name <- paste(as.character("VAX0"),
+      as.character(i), as.character("DT"),
+      sep = ""
+    )
     print(col_name)
     expected[col_name] <- as.Date(expected[[col_name]], format = "%Y-%m-%d")
     i <- i + 1

@@ -8,6 +8,7 @@
 ^.github$
 ^.lintr$
 ^docs$
+^inst/create_vx_data$
 ^Meta$
 ^codecov\.yml$
 ^man/dev_util_.+\.Rd$
