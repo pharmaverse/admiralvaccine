@@ -10,12 +10,13 @@ library(metatools)
 library(dplyr)
 library(lubridate)
 library(rlang)
+library(admiralvaccine)
 
 
 # Load source datasets ----
 data("is")
 data("suppis")
-data("admiral_adsl")
+data("vx_adsl")
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -25,7 +26,7 @@ data("admiral_adsl")
 
 is <- convert_blanks_to_na(is)
 suppis <- convert_blanks_to_na(suppis)
-adsl <- convert_blanks_to_na(admiral_adsl)
+adsl <- convert_blanks_to_na(vx_adsl)
 
 
 # Derivations ----
@@ -35,7 +36,7 @@ adsl <- convert_blanks_to_na(admiral_adsl)
 is_suppis <- combine_supp(is, suppis)
 
 
-# STEP 2 - Visits and timing vriables derivation.
+# STEP 2 - Visits and timing variables derivation.
 is1 <- is_suppis %>%
   mutate(
     AVISITN = as.numeric(VISITNUM),
@@ -170,7 +171,6 @@ is4 <- derive_vars_merged_lookup(
   by_vars = exprs(PARAM)
 )
 
-
 # STEP 5: PARCAT1 and CUTOFF0x derivations.
 is5 <- is4 %>%
   mutate(
@@ -253,9 +253,7 @@ is6 <- is5_sercat1n %>%
     as.character(NA)
   ))
 
-
-
-# STEP 7: ABLFL and BASE variables cerivation
+# STEP 7: ABLFL and BASE variables derivation
 # ABLFL derivation
 is6_ablfl <- derive_var_relative_flag(
   dataset = is6,
@@ -286,7 +284,8 @@ is6_basetype <- derive_var_basetype(
 
 # BASECAT derivation
 base_data <- is6_basetype %>%
-  select(STUDYID, USUBJID, VISITNUM, PARAMCD, BASE)
+  select(STUDYID, USUBJID, VISITNUM, PARAMCD, BASE) %>%
+  distinct()
 
 basecat1 <- function(base) {
   case_when(
@@ -305,3 +304,58 @@ is7 <- derive_var_merged_cat(
   source_var = BASE,
   cat_fun = basecat1
 )
+
+# STEP 8 Derivation of Change from baseline and Ratio to baseline ----
+is8 <- is7 %>%
+  derive_var_chg() %>%
+  derive_var_analysis_ratio(numer_var = AVAL, denom_var = BASE)
+
+# STEP 9 Derivation of CRITyFL and CRITyFN ----
+
+is9 <- derive_vars_crit(
+  dataset = is8,
+  new_var = "CRIT1",
+  label_var = "Titer >= ISLLOQ",
+  condition = !is.na(AVAL) & !is.na(ISLLOQ),
+  criterion = AVAL >= ISLLOQ
+)
+
+# STEP 10  Merge with ADSL ----
+
+# Get list of ADSL variables not to be added to ADIS
+vx_adsl_vars <- exprs(RFSTDTC)
+
+is10 <- derive_vars_merged(
+  dataset = is9,
+  dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
+  by_vars = exprs(STUDYID, USUBJID)
+)
+
+# STEP 11 Derivation of TRTP/A treatment variables ----
+
+is11 <- is10 %>%
+  mutate(TRTP = TRT01P, TRTA = TRT01A)
+
+# STEP 12 Derivation of PPSRFL ----
+
+is12a <- is11 %>%
+  filter(VISITNUM == 10) %>%
+  derive_var_merged_exist_flag(
+    dataset_add = vx_adsl,
+    by_vars = exprs(STUDYID, USUBJID),
+    new_var = PPSRFL,
+    condition = PPROTFL == "Y",
+    true_value = "Y"
+  )
+
+is12b <- is11 %>%
+  filter(VISITNUM == 30) %>%
+  derive_var_merged_exist_flag(
+    dataset_add = vx_adsl,
+    by_vars = exprs(STUDYID, USUBJID),
+    new_var = PPSRFL,
+    condition = PPROTFL == "Y",
+    true_value = "Y"
+  )
+
+is12 <- bind_rows(is12a, is12b)
