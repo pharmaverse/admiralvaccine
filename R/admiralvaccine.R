@@ -26,7 +26,7 @@
 #' @importFrom tidyselect all_of contains vars_select
 #' @importFrom hms as_hms
 #' @importFrom lifecycle deprecate_warn deprecated deprecate_stop
-#' @importFrom admiral derive_vars_dy
+#' @importFrom admiral derive_vars_dy derive_vars_merged
 #' @importFrom admiraldev assert_logical_scalar assert_character_vector assert_vars
-#'             assert_data_frame assert_character_scalar
+#'             assert_data_frame assert_character_scalar assert_filter_cond assert_order_vars
 "_PACKAGE"
