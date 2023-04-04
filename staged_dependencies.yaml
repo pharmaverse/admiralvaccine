@@ -9,7 +9,7 @@ upstream_repos:
     host: https://github.com
   - repo: pharmaverse/admiraldev
     host: https://github.com
-  - repo: pharmaverse/metacore
+  - repo: atorus-research/metacore
     host: https://github.com
   - repo: pharmaverse/metatools
     host: https://github.com
