@@ -151,10 +151,12 @@ adsl <- derive_vars_vaxdt(
 
 # Creating period variables (Study Specific)
 adsl <- adsl %>%
-  mutate(AP01SDT = VAX01DT,
-         AP02SDT = VAX02DT,
-         AP01EDT = VAX02DT-1,
-         AP02EDT = as.POSIXct(RFENDTC))
+  mutate(
+    AP01SDT = VAX01DT,
+    AP02SDT = VAX02DT,
+    AP01EDT = VAX02DT - 1,
+    AP02EDT = as.POSIXct(RFENDTC)
+  )
 # Save output
 dir <- tempdir()
 save(adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")
