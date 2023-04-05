@@ -8,6 +8,7 @@ library(admiral.test) # Contains example datasets from the CDISC pilot project
 library(dplyr)
 library(lubridate)
 library(stringr)
+library(tidyr)
 library(admiraldev)
 library(admiralvaccine)
 # Load source datasets
@@ -148,7 +149,12 @@ adsl <- derive_vars_vaxdt(
   order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
 )
 
-
+# Creating period variables (Study Specific)
+adsl <- adsl %>%
+  mutate(AP01SDT = VAX01DT,
+         AP02SDT = VAX02DT,
+         AP01EDT = VAX02DT-1,
+         AP02EDT = as.POSIXct(RFENDTC))
 # Save output
 dir <- tempdir()
 save(adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")
