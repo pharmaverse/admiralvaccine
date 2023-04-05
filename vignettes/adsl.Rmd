@@ -265,7 +265,7 @@ adsl <- derive_vars_vaxdt(
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adsl,
-  display_vars = exprs(USUBJID,VAX01DT,VAX02DT)
+  display_vars = exprs(USUBJID, VAX01DT, VAX02DT)
 )
 ```
 
