@@ -79,11 +79,7 @@ ADIS development.
 In this template, `SDTM.IS`, `SDTM.SUPPIS` and `ADAM.ADSL` has been used.
 
 ```{r, eval=TRUE, message=FALSE, warning=FALSE}
-devtools::load_all()
 
-library(admiral)
-library(admiral.test)
-# install.packages("metatools", repos = "https://cloud.r-project.org")
 library(metatools)
 library(dplyr)
 library(lubridate)
