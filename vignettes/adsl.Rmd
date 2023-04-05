@@ -33,8 +33,6 @@ otherwise specified.*
 * [Derive Period, Subperiod, and Phase Variables (e.g. `APxxSDT`, `APxxEDT`, ...)](#periodvars)
 * [Derive Treatment Variables (`TRT0xP`, `TRT0xA`)](#treatmentvar)
 * [Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDT`, `TRTEDT`, `TRTDURD`)](#trtdatetime)
-* [Derive Groupings and Populations](#groupings)
-* [Grouping (e.g. `AGEGR1` or `REGION1`)](#groupings_ex)
 * [Population Flags (e.g. `SAFFL`)](#popflag)
 * [Derive vaccination date Variables](#vax_date)
 * [Derive Other Variables](#other)
@@ -46,7 +44,6 @@ otherwise specified.*
 To start, all data frames needed for the creation of `ADSL` should be read into
 the environment. This will be a company specific process. Some of the 
 data frames needed may be `DM`, `EX`.
-
 
 ```{r, message=FALSE, warning=FALSE}
 library(admiral)
@@ -169,40 +166,6 @@ dataset_vignette(
   display_vars = exprs(USUBJID, RFSTDTC, TRTSDTM, TRTSDT, TRTEDTM, TRTEDT, TRTDURD)
 )
 ```
-
-## Derive Groupings and Populations {#groupings}
-
-### Grouping (e.g. `AGEGR1` or `REGION1`) {#groupings_ex}
-
-Numeric and categorical variables (`AGE`, `RACE`, `COUNTRY`, etc.) may need to be grouped to perform
-the required analysis.
-`{admiral}` does not **currently** have functionality to assist with all required groupings. So, the user will often need to create his/her own function to meet his/her study requirement. 
-
-For example, if 
-
-- `AGEGR1` is required to categorize `AGE` into `<18`, `18-64` and `>64`, or
-- `REGION1` is required to categorize `COUNTRY` in `North America`, `Rest of the World`,
-
-the user defined functions would look like the following:
-
-```{r eval=TRUE}
-format_agegr1 <- function(var_input) {
-  case_when(
-    var_input < 18 ~ "<18",
-    between(var_input, 18, 64) ~ "18-64",
-    var_input > 64 ~ ">64",
-    TRUE ~ "Missing"
-  )
-}
-format_region1 <- function(var_input) {
-  case_when(
-    var_input %in% c("CAN", "USA") ~ "North America",
-    !is.na(var_input) ~ "Rest of the World",
-    TRUE ~ "Missing"
-  )
-}
-```
-
 
 ### Population Flags (e.g. `SAFFL`) {#popflag}
 
