@@ -203,22 +203,6 @@ format_region1 <- function(var_input) {
 }
 ```
 
-These functions are then used in a `mutate()` statement to derive the required grouping variables:
-
-```{r eval=TRUE}
-adsl <- adsl %>%
-  mutate(
-    AGEGR1 = format_agegr1(AGE),
-    REGION1 = format_region1(COUNTRY)
-  )
-```
-
-```{r, eval=TRUE, echo=FALSE}
-dataset_vignette(
-  adsl,
-  display_vars = exprs(USUBJID, AGE, SEX, COUNTRY, AGEGR1, REGION1)
-)
-```
 
 ### Population Flags (e.g. `SAFFL`) {#popflag}
 
