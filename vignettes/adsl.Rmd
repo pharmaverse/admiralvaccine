@@ -244,6 +244,13 @@ dataset_vignette(
 
 ## Derive vaccination date Variables  {#vax_date}
 
+In this step, we will create a vaccination date variables from `EX` domain. The function `derive_vars_vaxdt` returns the variables `VAX01DT`,`VAX02DT`... added to the `adsl` dataset based on number of vaccinations.
+
+If there are multiple vaccinations for a visit per subject,warning will be
+provided and only first observation will be filtered based on the variable
+order specified on the `order` argument. In this case, user need to select
+the `by_vars` appropriately.
+
 ```{r eval=TRUE}
 adsl <- derive_vars_vaxdt(
   dataset = ex,
