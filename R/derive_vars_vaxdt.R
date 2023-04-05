@@ -31,9 +31,10 @@
 #'
 #' @details
 #'
-#' If there are multiple vaccinations for a visit per subject,only first
-#' observation will be filtered based on the variable order specified
-#' on the `order` argument.
+#' If there are multiple vaccinations for a visit per subject,warning will be
+#' provided and only first observation will be filtered based on the variable
+#' order specified on the `order` argument. In this case, user need to select
+#' the `by_vars` appropriately.
 #'
 #' The number of variables created will be based on the number of vaccinations
 #' per subject per visit.
@@ -64,6 +65,7 @@
 #'   "ABC001", "MALE", 23,
 #'   "ABC002", "FEMALE", 26,
 #' )
+
 derive_vars_vaxdt <- function(dataset,
                               dataset_adsl,
                               by_vars,
@@ -73,6 +75,12 @@ derive_vars_vaxdt <- function(dataset,
   assert_order_vars(order, optional = TRUE)
   assert_data_frame(dataset, required_vars = by_vars)
   assert_data_frame(dataset_adsl, required_vars = exprs(USUBJID))
+
+  ex_distinct <- dataset %>% distinct(USUBJID,VISIT,.keep_all = TRUE)
+
+  if(nrow(dataset) != nrow(ex_distinct)){
+    warning("Subjects have multiple vaccinations at same visit")
+  }
 
   # derive vaccination date variables
   dt_var <- dataset %>%
