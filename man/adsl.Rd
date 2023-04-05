@@ -5,7 +5,7 @@
 \alias{adsl}
 \title{Subject Level Analysis Dataset}
 \format{
-An object of class \code{data.frame} with 1 rows and 42 columns.
+An object of class \code{data.frame} with 1 rows and 47 columns.
 }
 \usage{
 adsl
