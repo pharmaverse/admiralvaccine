@@ -75,10 +75,9 @@ library(lubridate)
 library(admiralvaccine)
 
 data("ce")
-# data("admiralvaccine_adsl")
 data("adsl")
 
-# adsl <- admiralvaccine_adsl
+
 adsl <- adsl
 ce <- ce
 
