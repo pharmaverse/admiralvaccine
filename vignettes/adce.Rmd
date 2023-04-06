@@ -75,9 +75,11 @@ library(lubridate)
 library(admiralvaccine)
 
 data("ce")
-data("admiralvaccine_adsl")
+#data("admiralvaccine_adsl")
+data("adsl")
 
-adsl <- admiralvaccine_adsl
+#adsl <- admiralvaccine_adsl
+adsl <- adsl
 ce <- ce
 
 ce <- convert_blanks_to_na(ce)
@@ -87,7 +89,7 @@ adsl <- convert_blanks_to_na(adsl)
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adsl,
-  display_vars = exprs(USUBJID,TRTSDT,TRTEDT,TRT01A,AP01SDT,AP01EDT,TRT02A,AP02SDT,AP02EDT )
+  display_vars = exprs(USUBJID,TRTSDT,TRTEDT,TRT01A,AP01SDT,AP01EDT,AP02SDT,AP02EDT )
 )
 ```
 
@@ -227,12 +229,13 @@ dataset_vignette(
 
 ## Creation of Analysis Sequence Number {#aseq}
 ```{r eval=TRUE}
-ce04 <-
+ce04 <- ce03 %>% 
   ## Derive ASEQ ----
   derive_var_obs_number(
-    ce03,
-    by_vars = exprs(USUBJID, APERIOD),
-    order = exprs(ADECOD)
+    new_var = ASEQ,
+    by_vars = exprs(STUDYID, USUBJID),
+    order = exprs(ADECOD, CELAT, CETPTREF, APERIOD),
+    check_type = "error"
   ) %>%
   ## Derive analysis duration (value and unit) ----
   derive_vars_duration(
