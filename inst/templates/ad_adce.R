@@ -34,7 +34,7 @@ adsl <- convert_blanks_to_na(adsl)
 
 # Derivations ----
 # Get CE records
-ce01 <- ce %>%
+adce <- ce %>%
   filter(CECAT == "REACTOGENICITY")
 
 # Get list of ADSL vars required for derivations
@@ -51,7 +51,7 @@ adperiods <- create_period_dataset(
 )
 
 # Derive analysis dates/days
-ce02 <- ce01 %>%
+adce <- adce %>%
   # join adsl to ce
   derive_vars_merged(
     dataset_add = adsl,
@@ -79,9 +79,9 @@ ce02 <- ce01 %>%
     source_vars = exprs(ASTDT, AENDT)
   )
 
-ce03 <-
+adce <-
   derive_vars_joined(
-    ce02,
+    adce,
     dataset_add = adperiods,
     by_vars = exprs(STUDYID, USUBJID),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT
@@ -106,19 +106,19 @@ ce03 <-
   # )
   # ) %>%
   ## Derive occurrence flags: first occurrence of most severe solicited AE ----
-  ## - Janssen specific ----
+  ## - Company specific ----
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
       by_vars = exprs(USUBJID, APERIOD),
-      order = exprs(desc(ASEVN), ASTDY, CEDECOD),
+      order = exprs(desc(ASEVN), ASTDY, CEDECOD, CESEQ),
       new_var = AOCC01FL,
       mode = "first"
     ),
     filter = !is.na(APERIOD) & !is.na(ASEV)
   )
 
-ce04 <- ce03 %>%
+adce <- adce %>%
   ## Derive ASEQ ----
   derive_var_obs_number(
     new_var = ASEQ,
@@ -141,7 +141,7 @@ ce04 <- ce03 %>%
 
 
 # Join all ADSL with CE
-adce <- ce04 %>%
+adce <- adce %>%
   derive_vars_merged(
     dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
     by_vars = exprs(STUDYID, USUBJID)
