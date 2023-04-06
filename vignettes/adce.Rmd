@@ -75,10 +75,10 @@ library(lubridate)
 library(admiralvaccine)
 
 data("ce")
-#data("admiralvaccine_adsl")
+# data("admiralvaccine_adsl")
 data("adsl")
 
-#adsl <- admiralvaccine_adsl
+# adsl <- admiralvaccine_adsl
 adsl <- adsl
 ce <- ce
 
@@ -89,7 +89,7 @@ adsl <- convert_blanks_to_na(adsl)
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adsl,
-  display_vars = exprs(USUBJID,TRTSDT,TRTEDT,TRT01A,AP01SDT,AP01EDT,AP02SDT,AP02EDT )
+  display_vars = exprs(USUBJID, TRTSDT, TRTEDT, TRT01A, AP01SDT, AP01EDT, AP02SDT, AP02EDT)
 )
 ```
 
@@ -117,7 +117,7 @@ adperiods <- create_period_dataset(
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adperiods,
-  display_vars = exprs(USUBJID,APERIOD,APERSDT,APEREDT)
+  display_vars = exprs(USUBJID, APERIOD, APERSDT, APEREDT)
 )
 ```
 
@@ -156,13 +156,12 @@ ce02 <- ce01 %>%
     reference_date = TRTSDT,
     source_vars = exprs(ASTDT, AENDT)
   )
-
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   ce02,
-  display_vars = exprs(USUBJID,TRTSDT,ASTDT,AENDT,ASTDY,AENDY )
+  display_vars = exprs(USUBJID, TRTSDT, ASTDT, AENDT, ASTDY, AENDY)
 )
 ```
 
@@ -186,7 +185,7 @@ ce03 <-
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   ce03,
-  display_vars = exprs(USUBJID,TRTSDT,ASTDT,AENDT,ASTDY,AENDY,APERIOD,APERSDT,APERSTDY )
+  display_vars = exprs(USUBJID, TRTSDT, ASTDT, AENDT, ASTDY, AENDY, APERIOD, APERSDT, APERSTDY)
 )
 ```
 
@@ -223,13 +222,13 @@ ce03 <- ce03 %>%
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   ce03,
-  display_vars = exprs(USUBJID,TRTSDT,ASTDT,APERIOD,APERSDT,APERSTDY,ADECOD,ASEVN,AOCC01FL,CESEQ )
+  display_vars = exprs(USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY, ADECOD, ASEVN, AOCC01FL, CESEQ)
 )
 ```
 
 ## Creation of Analysis Sequence Number {#aseq}
 ```{r eval=TRUE}
-ce04 <- ce03 %>% 
+ce04 <- ce03 %>%
   ## Derive ASEQ ----
   derive_var_obs_number(
     new_var = ASEQ,
@@ -253,7 +252,7 @@ ce04 <- ce03 %>%
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   ce04,
-  display_vars = exprs(USUBJID,TRTSDT,ASTDT,APERIOD,APERSDT,APERSTDY,ADECOD,ASEVN,AOCC01FL,CESEQ,ASEQ )
+  display_vars = exprs(USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY, ADECOD, ASEVN, AOCC01FL, CESEQ, ASEQ)
 )
 ```
 ## Final Step : get all the remaining variables from ADSL {#jadsl}
@@ -263,5 +262,5 @@ adce <- ce04 %>%
   derive_vars_merged(
     dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
     by_vars = exprs(STUDYID, USUBJID)
-  ) 
+  )
 ```

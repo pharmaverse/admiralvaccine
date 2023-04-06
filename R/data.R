@@ -90,5 +90,3 @@
 #' @family dataset
 #'
 "vx_adsl"
-
-
