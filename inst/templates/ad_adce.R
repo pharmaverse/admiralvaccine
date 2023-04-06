@@ -6,6 +6,7 @@
 library(admiral)
 library(dplyr)
 library(lubridate)
+library(admiralvaccine)
 
 
 # Load source datasets ----
@@ -15,10 +16,11 @@ library(lubridate)
 # For illustration purposes read in admiral test data
 
 data("ce")
-data("admiralvaccine_adsl")
+# data("admiralvaccine_adsl")
+data("adsl")
 
-
-adsl <- admiralvaccine_adsl
+# adsl <- admiralvaccine_adsl
+adsl <- adsl
 ce <- ce
 
 
@@ -116,12 +118,13 @@ ce03 <-
     filter = !is.na(APERIOD) & !is.na(ASEV)
   )
 
-ce04 <-
+ce04 <- ce03 %>%
   ## Derive ASEQ ----
   derive_var_obs_number(
-    ce03,
-    by_vars = exprs(USUBJID, APERIOD),
-    order = exprs(ADECOD)
+    new_var = ASEQ,
+    by_vars = exprs(STUDYID, USUBJID),
+    order = exprs(ADECOD, CELAT, CETPTREF, APERIOD),
+    check_type = "error"
   ) %>%
   ## Derive analysis duration (value and unit) ----
   derive_vars_duration(
