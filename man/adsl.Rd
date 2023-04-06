@@ -5,7 +5,7 @@
 \alias{adsl}
 \title{Subject Level Analysis Dataset}
 \format{
-An object of class \code{data.frame} with 1 rows and 42 columns.
+An object of class \code{data.frame} with 1 rows and 47 columns.
 }
 \usage{
 adsl
@@ -15,6 +15,7 @@ A subject level analysis dataset
 }
 \seealso{
 Other dataset: 
+\code{\link{admiralvaccine_adsl}},
 \code{\link{ae}},
 \code{\link{ce}},
 \code{\link{dm}},
@@ -22,7 +23,8 @@ Other dataset:
 \code{\link{face}},
 \code{\link{is}},
 \code{\link{suppis}},
-\code{\link{vs}}
+\code{\link{vs}},
+\code{\link{vx_adsl}}
 }
 \concept{dataset}
 \keyword{dataset}

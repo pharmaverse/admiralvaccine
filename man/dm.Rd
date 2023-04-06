@@ -5,7 +5,7 @@
 \alias{dm}
 \title{DM Dataset}
 \format{
-An object of class \code{data.frame} with 3 rows and 28 columns.
+An object of class \code{data.frame} with 1 rows and 28 columns.
 }
 \usage{
 dm
@@ -15,18 +15,16 @@ A SDTM DM dataset
 }
 \seealso{
 Other dataset: 
-<<<<<<< HEAD
 \code{\link{admiralvaccine_adsl}},
-=======
 \code{\link{adsl}},
->>>>>>> origin/85-adsl_vaccine@devel
 \code{\link{ae}},
 \code{\link{ce}},
 \code{\link{ex}},
 \code{\link{face}},
 \code{\link{is}},
 \code{\link{suppis}},
-\code{\link{vs}}
+\code{\link{vs}},
+\code{\link{vx_adsl}}
 }
 \concept{dataset}
 \keyword{dataset}

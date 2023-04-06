@@ -18,6 +18,7 @@ An example subject level analysis dataset
 }
 \seealso{
 Other dataset: 
+\code{\link{adsl}},
 \code{\link{ae}},
 \code{\link{ce}},
 \code{\link{dm}},
@@ -25,7 +26,8 @@ Other dataset:
 \code{\link{face}},
 \code{\link{is}},
 \code{\link{suppis}},
-\code{\link{vs}}
+\code{\link{vs}},
+\code{\link{vx_adsl}}
 }
 \concept{dataset}
 \keyword{dataset}

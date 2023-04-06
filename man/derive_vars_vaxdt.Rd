@@ -67,8 +67,16 @@ adsl <- tribble(
 }
 \seealso{
 ADXX Functions that returns variable appended to dataset: 
+\code{\link{derive_param_diam_to_sev}()},
+\code{\link{derive_param_fever_occur}()},
+\code{\link{derive_param_maxdiam}()},
 \code{\link{derive_param_maxsev}()},
-\code{\link{hello_admiral}()}
+\code{\link{derive_param_maxtemp}()},
+\code{\link{derive_vars_crit}()},
+\code{\link{derive_vars_event_flag}()},
+\code{\link{derive_vars_max_flag}()},
+\code{\link{derive_vars_merged_vaccine}()},
+\code{\link{derive_vars_params}()}
 }
 \author{
 Vikram S
