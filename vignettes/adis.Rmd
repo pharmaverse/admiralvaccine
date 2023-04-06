@@ -150,6 +150,7 @@ In the example below:
 - If input date is missing then no imputation is done;
 
 For `ADY` derivation RFSTDTC has been used in this template.
+
 If your derivation is different, please adapt.
 ```{r eval=TRUE}
 # ADT derivation
