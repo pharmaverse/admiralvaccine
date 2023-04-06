@@ -116,7 +116,7 @@ adsl <- derive_var_merged_exist_flag(
 ) %>%
   ## creating PPROTFL variable
   mutate(
-    PPROTFL =  'Y'
+    PPROTFL = "Y"
   ) %>%
   ## Groupings and others variables
   mutate(
@@ -146,4 +146,3 @@ adsl <- adsl %>%
 # Save output
 dir <- tempdir()
 save(adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")
-
