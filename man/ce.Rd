@@ -15,6 +15,7 @@ A SDTM CE dataset
 }
 \seealso{
 Other dataset: 
+\code{\link{admiralvaccine_adsl}},
 \code{\link{adsl}},
 \code{\link{ae}},
 \code{\link{dm}},
@@ -22,7 +23,8 @@ Other dataset:
 \code{\link{face}},
 \code{\link{is}},
 \code{\link{suppis}},
-\code{\link{vs}}
+\code{\link{vs}},
+\code{\link{vx_adsl}}
 }
 \concept{dataset}
 \keyword{dataset}
