@@ -20,7 +20,7 @@ library(admiralvaccine)
 
 # Introduction
 
-This article describes creating an `ADSL` ADaM. Examples are currently 
+This article describes creating an `ADSL` ADaM specific to Vaccines. Examples are currently 
 presented and tested using `DM`, `EX` SDTM domains. However, other domains 
 could be used.
 
@@ -72,6 +72,8 @@ dataset_vignette(
 ```
 
 ## Derive Period, Subperiod, and Phase Variables (e.g. `APxxSDT`, `APxxEDT`, ...) {#periodvars}
+
+The `admiral` core package has separate functions to handle period variables since these variables are study specific.
 
 See the ["Visit and Period Variables"
 vignette](visits_periods.html#periods_adsl) for more information.
@@ -195,9 +197,9 @@ dataset_vignette(
 
 In this step, we will create a vaccination date variables from `EX` domain. The function `derive_vars_vaxdt` returns the variables `VAX01DT`,`VAX02DT`... added to the `adsl` dataset based on number of vaccinations.
 
-If there are multiple vaccinations for a visit per subject,warning will be
+If there are multiple vaccinations for a visit per subject, a warning will be
 provided and only first observation will be filtered based on the variable
-order specified on the `order` argument. In this case, user need to select
+order specified on the `order` argument. In this case, a user needs to select
 the `by_vars` appropriately.
 
 ```{r eval=TRUE}
