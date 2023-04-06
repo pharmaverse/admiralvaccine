@@ -73,7 +73,7 @@ dataset_vignette(
 
 ## Derive Period, Subperiod, and Phase Variables (e.g. `APxxSDT`, `APxxEDT`, ...) {#periodvars}
 
-The `admiral` core package has separate functions to handle period variables since these variables are study specific.
+The `{admiral}` core package has separate functions to handle period variables since these variables are study specific.
 
 See the ["Visit and Period Variables"
 vignette](visits_periods.html#periods_adsl) for more information.
