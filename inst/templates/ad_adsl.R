@@ -2,7 +2,7 @@
 #
 # Label: Subject Level Analysis Dataset for Vaccine
 #
-# Input: dm, ex,
+# Input: dm, ex
 library(admiral)
 library(admiral.test) # Contains example datasets from the CDISC pilot project
 library(dplyr)
@@ -26,7 +26,7 @@ data("ex")
 # https://pharmaverse.github.io/admiral/cran-release/articles/admiral.html#handling-of-missing-values # nolint
 
 
-dm <- convert_blanks_to_na(dm) %>% head(1)
+dm <- convert_blanks_to_na(dm)
 ex <- convert_blanks_to_na(ex)
 
 # User defined functions ----
@@ -35,6 +35,7 @@ ex <- convert_blanks_to_na(ex)
 #  operates on vectors, which can be used in `mutate`.
 
 # Grouping
+
 format_racegr1 <- function(x) {
   case_when(
     x == "WHITE" ~ "White",
@@ -60,24 +61,6 @@ format_region1 <- function(x) {
   )
 }
 
-format_lddthgr1 <- function(x) {
-  case_when(
-    x <= 30 ~ "<= 30",
-    x > 30 ~ "> 30",
-    TRUE ~ NA_character_
-  )
-}
-
-# EOSSTT mapping
-format_eosstt <- function(x) {
-  case_when(
-    x %in% c("COMPLETED") ~ "COMPLETED",
-    x %in% c("SCREEN FAILURE") ~ NA_character_,
-    !is.na(x) ~ "DISCONTINUED",
-    TRUE ~ "ONGOING"
-  )
-}
-
 # Derivations ----
 # impute start and end time of exposure to first and last respectively, do not impute date
 ex_ext <- ex %>%
@@ -87,8 +70,7 @@ ex_ext <- ex %>%
   ) %>%
   derive_vars_dtm(
     dtc = EXENDTC,
-    new_vars_prefix = "EXEN",
-    time_imputation = "last"
+    new_vars_prefix = "EXEN"
   )
 
 adsl <- dm %>%
@@ -103,7 +85,7 @@ adsl <- dm %>%
       (EXDOSE == 0 &
         str_detect(EXTRT, "VACCINE"))) &
       !is.na(EXSTDTM),
-    new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
+    new_vars = exprs(TRTSDTM = EXSTDTM),
     order = exprs(EXSTDTM, EXSEQ),
     mode = "first",
     by_vars = exprs(STUDYID, USUBJID)
@@ -114,7 +96,7 @@ adsl <- dm %>%
     filter_add = (EXDOSE > 0 |
       (EXDOSE == 0 &
         str_detect(EXTRT, "VACCINE"))) & !is.na(EXENDTM),
-    new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
+    new_vars = exprs(TRTEDTM = EXENDTM),
     order = exprs(EXENDTM, EXSEQ),
     mode = "last",
     by_vars = exprs(STUDYID, USUBJID)
@@ -130,8 +112,12 @@ adsl <- derive_var_merged_exist_flag(
   dataset_add = ex,
   by_vars = exprs(STUDYID, USUBJID),
   new_var = SAFFL,
-  condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "PLACEBO")))
+  condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "VACCINE")))
 ) %>%
+  ## creating PPROTFL variable
+  mutate(
+    PPROTFL = "Y"
+  ) %>%
   ## Groupings and others variables
   mutate(
     RACEGR1 = format_racegr1(RACE),
