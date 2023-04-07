@@ -11,8 +11,6 @@ library(metatools)
 library(readxl)
 library(admiraldev)
 library(admiral)
-library(purrr)
-library(tidyverse)
 library(admiralvaccine)
 
 # Load source datasets ----
@@ -225,7 +223,7 @@ keep_vars <- c(
   "APERSDT", "APERSTM", "APERSDTM", "APEREDT", "APERETM", "APEREDTM", "APERDY",
   "FAORRES"
 )
-adface_final <- adface %>% select(
+adface <- adface %>% select(
   any_of(keep_vars), starts_with("TRT0"), starts_with("VAX"),
   starts_with("EVE"), starts_with("ANL"), starts_with("AP")
 )
@@ -234,4 +232,4 @@ adface_final <- adface %>% select(
 # Save output ----
 
 dir <- tempdir() # Change to whichever directory you want to save the dataset in
-save(adface_final, file = file.path(dir, "adface.rda"), compress = "bzip2")
+save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
