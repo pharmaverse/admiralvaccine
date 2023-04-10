@@ -1,13 +1,13 @@
-library(Hmisc)
-library(dplyr)
-library(tidyverse)
+#library(Hmisc)
+#library(dplyr)
+#library(tidyverse)
 library(labelled)
-library(haven)
-library(ggformula)
+#library(haven)
+#library(ggformula)
 
 
 
-table <- matrix(NA, nrow = 80, ncol = 28)
+table <- matrix(NA, nrow = 16, ncol = 28)
 
 colnames(table) <- c(
   "STUDYID", "DOMAIN", "USUBJID", "ISSEQ", "ISGRPID", "ISREFID", "ISSPID", "ISLNKID",
@@ -30,19 +30,15 @@ for (i in 1:NROW(table1)) {
 }
 
 
-table1$ISTESTCD <- rep(c("J0033VN", "I0019NT", "M0019LN", "R0003MA"), 20)
+table1$ISTESTCD <- rep(c("J0033VN", "I0019NT", "M0019LN", "R0003MA"), 4)
 
 
 table1$USUBJID <- c(
-  rep("ABC-1001", 8), rep("ABC-1002", 8), rep("ABC-1003", 8), rep("ABC-1004", 8),
-  rep("ABC-1005", 8), rep("ABC-1006", 8), rep("ABC-1007", 8), rep("ABC-1008", 8),
-  rep("ABC-1009", 8), rep("ABC-1010", 8)
+  rep("ABC-1001", 8), rep("ABC-1002", 8)
 )
 
 
 table1$VISITNUM <- c(
-  rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4),
-  rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4),
   rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4)
 )
 
@@ -134,24 +130,24 @@ is <- is1 %>%
     ),
     # Add higher ISSTRESN values
     ISORRES = case_when(
-      row_number() == 8 ~ "140.5",
-      row_number() == 15 ~ "98.2",
-      row_number() == 24 ~ "48.9",
-      row_number() == 29 ~ "228.1",
+      row_number() == 4 ~ "140.5",
+      row_number() == 8 ~ "98.2",
+      row_number() == 12 ~ "48.9",
+      row_number() == 16 ~ "228.1",
       TRUE ~ as.character(ISORRES)
     ),
     ISSTRESC = case_when(
-      row_number() == 8 ~ "140.5",
-      row_number() == 15 ~ "98.2",
-      row_number() == 24 ~ "48.9",
-      row_number() == 29 ~ "228.1",
+      row_number() == 4 ~ "140.5",
+      row_number() == 8 ~ "98.2",
+      row_number() == 12 ~ "48.9",
+      row_number() == 16 ~ "228.1",
       TRUE ~ as.character(ISSTRESC)
     ),
     ISSTRESN = case_when(
-      row_number() == 8 ~ 140.5,
-      row_number() == 15 ~ 98.2,
-      row_number() == 24 ~ 48.9,
-      row_number() == 29 ~ 228.1,
+      row_number() == 4 ~ 140.5,
+      row_number() == 8 ~ 98.2,
+      row_number() == 12 ~ 48.9,
+      row_number() == 16 ~ 228.1,
       TRUE ~ as.numeric(ISSTRESN)
     ),
     ISORRES = case_when(
@@ -201,6 +197,7 @@ is <- is %>%
 
 
 # Save RDA file
+getwd()
 setwd("C:/ADMIRALPROJECT/admiralvaccine/data")
 str(is)
 save("is", file = "is.rda")

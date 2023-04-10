@@ -1,4 +1,4 @@
-table_supp <- matrix(NA, nrow = 80, ncol = 10)
+table_supp <- matrix(NA, nrow = 16, ncol = 10)
 
 colnames(table_supp) <- c(
   "STUDYID", "RDOMAIN", "USUBJID", "IDVAR", "IDVARVAL",
@@ -8,11 +8,9 @@ colnames(table_supp) <- c(
 table_supp1 <- as.data.frame(table_supp)
 
 
-# table_supp1$USUBJID <- c(
-#   rep("ABC-1001", 8), rep("ABC-1002", 8), rep("ABC-1003", 8), rep("ABC-1004", 8),
-#   rep("ABC-1005", 8), rep("ABC-1006", 8), rep("ABC-1007", 8), rep("ABC-1008", 8),
-#   rep("ABC-1009", 8), rep("ABC-1010", 8)
-# )
+table_supp1$USUBJID <- c(
+  rep("ABC-1001", 8), rep("ABC-1002", 8)
+)
 
 
 suppis1 <- table_supp1 %>%
@@ -52,6 +50,7 @@ var_label(suppis$QEVAL) <- "Evaluator"
 
 
 # Save RDA file
-setwd("/shared-scratch/area/fb267539/Admiral")
+getwd()
+setwd("C:/ADMIRALPROJECT/admiralvaccine/data")
 str(suppis)
 save("suppis", file = "suppis.rda")
