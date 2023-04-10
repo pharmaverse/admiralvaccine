@@ -5,8 +5,10 @@
 # Input: face, ex, vs
 
 # Loading required packages and admiral vaccine utilities
+devtools::load_all()
 library(haven)
 library(tibble)
+library(dplyr)
 library(metatools)
 library(readxl)
 library(admiraldev)
