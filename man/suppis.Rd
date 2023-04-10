@@ -5,7 +5,7 @@
 \alias{suppis}
 \title{Supplemental IS Dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 80 rows and 10 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 16 rows and 10 columns.
 }
 \usage{
 suppis

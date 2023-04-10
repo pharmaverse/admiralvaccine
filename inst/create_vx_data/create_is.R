@@ -1,11 +1,4 @@
-#library(Hmisc)
-#library(dplyr)
-#library(tidyverse)
 library(labelled)
-#library(haven)
-#library(ggformula)
-
-
 
 table <- matrix(NA, nrow = 16, ncol = 28)
 
@@ -32,11 +25,9 @@ for (i in 1:NROW(table1)) {
 
 table1$ISTESTCD <- rep(c("J0033VN", "I0019NT", "M0019LN", "R0003MA"), 4)
 
-
 table1$USUBJID <- c(
   rep("ABC-1001", 8), rep("ABC-1002", 8)
 )
-
 
 table1$VISITNUM <- c(
   rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4)
@@ -44,7 +35,6 @@ table1$VISITNUM <- c(
 
 set.seed(1234)
 table1$ISORRES <- sample(c("2.0", "3.0", "5.0", "<2", ">8"), NROW(table1), replace = T)
-
 
 is1 <- table1 %>%
   group_by(STUDYID, USUBJID) %>%
