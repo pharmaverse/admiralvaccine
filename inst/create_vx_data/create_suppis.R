@@ -7,13 +7,11 @@ colnames(table_supp) <- c(
 
 table_supp1 <- as.data.frame(table_supp)
 
-
-table_supp1$USUBJID <- c(
-  rep("ABC-1001", 8), rep("ABC-1002", 8)
-)
-
-
 suppis1 <- table_supp1 %>%
+  mutate(USUBJID = case_when(
+    row_number() >= 1 & row_number() <= 8 ~ "ABC-1001",
+    row_number() >= 9 & row_number() <= 16 ~ "ABC-1002"
+  )) %>%
   group_by(STUDYID, USUBJID) %>%
   mutate(IDVARVAL = row_number()) %>%
   ungroup() %>%
