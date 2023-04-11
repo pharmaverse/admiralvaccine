@@ -112,7 +112,7 @@ derive_vars_event_flag <- function(dataset,
       mutate(
         !!new_var1 := if_else(any(!(is.na(AVAL)) &
           AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N")
-        )
+      )
   } else if (is.null(new_var1) && !is.null(new_var2)) {
     # Derive only `new_var2`
     data_flag <- dataset %>%
@@ -127,7 +127,7 @@ derive_vars_event_flag <- function(dataset,
       mutate(
         !!new_var1 := ifelse(any(!(is.na(AVAL)) &
           AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N")
-        ) %>%
+      ) %>%
       ungroup() %>%
       mutate(
         !!new_var2 := ifelse(!(is.na(AVAL)) &
@@ -138,11 +138,11 @@ derive_vars_event_flag <- function(dataset,
   }
 
   # Flag maximum records in `DTYPE` as `NA` for new_var2
-  if("MAXIMUM" %in% data_flag$DTYPE){
+  if ("MAXIMUM" %in% data_flag$DTYPE) {
     data_flag <- data_flag %>%
       mutate(
-        !!new_var2 := if_else(DTYPE == "MAXIMUM" , NA_character_ , !!new_var2)
-       )
+        !!new_var2 := if_else(DTYPE == "MAXIMUM", NA_character_, !!new_var2)
+      )
   }
   data_flag <- convert_blanks_to_na(data_flag)
 }
