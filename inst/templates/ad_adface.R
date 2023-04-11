@@ -87,8 +87,8 @@ adface <- adface %>%
 
 adface <- derive_param_diam_to_sev(
   dataset = adface,
-  filter_diam = c("DIAMETER", "LDIAM"),
-  filter_faobj = c("Redness", "Swelling", "Erythema"),
+  filter_diam = "DIAMETER",
+  filter_faobj = c("Redness", "Swelling"),
   testcd_sev = "SEV",
   test_sev = "Severity/Intensity",
   none = c(0, 2),
@@ -97,9 +97,6 @@ adface <- derive_param_diam_to_sev(
   sev = c(10)
 )
 
-check <- adface %>%
-  group_by(USUBJID, FAOBJ, FATESTCD) %>%
-  count(FATESTCD)
 
 # Step7 - Deriving Maximum Severity for Local and Systemic events
 
@@ -112,10 +109,6 @@ adface <- derive_param_maxsev(
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 )
 
-check1 <- adface %>%
-  group_by(USUBJID, FAOBJ, FATESTCD) %>%
-  count(FATESTCD)
-
 # Step8 - Deriving Maximum Diameter for Administrative site reactions
 
 adface <- derive_param_maxdiam(
@@ -126,10 +119,6 @@ adface <- derive_param_maxdiam(
   testcd_maxdiam = "MAXDIAM"
 )
 
-check2 <- adface %>%
-  group_by(USUBJID, FAOBJ, FATESTCD) %>%
-  count(FATESTCD)
-
 # Step9 - Deriving Maximum Temperature
 
 adface <- derive_param_maxtemp(
@@ -139,10 +128,6 @@ adface <- derive_param_maxtemp(
   testcd_maxtemp = "MAXTEMP",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 )
-
-check3 <- adface %>%
-  group_by(USUBJID, FAOBJ, FATESTCD) %>%
-  count(FATESTCD)
 
 # Step 10 - Assigning PARAM, PARAMN, PARAMCD, PARCAT1 and PARCAT2 by Lookup table
 
@@ -183,19 +168,17 @@ adface <- derive_vars_event_flag(
   new_var2 = EVENTDFL
 )
 
-# Creating APERIOD variables from ADSL
+# Creating APERIOD variables
 period_ref <- create_period_dataset(
   dataset = adsl,
-  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT)
+  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
 )
 
-adface <- derive_vars_period(
-  adface,
-  dataset_ref = period_ref,
-  new_vars = exprs(
-    APxxSDT = APERSDT,
-    APxxEDT = APEREDT
-  )
+adface <- derive_vars_joined(
+ adface,
+  dataset_add = period_ref,
+  by_vars = exprs(STUDYID, USUBJID),
+  filter_join = ADT >= APERSDT & ADT <= APEREDT
 )
 
 # Basic filter for ADSL
@@ -207,9 +190,8 @@ adsl <- adsl %>%
 adface <- derive_vars_merged(
   dataset = adface,
   dataset_add = adsl,
-  by_vars = exprs(STUDYID, USUBJID)
+  by_vars = exprs(STUDYID,USUBJID)
 )
-
 
 keep_vars <- c(
   "STUDYID", "USUBJID", "SUBJID", "SITEID", "AGE", "AGEU", "SEX", "SEXN", "RACE", "RACEN", "ARACE",
@@ -225,6 +207,7 @@ keep_vars <- c(
   "APERSDT", "APERSTM", "APERSDTM", "APEREDT", "APERETM", "APEREDTM", "APERDY",
   "FAORRES"
 )
+
 adface <- adface %>% select(
   any_of(keep_vars), starts_with("TRT0"), starts_with("VAX"),
   starts_with("EVE"), starts_with("ANL"), starts_with("AP")
@@ -233,5 +216,5 @@ adface <- adface %>% select(
 
 # Save output ----
 
-dir <- tempdir() # Change to whichever directory you want to save the dataset in
+dir <- "C:/Users/RUBALA/OneDrive - Pfizer/Documents/GitHub/admiralvaccine/data" # Change to whichever directory you want to save the dataset in
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
