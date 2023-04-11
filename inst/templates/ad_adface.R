@@ -175,7 +175,7 @@ period_ref <- create_period_dataset(
 )
 
 adface <- derive_vars_joined(
- adface,
+  adface,
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
   filter_join = ADT >= APERSDT & ADT <= APEREDT
@@ -190,7 +190,7 @@ adsl <- adsl %>%
 adface <- derive_vars_merged(
   dataset = adface,
   dataset_add = adsl,
-  by_vars = exprs(STUDYID,USUBJID)
+  by_vars = exprs(STUDYID, USUBJID)
 )
 
 keep_vars <- c(
