@@ -6,7 +6,6 @@
 
 # Loading required packages and admiral vaccine utilities
 
-library(haven)
 library(tibble)
 library(dplyr)
 library(metatools)
@@ -19,12 +18,12 @@ library(admiralvaccine)
 
 # Use e.g. haven::read_sas to read in .sas7bdat, or other suitable functions
 # as needed and assign to the variables below.
-# For illustration purposes read in admiral test data
+# For illustration purposes read in admiral vaccine mock sdtm data and adsl vaccine data
 
 data("ex")
 data("vs")
-data("adsl")
 data("face")
+data("adsl")
 
 # Step1 - Merging supplementary datasets and FACE with EX
 
