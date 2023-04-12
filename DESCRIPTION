@@ -11,7 +11,7 @@ Description: A toolbox for programming Clinical Data Standards Interchange Conso
     implemented in accordance with the "Analysis Data Model Implementation Guide"
     (CDISC Analysis Data Model Team, 2021, <https://www.cdisc.org/standards/foundational/adam/adamig-v1-3-release-package>).
 License: Apache License (>= 2)
-URL: https://pharmaverse.github.io/admiraltemplate, https://github.com/pharmaverse/admiraltemplate
+URL: https://pharmaverse.github.io/admiralvaccine, https://github.com/pharmaverse/admiralvaccine
 Encoding: UTF-8
 Language: en-US
 LazyData: true
