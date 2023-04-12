@@ -89,3 +89,14 @@
 #' @family dataset
 #'
 "vx_adsl"
+
+#' Reactogenicity Analysis Dataset
+#'
+#' A Reactogenicity analysis dataset
+#'
+#' @keywords dataset
+#' @family dataset
+#' @source
+#' Template adface associated with the `adsl`, `face`, `ex` and `vs` datasets.
+#'
+"adface"

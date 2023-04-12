@@ -82,8 +82,7 @@ ADXX Functions that returns variable appended to dataset:
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{hello_admiral}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Dhivya Kanagaraj
