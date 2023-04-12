@@ -213,5 +213,5 @@ adface <- adface %>% select(
 
 # Save output ----
 
-dir <- tempdir() # Change to whichever directory you want to save the dataset in
+dir <- tempdir()
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
