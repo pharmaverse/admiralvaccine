@@ -15,6 +15,7 @@ A subject level analysis dataset
 }
 \seealso{
 Other dataset: 
+\code{\link{adface}},
 \code{\link{admiralvaccine_adsl}},
 \code{\link{adsl}},
 \code{\link{ae}},
