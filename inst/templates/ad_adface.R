@@ -5,7 +5,7 @@
 # Input: face, ex, vs
 
 # Loading required packages and admiral vaccine utilities
-devtools::load_all()
+
 library(haven)
 library(tibble)
 library(dplyr)
@@ -21,7 +21,6 @@ library(admiralvaccine)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-data("dm")
 data("ex")
 data("vs")
 data("adsl")
@@ -78,9 +77,7 @@ adface <- adface %>%
     AVALC = as.character(FAORRES),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
-    ATPTN = FATPTNUM,
-    # AVISIT = VISIT,
-    # AVISITN = VISITNUM
+    ATPTN = FATPTNUM
   )
 
 # Step6 - Creating severity records from Diameter for Redness,Swelling,etc
@@ -210,11 +207,11 @@ keep_vars <- c(
 
 adface <- adface %>% select(
   any_of(keep_vars), starts_with("TRT0"), starts_with("VAX"),
-  starts_with("EVE"), starts_with("ANL"), starts_with("AP")
+  starts_with("EVE"), starts_with("ANL")
 )
 
 
 # Save output ----
 
-dir <- "C:/Users/RUBALA/OneDrive - Pfizer/Documents/GitHub/admiralvaccine/data" # Change to whichever directory you want to save the dataset in
+dir <- tempdir() # Change to whichever directory you want to save the dataset in
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
