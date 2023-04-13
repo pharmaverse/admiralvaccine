@@ -37,9 +37,10 @@ Creates vaccination date variables from ex domain.A date variable will be
 created for each vaccination taking values from the variable \code{EXSTDTC}.
 }
 \details{
-If there are multiple vaccinations for a visit per subject,only first
-observation will be filtered based on the variable order specified
-on the \code{order} argument.
+If there are multiple vaccinations for a visit per subject,warning will be
+provided and only first observation will be filtered based on the variable
+order specified on the \code{order} argument. In this case, user need to select
+the \code{by_vars} appropriately.
 
 The number of variables created will be based on the number of vaccinations
 per subject per visit.
