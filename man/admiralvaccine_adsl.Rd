@@ -18,6 +18,7 @@ An example subject level analysis dataset
 }
 \seealso{
 Other dataset: 
+\code{\link{adface}},
 \code{\link{adsl}},
 \code{\link{ae}},
 \code{\link{ce}},
