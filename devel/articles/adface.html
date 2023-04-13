@@ -57,14 +57,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -86,7 +78,8 @@
 
 
 
-<script src="adface_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Creating ADFACE</h1>
             
@@ -100,9 +93,13 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This article describes creating an <code>ADFACE</code> ADaM with common vaccine endpoint parameters based on CBER guidelines.</p>
-<p>Examples are currently presented and tested using <code>ADSL</code> (ADaM) and <code>face</code>, <code>vs</code> (SDTM) inputs. However, other domains could be used.</p>
-<p><strong>Note</strong>: <em>All examples assume CDISC SDTM and/or ADaM format as input unless otherwise specified.</em></p>
+<p>This article describes creating an <code>ADFACE</code> ADaM with
+common vaccine endpoint parameters based on CBER guidelines.</p>
+<p>Examples are currently presented and tested using <code>ADSL</code>
+(ADaM) and <code>face</code>, <code>vs</code> (SDTM) inputs. However,
+other domains could be used.</p>
+<p><strong>Note</strong>: <em>All examples assume CDISC SDTM and/or ADaM
+format as input unless otherwise specified.</em></p>
 </div>
 <div class="section level2">
 <h2 id="programming-workflow">Programming Workflow<a class="anchor" aria-label="anchor" href="#programming-workflow"></a>
@@ -111,11 +108,13 @@
 <li><a href="#readdata">Read in Data</a></li>
 <li><a href="#input">Derive fever records from VS domain</a></li>
 <li><a href="#aval">Derive <code>AVAL</code>,<code>AVALC</code></a></li>
-<li><a href="#sev">Derive severity records for Redness and swelling</a></li>
+<li><a href="#sev">Derive severity records for Redness and
+swelling</a></li>
 <li><a href="#maxsev">Derive maximum severity records</a></li>
 <li><a href="#maxdiam">Derive maximum diameter records</a></li>
 <li><a href="#maxtemp">Derive maximum temperature records</a></li>
-<li><a href="#paramcd">Assign <code>PARAMCD</code>, <code>PARAM</code>, <code>PARAMN</code>, <code>PARCAT1</code></a></li>
+<li><a href="#paramcd">Assign <code>PARAMCD</code>, <code>PARAM</code>,
+<code>PARAMN</code>, <code>PARCAT1</code></a></li>
 <li><a href="#maxflag">Derive maximum severity flag</a></li>
 <li><a href="#eventflag">Derive event occurrence flag</a></li>
 <li><a href="#adsl_vars">Add ADSL variables</a></li>
