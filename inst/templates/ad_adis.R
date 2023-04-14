@@ -13,6 +13,7 @@ library(rlang)
 library(admiralvaccine)
 
 
+
 # Load source datasets ----
 data("is")
 data("suppis")
@@ -69,7 +70,7 @@ adis <- is_suppis %>%
 # To put highest_imputation = "M" and date_imputation = "mid" to be in line with GSK rules.
 # flag_imputation = "none" to suppress ADTF variable.
 
-# ADT derivation
+# ADT derivation and Merge with ADSL to get RFSTDTC info in order to derive ADY
 adis <- derive_vars_dt(
   dataset = adis,
   new_vars_prefix = "A",
@@ -77,11 +78,7 @@ adis <- derive_vars_dt(
   highest_imputation = "M",
   date_imputation = "mid",
   flag_imputation = "none"
-)
-
-
-# Merge with ADSL to get RFSTDTC info in order to derive ADY
-adis <- derive_var_merged_character(
+) %>% derive_var_merged_character(
   dataset = adis,
   dataset_add = adsl,
   by_vars = exprs(STUDYID, USUBJID),
