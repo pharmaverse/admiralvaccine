@@ -79,7 +79,6 @@ ADIS development.
 In this template, `SDTM.IS`, `SDTM.SUPPIS` and `ADAM.ADSL` has been used.
 
 ```{r, eval=TRUE, message=FALSE, warning=FALSE}
-
 install.packages("metatools", repos = "https://cloud.r-project.org")
 library(metatools)
 library(dplyr)
@@ -88,13 +87,13 @@ library(rlang)
 library(admiralvaccine)
 
 # Load source datasets ----
-data("is")
-data("suppis")
+data("vx_is")
+data("vx_suppis")
 data("vx_adsl")
 
 # Convert blanks into NA
-is <- convert_blanks_to_na(is)
-suppis <- convert_blanks_to_na(suppis)
+is <- convert_blanks_to_na(vx_is)
+suppis <- convert_blanks_to_na(vx_suppis)
 adsl <- convert_blanks_to_na(vx_adsl)
 ```
 
