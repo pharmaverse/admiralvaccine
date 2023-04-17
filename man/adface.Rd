@@ -18,17 +18,15 @@ A Reactogenicity analysis dataset
 }
 \seealso{
 Other dataset: 
-\code{\link{admiralvaccine_adsl}},
-\code{\link{adsl}},
-\code{\link{ae}},
-\code{\link{ce}},
-\code{\link{dm}},
-\code{\link{ex}},
-\code{\link{face}},
-\code{\link{is}},
-\code{\link{suppis}},
-\code{\link{vs}},
-\code{\link{vx_adsl}}
+\code{\link{vx_adsl}},
+\code{\link{vx_ae}},
+\code{\link{vx_ce}},
+\code{\link{vx_dm}},
+\code{\link{vx_ex}},
+\code{\link{vx_face}},
+\code{\link{vx_is}},
+\code{\link{vx_suppis}},
+\code{\link{vx_vs}}
 }
 \concept{dataset}
 \keyword{dataset}
