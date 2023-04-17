@@ -21,10 +21,15 @@ library(admiralvaccine)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral vaccine mock sdtm data and adsl vaccine data
 
-data("ex")
-data("vs")
-data("face")
-data("adsl")
+data("vx_ex")
+data("vx_vs")
+data("vx_face")
+data("vx_adsl")
+
+ex <- vx_ex
+vs <- vx_vs
+face <- vx_face
+adsl <- vx_adsl
 
 # Step1 - Merging supplementary datasets and FACE with EX
 
