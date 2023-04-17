@@ -78,27 +78,24 @@ adis <- derive_vars_dt(
   highest_imputation = "M",
   date_imputation = "mid",
   flag_imputation = "none"
-) %>% derive_var_merged_character(
-  dataset = adis,
-  dataset_add = adsl,
-  by_vars = exprs(STUDYID, USUBJID),
-  new_var = RFSTDTC,
-  source_var = RFSTDTC
 ) %>%
+  derive_var_merged_character(
+    dataset = adis,
+    dataset_add = adsl,
+    by_vars = exprs(STUDYID, USUBJID),
+    new_var = RFSTDTC,
+    source_var = RFSTDTC
+  ) %>%
   mutate(
     ADT = as.Date(ADT),
     RFSTDTC = as.Date(RFSTDTC)
+  ) %>%
+  # ADY derivation
+  derive_vars_dy(
+    dataset = adis,
+    reference_date = RFSTDTC,
+    source_vars = exprs(ADT)
   )
-
-
-# ADY derivation
-adis <- derive_vars_dy(
-  dataset = adis,
-  reference_date = RFSTDTC,
-  source_vars = exprs(ADT)
-)
-
-
 
 # STEP 4: PARAMCD, PARAM and PARAMN derivation
 
@@ -159,14 +156,13 @@ adis <- derive_vars_merged_lookup(
   dataset_add = param_lookup,
   new_vars = exprs(PARAM),
   by_vars = exprs(PARAMCD)
-)
-
-adis <- derive_vars_merged_lookup(
-  dataset = adis,
-  dataset_add = param_lookup,
-  new_vars = exprs(PARAMN),
-  by_vars = exprs(PARAM)
-)
+) %>%
+  derive_vars_merged_lookup(
+    dataset = ,
+    dataset_add = param_lookup,
+    new_vars = exprs(PARAMN),
+    by_vars = exprs(PARAM)
+  )
 
 # STEP 5: PARCAT1 and CUTOFF0x derivations.
 adis <- adis %>%
@@ -238,13 +234,10 @@ adis <- derive_vars_merged_lookup(
   dataset_add = param_lookup2,
   new_vars = exprs(SERCAT1N),
   by_vars = exprs(SERCAT1)
-)
-
-
-# DTYPE derivation.
-# Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
-# and/or ULOQ is present in your study
-adis <- adis %>%
+) %>%
+  # DTYPE derivation.
+  # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
+  # and/or ULOQ is present in your study
   mutate(DTYPE = if_else(DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ISSTRESN < ISLLOQ,
     "HALFLLQ",
     as.character(NA)
