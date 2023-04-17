@@ -51,8 +51,8 @@
 #'
 #' @examples
 #' derive_vars_merged_vaccine(
-#'   dataset = face,
-#'   dataset_ex = ex,
+#'   dataset = vx_face,
+#'   dataset_ex = vx_ex,
 #'   dataset_supp = NULL,
 #'   dataset_suppex = NULL,
 #'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSEU, EXSTDTC, EXENDTC)
