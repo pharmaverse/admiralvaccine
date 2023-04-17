@@ -322,7 +322,7 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
     "XYZ1001", "REDNESS", 11, "11", "VACCINATION 1", "Diameter", "DIAMETER"
   )
 
-  expect_error(
+  expect_warning(
     derive_param_diam_to_sev(
       dataset = input,
       filter_diam = "DIAM",
@@ -339,3 +339,4 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
     )
   )
 })
+
