@@ -54,9 +54,9 @@
 #'
 #' @export
 #'
-#' @keywords der_adxx
+#' @keywords der_var
 #'
-#' @family der_adxx
+#' @family der_var
 #'
 #' @examples
 #' library(tibble)
