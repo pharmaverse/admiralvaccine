@@ -27,9 +27,9 @@
 #'
 #' @export
 #'
-#' @family der_adxx
+#' @family der_rec
 #'
-#' @keywords der_adxx
+#' @keywords der_rec
 #'
 #' @examples
 #'

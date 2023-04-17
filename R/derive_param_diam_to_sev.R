@@ -142,8 +142,8 @@
 #' )
 #'
 #' @export
-#' @keywords der_adxx
-#' @family der_adxx
+#' @keywords der_rec
+#' @family der_rec
 #'
 derive_param_diam_to_sev <- function(dataset = NULL,
                                      filter_diam = "DIAMETER",

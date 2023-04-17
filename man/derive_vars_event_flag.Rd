@@ -103,17 +103,11 @@ derive_vars_event_flag(
 
 }
 \seealso{
-ADXX Functions that returns variable appended to dataset: 
-\code{\link{derive_param_diam_to_sev}()},
-\code{\link{derive_param_fever_occur}()},
-\code{\link{derive_param_maxdiam}()},
-\code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()},
+Other der_var: 
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_params}()},
 \code{\link{derive_vars_vaxdt}()}
 }
-\concept{der_adxx}
-\keyword{der_adxx}
+\concept{der_var}
+\keyword{der_var}

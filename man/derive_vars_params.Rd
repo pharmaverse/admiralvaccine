@@ -72,20 +72,15 @@ derive_vars_params(
 
 }
 \seealso{
-ADXX Functions that returns variable appended to dataset: 
+Other der_rec: 
 \code{\link{derive_param_diam_to_sev}()},
 \code{\link{derive_param_fever_occur}()},
 \code{\link{derive_param_maxdiam}()},
 \code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()},
-\code{\link{derive_vars_crit}()},
-\code{\link{derive_vars_event_flag}()},
-\code{\link{derive_vars_max_flag}()},
-\code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_vaxdt}()}
+\code{\link{derive_param_maxtemp}()}
 }
 \author{
 Dhivya Kanagaraj
 }
-\concept{der_adxx}
-\keyword{der_adxx}
+\concept{der_rec}
+\keyword{der_rec}

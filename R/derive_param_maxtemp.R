@@ -46,8 +46,8 @@
 #'
 #' @export
 #'
-#' @family der_adxx
-#' @keywords der_adxx
+#' @family der_rec
+#' @keywords der_rec
 #'
 #' @examples
 #' library(tibble)
