@@ -4,12 +4,79 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"is"
+"vx_is"
 
 #' Supplemental IS Dataset
 #'
-#' A SDTM CM dataset
+#' A SDTM Supplemental IS dataset
 #'
 #' @keywords dataset
 #' @family dataset
-"suppis"
+"vx_suppis"
+
+#' Supplemental AE Dataset
+#'
+#' A SDTM AE dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_ae"
+
+#' CE Dataset
+#'
+#' A SDTM CE dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_ce"
+
+#' DM Dataset
+#'
+#' A SDTM DM dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_dm"
+
+#' EX Dataset
+#'
+#' A SDTM EX dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_ex"
+
+#' FACE Dataset
+#'
+#' A SDTM FACE dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_face"
+
+#' VS Dataset
+#'
+#' A SDTM VS dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_vs"
+
+#' Vx - Subject Level Analysis Dataset
+#'
+#' A subject level analysis dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_adsl"
+
+#' Reactogenicity Analysis Dataset
+#'
+#' A Reactogenicity analysis dataset
+#'
+#' @keywords dataset
+#' @family dataset
+#' @source
+#' Template adface associated with the `adsl`, `face`, `ex` and `vs` datasets.
+#'
+"adface"

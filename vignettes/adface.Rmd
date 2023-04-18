@@ -1,0 +1,73 @@
+---
+title: "Creating ADFACE"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating ADFACE}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(admiral)
+link <- function(text, url) {
+  return(
+    paste0(
+      "[", text, "]",
+      "(", url, ")"
+    )
+  )
+}
+dyn_link <- function(text,
+                     base_url,
+                     relative_url = "",
+                     # Change to TRUE when admiral adopts multiversion docs
+                     is_multiversion = FALSE,
+                     multiversion_default_ref = "main") {
+  url <- paste(base_url, relative_url, sep = "/")
+  if (is_multiversion) {
+    url <- paste(
+      base_url,
+      Sys.getenv("BRANCH_NAME", multiversion_default_ref),
+      relative_url,
+      sep = "/"
+    )
+  }
+  return(link(text, url))
+}
+# Other variables
+admiral_homepage <- "https://pharmaverse.github.io/admiral"
+library(admiraldev)
+```
+
+# Introduction
+
+This article describes creating an `ADFACE` ADaM with common vaccine
+endpoint parameters based on CBER guidelines.
+
+Examples are currently presented and tested using `ADSL` (ADaM) and
+`face`, `vs` (SDTM) inputs. However, other domains could be used. 
+
+**Note**: *All examples assume CDISC SDTM and/or ADaM format as input
+unless otherwise specified.*
+
+# Programming Workflow
+
+-   [Read in Data](#readdata)
+-   [Derive fever records from VS domain](#input)
+-   [Derive `AVAL`,`AVALC`](#aval)
+-   [Derive severity records for Redness and swelling](#sev)
+-   [Derive maximum severity records](#maxsev)
+-   [Derive maximum diameter records](#maxdiam)
+-   [Derive maximum temperature records](#maxtemp)
+-   [Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`](#paramcd)
+-   [Derive maximum severity flag](#maxflag)
+-   [Derive event occurrence flag](#eventflag)
+-   [Add ADSL variables](#adsl_vars)
+
+
+
