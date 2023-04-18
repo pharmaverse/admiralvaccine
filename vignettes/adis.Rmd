@@ -1,10 +1,84 @@
-# Name: ADIS
-#
-# Label: Immunogenicity Analysis
-#
-# Input: is, suppis, adsl
+---
+title: "Creating ADIS"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating ADIS}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 library(admiral)
-library(admiral.test) # Contains example datasets from the CDISC pilot project
+link <- function(text, url) {
+  return(
+    paste0(
+      "[", text, "]",
+      "(", url, ")"
+    )
+  )
+}
+dyn_link <- function(text,
+                     base_url,
+                     relative_url = "",
+                     # Change to TRUE when admiral adopts multiversion docs
+                     is_multiversion = FALSE,
+                     multiversion_default_ref = "main") {
+  url <- paste(base_url, relative_url, sep = "/")
+  if (is_multiversion) {
+    url <- paste(
+      base_url,
+      Sys.getenv("BRANCH_NAME", multiversion_default_ref),
+      relative_url,
+      sep = "/"
+    )
+  }
+  return(link(text, url))
+}
+# Other variables
+admiral_homepage <- "https://pharmaverse.github.io/admiral"
+library(admiraldev)
+```
+
+# Introduction
+
+This article describes how to create an `ADIS` ADaM domain.
+The parameters derived reflects common vaccine immunogenicity
+endpoints.
+
+Examples are currently presented and tested using `ADSL` (ADaM) and
+`is` and `suppis` (SDTM) inputs.
+
+**Note**: *All examples assume CDISC SDTM and/or ADaM format as input
+unless otherwise specified.*
+
+  # Programming Workflow
+
+  - [Read in Data](#readdata)
+  - [Combine IS with SUPPIS](#combine_supp)
+  - [Derive timing variables](#avisit)
+  - [Derive ADT and ADY variables](#adt)
+  - [Parameters derivation](#param)
+  - [Derive PARCAT1 and CUTOFFx variables](#parcat)
+  - [Derive AVAL, AVALU and DTYPE variables](#aval)
+  - [Derive BASE variables](#base)
+  - [Derive CHG and R2BASE variables](#chg)
+  - [Derive CRITx variables](#crit)
+  - [Add ADSL variables](#adsl_vars)
+  - [Derive TRTP/A variables](#trtp)
+  - [Derive PPS record level flag variable](#pps)
+
+
+## Read in Data {#readdata}
+In this first step you may read all the input data you need in order to proceed with
+ADIS development.
+In this template, `SDTM.IS`, `SDTM.SUPPIS` and `ADAM.ADSL` has been used.
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
 install.packages("metatools", repos = "https://cloud.r-project.org")
 library(metatools)
 library(dplyr)
@@ -12,31 +86,31 @@ library(lubridate)
 library(rlang)
 library(admiralvaccine)
 
-
 # Load source datasets ----
 data("vx_is")
 data("vx_suppis")
 data("vx_adsl")
 
-# When SAS datasets are imported into R using haven::read_sas(), missing
-# character values from SAS appear as "" characters in R, instead of appearing
-# as NA values. Further details can be obtained via the following link:
-# https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
-
-
+# Convert blanks into NA
 is <- convert_blanks_to_na(vx_is)
 suppis <- convert_blanks_to_na(vx_suppis)
 adsl <- convert_blanks_to_na(vx_adsl)
+```
 
 
-# Derivations ----
 
-# STEP 1 - combine IS with SUPPIS.
-# Please, upload MOCK data
+## Combine IS with SUPPIS {#combine_supp}
+Combine `IS` with its supplemental domain `SUPPIS`.
+```{r eval=TRUE}
 is_suppis <- combine_supp(is, suppis)
+```
 
 
-# STEP 2 - Visits and timing variables derivation.
+## Derive timing variables {#avisit}
+Derive `AVISIT`, `AVISITN`, `ATPT`, `ATPTN` and `ATPTREF` variables.
+Please, update visit records according to your study design/Protocol.
+For the visit values, please refers to your ADAM SPECIFICATIONS.
+```{r eval=TRUE}
 is1 <- is_suppis %>%
   mutate(
     AVISITN = as.numeric(VISITNUM),
@@ -61,14 +135,23 @@ is1 <- is_suppis %>%
       is.na(VISITNUM) ~ NA_character_
     )
   )
+```
 
 
-# STEP 3: ADT and ADY derivation
+## Derive ADT and ADY variables {#adt}
+For `ADT` derivation, please follow your imputation rules.
+In the example below:
 
-# Tried to test this function with missing days and/or months and missing dates:
-# To put highest_imputation = "M" and date_imputation = "mid" to be in line with GSK rules.
-# flag_imputation = "none" to suppress ADTF variable.
+- when day is missing then 15 is imputed;
 
+- When both day and month are missing then 30-06 is imputed;
+
+- If input date is missing then no imputation is done;
+
+For `ADY` derivation RFSTDTC has been used in this template.
+
+If your derivation is different, please adapt.
+```{r eval=TRUE}
 # ADT derivation
 is2_adt <- derive_vars_dt(
   dataset = is1,
@@ -78,7 +161,6 @@ is2_adt <- derive_vars_dt(
   date_imputation = "mid",
   flag_imputation = "none"
 )
-
 
 # Merge with ADSL to get RFSTDTC info in order to derive ADY
 is2_rf <- derive_var_merged_character(
@@ -100,11 +182,19 @@ is2_ady <- derive_vars_dy(
   reference_date = RFSTDTC,
   source_vars = exprs(ADT)
 )
+```
 
 
+## Parameters derivation {#param}
+In this template, duplicated records for `PARAMCD` have been created.
+In particular, you may find 4 different parameters values:
 
-# STEP 4: PARAMCD, PARAM and PARAMN derivation
+- Original values and relative log10 values;
 
+- 4fold values and relative log10 values;
+
+Please, add or remove datasets according to your study needs.
+```{r eval=TRUE}
 # Create record duplication in order to plot both original and LOG10 parameter values.
 # Add also records related to 4fold.
 # Please, keep or modify PARAM values according to your purposes.
@@ -170,8 +260,14 @@ is4 <- derive_vars_merged_lookup(
   new_vars = exprs(PARAMN),
   by_vars = exprs(PARAM)
 )
+```
 
-# STEP 5: PARCAT1 and CUTOFF0x derivations.
+
+## Derive PARCAT1 and CUTOFFx variables {#parcat}
+Derive `PARCAT1` and `CUTOFF`x variables.
+
+Fake values has been put for CUTOFF values. Please, adapt base on your objectives.
+```{r eval=TRUE}
 is5 <- is4 %>%
   mutate(
     PARCAT1 = ISCAT,
@@ -179,10 +275,30 @@ is5 <- is4 %>%
     CUTOFF02 = 4,
     CUTOFF03 = 8
   )
+```
 
 
-# STEP 6: AVAL, AVALU, DTYPE and SERCAT1/N derivation
-# AVAL derivation
+## Derive AVAL, AVALU and DTYPE variables {#aval}
+This is the core of ADIS template.
+
+For ORIGINAL (and relative log10 values) the following rule has been followed for `AVAL` derivation:
+
+- when the lab result (ISSTRESN) is below the Lower Limit Of Quantitation, then set ISSTRESN/2;
+
+- when the lab result (ISSTRESN) falls in the Lower Limit Of Quantitation and Upper Limit Of Quantitation range, then set ISSTRESN;
+
+- when the lab result (ISSTRESN) is greater then the Upper Limit Of Quantitation, then set ISSTRESN;
+
+For 4fold (and relative log10 values) the rule is pretty the same, except when the LAB result (ISSTRESN) is lower than the Lower Limit Of Quantitation. In that case put ISSTRESN instead of ISSTRESN/2.
+
+With log10 transformations, simply follow the before rules and apply log10 function.
+
+Please, update this algorithm according to your Protocol/SAP.
+
+`AVALU` is set equal to `IS.ISSTRESU` when ISSTRESN and its character value (ISSTRESC) are equal. Blank otherwise.
+
+Later you can find `SERCAT1/N` and `DTYPE` derivations.
+```{r eval=TRUE}
 is5_aval <- is5 %>%
   mutate(
     AVAL = case_when(
@@ -252,8 +368,15 @@ is6 <- is5_sercat1n %>%
     "HALFLLQ",
     as.character(NA)
   ))
+```
 
-# STEP 7: ABLFL and BASE variables derivation
+
+## Derive BASE variables {#base}
+Derive Baseline values for each Subject/Visit and relative flag, `ABLFL.
+
+In a later stage, derive `BASECAT` variable, which represents the base category.
+Update accordingly.
+```{r eval=TRUE}
 # ABLFL derivation
 is6_ablfl <- derive_var_relative_flag(
   dataset = is6,
@@ -304,14 +427,29 @@ is7 <- derive_var_merged_cat(
   source_var = BASE,
   cat_fun = basecat1
 )
+```
 
-# STEP 8 Derivation of Change from baseline and Ratio to baseline ----
+
+## Derive CHG and R2BASE variables {#chg}
+Derive change from baseline values.
+
+Derive ratio to base values.
+```{r eval=TRUE}
 is8 <- is7 %>%
   derive_var_chg() %>%
   derive_var_analysis_ratio(numer_var = AVAL, denom_var = BASE)
+```
 
-# STEP 9 Derivation of CRITyFL and CRITyFN ----
 
+
+## Derive CRITx variables {#crit}
+Derive Criteria Evaluation Analysis Flags.
+
+The function selects a subset of rows from the input dataset and apply to them a
+criterion. If this criterion is met then `CRIT1FL` (or the name you specified in the first argument) is equal to "Y". "N" otherwise.
+
+The function returns a relative numeric `CRIT1FN` variable (1 or 0 if the criterion is met, respectively) and a label `CRIT1` variable (with the text specified in label_var argument).
+```{r eval=TRUE}
 is9 <- derive_vars_crit(
   dataset = is8,
   new_var = "CRIT1",
@@ -319,9 +457,14 @@ is9 <- derive_vars_crit(
   condition = !is.na(AVAL) & !is.na(ISLLOQ),
   criterion = AVAL >= ISLLOQ
 )
+```
 
-# STEP 10  Merge with ADSL ----
 
+## Add ADSL variables {#adsl_vars}
+Attach all `ADAM.ADSL` variables to the is build-in dataset.
+
+If you may need to keep only a subset of them, please update accordingly.
+```{r eval=TRUE}
 # Get list of ADSL variables not to be added to ADIS
 vx_adsl_vars <- exprs(RFSTDTC)
 
@@ -330,14 +473,23 @@ is10 <- derive_vars_merged(
   dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
   by_vars = exprs(STUDYID, USUBJID)
 )
+```
 
-# STEP 11 Derivation of TRTP/A treatment variables ----
 
+## Derive TRTP/A variables {#trtp}
+```{r eval=TRUE}
+# Get list of ADSL variables not to be added to ADIS
 is11 <- is10 %>%
   mutate(TRTP = TRT01P, TRTA = TRT01A)
+```
 
-# STEP 12 Derivation of PPSRFL ----
 
+
+## Derive PPS record level flag variable {#pps}
+This is a record level flag which identifies which rows are included/excluded for the PPS related objectives.
+
+This step could change according to your study needs.
+```{r eval=TRUE}
 is12a <- is11 %>%
   filter(VISITNUM == 10) %>%
   derive_var_merged_exist_flag(
@@ -359,3 +511,10 @@ is12b <- is11 %>%
   )
 
 is12 <- bind_rows(is12a, is12b)
+```
+
+
+NOTE: All these packages are in the experimental phase, but the vision is to
+have them associated with an End to End pipeline under the umbrella of the
+[pharmaverse](https://github.com/pharmaverse). An example of applying metadata 
+and perform associated checks can be found at the [pharmaverse E2E example](https://examples.pharmaverse.org/data/adsl/).

@@ -58,9 +58,9 @@
 #'
 #' @export
 #'
-#' @keywords der_adxx
+#' @keywords der_rec
 #'
-#' @family der_adxx
+#' @family der_rec
 #'
 #' @examples
 #' library(tibble)

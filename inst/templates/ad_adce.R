@@ -6,6 +6,7 @@
 library(admiral)
 library(dplyr)
 library(lubridate)
+library(admiralvaccine)
 
 
 # Load source datasets ----
@@ -14,12 +15,12 @@ library(lubridate)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-data("ce")
-data("admiralvaccine_adsl")
+data("vx_ce")
+data("vx_adsl")
 
 
-adsl <- admiralvaccine_adsl
-ce <- ce
+adsl <- vx_adsl
+ce <- vx_ce
 
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
@@ -32,7 +33,7 @@ adsl <- convert_blanks_to_na(adsl)
 
 # Derivations ----
 # Get CE records
-ce01 <- ce %>%
+adce <- ce %>%
   filter(CECAT == "REACTOGENICITY")
 
 # Get list of ADSL vars required for derivations
@@ -49,7 +50,7 @@ adperiods <- create_period_dataset(
 )
 
 # Derive analysis dates/days
-ce02 <- ce01 %>%
+adce <- adce %>%
   # join adsl to ce
   derive_vars_merged(
     dataset_add = adsl,
@@ -77,9 +78,11 @@ ce02 <- ce01 %>%
     source_vars = exprs(ASTDT, AENDT)
   )
 
-ce03 <-
+
+
+adce <-
   derive_vars_joined(
-    ce02,
+    adce,
     dataset_add = adperiods,
     by_vars = exprs(STUDYID, USUBJID),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT
@@ -88,7 +91,11 @@ ce03 <-
     APERSTDY = as.integer(ASTDT - APERSDT) + 1,
     ADECOD = CEDECOD,
     AREL = CEREL
-  ) %>%
+  )
+
+
+
+adce <- adce %>%
   ## depending on collection of TOXGR or SEV in CE domain ----
   ## Analysis variant of ASEV and ASEVN ----
   mutate(
@@ -97,31 +104,26 @@ ce03 <-
       levels = c("MILD", "MODERATE", "SEVERE", "DEATH THREATENING")
     ))
   ) %>%
-  ## Analysis variant of ATOXGR and ATOXGRN ----
-  # mutate(
-  # ATOXGR = CETOXGR,
-  # ATOXGRN = as.integer(factor(ATOXGR, levels = c("0", "1", "2", "3", "4"))),
-  # )
-  # ) %>%
   ## Derive occurrence flags: first occurrence of most severe solicited AE ----
-  ## - Janssen specific ----
+  ## - Company specific ----
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
       by_vars = exprs(USUBJID, APERIOD),
-      order = exprs(desc(ASEVN), ASTDY, CEDECOD),
+      order = exprs(desc(ASEVN), ASTDY, CEDECOD, CESEQ),
       new_var = AOCC01FL,
       mode = "first"
     ),
     filter = !is.na(APERIOD) & !is.na(ASEV)
   )
 
-ce04 <-
+adce <- adce %>%
   ## Derive ASEQ ----
   derive_var_obs_number(
-    ce03,
-    by_vars = exprs(USUBJID, APERIOD),
-    order = exprs(ADECOD)
+    new_var = ASEQ,
+    by_vars = exprs(STUDYID, USUBJID),
+    order = exprs(ADECOD, CELAT, CETPTREF, APERIOD),
+    check_type = "error"
   ) %>%
   ## Derive analysis duration (value and unit) ----
   derive_vars_duration(
@@ -136,14 +138,14 @@ ce04 <-
   )
 
 
-
 # Join all ADSL with CE
-adce <- ce04 %>%
+adce <- adce %>%
   derive_vars_merged(
     dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
     by_vars = exprs(STUDYID, USUBJID)
-  ) %>%
-  mutate(APERSTDY = as.integer(ASTDT - APERSDT) + 1)
+  )
+
+
 
 
 # Save output ----
