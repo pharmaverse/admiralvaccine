@@ -74,12 +74,12 @@ library(dplyr)
 library(lubridate)
 library(admiralvaccine)
 
-data("ce")
-data("adsl")
+data("vx_ce")
+data("vx_adsl")
 
 
-adsl <- adsl
-ce <- ce
+adsl <- vx_adsl
+ce <- vx_ce
 
 ce <- convert_blanks_to_na(ce)
 adsl <- convert_blanks_to_na(adsl)
