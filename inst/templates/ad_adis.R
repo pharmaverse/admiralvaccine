@@ -80,7 +80,7 @@ adis <- derive_vars_dt(
   flag_imputation = "none"
 ) %>%
   derive_var_merged_character(
-    dataset = adis,
+    dataset =,
     dataset_add = adsl,
     by_vars = exprs(STUDYID, USUBJID),
     new_var = RFSTDTC,
@@ -92,7 +92,7 @@ adis <- derive_vars_dt(
   ) %>%
   # ADY derivation
   derive_vars_dy(
-    dataset = adis,
+    dataset =,
     reference_date = RFSTDTC,
     source_vars = exprs(ADT)
   )
@@ -158,7 +158,7 @@ adis <- derive_vars_merged_lookup(
   by_vars = exprs(PARAMCD)
 ) %>%
   derive_vars_merged_lookup(
-    dataset = ,
+    dataset =,
     dataset_add = param_lookup,
     new_vars = exprs(PARAMN),
     by_vars = exprs(PARAM)
@@ -254,23 +254,20 @@ adis <- derive_var_relative_flag(
   mode = "first",
   selection = "before",
   inclusive = TRUE
-)
-
+) %>%
 # BASE derivation
-adis <- derive_var_base(
-  dataset = adis,
+  derive_var_base(
+  dataset =,
   by_vars = exprs(STUDYID, USUBJID, PARAMN),
   source_var = AVAL,
   new_var = BASE,
   filter = ABLFL == "Y"
-)
-
+) %>%
 # BASETYPE derivation
-adis <- derive_var_basetype(
-  dataset = adis,
+  derive_var_basetype(
+  dataset =,
   basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
 )
-
 
 # BASECAT derivation
 base_data <- adis %>%
