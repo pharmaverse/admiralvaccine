@@ -65,6 +65,13 @@
 #'   "ABC001", "MALE", 23,
 #'   "ABC002", "FEMALE", 26,
 #' )
+#'
+#' derive_vars_vaxdt(
+#'   dataset = input,
+#'   dataset_adsl = adsl,
+#'   by_vars = exprs(USUBJID, VISITNUM),
+#'   order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
+#' )
 derive_vars_vaxdt <- function(dataset,
                               dataset_adsl,
                               by_vars,
@@ -75,7 +82,11 @@ derive_vars_vaxdt <- function(dataset,
   assert_data_frame(dataset, required_vars = by_vars)
   assert_data_frame(dataset_adsl, required_vars = exprs(USUBJID))
 
-  ex_distinct <- dataset %>% distinct(USUBJID, VISIT, .keep_all = TRUE)
+  if ("VISIT" %in% names(dataset)) {
+    ex_distinct <- dataset %>% distinct(USUBJID, VISIT, .keep_all = TRUE)
+  } else {
+    ex_distinct <- dataset %>% distinct(USUBJID, VISITNUM, .keep_all = TRUE)
+  }
 
   if (nrow(dataset) != nrow(ex_distinct)) {
     warning("Subjects have multiple vaccinations at same visit")
