@@ -17,8 +17,11 @@ library(admiralvaccine)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-data("dm")
-data("ex")
+data("vx_dm")
+data("vx_ex")
+
+dm <- vx_dm
+ex <- vx_ex
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -145,4 +148,4 @@ adsl <- adsl %>%
   )
 # Save output
 dir <- tempdir()
-save(adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")
+save(adsl, file = file.path(dir, "vx_adsl.rda"), compress = "bzip2")

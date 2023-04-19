@@ -15,12 +15,12 @@ library(admiralvaccine)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-data("ce")
-data("adsl")
+data("vx_ce")
+data("vx_adsl")
 
 
-adsl <- adsl
-ce <- ce
+adsl <- vx_adsl
+ce <- vx_ce
 
 
 # When SAS datasets are imported into R using haven::read_sas(), missing

@@ -51,10 +51,10 @@ library(dplyr, warn.conflicts = FALSE)
 library(admiral.test)
 library(lubridate)
 library(stringr)
-data("dm")
-data("ex")
-dm <- convert_blanks_to_na(dm)
-ex <- convert_blanks_to_na(ex)
+data("vx_dm")
+data("vx_ex")
+dm <- convert_blanks_to_na(vx_dm)
+ex <- convert_blanks_to_na(vx_ex)
 ```
 
 The `DM` domain is used as the basis for `ADSL`:
