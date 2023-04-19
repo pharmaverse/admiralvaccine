@@ -104,8 +104,7 @@ Other der_rec:
 \code{\link{derive_param_diam_to_sev}()},
 \code{\link{derive_param_fever_occur}()},
 \code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()},
-\code{\link{derive_vars_params}()}
+\code{\link{derive_param_maxtemp}()}
 }
 \author{
 Vikram S
