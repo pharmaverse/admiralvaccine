@@ -322,7 +322,7 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
     "XYZ1001", "REDNESS", 11, "11", "VACCINATION 1", "Diameter", "DIAMETER"
   )
 
-  expect_error(
+  expect_warning(
     derive_param_diam_to_sev(
       dataset = input,
       filter_diam = "DIAM",
@@ -337,5 +337,65 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
     regexp = paste(
       "DIAM doesn't exist in the filtered record"
     )
+  )
+})
+
+## Test7: Check if the arguments `filter_diam` works correctly if we pass multiple values
+
+test_that("derive_param_diam_to_sev Test 7: Check if the arguments `filter_diam` works correctly
+          if we pass multiple values", {
+  input <- tibble::tribble(
+    ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
+    "XYZ1001", "REDNESS", 7.5, "7.5", "VACCINATION 1", "Diameter", "DIAMETER",
+    "XYZ1001", "REDNESS", 3.5, "3.5", "VACCINATION 1", "Diameter", "DIAMETER",
+    "XYZ1001", "REDNESS", 2, "2", "VACCINATION 1", "Diameter", "DIAM",
+    "XYZ1001", "REDNESS", 10, "10", "VACCINATION 1", "Diameter", "DIAM"
+  )
+
+  format_avalc <- function(x) {
+    case_when(
+      between(x, 0, 3) ~ "NONE",
+      between(x, 3, 6) ~ "MILD",
+      between(x, 6, 9) ~ "MODERATE",
+      x > 9 ~ "SEVERE"
+    )
+  }
+
+  expected1 <- input %>%
+    mutate(
+      FATEST = "Severity/Intensity",
+      FATESTCD = "SEV",
+      AVALC = format_avalc(AVAL),
+      DTYPE = "DERIVED",
+      FASEQ = NA_integer_
+    )
+
+  format_aval <- function(x) {
+    case_when(
+      x == "NONE" ~ 0,
+      x == "MILD" ~ 1,
+      x == "MODERATE" ~ 2,
+      x == "SEVERE" ~ 3
+    )
+  }
+  expected_output <- bind_rows(input, expected1 %>%
+    mutate(AVAL = format_aval(AVALC)))
+
+  actual_output <- derive_param_diam_to_sev(
+    dataset = input,
+    filter_diam = c("DIAMETER", "DIAM"),
+    filter_faobj = c("REDNESS"),
+    testcd_sev = "SEV",
+    test_sev = "Severity/Intensity",
+    none = c(0, 3),
+    mild = c(3, 6),
+    mod = c(6, 9),
+    sev = 9
+  )
+
+  expect_dfs_equal(
+    expected_output,
+    actual_output,
+    keys = c("USUBJID", "FAOBJ", "AVAL", "AVALC", "ATPTREF", "FATEST", "FATESTCD")
   )
 })
