@@ -65,6 +65,13 @@ adsl <- tribble(
   "ABC001", "MALE", 23,
   "ABC002", "FEMALE", 26,
 )
+
+derive_vars_vaxdt(
+  dataset = input,
+  dataset_adsl = adsl,
+  by_vars = exprs(USUBJID, VISITNUM),
+  order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
+)
 }
 \seealso{
 Other der_var: 
