@@ -138,7 +138,11 @@ derive_vars_merged_vaccine <- function(dataset,
     }
   }
 
-  ex_distinct <- dataset_ex %>% distinct(USUBJID, VISIT, .keep_all = TRUE)
+  if ("VISIT" %in% names(dataset_ex)) {
+    ex_distinct <- dataset_ex %>% distinct(USUBJID, VISIT, .keep_all = TRUE)
+  } else {
+    ex_distinct <- dataset_ex %>% distinct(USUBJID, VISITNUM, .keep_all = TRUE)
+  }
 
   if (nrow(dataset_ex) != nrow(ex_distinct)) {
     warning("Subjects have multiple vaccinations at same visit")
