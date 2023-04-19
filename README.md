@@ -8,7 +8,7 @@ date: '2022-06-27'
 
 <!-- Please do not edit the README.md file as it is auto-generated. Only edit the README.Rmd file -->
 
-# admiral package extension Template <img src="man/figures/logo.png" align="right" width="200" style="margin-left:50px;"/>
+# Admiral Extension for Vaccines <img src="man/figures/logo.png" align="right" width="200" style="margin-left:50px;"/>
 
 <!-- badges: start -->
 [<img src="http://pharmaverse.org/shields/admiralvaccine.svg">](https://pharmaverse.org)
