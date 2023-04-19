@@ -72,15 +72,15 @@ derive_vars_params(
 
 }
 \seealso{
-Other der_rec: 
-\code{\link{derive_param_diam_to_sev}()},
-\code{\link{derive_param_fever_occur}()},
-\code{\link{derive_param_maxdiam}()},
-\code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()}
+Other der_var: 
+\code{\link{derive_vars_crit}()},
+\code{\link{derive_vars_event_flag}()},
+\code{\link{derive_vars_max_flag}()},
+\code{\link{derive_vars_merged_vaccine}()},
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Dhivya Kanagaraj
 }
-\concept{der_rec}
-\keyword{der_rec}
+\concept{der_var}
+\keyword{der_var}
