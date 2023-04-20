@@ -1,9 +1,4 @@
-library(rlang)
-library(dplyr)
-library(tibble)
-library(diffdf)
-library(testthat)
-library(admiraldev)
+## Test 1: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS`
 
 test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS`", {
@@ -17,9 +12,9 @@ test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicatin
 
   format_avalc <- function(x) {
     case_when(
-      between(x, 0, 2) ~ "NONE",
-      between(x, 2, 5) ~ "MILD",
-      between(x, 5, 10) ~ "MODERATE",
+      dplyr::between(x, 0, 2) ~ "NONE",
+      dplyr::between(x, 2, 5) ~ "MILD",
+      dplyr::between(x, 5, 10) ~ "MODERATE",
       x > 10 ~ "SEVERE"
     )
   }
@@ -77,9 +72,9 @@ test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicatin
 
   format_avalc <- function(x) {
     case_when(
-      between(x, 0, 2) ~ "NONE",
-      between(x, 2, 5) ~ "MILD",
-      between(x, 5, 10) ~ "MODERATE",
+      dplyr::between(x, 0, 2) ~ "NONE",
+      dplyr::between(x, 2, 5) ~ "MILD",
+      dplyr::between(x, 5, 10) ~ "MODERATE",
       x > 10 ~ "SEVERE"
     )
   }
@@ -137,9 +132,9 @@ test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
 
   format_avalc <- function(x) {
     case_when(
-      between(x, 0, 3) ~ "NONE",
-      between(x, 3, 6) ~ "MILD",
-      between(x, 6, 9) ~ "MODERATE",
+      dplyr::between(x, 0, 3) ~ "NONE",
+      dplyr::between(x, 3, 6) ~ "MILD",
+      dplyr::between(x, 6, 9) ~ "MODERATE",
       x > 9 ~ "SEVERE"
     )
   }
@@ -201,9 +196,9 @@ test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
 
   format_avalc <- function(x) {
     case_when(
-      between(x, 0, 2) ~ "NONE",
-      between(x, 2, 5) ~ "MILD",
-      between(x, 5, 10) ~ "MODERATE",
+      dplyr::between(x, 0, 2) ~ "NONE",
+      dplyr::between(x, 2, 5) ~ "MILD",
+      dplyr::between(x, 5, 10) ~ "MODERATE",
       x > 10 ~ "SEVERE"
     )
   }
@@ -264,9 +259,9 @@ test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
 
   format_avalc <- function(x) {
     case_when(
-      between(x, 0, 2) ~ "NONE",
-      between(x, 2, 5) ~ "MILD",
-      between(x, 5, 10) ~ "MODERATE",
+      dplyr::between(x, 0, 2) ~ "NONE",
+      dplyr::between(x, 2, 5) ~ "MILD",
+      dplyr::between(x, 5, 10) ~ "MODERATE",
       x > 10 ~ "SEVERE"
     )
   }
@@ -354,9 +349,9 @@ test_that("derive_param_diam_to_sev Test 7: Check if the arguments `filter_diam`
 
   format_avalc <- function(x) {
     case_when(
-      between(x, 0, 3) ~ "NONE",
-      between(x, 3, 6) ~ "MILD",
-      between(x, 6, 9) ~ "MODERATE",
+      dplyr::between(x, 0, 3) ~ "NONE",
+      dplyr::between(x, 3, 6) ~ "MILD",
+      dplyr::between(x, 6, 9) ~ "MODERATE",
       x > 9 ~ "SEVERE"
     )
   }
