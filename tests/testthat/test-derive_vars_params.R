@@ -1,13 +1,7 @@
-library(tibble)
-library(tidyr)
-library(dplyr)
-library(rlang)
-library(admiral)
-library(admiraldev)
-library(stringr)
 # testcase-1
+
 testthat::test_that("test-1:checking", {
-  lookup_dataset <- tribble(
+  lookup_dataset <- tibble::tribble(
     ~FATESTCD,    ~PARAMCD,   ~FAOBJ,
     "SEV",        "SEVREDN",  "Redness",
     "DIAMETER",   "DIARE",    "Redness",
@@ -20,7 +14,7 @@ testthat::test_that("test-1:checking", {
     "OCCUR",      "OCSWEL",   "Swelling"
   )
 
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST,
     "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Redness", "Severity",
     "ABC101", "REACTOGENICITY", "ADMIN-SITE", "DIAMETER", "Redness", "Diameter",
@@ -66,11 +60,11 @@ testthat::test_that("test-1:checking", {
   )
 })
 
-#-------------------------------------------------------------------------------
 # testcase -2
+
 testthat::test_that("test-2:checking whether PARAM  getting concatenated with
                     only the existed variables", {
-  lookup_dataset <- tribble(
+  lookup_dataset <- tibble::tribble(
     ~FATESTCD,    ~PARAMCD,   ~FAOBJ,
     "SEV",        "SEVREDN",  "Redness",
     "DIAMETER",   "DIARE",    "Redness",
@@ -83,7 +77,7 @@ testthat::test_that("test-2:checking whether PARAM  getting concatenated with
     "OCCUR",      "OCSWEL",   "Swelling"
   )
 
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALAT, ~FALOC, ~FADIR,
     "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Redness", "Severity",
     "DELTOID MUSCLE", "LEFT", NA,
