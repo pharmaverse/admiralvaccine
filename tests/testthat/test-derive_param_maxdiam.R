@@ -1,12 +1,8 @@
-library(admiraldev)
-library(rlang)
-library(diffdf)
-library(dplyr)
+## Test 1: Check if a new record is created with Maximum diameter value"
 
-# testthat
 testthat::test_that("derive_param_maxdiam Test 1: Check if a new record is
                     created with Maximum diameter value", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~FATEST, ~FATESTCD, ~FASCAT, ~FALNKGRP, ~FATPT,
     "ABC001", "REDNESS", "VACC 1", 1, "Diameter", "DIAM", "Admin", "REDNESS-VAC1", "DAY1",
     "ABC001", "REDNESS", "VACC 1", 2, "Diameter", "DIAM", "Admin", "REDNESS-VAC1", "DAY2",
@@ -37,10 +33,11 @@ testthat::test_that("derive_param_maxdiam Test 1: Check if a new record is
   expect_dfs_equal(actual, expected, keys = c("USUBJID", "FAOBJ", "FALNKGRP", "FATPT"))
 })
 
+## Test 2:Check if filter condition and test/testcd values works fine
 
 testthat::test_that("derive_param_maxdiam Test 2:Check if filter condition and
                     test/testcd values works fine", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~FATESTCD, ~FASCAT, ~FATPT, ~FALNKGRP,
     "ABC001", "REDNESS", "VACC 1", 1, "DIAM", "Admin site", "DAY 1", "REDNESS-VAC1",
     "ABC001", "REDNESS", "VACC 1", 2, "DIAM", "Admin site", "DAY 2", "REDNESS-VAC1",
@@ -75,10 +72,13 @@ testthat::test_that("derive_param_maxdiam Test 2:Check if filter condition and
   expect_dfs_equal(actual, expected, keys = c("USUBJID", "FAOBJ", "FALNKGRP", "FATPT"))
 })
 
+## Test 3: Check if there are multiple records with maximum diameter within by group then
+## the MAXDIAM record is identified correctly
+
 testthat::test_that("derive_param_maxdiam Test 3: Check if there are multiple records with
           maximum diameter within by group then the MAXDIAM record is identified
           correctly", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~FATESTCD, ~FASCAT, ~ATPTN, ~ADT, ~FALNKGRP,
     "ABC001", "Swelling", "VAC1", 2, "DIAM", "Admin site", 3, "2015-02-10", "Swelling-VAC1",
     "ABC001", "Swelling", "VAC1", 2, "DIAM", "Admin site", 4, "2015-02-11", "Swelling-VAC1",
