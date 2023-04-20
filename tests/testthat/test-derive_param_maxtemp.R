@@ -1,11 +1,7 @@
-library(admiraldev)
-library(rlang)
-library(diffdf)
-library(testthat)
+## Test1: derive mamimum temperature records"
 
-# derive_param_maxtemp
-test_that("derive mamimum temperature records", {
-  input <- tribble(
+test_that("derive_param_maxtemp Test1: derive mamimum temperature records", {
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
     "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
     "XYZ1001", "FEVER", "VACC 1", "Y", 2, 39.2, "Occurrence Indicator", "OCCUR",
@@ -21,7 +17,7 @@ test_that("derive mamimum temperature records", {
     filter(FAOBJ == "FEVER") %>%
     arrange(USUBJID, FAOBJ, ATPTREF, AVALC, VSSTRESN, ATPTN) %>%
     group_by(USUBJID, FAOBJ, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     mutate(
       AVAL = VSSTRESN,
       AVALC = as.character(AVAL),
@@ -51,10 +47,11 @@ test_that("derive mamimum temperature records", {
   )
 })
 
-# derive_param_maxtemp
-test_that("derive mamimum temperature records if more than one record has
-          same maximum value within by group ", {
-  input <- tribble(
+## Test2:derive mamimum temperature records if more than one record has
+## same maximum value within by group
+test_that("derive_param_maxtemp Test2:derive mamimum temperature records if more than one record has
+          same maximum value within by group", {
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
     "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
     "XYZ1001", "FEVER", "VACC 1", "Y", 2, 39.2, "Occurrence Indicator", "OCCUR",
@@ -74,7 +71,7 @@ test_that("derive mamimum temperature records if more than one record has
     filter(FAOBJ == "FEVER") %>%
     arrange(USUBJID, FAOBJ, ATPTREF, AVALC, VSSTRESN, ATPTN) %>%
     group_by(USUBJID, FAOBJ, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     mutate(
       AVAL = VSSTRESN,
       AVALC = as.character(AVAL),
@@ -104,10 +101,12 @@ test_that("derive mamimum temperature records if more than one record has
   )
 })
 
-# derive_param_maxtemp
-test_that("Check if the argument `filter_faobj` filters only fever records
-          for deriving maximum temperature records", {
-  input <- tribble(
+## Test3:Check if the argument `filter_faobj` filters only fever records
+## for deriving maximum temperature records
+
+test_that("derive_param_maxtemp Test3:Check if the argument `filter_faobj` filters
+          only fever records for deriving maximum temperature records", {
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
     "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
     "XYZ1001", "FEVER", "VACC 1", "Y", 2, 39.2, "Occurrence Indicator", "OCCUR",
@@ -127,7 +126,7 @@ test_that("Check if the argument `filter_faobj` filters only fever records
     filter(FAOBJ == "FEVER") %>%
     arrange(USUBJID, FAOBJ, ATPTREF, AVALC, VSSTRESN, ATPTN) %>%
     group_by(USUBJID, FAOBJ, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     mutate(
       AVAL = VSSTRESN,
       AVALC = as.character(AVAL),
@@ -157,9 +156,11 @@ test_that("Check if the argument `filter_faobj` filters only fever records
   )
 })
 
-# derive_param_maxtemp
-test_that("Change by group variables and check if the results are matching", {
-  input <- tribble(
+## Test4:Change by group variables and check if the results are matching
+
+test_that("derive_param_maxtemp Test4:Change by group variables and check if the
+          results are matching", {
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
     "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
     "XYZ1001", "FEVER", "VACC 1", "Y", 2, 39.2, "Occurrence Indicator", "OCCUR",
@@ -175,7 +176,7 @@ test_that("Change by group variables and check if the results are matching", {
     filter(FAOBJ == "FEVER") %>%
     arrange(USUBJID, FAOBJ, ATPTREF, AVALC, VSSTRESN, ATPTN) %>%
     group_by(USUBJID, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     mutate(
       AVAL = VSSTRESN,
       AVALC = as.character(AVAL),
@@ -205,9 +206,11 @@ test_that("Change by group variables and check if the results are matching", {
   )
 })
 
-# derive_param_maxtemp
-test_that("Check if the arguments `test_maxtemp`,`testcd_maxtemp` works fine ", {
-  input <- tribble(
+## Test5:Check if the arguments `test_maxtemp`,`testcd_maxtemp` works fine
+
+test_that("derive_param_maxtemp Test5:Check if the arguments `test_maxtemp`,`testcd_maxtemp`
+          works fine ", {
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
     "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
     "XYZ1001", "FEVER", "VACC 1", "Y", 2, 39.2, "Occurrence Indicator", "OCCUR",
@@ -223,7 +226,7 @@ test_that("Check if the arguments `test_maxtemp`,`testcd_maxtemp` works fine ", 
     filter(FAOBJ == "FEVER") %>%
     arrange(USUBJID, FAOBJ, ATPTREF, AVALC, VSSTRESN, ATPTN) %>%
     group_by(USUBJID, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     mutate(
       AVAL = VSSTRESN,
       AVALC = as.character(AVAL),
@@ -253,10 +256,12 @@ test_that("Check if the arguments `test_maxtemp`,`testcd_maxtemp` works fine ", 
   )
 })
 
-# derive_param_maxtemp
-test_that("Check if getting the expected error while passing invalid faobj
-          in filter_faobj argument ", {
-  input <- tribble(
+## Test6:Check if getting the expected error while passing invalid faobj
+## in filter_faobj argument
+
+test_that("derive_param_maxtemp Test6:Check if getting the expected error while
+           passing invalid faobj in filter_faobj argument ", {
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~VSSTRESN, ~FATEST, ~FATESTCD,
     "XYZ1001", "FEVER", "VACC 1", "Y", 1, 38.9, "Occurrence Indicator", "OCCUR",
     "XYZ1001", "FEVER", "VACC 1", "Y", 2, 39.2, "Occurrence Indicator", "OCCUR",
