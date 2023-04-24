@@ -182,12 +182,12 @@ var_label(is$ULLOQ) <- "Upper Limit of Quantitation"
 
 
 
-is <- is %>%
+vx_is <- is %>%
   select(-c(ISGRPID, ISREFID, ISSPID, ISLNKID, LOD))
 
 
 # Save RDA file
 getwd()
 setwd("C:/ADMIRALPROJECT/admiralvaccine/data")
-str(is)
-save("is", file = "is.rda")
+str(vx_is)
+save("vx_is", file = "vx_is.rda")
