@@ -40,8 +40,8 @@
 #'
 #' @author Federico Baratin
 #' @export
-#' @keywords der_adxx
-#' @family der_adxx
+#' @keywords der_var
+#' @family der_var
 #'
 #' @examples
 #' library(tibble)

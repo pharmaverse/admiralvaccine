@@ -57,8 +57,8 @@ dataset merged with its supplementary dataset.
 }
 \examples{
 derive_vars_merged_vaccine(
-  dataset = face,
-  dataset_ex = ex,
+  dataset = vx_face,
+  dataset_ex = vx_ex,
   dataset_supp = NULL,
   dataset_suppex = NULL,
   ex_vars = exprs(EXTRT, EXDOSE, EXDOSEU, EXSTDTC, EXENDTC)
@@ -66,12 +66,7 @@ derive_vars_merged_vaccine(
 
 }
 \seealso{
-ADXX Functions that returns variable appended to dataset: 
-\code{\link{derive_param_diam_to_sev}()},
-\code{\link{derive_param_fever_occur}()},
-\code{\link{derive_param_maxdiam}()},
-\code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()},
+Other der_var: 
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
@@ -81,5 +76,5 @@ ADXX Functions that returns variable appended to dataset:
 \author{
 Vikram S
 }
-\concept{der_adxx}
-\keyword{der_adxx}
+\concept{der_var}
+\keyword{der_var}

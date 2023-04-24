@@ -1,15 +1,7 @@
-library(admiraldev)
-library(admiral)
-library(rlang)
-library(diffdf)
-library(testthat)
-library(dplyr)
-library(lubridate)
-
-# testthat
+# test
 testthat::test_that("testcase-1: Getting Vaccination dates from EX and
 check if output is merged with ADSL", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXLNKGRP, ~VISIT,
     "ABC001", "2015-01-10", 1, "DRUG A", "VAC 1", "VISIT 1",
     "ABC001", "2015-01-11", 2, "DRUG A", "VAC 2", "VISIT 2",
@@ -18,7 +10,7 @@ check if output is merged with ADSL", {
     "ABC002", "2015-01-13", 1, "DRUG B", "VAC 1", "VISIT 1"
   )
 
-  adsl <- tribble(
+  adsl <- tibble::tribble(
     ~USUBJID, ~SEX, ~AGE,
     "ABC001", "MALE", 23,
     "ABC002", "FEMALE", 26,
@@ -70,7 +62,7 @@ check if output is merged with ADSL", {
 # testthat
 testthat::test_that("testcase-2: Check if Vaccination date variables are getting
           created when multiple vaccination given on same visit", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXLNKGRP, ~VISIT,
     "ABC001", "2015-01-10", 1, "DRUG A", "VAC 1", "VISIT 1",
     "ABC001", "2015-01-10", 1, "DRUG A", "VAC 1", "VISIT 1",
@@ -78,7 +70,7 @@ testthat::test_that("testcase-2: Check if Vaccination date variables are getting
     "ABC001", "2015-01-13", 3, "DRUG B", "VAC 3", "VISIT 3",
     "ABC002", "2015-01-13", 1, "DRUG B", "VAC 1", "VISIT 1"
   )
-  adsl <- tribble(
+  adsl <- tibble::tribble(
     ~USUBJID, ~SEX, ~AGE,
     "ABC001", "MALE", 23,
     "ABC002", "FEMALE", 26,

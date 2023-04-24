@@ -4,7 +4,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"is"
+"vx_is"
 
 #' Supplemental IS Dataset
 #'
@@ -12,7 +12,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"suppis"
+"vx_suppis"
 
 #' Supplemental AE Dataset
 #'
@@ -20,7 +20,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"ae"
+"vx_ae"
 
 #' CE Dataset
 #'
@@ -28,7 +28,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"ce"
+"vx_ce"
 
 #' DM Dataset
 #'
@@ -36,7 +36,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"dm"
+"vx_dm"
 
 #' EX Dataset
 #'
@@ -44,7 +44,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"ex"
+"vx_ex"
 
 #' FACE Dataset
 #'
@@ -52,7 +52,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"face"
+"vx_face"
 
 #' VS Dataset
 #'
@@ -60,26 +60,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"vs"
-
-#' Subject Level Analysis Dataset
-#'
-#' An example subject level analysis dataset
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' Template adsl dataset associated with the `dm` and `ex` datasets
-#'
-"admiralvaccine_adsl"
-
-#' Subject Level Analysis Dataset
-#'
-#' A subject level analysis dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#'
-"adsl"
+"vx_vs"
 
 #' Vx - Subject Level Analysis Dataset
 #'
@@ -87,5 +68,15 @@
 #'
 #' @keywords dataset
 #' @family dataset
-#'
 "vx_adsl"
+
+#' Reactogenicity Analysis Dataset
+#'
+#' A Reactogenicity analysis dataset
+#'
+#' @keywords dataset
+#' @family dataset
+#' @source
+#' Template adface associated with the `adsl`, `face`, `ex` and `vs` datasets.
+#'
+"adface"

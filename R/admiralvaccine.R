@@ -5,6 +5,7 @@
 #'             if_else mutate mutate_at mutate_if n pull rename rename_at row_number select slice
 #'             starts_with transmute ungroup vars n_distinct union distinct
 #'             summarise_at summarise coalesce bind_cols na_if any_of tibble first left_join
+#'             between slice_tail
 #' @importFrom magrittr %>%
 #' @importFrom rlang := abort arg_match as_function as_string call2 caller_env
 #'             call_name current_env .data enexpr enquo eval_bare eval_tidy expr
@@ -27,9 +28,9 @@
 #' @importFrom tidyselect all_of contains vars_select
 #' @importFrom hms as_hms
 #' @importFrom lifecycle deprecate_warn deprecated deprecate_stop
-#' @importFrom admiral derive_vars_dy derive_vars_merged convert_blanks_to_na
+#' @importFrom admiral derive_vars_dy derive_vars_merged convert_blanks_to_na convert_na_to_blanks
 #' @importFrom admiraldev assert_logical_scalar assert_character_vector assert_vars
 #'             assert_data_frame assert_character_scalar assert_numeric_vector assert_filter_cond
-#'             assert_symbol assert_order_vars
+#'             assert_symbol assert_order_vars expect_dfs_equal
 #' @importFrom metatools combine_supp
 "_PACKAGE"

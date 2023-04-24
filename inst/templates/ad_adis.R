@@ -15,8 +15,8 @@ library(admiralvaccine)
 
 
 # Load source datasets ----
-data("is")
-data("suppis")
+data("vx_is")
+data("vx_suppis")
 data("vx_adsl")
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
@@ -25,8 +25,8 @@ data("vx_adsl")
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 
 
-is <- convert_blanks_to_na(is)
-suppis <- convert_blanks_to_na(suppis)
+is <- convert_blanks_to_na(vx_is)
+suppis <- convert_blanks_to_na(vx_suppis)
 adsl <- convert_blanks_to_na(vx_adsl)
 
 

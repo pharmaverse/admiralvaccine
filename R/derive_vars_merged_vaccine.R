@@ -45,14 +45,14 @@
 #'
 #' @export
 #'
-#' @keywords der_adxx
+#' @keywords der_var
 #'
-#' @family der_adxx
+#' @family der_var
 #'
 #' @examples
 #' derive_vars_merged_vaccine(
-#'   dataset = face,
-#'   dataset_ex = ex,
+#'   dataset = vx_face,
+#'   dataset_ex = vx_ex,
 #'   dataset_supp = NULL,
 #'   dataset_suppex = NULL,
 #'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSEU, EXSTDTC, EXENDTC)
@@ -138,7 +138,11 @@ derive_vars_merged_vaccine <- function(dataset,
     }
   }
 
-  ex_distinct <- dataset_ex %>% distinct(USUBJID, VISIT, .keep_all = TRUE)
+  if ("VISIT" %in% names(dataset_ex)) {
+    ex_distinct <- dataset_ex %>% distinct(USUBJID, VISIT, .keep_all = TRUE)
+  } else {
+    ex_distinct <- dataset_ex %>% distinct(USUBJID, VISITNUM, .keep_all = TRUE)
+  }
 
   if (nrow(dataset_ex) != nrow(ex_distinct)) {
     warning("Subjects have multiple vaccinations at same visit")
