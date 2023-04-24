@@ -1,13 +1,6 @@
-library(Hmisc)
-library(dplyr)
-library(tidyverse)
 library(labelled)
-library(haven)
-library(ggformula)
 
-
-
-table <- matrix(NA, nrow = 80, ncol = 28)
+table <- matrix(NA, nrow = 16, ncol = 28)
 
 colnames(table) <- c(
   "STUDYID", "DOMAIN", "USUBJID", "ISSEQ", "ISGRPID", "ISREFID", "ISSPID", "ISLNKID",
@@ -30,25 +23,18 @@ for (i in 1:NROW(table1)) {
 }
 
 
-table1$ISTESTCD <- rep(c("J0033VN", "I0019NT", "M0019LN", "R0003MA"), 20)
-
+table1$ISTESTCD <- rep(c("J0033VN", "I0019NT", "M0019LN", "R0003MA"), 4)
 
 table1$USUBJID <- c(
-  rep("ABC-1001", 8), rep("ABC-1002", 8), rep("ABC-1003", 8), rep("ABC-1004", 8),
-  rep("ABC-1005", 8), rep("ABC-1006", 8), rep("ABC-1007", 8), rep("ABC-1008", 8),
-  rep("ABC-1009", 8), rep("ABC-1010", 8)
+  rep("ABC-1001", 8), rep("ABC-1002", 8)
 )
 
-
 table1$VISITNUM <- c(
-  rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4),
-  rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4),
   rep(10, 4), rep(30, 4), rep(10, 4), rep(30, 4)
 )
 
 set.seed(1234)
 table1$ISORRES <- sample(c("2.0", "3.0", "5.0", "<2", ">8"), NROW(table1), replace = T)
-
 
 is1 <- table1 %>%
   group_by(STUDYID, USUBJID) %>%
@@ -56,7 +42,7 @@ is1 <- table1 %>%
   ungroup() %>%
   mutate(
     EPOCH = if_else(VISITNUM == 10, "FIRST TREATMENT", "SECOND TREATMENT"),
-    ISDTC = if_else(VISITNUM == 10, "1999-01-01", "1999-03-01"),
+    ISDTC = if_else(VISITNUM == 10, "2015-01-10", "2015-03-10"),
     ISDY = if_else(VISITNUM == 10, "1", "61"),
     ISBLFL = if_else(VISITNUM == 10, "Y", as.character(NA)),
     ISSTRESU = "titer",
@@ -114,18 +100,18 @@ is <- is1 %>%
     ISREASND = if_else(row_number() == 1 | row_number() == 10, "NO SAMPLE TAKEN", as.character(NA)),
     # Add missing dates
     ISDTC = case_when(
-      row_number() == 1 ~ "1999-01",
-      row_number() == 2 ~ "1999-01",
-      row_number() == 3 ~ "1999-01",
-      row_number() == 4 ~ "1999-01",
-      row_number() == 5 ~ "1999-03",
-      row_number() == 6 ~ "1999-03",
-      row_number() == 7 ~ "1999-03",
-      row_number() == 8 ~ "1999-03",
-      row_number() == 9 ~ "1999",
-      row_number() == 10 ~ "1999",
-      row_number() == 11 ~ "1999",
-      row_number() == 12 ~ "1999",
+      row_number() == 1 ~ "2015-01",
+      row_number() == 2 ~ "2015-01",
+      row_number() == 3 ~ "2015-01",
+      row_number() == 4 ~ "2015-01",
+      row_number() == 5 ~ "2015-03",
+      row_number() == 6 ~ "2015-03",
+      row_number() == 7 ~ "2015-03",
+      row_number() == 8 ~ "2015-03",
+      row_number() == 9 ~ "2015",
+      row_number() == 10 ~ "2015",
+      row_number() == 11 ~ "2015",
+      row_number() == 12 ~ "2015",
       row_number() == 13 ~ as.character(NA),
       row_number() == 14 ~ as.character(NA),
       row_number() == 15 ~ as.character(NA),
@@ -134,24 +120,24 @@ is <- is1 %>%
     ),
     # Add higher ISSTRESN values
     ISORRES = case_when(
-      row_number() == 8 ~ "140.5",
-      row_number() == 15 ~ "98.2",
-      row_number() == 24 ~ "48.9",
-      row_number() == 29 ~ "228.1",
+      row_number() == 4 ~ "140.5",
+      row_number() == 8 ~ "98.2",
+      row_number() == 12 ~ "48.9",
+      row_number() == 16 ~ "228.1",
       TRUE ~ as.character(ISORRES)
     ),
     ISSTRESC = case_when(
-      row_number() == 8 ~ "140.5",
-      row_number() == 15 ~ "98.2",
-      row_number() == 24 ~ "48.9",
-      row_number() == 29 ~ "228.1",
+      row_number() == 4 ~ "140.5",
+      row_number() == 8 ~ "98.2",
+      row_number() == 12 ~ "48.9",
+      row_number() == 16 ~ "228.1",
       TRUE ~ as.character(ISSTRESC)
     ),
     ISSTRESN = case_when(
-      row_number() == 8 ~ 140.5,
-      row_number() == 15 ~ 98.2,
-      row_number() == 24 ~ 48.9,
-      row_number() == 29 ~ 228.1,
+      row_number() == 4 ~ 140.5,
+      row_number() == 8 ~ 98.2,
+      row_number() == 12 ~ 48.9,
+      row_number() == 16 ~ 228.1,
       TRUE ~ as.numeric(ISSTRESN)
     ),
     ISORRES = case_when(
@@ -196,11 +182,12 @@ var_label(is$ULLOQ) <- "Upper Limit of Quantitation"
 
 
 
-is <- is %>%
+vx_is <- is %>%
   select(-c(ISGRPID, ISREFID, ISSPID, ISLNKID, LOD))
 
 
 # Save RDA file
+getwd()
 setwd("C:/ADMIRALPROJECT/admiralvaccine/data")
-str(is)
-save("is", file = "is.rda")
+str(vx_is)
+save("vx_is", file = "vx_is.rda")
