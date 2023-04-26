@@ -1,13 +1,7 @@
-library(admiraldev)
-library(admiral)
-library(rlang)
-library(tibble)
-library(diffdf)
-library(testthat)
-
 # test1
+
 test_that("derive maximum severity flag varibles", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
@@ -56,8 +50,9 @@ test_that("derive maximum severity flag varibles", {
 })
 
 # test2
+
 test_that("derive maximum severity flag variable per event", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
@@ -96,9 +91,10 @@ test_that("derive maximum severity flag variable per event", {
 })
 
 # test3
+
 test_that("check if the records with `FATEST`='OCCUR' are not included
 in the dataset", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
@@ -142,9 +138,10 @@ in the dataset", {
   )
 })
 
+# test4
 
 testthat::test_that("derive maximum severity flag varibles", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
