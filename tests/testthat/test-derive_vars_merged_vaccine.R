@@ -1,17 +1,7 @@
-library(admiraldev)
-library(admiral)
-library(rlang)
-library(diffdf)
-library(tidyr)
-library(testthat)
-library(tibble)
-library(dplyr)
-library(metatools)
-
 # Test 1: Merging EXTRT variable from EX to FACE
 
 test_that("derive_vars_merged_vaccine test 1 - Merging EXTRT variable from EX to FACE", {
-  face <- tribble(
+  face <- tibble::tribble(
     ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT, ~FATPTREF,
     "ABC101", "REACTO", "ADMINISTRATION SITE", "SEV", "Redness", "Severity", "ARM",
     "RIGHT", "VAC 1",
@@ -31,7 +21,7 @@ test_that("derive_vars_merged_vaccine test 1 - Merging EXTRT variable from EX to
     "VAC 1"
   )
 
-  ex <- tribble(
+  ex <- tibble::tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXTPTREF, ~VISIT, ~EXLOC, ~EXLAT, ~EXDOSE,
     "ABC101", "2015-01-10", 1, "DRUG A", "VAC 1", "VISIT 1", "ARM", "RIGHT", 20,
     "ABC101", "2015-01-11", 2, "DRUG A", "VAC 2", "VISIT 2", NA, NA, 30,
@@ -67,7 +57,7 @@ test_that("derive_vars_merged_vaccine test 1 - Merging EXTRT variable from EX to
 
 test_that("derive_vars_merged_vaccine test 2 - Check if supp datasets merged
           properly if they exist", {
-  face <- tribble(
+  face <- tibble::tribble(
     ~STUDYID, ~DOMAIN, ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT,
     ~FATPTREF, ~FASEQ,
     "ABC", "FACE", "ABC101", "REACTO", "ADMINISTRATION SITE", "SEV", "Redness", "Severity", "ARM",
@@ -88,7 +78,7 @@ test_that("derive_vars_merged_vaccine test 2 - Check if supp datasets merged
     "Occurrence", NA, NA, "VAC 1", 1
   )
 
-  ex <- tribble(
+  ex <- tibble::tribble(
     ~STUDYID, ~DOMAIN, ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXTPTREF, ~VISIT, ~EXLOC, ~EXLAT,
     ~EXDOSE, ~EXSEQ,
     "ABC", "EX", "ABC101", "2015-01-10", 1, "DRUG A", "VAC 1", "VISIT 1", "ARM", "RIGHT", 20, 1,
@@ -98,7 +88,7 @@ test_that("derive_vars_merged_vaccine test 2 - Check if supp datasets merged
     "ABC", "EX", "ABC102", "2015-01-13", 1, "DRUG B", "VAC 1", "VISIT 5", NA, NA, 10, 1
   )
 
-  suppface <- tribble(
+  suppface <- tibble::tribble(
     ~STUDYID, ~USUBJID, ~RDOMAIN, ~IDVAR, ~IDVARVAL, ~QNAM, ~QVAL, ~QLABEL, ~QORIG,
     "ABC", "ABC101", "FACE", "FASEQ", 1, "CLTYP", "DAIRY", "Collection Type",
     "Predecessor",
@@ -106,7 +96,7 @@ test_that("derive_vars_merged_vaccine test 2 - Check if supp datasets merged
     "Predecessor"
   )
 
-  suppex <- tribble(
+  suppex <- tibble::tribble(
     ~STUDYID, ~USUBJID, ~RDOMAIN, ~IDVAR, ~IDVARVAL, ~QNAM, ~QVAL, ~QLABEL, ~QORIG,
     "ABC", "ABC101", "EX", "EXSEQ", 1, "EXTDV", "N", "Temporary Delay of Vaccination",
     "ASSIGNED",
@@ -180,7 +170,7 @@ test_that("derive_vars_merged_vaccine test 2 - Check if supp datasets merged
 
 test_that("derive_vars_merged_vaccine test 3 - Check if warning is raised when
           there are multiple vaccination in same ", {
-  face <- tribble(
+  face <- tibble::tribble(
     ~STUDYID, ~DOMAIN, ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT,
     ~FATPTREF, ~FASEQ,
     "ABC", "FACE", "ABC101", "REACTO", "ADMINISTRATION SITE", "SEV", "Redness", "Severity", "ARM",
@@ -200,7 +190,7 @@ test_that("derive_vars_merged_vaccine test 3 - Check if warning is raised when
     "ABC", "FACE", "ABC102", "REACTO", "ADMINISTRATION SITE", "OCCUR", "Swelling",
     "Occurrence", NA, NA, "VAC 1", 1
   )
-  ex <- tribble(
+  ex <- tibble::tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXTPTREF, ~VISIT, ~EXLOC, ~EXLAT, ~EXDOSE,
     "ABC101", "2015-01-10", 1, "DRUG A", "VAC 1", "VISIT 1", "ARM", "RIGHT", 20,
     "ABC101", "2015-01-11", 2, "DRUG A", "VAC 2", "VISIT 1", NA, NA, 30,
@@ -229,7 +219,7 @@ test_that("derive_vars_merged_vaccine test 3 - Check if warning is raised when
 
 test_that("derive_vars_merged_vaccine test 4 - Checking if scenario handled for
           FADIR,FALOC, FALAT are missing", {
-  face <- tribble(
+  face <- tibble::tribble(
     ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FATPTREF,
     "ABC101", "REACTO", "ADMINISTRATION SITE", "SEV", "Redness", "Severity", "VAC 1",
     "ABC101", "REACTO", "ADMINISTRATION SITE", "DIAMETER", "Redness", "Diameter",
@@ -246,7 +236,7 @@ test_that("derive_vars_merged_vaccine test 4 - Checking if scenario handled for
     "VAC 1"
   )
 
-  ex <- tribble(
+  ex <- tibble::tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXTPTREF, ~VISIT, ~EXLOC, ~EXLAT, ~EXDOSE,
     "ABC101", "2015-01-10", 1, "DRUG A", "VAC 1", "VISIT 1", "ARM", "RIGHT", 20,
     "ABC101", "2015-01-11", 2, "DRUG A", "VAC 2", "VISIT 2", NA, NA, 30,
@@ -300,7 +290,7 @@ test_that("derive_vars_merged_vaccine test 4 - Checking if scenario handled for
 
 test_that("derive_vars_merged_vaccine test 5 - Checking if scenario handled for
           EXDIR,EXLOC,EXLAT are missing", {
-  face <- tribble(
+  face <- tibble::tribble(
     ~STUDYID, ~DOMAIN, ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST,
     ~FALOC, ~FALAT, ~FASEQ,
     "ABC", "FACE", "ABC101", "REACTO", "ADMINISTRATION SITE", "SEV", "Redness",
@@ -310,7 +300,7 @@ test_that("derive_vars_merged_vaccine test 5 - Checking if scenario handled for
     "ABC", "FACE", "ABC102", "REACTO", "ADMINISTRATION SITE", "OCCUR", "Swelling",
     "Occurrence", NA, NA, 1
   )
-  ex <- tribble(
+  ex <- tibble::tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~VISIT, ~EXDOSE,
     "ABC101", "2015-01-10", 1, "DRUG A", "VISIT 1", 20,
     "ABC102", "2015-01-13", 1, "DRUG B", "VISIT 1", 10

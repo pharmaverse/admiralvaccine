@@ -1,15 +1,8 @@
-# test_derive_vars_crit
-
-library(admiraldev)
-library(rlang)
-library(dplyr)
-library(diffdf)
-
 # test case 1 -------------------------------------------------------------
 # testthat
 testthat::test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ,
     "999999-000001", 10, "J0033VN", 2, 4,
     "999999-000001", 10, "I0019NT", 3, 6,
@@ -65,7 +58,7 @@ testthat::test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
 testthat::test_that("derive_vars_crit Test 2: Derive CRIT1 variables
                     when AVAL is missing", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ,
     "999999-000001", 10, "J0033VN", 2, 4,
     "999999-000001", 10, "I0019NT", 3, 6,
@@ -121,7 +114,7 @@ testthat::test_that("derive_vars_crit Test 2: Derive CRIT1 variables
 testthat::test_that("derive_vars_crit Test 3: Try to apply different vars name and
                     missing ISLLOQ or AVAL", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ,
     "999999-000001", 10, "J0033VN", NA, NA,
     "999999-000001", 10, "I0019NT", NA, 6,
@@ -177,7 +170,7 @@ testthat::test_that("derive_vars_crit Test 3: Try to apply different vars name a
 testthat::test_that("derive_vars_crit Test 4: Complicated selections and missing values
                     for AVAL and ISLLOQ", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ, ~BASE,
     "999999-000001", 10, "J0033VN", NA, NA, NA,
     "999999-000001", 10, "I0019NT", NA, 6, NA,
