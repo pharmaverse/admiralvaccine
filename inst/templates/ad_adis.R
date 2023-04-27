@@ -50,9 +50,9 @@ adis <- is_suppis %>%
     ATPTN = as.numeric(VISITNUM / 10),
     ATPT = case_when(
       VISITNUM == 10 ~ "Visit 1 (Day 1)",
-      VISITNUM == 20 ~ "Visit 2 (Day #)",
-      VISITNUM == 30 ~ "Visit 3 (Day #)",
-      VISITNUM == 40 ~ "Visit 4 (Day #)",
+      VISITNUM == 20 ~ "Visit 2 (Day 31)",
+      VISITNUM == 30 ~ "Visit 3 (Day 61)",
+      VISITNUM == 40 ~ "Visit 4 (Day 121)",
       is.na(VISITNUM) ~ NA_character_
     ),
     ATPTREF = case_when(
@@ -70,7 +70,7 @@ adis <- is_suppis %>%
 # flag_imputation = "none" to suppress ADTF variable.
 
 # ADT derivation and Merge with ADSL to get RFSTDTC info in order to derive ADY
-adis <- derive_vars_dt(
+adis2 <- derive_vars_dt(
   dataset = adis,
   new_vars_prefix = "A",
   dtc = ISDTC,
@@ -78,11 +78,10 @@ adis <- derive_vars_dt(
   date_imputation = "mid",
   flag_imputation = "none"
 ) %>%
-  derive_var_merged_character(
+  derive_vars_merged(
     dataset_add = adsl,
+    new_vars = exprs(RFSTDTC),
     by_vars = exprs(STUDYID, USUBJID),
-    new_var = RFSTDTC,
-    source_var = RFSTDTC
   ) %>%
   mutate(
     ADT = as.Date(ADT),
@@ -151,14 +150,9 @@ param_lookup <- tribble(
 adis <- derive_vars_merged_lookup(
   dataset = adis,
   dataset_add = param_lookup,
-  new_vars = exprs(PARAM),
+  new_vars = exprs(PARAM, PARAMN),
   by_vars = exprs(PARAMCD)
-) %>%
-  derive_vars_merged_lookup(
-    dataset_add = param_lookup,
-    new_vars = exprs(PARAMN),
-    by_vars = exprs(PARAM)
-  )
+)
 
 # STEP 5: PARCAT1 and CUTOFF0x derivations.
 adis <- adis %>%
@@ -241,15 +235,16 @@ adis <- derive_vars_merged_lookup(
 
 # STEP 7: ABLFL and BASE variables derivation
 # ABLFL derivation
-adis <- derive_var_relative_flag(
-  dataset = adis,
-  by_vars = exprs(STUDYID, USUBJID, PARAMN),
-  order = exprs(STUDYID, USUBJID, VISITNUM, PARAMN),
-  new_var = ABLFL,
-  condition = VISITNUM == 10,
-  mode = "first",
-  selection = "before",
-  inclusive = TRUE
+adis <- restrict_derivation(
+  adis,
+  derivation = derive_var_extreme_flag,
+  args = params(
+    by_vars = exprs(STUDYID, USUBJID, PARAMN),
+    order = exprs(STUDYID, USUBJID, VISITNUM, PARAMN),
+    new_var = ABLFL,
+    mode = "first"
+  ),
+  filter = VISITNUM == 10
 ) %>%
   # BASE derivation
   derive_var_base(
@@ -287,9 +282,18 @@ adis <- derive_var_merged_cat(
 )
 
 # STEP 8 Derivation of Change from baseline and Ratio to baseline ----
-adis <- adis %>%
-  derive_var_chg() %>%
-  derive_var_analysis_ratio(numer_var = AVAL, denom_var = BASE)
+adis <- restrict_derivation(adis,
+  derivation = derive_var_chg,
+  filter = AVISITN > 10
+) %>%
+  restrict_derivation(
+    derivation = derive_var_analysis_ratio,
+    args = params(
+      numer_var = AVAL,
+      denom_var = BASE
+    ),
+    filter = AVISITN > 10
+  )
 
 # STEP 9 Derivation of CRITyFL and CRITyFN ----
 
@@ -340,3 +344,8 @@ is12b <- adis %>%
   )
 
 adis <- bind_rows(is12a, is12b)
+
+# Save output ----
+
+dir <- tempdir() # Change to whichever directory you want to save the dataset in
+saveRDS(adis, file = file.path(dir, "adis.rds"), compress = "bzip2")
