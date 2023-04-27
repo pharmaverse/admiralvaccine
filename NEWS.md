@@ -3,21 +3,15 @@
 ## New Features
 
 - Created SDTM dummy data IS, SUPPIS for ADIS (#31, #26)
-
-## Updates of Existing Functions
-
- - Updates that you have made for this version (#ISSUE-NUMBER)
-
-## Breaking Changes
-
- - Deprecated functions. (#ISSUE-NUMBER)
- - Bug Fixes (#ISSUE-NUMBER)
+- Created SDTM dummy data DM, CE, EX, FACE, VS for ADCE AND ADFACE.
+- Developed new functionalities for ADFACE, ADIS and ADIS domain.
+- Added `metatools`, `metacore` packages in `staged_dependencies.yaml` file.
+- Created template for `ADSL`.
 
 ## Documentation
 
- - Stuff that you did (#ISSUE-NUMBER)
-
-## Various
-
- - Stuff that you did (#ISSUE-NUMBER)
+- Created `ADIS`
+- Created `ADCE`
+- Created `ADSL`
+- Created `ADFACE`
 
