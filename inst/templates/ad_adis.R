@@ -70,7 +70,7 @@ adis <- is_suppis %>%
 # flag_imputation = "none" to suppress ADTF variable.
 
 # ADT derivation and Merge with ADSL to get RFSTDTC info in order to derive ADY
-adis2 <- derive_vars_dt(
+adis <- derive_vars_dt(
   dataset = adis,
   new_vars_prefix = "A",
   dtc = ISDTC,
