@@ -90,7 +90,7 @@ dataset_vignette(
 )
 ```
 
-## Select predecessor variables from ADSL, and derive analysis dates (ASTDT, ASTDY, ASTDTM, AENDT, AENDY, AENDTM) {#adates}
+## Select predecessor variables from ADSL, and derive analysis dates (ASTDT, ASTDY, AENDT, AENDY) {#adates}
 
 At this step, it may be useful to join ADSL to your CE domain. Only the ADSL variables used for derivations are selected at this step. The rest of the relevant ADSL variables would be added later.
 
@@ -106,20 +106,18 @@ adce <- adce %>%
     by = exprs(STUDYID, USUBJID)
   ) %>%
   ## Derive analysis start time ----
-  derive_vars_dtm(
+  derive_vars_dt(
     dtc = CESTDTC,
     new_vars_prefix = "AST",
     highest_imputation = "M",
     min_dates = exprs(TRTSDT)
   ) %>%
   ## Derive analysis end time ----
-  derive_vars_dtm(
+  derive_vars_dt(
     dtc = CEENDTC,
     new_vars_prefix = "AEN",
     highest_imputation = "M"
   ) %>%
-  ## Derive analysis end/start date ----
-  derive_vars_dtm_to_dt(exprs(ASTDTM, AENDTM)) %>%
   ## Derive analysis start relative day and  analysis end relative day ----
   derive_vars_dy(
     reference_date = TRTSDT,
@@ -130,7 +128,7 @@ adce <- adce %>%
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adce,
-  display_vars = exprs(USUBJID, TRTSDT, ASTDT, AENDT, ASTDY, AENDY)
+  display_vars = exprs(USUBJID, TRTSDT, CESTDTC, CEENDTC, ASTDT, AENDT, ASTDY, AENDY)
 )
 ```
 
