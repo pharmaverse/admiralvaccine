@@ -1,5 +1,6 @@
 ABLFL
 ADCE
+ADECOD
 ADFACE
 ADIS
 ADSL
@@ -9,7 +10,15 @@ ADY
 ADaM
 ADaMs
 AE
+AENDT
+AENDTM
+AENDY
 ANL
+AOCC
+AREL
+ASTDT
+ASTDTM
+ASTDY
 ATPTREF
 AVAL
 AVALC
@@ -19,6 +28,8 @@ Baratin
 Biologics
 CBER
 CDISC
+CEDECOD
+CEREL
 CRIT
 CRITx
 CUTOFFx
@@ -45,9 +56,11 @@ Reactogenicity
 Rubalingam
 SDTM
 SEV
+SUPPCE
 SUPPIS
 TRTP
 Subperiod
+TOXGR
 USUBJID
 VISITNUM
 VSSTRESN
@@ -60,6 +73,7 @@ datetime
 aval
 binded
 der
+eg
 exprs
 fatest
 fatestcd
@@ -69,6 +83,8 @@ immunogenicity
 metacore
 metatools
 param
+metatools
+occurence
 pharmaverse
 pre
 reactogenecity
