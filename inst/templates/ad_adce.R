@@ -58,20 +58,18 @@ adce <- adce %>%
     by = exprs(STUDYID, USUBJID)
   ) %>%
   ## Derive analysis start time ----
-  derive_vars_dtm(
+  derive_vars_dt(
     dtc = CESTDTC,
     new_vars_prefix = "AST",
     highest_imputation = "M",
     min_dates = exprs(TRTSDT)
   ) %>%
   ## Derive analysis end time ----
-  derive_vars_dtm(
+  derive_vars_dt(
     dtc = CEENDTC,
     new_vars_prefix = "AEN",
     highest_imputation = "M"
   ) %>%
-  ## Derive analysis end/start date ----
-  derive_vars_dtm_to_dt(exprs(ASTDTM, AENDTM)) %>%
   ## Derive analysis start relative day and  analysis end relative day ----
   derive_vars_dy(
     reference_date = TRTSDT,
