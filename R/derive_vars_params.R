@@ -27,9 +27,9 @@
 #'
 #' @export
 #'
-#' @family der_rec
+#' @family der_var
 #'
-#' @keywords der_rec
+#' @keywords der_var
 #'
 #' @examples
 #'
@@ -78,7 +78,7 @@ derive_vars_params <- function(dataset,
   ) %>%
     convert_blanks_to_na()
 
-  # Checking if permissible variable exisits in dataset
+  # Checking if permissible variable exists in dataset
   lookup <-
     c("FASTRESU", "FALOC", "FADIR", "FALAT")
 
@@ -106,7 +106,4 @@ derive_vars_params <- function(dataset,
     by = c("PARAM"),
     all.x = TRUE
   )
-  return(adface)
 }
-
-# ________________________END OF THE FUNCTION___________________________________

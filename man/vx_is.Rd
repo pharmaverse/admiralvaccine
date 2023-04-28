@@ -5,7 +5,7 @@
 \alias{vx_is}
 \title{IS Dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 80 rows and 24 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 16 rows and 24 columns.
 }
 \usage{
 vx_is
