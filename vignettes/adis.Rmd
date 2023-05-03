@@ -317,7 +317,7 @@ is5_aval <- is5 %>%
       DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
       DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ),
       DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
-        ISSTRESN < ULLOQ ~ log10(ISSTRESN),
+        ISSTRESN < ISULOQ ~ log10(ISSTRESN),
       DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
 
       # ISORRES values with > or <
