@@ -222,15 +222,16 @@ param_lookup2 <- tribble(
 adis <- derive_vars_merged_lookup(
   dataset = adis,
   dataset_add = param_lookup2,
-  new_vars = exprs(SERCAT1N),
-  by_vars = exprs(SERCAT1)
+  new_vars = vars(SERCAT1N),
+  by_vars = vars(SERCAT1)
 ) %>%
   # DTYPE derivation.
   # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
   # and/or ULOQ is present in your study
-  mutate(DTYPE = if_else(DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ISSTRESN < ISLLOQ,
-    "HALFLLQ",
-    as.character(NA)
+  mutate(DTYPE = case_when(
+    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLQ",
+    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) & ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
+    TRUE ~ as.character(NA)
   ))
 
 # STEP 7: ABLFL and BASE variables derivation
@@ -259,27 +260,15 @@ adis <- restrict_derivation(
   )
 
 # BASECAT derivation
-base_data <- adis %>%
-  select(STUDYID, USUBJID, VISITNUM, PARAMCD, BASE) %>%
-  distinct()
-
-basecat1 <- function(base) {
-  case_when(
-    !grepl("L", base_data$PARAMCD) & base < 10 ~ "Titer value < 1:10",
-    !grepl("L", base_data$PARAMCD) & base >= 10 ~ "Titer value >= 1:10",
-    grepl("L", base_data$PARAMCD) & base < 10 ~ "Titer value < 1:10",
-    grepl("L", base_data$PARAMCD) & base >= 10 ~ "Titer value >= 1:10"
+adis <- adis %>%
+  mutate(
+    BASECAT1 = case_when(
+      !grepl("L", PARAMCD) & BASE < 10 ~ "Titer value < 1:10",
+      !grepl("L", PARAMCD) & BASE >= 10 ~ "Titer value >= 1:10",
+      grepl("L", PARAMCD) & BASE < 10 ~ "Titer value < 1:10",
+      grepl("L", PARAMCD) & BASE >= 10 ~ "Titer value >= 1:10"
+    )
   )
-}
-
-adis <- derive_var_merged_cat(
-  dataset = adis,
-  dataset_add = base_data,
-  by_vars = exprs(STUDYID, USUBJID, PARAMCD, VISITNUM),
-  new_var = BASECAT1,
-  source_var = BASE,
-  cat_fun = basecat1
-)
 
 # STEP 8 Derivation of Change from baseline and Ratio to baseline ----
 adis <- restrict_derivation(adis,
