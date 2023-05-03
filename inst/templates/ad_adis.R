@@ -222,8 +222,8 @@ param_lookup2 <- tribble(
 adis <- derive_vars_merged_lookup(
   dataset = adis,
   dataset_add = param_lookup2,
-  new_vars = vars(SERCAT1N),
-  by_vars = vars(SERCAT1)
+  new_vars = exprs(SERCAT1N),
+  by_vars = exprs(SERCAT1)
 ) %>%
   # DTYPE derivation.
   # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
