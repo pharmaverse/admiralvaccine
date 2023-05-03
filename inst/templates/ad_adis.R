@@ -171,31 +171,31 @@ adis <- adis %>%
     AVAL = case_when(
       # ISORRES values without > or <
       DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
-      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
       ~ ISSTRESN,
-      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
       DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
-      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
       ~ log10(ISSTRESN),
-      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
       DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
-      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
       ~ ISSTRESN,
-      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
       DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ),
       DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
-        ISSTRESN < ULLOQ ~ log10(ISSTRESN),
-      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
+        ISSTRESN < ISULOQ ~ log10(ISSTRESN),
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
 
       # ISORRES values with > or <
       DERIVED == "ORIG" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
-      DERIVED == "ORIG" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ULLOQ,
+      DERIVED == "ORIG" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ISULOQ,
       DERIVED == "LOG10" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
-      DERIVED == "LOG10" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ULLOQ),
+      DERIVED == "LOG10" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ISULOQ),
       DERIVED == "4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ,
-      DERIVED == "4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ULLOQ,
+      DERIVED == "4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ISULOQ,
       DERIVED == "LOG10 4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ),
-      DERIVED == "LOG10 4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ULLOQ)
+      DERIVED == "LOG10 4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ISULOQ)
     ),
 
     # AVALU derivation (please delete if not needed for your study)
