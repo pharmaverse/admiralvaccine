@@ -111,7 +111,7 @@ Derive `AVISIT`, `AVISITN`, `ATPT`, `ATPTN` and `ATPTREF` variables.
 Please, update visit records according to your study design/Protocol.
 For the visit values, please refers to your ADAM SPECIFICATIONS.
 ```{r eval=TRUE}
-is1 <- is_suppis %>%
+adis <- is_suppis %>%
   mutate(
     AVISITN = as.numeric(VISITNUM),
     AVISIT = case_when(
@@ -124,9 +124,9 @@ is1 <- is_suppis %>%
     ATPTN = as.numeric(VISITNUM / 10),
     ATPT = case_when(
       VISITNUM == 10 ~ "Visit 1 (Day 1)",
-      VISITNUM == 20 ~ "Visit 2 (Day #)",
-      VISITNUM == 30 ~ "Visit 3 (Day #)",
-      VISITNUM == 40 ~ "Visit 4 (Day #)",
+      VISITNUM == 20 ~ "Visit 2 (Day 31)",
+      VISITNUM == 30 ~ "Visit 3 (Day 61)",
+      VISITNUM == 40 ~ "Visit 4 (Day 121)",
       is.na(VISITNUM) ~ NA_character_
     ),
     ATPTREF = case_when(
@@ -153,35 +153,29 @@ For `ADY` derivation RFSTDTC has been used in this template.
 If your derivation is different, please adapt.
 ```{r eval=TRUE}
 # ADT derivation
-is2_adt <- derive_vars_dt(
-  dataset = is1,
+adis <- derive_vars_dt(
+  dataset = adis,
   new_vars_prefix = "A",
   dtc = ISDTC,
   highest_imputation = "M",
   date_imputation = "mid",
   flag_imputation = "none"
-)
-
-# Merge with ADSL to get RFSTDTC info in order to derive ADY
-is2_rf <- derive_var_merged_character(
-  dataset = is2_adt,
-  dataset_add = adsl,
-  by_vars = exprs(STUDYID, USUBJID),
-  new_var = RFSTDTC,
-  source_var = RFSTDTC
 ) %>%
+  # Attach RFSTDTC from ADSL in order to derive ADY
+  derive_vars_merged(
+    dataset_add = adsl,
+    new_vars = exprs(RFSTDTC),
+    by_vars = exprs(STUDYID, USUBJID),
+  ) %>%
   mutate(
     ADT = as.Date(ADT),
     RFSTDTC = as.Date(RFSTDTC)
+  ) %>%
+  # ADY derivation
+  derive_vars_dy(
+    reference_date = RFSTDTC,
+    source_vars = exprs(ADT)
   )
-
-
-# ADY derivation
-is2_ady <- derive_vars_dy(
-  dataset = is2_rf,
-  reference_date = RFSTDTC,
-  source_vars = exprs(ADT)
-)
 ```
 
 
@@ -199,21 +193,21 @@ Please, add or remove datasets according to your study needs.
 # Add also records related to 4fold.
 # Please, keep or modify PARAM values according to your purposes.
 
-is_log <- is2_ady %>%
+is_log <- adis %>%
   mutate(DERIVED = "LOG10")
 
-is_4fold <- is2_ady %>%
+is_4fold <- adis %>%
   mutate(DERIVED = "4FOLD")
 
-is_log_4fold <- is2_ady %>%
+is_log_4fold <- adis %>%
   mutate(DERIVED = "LOG10 4FOLD")
 
-is_derived <- bind_rows(is2_ady, is_log, is_4fold, is_log_4fold) %>%
+adis <- bind_rows(adis, is_log, is_4fold, is_log_4fold) %>%
   arrange(STUDYID, USUBJID, VISITNUM, ISSEQ, !is.na(DERIVED)) %>%
   mutate(DERIVED = if_else(is.na(DERIVED), "ORIG", DERIVED))
 
 
-is3 <- is_derived %>%
+adis <- adis %>%
   mutate(
     # PARAMCD: for log values, concatenation of L and ISTESTCD.
     PARAMCD = case_when(
@@ -247,18 +241,11 @@ param_lookup <- tribble(
   "R0003MLF", "LOG10 4FOLD (R0003MA Antibody)", 34
 )
 
-is3_1 <- derive_vars_merged_lookup(
-  dataset = is3,
+adis <- derive_vars_merged_lookup(
+  dataset = adis,
   dataset_add = param_lookup,
-  new_vars = exprs(PARAM),
+  new_vars = exprs(PARAM, PARAMN),
   by_vars = exprs(PARAMCD)
-)
-
-is4 <- derive_vars_merged_lookup(
-  dataset = is3_1,
-  dataset_add = param_lookup,
-  new_vars = exprs(PARAMN),
-  by_vars = exprs(PARAM)
 )
 ```
 
@@ -268,7 +255,7 @@ Derive `PARCAT1` and `CUTOFF`x variables.
 
 Fake values has been put for CUTOFF values. Please, adapt base on your objectives.
 ```{r eval=TRUE}
-is5 <- is4 %>%
+adis <- adis %>%
   mutate(
     PARCAT1 = ISCAT,
     # Please, define your additional cutoff values. Delete if not needed.
@@ -299,7 +286,7 @@ Please, update this algorithm according to your Protocol/SAP.
 
 Later you can find `SERCAT1/N` and `DTYPE` derivations.
 ```{r eval=TRUE}
-is5_aval <- is5 %>%
+adis <- adis %>%
   mutate(
     AVAL = case_when(
       # ISORRES values without > or <
@@ -352,21 +339,19 @@ param_lookup2 <- tribble(
   as.character(NA), as.numeric(NA)
 )
 
-is5_sercat1n <- derive_vars_merged_lookup(
-  dataset = is5_aval,
+adis <- derive_vars_merged_lookup(
+  dataset = adis,
   dataset_add = param_lookup2,
   new_vars = exprs(SERCAT1N),
   by_vars = exprs(SERCAT1)
-)
-
-
-# DTYPE derivation.
-# Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
-# and/or ULOQ is present in your study
-is6 <- is5_sercat1n %>%
-  mutate(DTYPE = if_else(DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ISSTRESN < ISLLOQ,
-    "HALFLLQ",
-    as.character(NA)
+) %>%
+  # DTYPE derivation.
+  # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
+  # and/or ULOQ is present in your study
+  mutate(DTYPE = case_when(
+    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLQ",
+    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) & ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
+    TRUE ~ as.character(NA)
   ))
 ```
 
@@ -378,55 +363,40 @@ In a later stage, derive `BASECAT` variable, which represents the base category.
 Update accordingly.
 ```{r eval=TRUE}
 # ABLFL derivation
-is6_ablfl <- derive_var_relative_flag(
-  dataset = is6,
-  by_vars = exprs(STUDYID, USUBJID, PARAMN),
-  order = exprs(STUDYID, USUBJID, VISITNUM, PARAMN),
-  new_var = ABLFL,
-  condition = VISITNUM == 10,
-  mode = "first",
-  selection = "before",
-  inclusive = TRUE
-)
-
-# BASE derivation
-is6_base <- derive_var_base(
-  dataset = is6_ablfl,
-  by_vars = exprs(STUDYID, USUBJID, PARAMN),
-  source_var = AVAL,
-  new_var = BASE,
-  filter = ABLFL == "Y"
-)
-
-# BASETYPE derivation
-is6_basetype <- derive_var_basetype(
-  dataset = is6_base,
-  basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
-)
-
+# ABLFL derivation
+adis <- restrict_derivation(
+  adis,
+  derivation = derive_var_extreme_flag,
+  args = params(
+    by_vars = exprs(STUDYID, USUBJID, PARAMN),
+    order = exprs(STUDYID, USUBJID, VISITNUM, PARAMN),
+    new_var = ABLFL,
+    mode = "first"
+  ),
+  filter = VISITNUM == 10
+) %>%
+  # BASE derivation
+  derive_var_base(
+    by_vars = exprs(STUDYID, USUBJID, PARAMN),
+    source_var = AVAL,
+    new_var = BASE,
+    filter = ABLFL == "Y"
+  ) %>%
+  # BASETYPE derivation
+  derive_var_basetype(
+    basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
+  )
 
 # BASECAT derivation
-base_data <- is6_basetype %>%
-  select(STUDYID, USUBJID, VISITNUM, PARAMCD, BASE) %>%
-  distinct()
-
-basecat1 <- function(base) {
-  case_when(
-    !grepl("L", base_data$PARAMCD) & base < 10 ~ "Titer value < 1:10",
-    !grepl("L", base_data$PARAMCD) & base >= 10 ~ "Titer value >= 1:10",
-    grepl("L", base_data$PARAMCD) & base < 10 ~ "Titer value < 1:10",
-    grepl("L", base_data$PARAMCD) & base >= 10 ~ "Titer value >= 1:10"
+adis <- adis %>%
+  mutate(
+    BASECAT1 = case_when(
+      !grepl("L", PARAMCD) & BASE < 10 ~ "Titer value < 1:10",
+      !grepl("L", PARAMCD) & BASE >= 10 ~ "Titer value >= 1:10",
+      grepl("L", PARAMCD) & BASE < 10 ~ "Titer value < 1:10",
+      grepl("L", PARAMCD) & BASE >= 10 ~ "Titer value >= 1:10"
+    )
   )
-}
-
-is7 <- derive_var_merged_cat(
-  dataset = is6_basetype,
-  dataset_add = base_data,
-  by_vars = exprs(STUDYID, USUBJID, PARAMCD, VISITNUM),
-  new_var = BASECAT1,
-  source_var = BASE,
-  cat_fun = basecat1
-)
 ```
 
 
@@ -435,9 +405,18 @@ Derive change from baseline values.
 
 Derive ratio to base values.
 ```{r eval=TRUE}
-is8 <- is7 %>%
-  derive_var_chg() %>%
-  derive_var_analysis_ratio(numer_var = AVAL, denom_var = BASE)
+adis <- restrict_derivation(adis,
+  derivation = derive_var_chg,
+  filter = AVISITN > 10
+) %>%
+  restrict_derivation(
+    derivation = derive_var_analysis_ratio,
+    args = params(
+      numer_var = AVAL,
+      denom_var = BASE
+    ),
+    filter = AVISITN > 10
+  )
 ```
 
 
@@ -450,8 +429,8 @@ criterion. If this criterion is met then `CRIT1FL` (or the name you specified in
 
 The function returns a relative numeric `CRIT1FN` variable (1 or 0 if the criterion is met, respectively) and a label `CRIT1` variable (with the text specified in label_var argument).
 ```{r eval=TRUE}
-is9 <- derive_vars_crit(
-  dataset = is8,
+adis <- derive_vars_crit(
+  dataset = adis,
   new_var = "CRIT1",
   label_var = "Titer >= ISLLOQ",
   condition = !is.na(AVAL) & !is.na(ISLLOQ),
@@ -466,10 +445,11 @@ Attach all `ADAM.ADSL` variables to the is build-in dataset.
 If you may need to keep only a subset of them, please update accordingly.
 ```{r eval=TRUE}
 # Get list of ADSL variables not to be added to ADIS
+# Get list of ADSL variables not to be added to ADIS
 vx_adsl_vars <- exprs(RFSTDTC)
 
-is10 <- derive_vars_merged(
-  dataset = is9,
+adis <- derive_vars_merged(
+  dataset = adis,
   dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
   by_vars = exprs(STUDYID, USUBJID)
 )
@@ -478,8 +458,7 @@ is10 <- derive_vars_merged(
 
 ## Derive TRTP/A variables {#trtp}
 ```{r eval=TRUE}
-# Get list of ADSL variables not to be added to ADIS
-is11 <- is10 %>%
+adis <- adis %>%
   mutate(TRTP = TRT01P, TRTA = TRT01A)
 ```
 
@@ -490,7 +469,7 @@ This is a record level flag which identifies which rows are included/excluded fo
 
 This step could change according to your study needs.
 ```{r eval=TRUE}
-is12a <- is11 %>%
+is12a <- adis %>%
   filter(VISITNUM == 10) %>%
   derive_var_merged_exist_flag(
     dataset_add = vx_adsl,
@@ -500,7 +479,7 @@ is12a <- is11 %>%
     true_value = "Y"
   )
 
-is12b <- is11 %>%
+is12b <- adis %>%
   filter(VISITNUM == 30) %>%
   derive_var_merged_exist_flag(
     dataset_add = vx_adsl,
@@ -510,7 +489,7 @@ is12b <- is11 %>%
     true_value = "Y"
   )
 
-is12 <- bind_rows(is12a, is12b)
+adis <- bind_rows(is12a, is12b)
 ```
 
 
