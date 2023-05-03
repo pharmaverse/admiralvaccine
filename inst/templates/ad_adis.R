@@ -229,8 +229,10 @@ adis <- derive_vars_merged_lookup(
   # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
   # and/or ULOQ is present in your study
   mutate(DTYPE = case_when(
-    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLQ",
-    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) & ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
+    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
+      ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLQ",
+    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
+      ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
     TRUE ~ as.character(NA)
   ))
 
