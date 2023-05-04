@@ -5,7 +5,7 @@
 \alias{vx_ce}
 \title{CE Dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 16 rows and 31 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 24 rows and 30 columns.
 }
 \usage{
 vx_ce
