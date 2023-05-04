@@ -14,7 +14,7 @@
 #' @family dataset
 "vx_suppis"
 
-#' Supplemental AE Dataset
+#' AE Dataset
 #'
 #' A SDTM AE dataset
 #'
