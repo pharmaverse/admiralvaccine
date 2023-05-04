@@ -38,9 +38,9 @@ adface <- derive_vars_merged_vaccine(
   dataset_ex = ex,
   dataset_supp = NULL,
   dataset_suppex = NULL,
-  ex_vars = exprs(EXTRT, EXDOSE, EXSTDTC, EXENDTC, VISIT, VISITNUM)
+  ex_vars = exprs(EXTRT, EXDOSE,EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 )
-View(suppface)
+
 # Step2 - Basic Filter and Pre-processing for FACE
 
 adface <- adface %>%
