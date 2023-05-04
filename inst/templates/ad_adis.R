@@ -230,7 +230,7 @@ adis <- derive_vars_merged_lookup(
   # and/or ULOQ is present in your study
   mutate(DTYPE = case_when(
     DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
-      ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLQ",
+      ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
     DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
       ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
     TRUE ~ as.character(NA)
