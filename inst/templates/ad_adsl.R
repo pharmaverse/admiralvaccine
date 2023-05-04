@@ -158,6 +158,4 @@ if ("VAX02DT" %in% names(adsl)) {
 
 # Save output
 dir <- tempdir()
-
-saveRDS(adsl, file = file.path(dir, "vx_adsl.rds"), compress = "bzip2")
-View(adsl)
+save(adsl, file = file.path(dir, "vx_adsl.rda"), compress = "bzip2")
