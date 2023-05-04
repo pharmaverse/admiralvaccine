@@ -5,7 +5,7 @@
 \alias{vx_adsl}
 \title{Vx - Subject Level Analysis Dataset}
 \format{
-An object of class \code{data.frame} with 1 rows and 45 columns.
+An object of class \code{data.frame} with 2 rows and 45 columns.
 }
 \usage{
 vx_adsl
