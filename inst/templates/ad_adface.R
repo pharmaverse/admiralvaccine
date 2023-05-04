@@ -28,8 +28,8 @@ data("vx_adsl")
 
 ex <- vx_ex
 vs <- vx_vs
-face <- vx_face
-adsl <- vx_adsl
+face <- v_face
+adsl <- adsl
 
 # Step1 - Merging supplementary datasets and FACE with EX
 
@@ -40,7 +40,7 @@ adface <- derive_vars_merged_vaccine(
   dataset_suppex = NULL,
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 )
-
+View(suppface)
 # Step2 - Basic Filter and Pre-processing for FACE
 
 adface <- adface %>%
@@ -215,8 +215,7 @@ adface <- adface %>% select(
   starts_with("EVE"), starts_with("ANL")
 )
 
-
 # Save output ----
 
-dir <- tempdir()
-save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
+dir <-
+  saveRDS(adface, file = file.path(dir, "adface.rds"), compress = "bzip2")
