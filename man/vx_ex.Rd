@@ -5,7 +5,7 @@
 \alias{vx_ex}
 \title{EX Dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 24 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 3 rows and 22 columns.
 }
 \usage{
 vx_ex
