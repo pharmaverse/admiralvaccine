@@ -19,7 +19,6 @@ A Reactogenicity analysis dataset
 \seealso{
 Other dataset: 
 \code{\link{vx_adsl}},
-\code{\link{vx_ae}},
 \code{\link{vx_ce}},
 \code{\link{vx_dm}},
 \code{\link{vx_ex}},
