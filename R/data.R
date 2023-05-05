@@ -14,14 +14,6 @@
 #' @family dataset
 "vx_suppis"
 
-#' AE Dataset
-#'
-#' A SDTM AE dataset
-#'
-#' @keywords dataset
-#' @family dataset
-"vx_ae"
-
 #' CE Dataset
 #'
 #' A SDTM CE dataset
