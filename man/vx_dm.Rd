@@ -17,7 +17,6 @@ A SDTM DM dataset
 Other dataset: 
 \code{\link{adface}},
 \code{\link{vx_adsl}},
-\code{\link{vx_ae}},
 \code{\link{vx_ce}},
 \code{\link{vx_ex}},
 \code{\link{vx_face}},
