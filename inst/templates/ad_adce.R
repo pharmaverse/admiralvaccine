@@ -58,7 +58,8 @@ adce <- adce %>%
     by = exprs(STUDYID, USUBJID)
   ) %>%
   ## Derive analysis start time ----
-  ## Proposed imputations depending on situation: no needed -> highest imputation = “n”, some missing dates: highest imputation = “D”
+  ## Proposed imputations depending on situation: no needed -> highest imputation = “n”
+  ## some missing dates: highest imputation = “D”
   derive_vars_dt(
     dtc = CESTDTC,
     new_vars_prefix = "AST",
