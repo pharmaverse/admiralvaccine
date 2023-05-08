@@ -61,4 +61,3 @@
 #' @keywords dataset
 #' @family dataset
 "vx_adsl"
-
