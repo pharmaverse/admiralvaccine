@@ -56,6 +56,12 @@ then this function will not merge ex dataset and will return only the input
 dataset merged with its supplementary dataset.
 }
 \examples{
+
+library(tibble)
+library(admiral)
+library(dplyr)
+library(rlang)
+
 derive_vars_merged_vaccine(
   dataset = vx_face,
   dataset_ex = vx_ex,
