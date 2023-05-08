@@ -50,6 +50,12 @@
 #' @family der_var
 #'
 #' @examples
+#'
+#' library(tibble)
+#' library(admiral)
+#' library(dplyr)
+#' library(rlang)
+#'
 #' derive_vars_merged_vaccine(
 #'   dataset = vx_face,
 #'   dataset_ex = vx_ex,
