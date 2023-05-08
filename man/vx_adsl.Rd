@@ -5,7 +5,7 @@
 \alias{vx_adsl}
 \title{Vx - Subject Level Analysis Dataset}
 \format{
-An object of class \code{data.frame} with 1 rows and 45 columns.
+An object of class \code{data.frame} with 2 rows and 45 columns.
 }
 \usage{
 vx_adsl
@@ -15,8 +15,6 @@ A subject level analysis dataset
 }
 \seealso{
 Other dataset: 
-\code{\link{adface}},
-\code{\link{vx_ae}},
 \code{\link{vx_ce}},
 \code{\link{vx_dm}},
 \code{\link{vx_ex}},

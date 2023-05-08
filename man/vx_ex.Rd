@@ -5,7 +5,7 @@
 \alias{vx_ex}
 \title{EX Dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 24 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 3 rows and 22 columns.
 }
 \usage{
 vx_ex
@@ -15,9 +15,7 @@ A SDTM EX dataset
 }
 \seealso{
 Other dataset: 
-\code{\link{adface}},
 \code{\link{vx_adsl}},
-\code{\link{vx_ae}},
 \code{\link{vx_ce}},
 \code{\link{vx_dm}},
 \code{\link{vx_face}},

@@ -5,7 +5,7 @@
 \alias{vx_ce}
 \title{CE Dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 16 rows and 31 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 24 rows and 30 columns.
 }
 \usage{
 vx_ce
@@ -15,9 +15,7 @@ A SDTM CE dataset
 }
 \seealso{
 Other dataset: 
-\code{\link{adface}},
 \code{\link{vx_adsl}},
-\code{\link{vx_ae}},
 \code{\link{vx_dm}},
 \code{\link{vx_ex}},
 \code{\link{vx_face}},
