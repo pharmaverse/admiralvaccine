@@ -5,7 +5,7 @@
 \alias{vx_dm}
 \title{DM Dataset}
 \format{
-An object of class \code{data.frame} with 1 rows and 28 columns.
+An object of class \code{data.frame} with 2 rows and 28 columns.
 }
 \usage{
 vx_dm
@@ -15,9 +15,7 @@ A SDTM DM dataset
 }
 \seealso{
 Other dataset: 
-\code{\link{adface}},
 \code{\link{vx_adsl}},
-\code{\link{vx_ae}},
 \code{\link{vx_ce}},
 \code{\link{vx_ex}},
 \code{\link{vx_face}},

@@ -215,7 +215,6 @@ adface <- adface %>% select(
   starts_with("EVE"), starts_with("ANL")
 )
 
-
 # Save output ----
 
 dir <- tempdir()
