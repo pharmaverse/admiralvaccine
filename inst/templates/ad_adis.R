@@ -199,7 +199,7 @@ adis <- adis %>%
     ),
 
     # AVALU derivation (please delete if not needed for your study)
-    AVALU = if_else(as.numeric(ISSTRESC) == ISSTRESN, ISORRESU, as.character(NA)),
+    AVALU = if_else(as.numeric(ISSTRESC) == ISSTRESN, ISORRESU, NA_character_),
 
     # SERCAT1 derivation
     SERCAT1 = case_when(
@@ -216,7 +216,7 @@ param_lookup2 <- tribble(
   "S-", 1,
   "S+", 2,
   "UNKNOWN", 3,
-  as.character(NA), as.numeric(NA)
+  NA_character_, NA_real_
 )
 
 adis <- derive_vars_merged_lookup(
@@ -233,7 +233,7 @@ adis <- derive_vars_merged_lookup(
       ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
     DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
       ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
-    TRUE ~ as.character(NA)
+    TRUE ~ NA_character_
   ))
 
 # STEP 7: ABLFL and BASE variables derivation
