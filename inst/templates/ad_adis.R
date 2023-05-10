@@ -339,4 +339,4 @@ adis <- bind_rows(is12a, is12b)
 # Save output ----
 
 dir <- tempdir() # Change to whichever directory you want to save the dataset in
-saveRDS(adis, file = file.path(dir, "adis.rds"), compress = "bzip2")
+saveRDS(adis, file = file.path(dir, "adis.rda"), compress = "bzip2")
