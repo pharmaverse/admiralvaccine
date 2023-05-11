@@ -43,28 +43,23 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
-  <a class="nav-link" href="../articles/admiralext.html">Get Started</a>
+  <a class="nav-link" href="../articles/admiralvaccine.html">Get Started</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-user-guides">User Guides</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-user-guides">
-    <a class="dropdown-item" href="../articles/adxx.html">Creating ADXX</a>
+    <a class="dropdown-item" href="../articles/adsl.html">Creating ADSL</a>
+    <a class="dropdown-item" href="../articles/adis.html">Creating ADIS</a>
+    <a class="dropdown-item" href="../articles/adce.html">Creating ADCE</a>
+    <a class="dropdown-item" href="../articles/adface.html">Creating ADFACE</a>
   </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -132,22 +127,20 @@ to proceed with ADIS development. In this template,
 <code>SDTM.IS</code>, <code>SDTM.SUPPIS</code> and
 <code>ADAM.ADSL</code> has been used.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"metatools"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/metatools/" class="external-link">metatools</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/metatools/" class="external-link">metatools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org" class="external-link">rlang</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pharmaverse.github.io/admiralvaccine" class="external-link">admiralvaccine</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load source datasets ----</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"is"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"suppis"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"vx_is"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"vx_suppis"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"vx_adsl"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Convert blanks into NA</span></span>
-<span><span class="va">is</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/convert_blanks_to_na.html" class="external-link">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">is</span><span class="op">)</span></span>
-<span><span class="va">suppis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/convert_blanks_to_na.html" class="external-link">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">suppis</span><span class="op">)</span></span>
+<span><span class="va">is</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/convert_blanks_to_na.html" class="external-link">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">vx_is</span><span class="op">)</span></span>
+<span><span class="va">suppis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/convert_blanks_to_na.html" class="external-link">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">vx_suppis</span><span class="op">)</span></span>
 <span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/convert_blanks_to_na.html" class="external-link">convert_blanks_to_na</a></span><span class="op">(</span><span class="va">vx_adsl</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -228,6 +221,8 @@ template.</p>
 <span>    ADT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span>,</span>
 <span>    RFSTDTC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">RFSTDTC</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: `derive_var_merged_character()` was deprecated in admiral 0.11.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span><span> Please use `derive_vars_merged()` instead.</span></span></span>
 <span></span>
 <span></span>
 <span><span class="co"># ADY derivation</span></span>
@@ -449,8 +444,6 @@ represents the base category. Update accordingly.</p>
 <span>  selection <span class="op">=</span> <span class="st">"before"</span>,</span>
 <span>  inclusive <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Dataset contains duplicate records with respect to `STUDYID`, `USUBJID`, `PARAMN`, `STUDYID`, `USUBJID`, `VISITNUM` and `PARAMN`</span></span>
-<span><span class="co">#&gt; Run `get_duplicates_dataset()` to access the duplicate records</span></span>
 <span></span>
 <span><span class="co"># BASE derivation</span></span>
 <span><span class="va">is6_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_base.html" class="external-link">derive_var_base</a></span><span class="op">(</span></span>
@@ -489,7 +482,9 @@ represents the base category. Update accordingly.</p>
 <span>  new_var <span class="op">=</span> <span class="va">BASECAT1</span>,</span>
 <span>  source_var <span class="op">=</span> <span class="va">BASE</span>,</span>
 <span>  cat_fun <span class="op">=</span> <span class="va">basecat1</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: `derive_var_merged_cat()` was deprecated in admiral 0.11.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span><span> Please use `derive_vars_merged()` instead.</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="chg">Derive CHG and R2BASE variables<a class="anchor" aria-label="anchor" href="#chg"></a>

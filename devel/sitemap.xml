@@ -7,6 +7,9 @@
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/articles/adce.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/articles/adface.html</loc>
   </url>
   <url>
@@ -34,22 +37,7 @@
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/pull_request_template.html</loc>
   </url>
   <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/adface.html</loc>
-  </url>
-  <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/admiralvaccine-package.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/admiralvaccine_adsl.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/adsl.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/ae.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/ce.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/derive_param_diam_to_sev.html</loc>
@@ -85,27 +73,30 @@
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/derive_vars_vaxdt.html</loc>
   </url>
   <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/dm.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/ex.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/face.html</loc>
-  </url>
-  <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/is.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/suppis.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vs.html</loc>
-  </url>
-  <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vx_adsl.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vx_ce.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vx_dm.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vx_ex.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vx_face.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vx_is.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vx_suppis.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/devel/reference/vx_vs.html</loc>
   </url>
 </urlset>

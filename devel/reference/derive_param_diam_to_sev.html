@@ -21,7 +21,7 @@ event per period."><meta property="og:image" content="https://pharmaverse.github
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
-  <a class="nav-link" href="../articles/admiralext.html">Get Started</a>
+  <a class="nav-link" href="../articles/admiralvaccine.html">Get Started</a>
 </li>
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
@@ -29,20 +29,15 @@ event per period."><meta property="og:image" content="https://pharmaverse.github
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-user-guides">User Guides</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-user-guides">
-    <a class="dropdown-item" href="../articles/adxx.html">Creating ADXX</a>
+    <a class="dropdown-item" href="../articles/adsl.html">Creating ADSL</a>
+    <a class="dropdown-item" href="../articles/adis.html">Creating ADIS</a>
+    <a class="dropdown-item" href="../articles/adce.html">Creating ADCE</a>
+    <a class="dropdown-item" href="../articles/adface.html">Creating ADFACE</a>
   </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -95,7 +90,7 @@ event per period.</p>
 <dt>filter_diam</dt>
 <dd><p>Diameter record filter</p>
 <p><em>Default: "DIAMETER"</em>
-<em>Permitted Value</em>: A character scalar.</p>
+<em>Permitted Value</em>: A character vector or scalar.</p>
 <p>Helps to filter the diameter records to derive the severity records by
 passing the <code>FATESTCD</code> value for diameter  which is corresponding to the
 specified events in <code>filter_faobj</code>.</p></dd>
@@ -193,17 +188,11 @@ grade limits.</p></li>
 </ol></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>ADXX Functions that returns variable appended to dataset: 
+    <div class="dont-index"><p>Other der_rec: 
 <code><a href="derive_param_fever_occur.html">derive_param_fever_occur</a>()</code>,
 <code><a href="derive_param_maxdiam.html">derive_param_maxdiam</a>()</code>,
 <code><a href="derive_param_maxsev.html">derive_param_maxsev</a>()</code>,
-<code><a href="derive_param_maxtemp.html">derive_param_maxtemp</a>()</code>,
-<code><a href="derive_vars_crit.html">derive_vars_crit</a>()</code>,
-<code><a href="derive_vars_event_flag.html">derive_vars_event_flag</a>()</code>,
-<code><a href="derive_vars_max_flag.html">derive_vars_max_flag</a>()</code>,
-<code><a href="derive_vars_merged_vaccine.html">derive_vars_merged_vaccine</a>()</code>,
-<code><a href="derive_vars_params.html">derive_vars_params</a>()</code>,
-<code><a href="derive_vars_vaxdt.html">derive_vars_vaxdt</a>()</code></p></div>
+<code><a href="derive_param_maxtemp.html">derive_param_maxtemp</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -251,37 +240,6 @@ grade limits.</p></li>
 <span class="r-in"><span>  testcd_sev <span class="op">=</span> <span class="st">"SEV"</span>,</span></span>
 <span class="r-in"><span>  test_sev <span class="op">=</span> <span class="st">"Severity"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID    FAOBJ AVAL    AVALC       ATPTREF   FATEST FATESTCD   DTYPE FASEQ</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  XYZ1001 SWELLING  2.0 MODERATE VACCINATION 1 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  XYZ1001 SWELLING  1.0     MILD VACCINATION 1 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  XYZ1001 SWELLING  0.0     NONE VACCINATION 1 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  XYZ1001 SWELLING  0.0     NONE VACCINATION 1 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  XYZ1001 SWELLING  0.0     NONE VACCINATION 1 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  XYZ1002 SWELLING  3.0   SEVERE VACCINATION 2 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  XYZ1002 SWELLING  2.0 MODERATE VACCINATION 2 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  XYZ1002 SWELLING  1.0     MILD VACCINATION 2 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  XYZ1002 SWELLING  0.0     NONE VACCINATION 2 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 XYZ1002 SWELLING  0.0     NONE VACCINATION 2 Severity      SEV DERIVED    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 XYZ1001  REDNESS  7.5      7.5 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 XYZ1001  REDNESS  3.5      3.5 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 XYZ1001  REDNESS  2.0        2 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 XYZ1001  REDNESS  1.8      1.8 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 XYZ1001  REDNESS  1.4      1.4 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 XYZ1002  REDNESS 11.1     11.1 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 XYZ1002  REDNESS  7.4      7.4 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 XYZ1002  REDNESS  6.0        6 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 XYZ1002  REDNESS  2.1      2.1 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 XYZ1002  REDNESS  1.1      1.1 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 XYZ1001 SWELLING  5.5      5.5 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 XYZ1001 SWELLING  2.5      2.5 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 XYZ1001 SWELLING  2.0        2 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 XYZ1001 SWELLING  1.8      1.8 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 XYZ1001 SWELLING  1.4      1.4 VACCINATION 1 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 XYZ1002 SWELLING 10.1     10.1 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 XYZ1002 SWELLING  7.1      7.1 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 XYZ1002 SWELLING  5.0        5 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 XYZ1002 SWELLING  1.8      1.8 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 XYZ1002 SWELLING  1.4      1.4 VACCINATION 2 Diameter DIAMETER    &lt;NA&gt;    NA</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
