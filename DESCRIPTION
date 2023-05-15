@@ -3,7 +3,25 @@ Type: Package
 Title: ADaM in R Asset Library - Extension
 Version: 0.0.1
 Authors@R: c(
-    person("Open", "Source", email = "admiralext@pharmaverse.com", role = c("aut", "cre")))
+    person("Ben", "Straub", email = "ben.x.straub@gsk.com", role = c("aut", "cre")),
+    person("Vikram", "S", role = "aut"),
+    person("Arjun", "Rubalingam", role = "aut"),
+    person("Dhivya", "Kanagaraj", role = "aut"),
+    person("Federico", "Baratin", role = "aut"),
+    person("Yamini", "Purna Bollu", role = "aut"),
+    person("Ilse", "Augustyns", role = "aut"),
+    person("Kalyani", "Bodicherla", role = "aut"),
+    person("Hilde", "Delanghe", role = "aut"),
+    person("Neetu", "Sangari", role = "ctb"),
+    person("Jayashree", "V", role = "ctb"),
+    person("Jagadish", "Katam", role = "ctb"),
+    person("Andrea", "Pammolli", role = "ctb"),
+    person("Daniele", "Bottigliengo", role = "ctb"),
+    person("Ranya", "Ben Hsain", role = "ctb"),
+    person("Marleen", "Nijs", role = "ctb"),
+    person("Mandy", "Peng", role = "ctb"),
+    person("Tina", "Zhai", role = "ctb")
+    )
 Description: A toolbox for programming Clinical Data Standards Interchange Consortium
     (CDISC) compliant Analysis Data Model (ADaM) datasets in R. ADaM datasets are a
     mandatory part of any New Drug or Biologics License Application submitted to the
