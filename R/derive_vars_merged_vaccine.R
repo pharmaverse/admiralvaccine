@@ -23,6 +23,14 @@
 #'               supplementary dataset to merge it back with original EX dataset
 #'               if they have supplementary dataset in their case.
 #'
+#' @param by_vars_sys Grouping variables for systemic events.
+#'
+#' *Default: exprs(USUBJID, FATPTREF)*
+#'
+#' @param by_vars_adms Grouping variables for administration site events.
+#'
+#' *Default: exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR)*
+#'
 #' @param ex_vars Variables to be added to the output dataset from EX dataset
 #'
 #' @return the dataset with variables added from the EX dataset.
@@ -33,7 +41,8 @@
 #' "SYSTEMIC" categories separately and these datasets will be binded together as
 #' the final output dataset.
 #'
-#' The grouping variables are defaulted within the function itself.
+#' This function is intended to add only `EX` variables to the input dataset, an user
+#' is expected to handle if any pre-processing is required.
 #'
 #' Only the variables passed to the `ex_vars` will be present in the output dataset
 #'
@@ -61,15 +70,22 @@
 #'   dataset_ex = vx_ex,
 #'   dataset_supp = NULL,
 #'   dataset_suppex = NULL,
+#'   by_vars_sys = exprs(USUBJID, FATPTREF),
+#'   by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
 #'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
 #' )
 #'
 derive_vars_merged_vaccine <- function(dataset,
                                        dataset_ex,
+                                       by_vars_sys,
+                                       by_vars_adms,
                                        dataset_supp = NULL,
                                        dataset_suppex = NULL,
                                        ex_vars) {
   assert_data_frame(dataset)
+  assert_vars(by_vars_sys)
+  assert_vars(by_vars_adms)
+  assert_vars(ex_vars)
   assert_data_frame(dataset_supp, optional = TRUE)
   assert_data_frame(dataset_ex, required_vars = NULL)
   assert_data_frame(dataset_suppex, optional = TRUE)
@@ -167,7 +183,7 @@ derive_vars_merged_vaccine <- function(dataset,
       dataset_adminstration,
       dataset_add = dataset_ex,
       new_vars = ex_vars,
-      by_vars = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR)
+      by_vars = by_vars_adms
     )
 
     # Filter records for  SYSTEMIC events and merge it with EX dataset
@@ -178,7 +194,7 @@ derive_vars_merged_vaccine <- function(dataset,
       dataset_systemic,
       dataset_add = dataset_ex,
       new_vars = ex_vars,
-      by_vars = exprs(USUBJID, FATPTREF)
+      by_vars = by_vars_sys
     )
 
     # bind face1 and face2 datasets

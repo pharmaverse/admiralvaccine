@@ -45,6 +45,8 @@ test_that("derive_vars_merged_vaccine test 1 - Merging EXTRT variable from EX to
     dataset_ex = ex,
     dataset_supp = NULL,
     dataset_suppex = NULL,
+    by_vars_sys = exprs(USUBJID, FATPTREF),
+    by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
     ex_vars = exprs(EXTRT, EXDOSE)
   )
   expect_dfs_equal(actual, expected, keys = c(
@@ -156,6 +158,8 @@ test_that("derive_vars_merged_vaccine test 2 - Check if supp datasets merged
     dataset_ex = ex,
     dataset_supp = suppface,
     dataset_suppex = suppex,
+    by_vars_sys = exprs(USUBJID, FATPTREF),
+    by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
     ex_vars = exprs(EXTRT, EXDOSE, EXTDV)
   )
   expect_dfs_equal(actual, expected, keys = c(
@@ -206,6 +210,8 @@ test_that("derive_vars_merged_vaccine test 3 - Check if warning is raised when
       dataset_ex = ex,
       dataset_supp = NULL,
       dataset_suppex = NULL,
+      by_vars_sys = exprs(USUBJID, FATPTREF),
+      by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
       ex_vars = exprs(EXTRT, EXDOSE)
     ),
     regexp = paste(
@@ -277,6 +283,8 @@ test_that("derive_vars_merged_vaccine test 4 - Checking if scenario handled for
     dataset_ex = ex,
     dataset_supp = NULL,
     dataset_suppex = NULL,
+    by_vars_sys = exprs(USUBJID, FATPTREF),
+    by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
     ex_vars = exprs(EXTRT, EXDOSE)
   )
   expect_dfs_equal(actual, expected, keys = c(
@@ -337,6 +345,8 @@ test_that("derive_vars_merged_vaccine test 5 - Checking if scenario handled for
     dataset_ex = ex,
     dataset_supp = NULL,
     dataset_suppex = NULL,
+    by_vars_sys = exprs(USUBJID, FATPTREF),
+    by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
     ex_vars = exprs(EXTRT, EXDOSE)
   )
   expect_dfs_equal(actual, expected, keys = c(
