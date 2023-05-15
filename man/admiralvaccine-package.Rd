@@ -19,7 +19,32 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Open Source \email{admiralext@pharmaverse.com}
+\strong{Maintainer}: Ben Straub \email{ben.x.straub@gsk.com}
+
+Authors:
+\itemize{
+  \item Vikram S
+  \item Arjun Rubalingam
+  \item Dhivya Kanagaraj
+  \item Federico Baratin
+  \item Yamini Purna Bollu
+  \item Ilse Augustyns
+  \item Kalyani Bodicherla
+  \item Hilde Delanghe
+}
+
+Other contributors:
+\itemize{
+  \item Neetu Sangari [contributor]
+  \item Jayashree V [contributor]
+  \item Jagadish Katam [contributor]
+  \item Andrea Pammolli [contributor]
+  \item Daniele Bottigliengo [contributor]
+  \item Ranya Ben Hsain [contributor]
+  \item Marleen Nijs [contributor]
+  \item Mandy Peng [contributor]
+  \item Tina Zhai [contributor]
+}
 
 }
 \concept{internal}
