@@ -58,20 +58,19 @@ adce <- adce %>%
     by = exprs(STUDYID, USUBJID)
   ) %>%
   ## Derive analysis start time ----
-  derive_vars_dtm(
+  ## Proposed imputations depending on situation: no needed -> highest imputation = “n”
+  ## some missing dates: highest imputation = “D”
+  derive_vars_dt(
     dtc = CESTDTC,
     new_vars_prefix = "AST",
-    highest_imputation = "M",
-    min_dates = exprs(TRTSDT)
+    highest_imputation = "n"
   ) %>%
   ## Derive analysis end time ----
-  derive_vars_dtm(
+  derive_vars_dt(
     dtc = CEENDTC,
     new_vars_prefix = "AEN",
-    highest_imputation = "M"
+    highest_imputation = "n"
   ) %>%
-  ## Derive analysis end/start date ----
-  derive_vars_dtm_to_dt(exprs(ASTDTM, AENDTM)) %>%
   ## Derive analysis start relative day and  analysis end relative day ----
   derive_vars_dy(
     reference_date = TRTSDT,
@@ -89,7 +88,6 @@ adce <-
   ) %>%
   mutate(
     APERSTDY = as.integer(ASTDT - APERSDT) + 1,
-    ADECOD = CEDECOD,
     AREL = CEREL
   )
 
@@ -122,7 +120,7 @@ adce <- adce %>%
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = exprs(STUDYID, USUBJID),
-    order = exprs(ADECOD, CELAT, CETPTREF, APERIOD),
+    order = exprs(CEDECOD, CELAT, CETPTREF, APERIOD),
     check_type = "error"
   ) %>%
   ## Derive analysis duration (value and unit) ----
@@ -137,15 +135,17 @@ adce <- adce %>%
     trunc_out = FALSE
   )
 
+# Get list of ADSL vars, list is trial specific and needs to be adjusted when using the template
+adsl_list <- adsl %>%
+  select(STUDYID, USUBJID, TRT01A, TRT01P, AGE, AGEU, SEX, RACE, COUNTRY, ETHNIC, SITEID, SUBJID)
 
-# Join all ADSL with CE
+
+# Join ADSL_list with CE
 adce <- adce %>%
   derive_vars_merged(
-    dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
+    dataset_add = adsl_list,
     by_vars = exprs(STUDYID, USUBJID)
   )
-
-
 
 
 # Save output ----

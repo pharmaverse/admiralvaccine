@@ -38,6 +38,8 @@ adface <- derive_vars_merged_vaccine(
   dataset_ex = ex,
   dataset_supp = NULL,
   dataset_suppex = NULL,
+  by_vars_sys = exprs(USUBJID, FATPTREF),
+  by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 )
 
@@ -214,7 +216,6 @@ adface <- adface %>% select(
   any_of(keep_vars), starts_with("TRT0"), starts_with("VAX"),
   starts_with("EVE"), starts_with("ANL")
 )
-
 
 # Save output ----
 
