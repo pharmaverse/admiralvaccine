@@ -13,6 +13,8 @@
 #'        `FATESTCD`, `FAOBJ` and one entry for every unique
 #'        `FATESTCD` and `FAOBJ`
 #'
+#' @param merge_vars - List of Variables need to be merged from lookup file
+#'
 #' @return The output dataset contains all observations and variables of the
 #'   input dataset along with `PARAM`,`PARAMCD`,`PARCAT1`,`PARCAT2`,`PARAMN`
 #'
@@ -20,10 +22,18 @@
 #'
 #' @details A lookup file is required with PARAMCD values for every combination
 #'      of `FATEST` & `FAOBJ`.
-#'      `PARAMCD` values comes from lookup file.
+#'      `PARAMCD` `PARAMN` `PARAMN` `PARCAT1` `PARCAT2` values can be assigned
+#'      from lookup file.
+#'
+#'      if `PARAMN` not assigned in lookup file then
 #'      `PARAMN` is assigned with a unique number for every unique PARAM value.
+#'      if `PARAM` value not assigned in lookup file then
 #'      `PARAM` value is a combination of `FAOBJ` `FATEST` `FASTRESU` `FALOC`
 #'      `FADIR` `FALAT`
+#'      if `PARCAT1` value not assigned in lookup file then
+#'      `PARCAT1` is assigned as FACAT
+#'      if `PARCAT2` value not assigned in lookup file then
+#'      `PARCAT2` is assigned as FASCAT
 #'
 #' @export
 #'
@@ -33,18 +43,17 @@
 #'
 #' @examples
 #'
-#' library(tibble)
 #' lookup_dataset <- tribble(
-#'   ~FATESTCD,    ~PARAMCD,    ~FATEST,                ~FAOBJ,
-#'   "SEV",        "SEVREDN",   "Severity",             "Redness",
-#'   "DIAMETER",   "DIARE",     "Diameter",             "Redness",
-#'   "MAXDIAM",    "MDIRE",     "Maximum Diameter cm",  "Redness",
-#'   "MAXTEMP",    "MAXTEMP",   "Maximum Temperature",  "Fever",
-#'   "OCCUR",      "OCFEVER",   "Occurrence Indicator", "Fever",
-#'   "OCCUR",      "OCERYTH",   "Occurrence Indicator", "Erythema",
-#'   "SEV",        "SEVPAIN",   "Severity",             "Pain at Injection site",
-#'   "OCCUR",      "OCPAIN",    "Occurrence Indicator", "Pain at Injection site",
-#'   "OCCUR",      "OCSWEL",    "Occurrence Indicator", "Swelling"
+#'   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
+#'   "SEV", "SEVREDN", 1, "Severity", "Redness",
+#'   "DIAMETER", "DIARE", 2, "Diameter", "Redness",
+#'   "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "Redness",
+#'   "MAXTEMP", "MAXTEMP", 4, "Maximum Temperature", "Fever",
+#'   "OCCUR", "OCFEVER", 5, "Occurrence Indicator", "Fever",
+#'   "OCCUR", "OCERYTH", 6, "Occurrence Indicator", "Erythema",
+#'   "SEV", "SEVPAIN", 7, "Severity", "Pain at Injection site",
+#'   "OCCUR", "OCPAIN", 8, "Occurrence Indicator", "Pain at Injection site",
+#'   "OCCUR", "OCSWEL", 9, "Occurrence Indicator", "Swelling"
 #' )
 #'
 #' input <- tribble(
@@ -59,13 +68,16 @@
 #'   "ABC101", "REACTO", "ADMIN", "OCCUR", "Swelling", "Occurrence", NA, NA,
 #'   "ABC101", "REACTO", "ADMIN", "OCCUR", "Swelling", "Occurrence", NA, NA
 #' )
+#'
 #' derive_vars_params(
 #'   dataset = input,
-#'   lookup_dataset = lookup_dataset
+#'   lookup_dataset = lookup_dataset,
+#'   merge_vars = exprs(PARAMCD, PARAMN)
 #' )
 #'
 derive_vars_params <- function(dataset,
-                               lookup_dataset) {
+                               lookup_dataset,
+                               merge_vars) {
   assert_data_frame(dataset,
     required_vars = exprs(USUBJID, FAOBJ)
   )
@@ -73,7 +85,7 @@ derive_vars_params <- function(dataset,
   adface <- derive_vars_merged(
     dataset,
     dataset_add = lookup_dataset,
-    new_vars = exprs(PARAMCD),
+    new_vars = merge_vars,
     by_vars = exprs(FATESTCD, FAOBJ)
   ) %>%
     convert_blanks_to_na()
@@ -83,27 +95,39 @@ derive_vars_params <- function(dataset,
     c("FASTRESU", "FALOC", "FADIR", "FALAT")
 
   # Assigning PARCAT1 PARCAT2 & PARAM
-  adface <- adface %>%
-    mutate(
-      PARCAT1 = FACAT,
-      PARCAT2 = FASCAT,
-      PARAM = ""
-    ) %>%
-    unite(PARAM, FAOBJ, FATEST, any_of(lookup),
-      sep = " ",
-      na.rm = TRUE, remove = FALSE
-    ) %>%
-    mutate(PARAM = str_to_sentence(PARAM))
+  if (!("PARAM" %in% names(adface))) {
+    adface <- adface %>%
+      mutate(
+        PARAM = ""
+      ) %>%
+      unite(PARAM, FAOBJ, FATEST, any_of(lookup),
+        sep = " ",
+        na.rm = TRUE, remove = FALSE
+      ) %>%
+      mutate(PARAM = str_to_sentence(PARAM))
+  }
 
   # Assigning PARAMN
-  paramn <- adface %>%
-    distinct(PARAM, .keep_all = FALSE) %>%
-    mutate(PARAMN = 1:n())
+  if (!("PARAMN" %in% names(adface))) {
+    paramn <- adface %>%
+      distinct(PARAM, .keep_all = FALSE) %>%
+      mutate(PARAMN = 1:n())
 
-  adface <- merge(
-    x = adface,
-    y = paramn,
-    by = c("PARAM"),
-    all.x = TRUE
-  )
+    adface <- merge(
+      x = adface,
+      y = paramn,
+      by = c("PARAM"),
+      all.x = TRUE
+    )
+  }
+
+  if (!("PARCAT1" %in% names(adface))) {
+    adface <- adface %>%
+      mutate(PARCAT1 = FACAT)
+  }
+
+  if (!("PARCAT2" %in% names(adface))) {
+    adface <- adface %>%
+      mutate(PARCAT2 = FASCAT)
+  }
 }
