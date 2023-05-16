@@ -25,23 +25,23 @@ data("vx_ex")
 data("vx_vs")
 data("vx_face")
 data("vx_adsl")
+data("vx_suppdm")
+data("vx_suppex")
 
 ex <- vx_ex
 vs <- vx_vs
 face <- vx_face
 adsl <- vx_adsl
+suppface <- vx_suppface
+suppex <- vx_suppex
 
-ex <- ex1 %>% ungroup()
-vs <- vs1 %>% ungroup()
-face <- face1 %>% ungroup()
-adsl <- adsl
 # Step1 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
   dataset = face,
   dataset_ex = ex,
-  dataset_supp = NULL,
-  dataset_suppex = NULL,
+  dataset_supp = suppface,
+  dataset_suppex = suppex,
   by_vars_sys = exprs(USUBJID, FATPTREF),
   by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
