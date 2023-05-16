@@ -82,6 +82,7 @@ library(admiral)
 library(admiralvaccine)
 library(dplyr, warn.conflicts = FALSE)
 library(lubridate)
+library(rlang)
 library(stringr)
 library(tidyr)
 library(tibble)
@@ -124,14 +125,17 @@ adface <- derive_vars_merged_vaccine(
   dataset_ex = ex,
   dataset_supp = NULL,
   dataset_suppex = NULL,
-  ex_vars = exprs(EXTRT, EXDOSE, EXSTDTC, EXENDTC, VISIT, VISITNUM)
+  by_vars_sys = exprs(USUBJID, FATPTREF),
+  by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
+  ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 )
 ```
   
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, FATESTCD, FATPTREF, EXTRT))
+  display_vars = exprs(USUBJID, FAOBJ, FATESTCD, FATPTREF, EXTRT)
+)
 ```  
 
 This call would return the input dataset with columns EXTRT, EXDOSE, EXSTDTC, EXENDTC, VISIT, VISITNUM added if the subjects does not have multiple vaccination at same visit.
@@ -217,7 +221,7 @@ adface <- adface %>%
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, AVAL, AVALC, ATPTREF, ATPTN, VISIT,VISITNUM)
+  display_vars = exprs(USUBJID, FAOBJ, AVAL, AVALC, ATPTREF, ATPTN, VISIT, VISITNUM)
 )
 ```
 
@@ -380,7 +384,7 @@ adface <- derive_vars_params(
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATEST, PARAMCD, PARAM, PARAMN,PARCAT1,PARCAT2)
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATEST, PARAMCD, PARAM, PARAMN, PARCAT1, PARCAT2)
 )
 ```
 
