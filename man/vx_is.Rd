@@ -20,6 +20,10 @@ Other dataset:
 \code{\link{vx_dm}},
 \code{\link{vx_ex}},
 \code{\link{vx_face}},
+\code{\link{vx_suppce}},
+\code{\link{vx_suppdm}},
+\code{\link{vx_suppex}},
+\code{\link{vx_suppface}},
 \code{\link{vx_suppis}},
 \code{\link{vx_vs}}
 }

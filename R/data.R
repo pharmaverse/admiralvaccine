@@ -61,3 +61,35 @@
 #' @keywords dataset
 #' @family dataset
 "vx_adsl"
+
+#' Supplementary CE Dataset
+#'
+#' A SDTM Supplementary CE dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppce"
+
+#' Supplementary DM Dataset
+#'
+#' A SDTM Supplementary DM dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppdm"
+
+#' Supplementary EX Dataset
+#'
+#' A SDTM Supplementary EX dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppex"
+
+#' Supplementary FACE Dataset
+#'
+#' A SDTM Supplementary FACE dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppface"

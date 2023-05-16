@@ -5,7 +5,7 @@
 \alias{vx_face}
 \title{FACE Dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 98 rows and 29 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 307 rows and 27 columns.
 }
 \usage{
 vx_face
@@ -20,6 +20,10 @@ Other dataset:
 \code{\link{vx_dm}},
 \code{\link{vx_ex}},
 \code{\link{vx_is}},
+\code{\link{vx_suppce}},
+\code{\link{vx_suppdm}},
+\code{\link{vx_suppex}},
+\code{\link{vx_suppface}},
 \code{\link{vx_suppis}},
 \code{\link{vx_vs}}
 }

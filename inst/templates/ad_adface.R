@@ -25,19 +25,23 @@ data("vx_ex")
 data("vx_vs")
 data("vx_face")
 data("vx_adsl")
+data("vx_suppdm")
+data("vx_suppex")
 
 ex <- vx_ex
 vs <- vx_vs
 face <- vx_face
 adsl <- vx_adsl
+suppface <- vx_suppface
+suppex <- vx_suppex
 
 # Step1 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
   dataset = face,
   dataset_ex = ex,
-  dataset_supp = NULL,
-  dataset_suppex = NULL,
+  dataset_supp = suppface,
+  dataset_suppex = suppex,
   by_vars_sys = exprs(USUBJID, FATPTREF),
   by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
@@ -79,8 +83,7 @@ adface <- adface %>%
 
 adface <- adface %>%
   mutate(
-    AVAL = FAORRES,
-    AVAL = as.numeric(AVAL),
+    AVAL = suppressWarnings(as.numeric(FAORRES)),
     AVALC = as.character(FAORRES),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
@@ -117,7 +120,7 @@ adface <- derive_param_maxsev(
 
 adface <- derive_param_maxdiam(
   dataset = adface,
-  filter = FAOBJ %in% c("Redness", "Erythema") & FATESTCD %in% c("DIAMETER", "LDIAM"),
+  filter = FAOBJ %in% c("Redness", "Swelling") & FATESTCD == "DIAMETER",
   by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
   test_maxdiam = "Maximum Diameter",
   testcd_maxdiam = "MAXDIAM"
@@ -146,7 +149,9 @@ lookup_dataset <- tribble(
   "OCCUR",      "OCERYTH",   "Occurrence Indicator", "Erythema",
   "SEV",        "SEVPAIN",   "Severity",             "Pain at Injection site",
   "OCCUR",      "OCPAIN",    "Occurrence Indicator", "Pain at Injection site",
-  "OCCUR",      "OCSWEL",    "Occurrence Indicator", "Swelling"
+  "OCCUR",      "OCSWEL",    "Occurrence Indicator", "Swelling",
+  "MAXSEV",     "MAXSWEL",   "Maximum Severity",     "Swelling",
+  "MAXSEV",     "MAXREDN",   "Maximum Severity",     "Redness"
 )
 
 adface <- derive_vars_params(
