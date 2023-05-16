@@ -71,7 +71,6 @@ adce <- ce %>%
 
 ## Create Reference Dataset for Periods {#adperiods}
 ```{r eval=TRUE}
-
 # Create period dataset - for joining period information onto ce records
 # Need to remove datetime variables as otherwise causes duplicate issues
 adsl2 <- adsl %>%
@@ -161,7 +160,6 @@ In current example, SEV is collected, so the code is using this as an example.
 In addition, derivation of Extreme Flags: in current example: flag the first occurence of the most severe grade within a Period (AOCC01FL).
 
 ```{r eval=TRUE}
-
 adce <- adce %>%
   ## depending on collection of TOXGR or SEV in CE domain ----
   ## Analysis variant of ASEV and ASEVN ----
