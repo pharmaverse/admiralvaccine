@@ -4,7 +4,7 @@ Title: Vaccine Extension Package for ADaM in 'R' Asset Library
 Version: 0.0.1
 Authors@R: c(
     person("Ben", "Straub", email = "ben.x.straub@gsk.com", role = "aut"),
-    person("Vikram", "S", role = c("aut", "cre")),
+    person("Vikram", "S", email = "vikram.s@pfizer.com", role = c("aut", "cre")),
     person("Arjun", "Rubalingam", role = "aut"),
     person("Dhivya", "Kanagaraj", role = "aut"),
     person("Federico", "Baratin", role = "aut"),
