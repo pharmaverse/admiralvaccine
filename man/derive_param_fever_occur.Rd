@@ -4,7 +4,7 @@
 \alias{derive_param_fever_occur}
 \title{Creating FEVER records}
 \usage{
-derive_param_fever_occur(dataset, source_data, faobj)
+derive_param_fever_occur(dataset, source_data, source_filter, faobj)
 }
 \arguments{
 \item{dataset}{Input dataset
@@ -12,9 +12,11 @@ Input dataset is expected to have variables \code{USUBJID},\code{FAOBJ},
 \code{FACAT},\code{FATESTCD} and \code{FATEST}}
 
 \item{source_data}{Input SDTM dataset(VS)
-Input SDTM dataset is expected to have
-\code{VSCAT = "REACTOGENICITY" & VSTESTCD = "TEMP"}records
+Input SDTM dataset is expected to have temperature records
 \emph{Default: "VS"}}
+
+\item{source_filter}{Filter condition for Input SDTM dataset(VS)
+\emph{Default: "VSCAT == 'REACTOGENICITY' & VSTESTCD = 'TEMP'"}}
 
 \item{faobj}{FAOBJ Value for FEVER records in output dataset
 \emph{Default: "FEVER"}}
@@ -65,6 +67,7 @@ vs <- tribble(
 derive_param_fever_occur(
   dataset = input,
   source_data = vs,
+  source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
   faobj = "FEVER"
 )
 
