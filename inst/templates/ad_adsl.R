@@ -22,7 +22,8 @@ data("vx_ex")
 
 dm <- vx_dm
 ex <- vx_ex
-
+dm <- dm1
+ex <- ex1
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
 # as NA values. Further details can be obtained via the following link:
@@ -81,7 +82,10 @@ adsl <- dm %>%
   ## derive treatment variables (TRT01P, TRT01A) ----
   # See also the "Visit and Period Variables" vignette
   # (https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html#treatment_adsl)
-  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
+  mutate(TRT01P = substring(ARM,1,9),
+         TRT02P = substring(ARM,11,100),
+         TRT01A = substring(ARM,1,9),
+         TRT02A = substring(ARM,11,100)) %>%
   ## derive treatment start date (TRTSDTM) ----
   derive_vars_merged(
     dataset_add = ex_ext,
