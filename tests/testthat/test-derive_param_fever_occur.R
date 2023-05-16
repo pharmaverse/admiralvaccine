@@ -37,6 +37,7 @@ testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset is 
   actual <- derive_param_fever_occur(
     dataset = face,
     source_data = vs,
+    source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
     faobj = "FEVER"
   )
 
@@ -80,6 +81,7 @@ testthat::test_that('derive_param_fever_occur Test 2: how the actual dataset is 
   actual <- derive_param_fever_occur(
     dataset = face,
     source_data = vs,
+    source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
     faobj = "FEVER"
   )
   testthat::expect_equal(actual, expected)
