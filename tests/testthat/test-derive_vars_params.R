@@ -50,7 +50,8 @@ testthat::test_that("test-1:checking", {
 
   actual_output <- derive_vars_params(
     dataset = input,
-    lookup_dataset = lookup_dataset
+    lookup_dataset = lookup_dataset,
+    merge_vars = exprs(PARAMCD)
   )
 
   expect_dfs_equal(
@@ -124,7 +125,75 @@ testthat::test_that("test-2:checking whether PARAM  getting concatenated with
 
   actual_output <- derive_vars_params(
     dataset = as.data.frame(input),
-    lookup_dataset = lookup_dataset
+    lookup_dataset = lookup_dataset,
+    merge_vars = exprs(PARAMCD)
+  )
+
+  expect_dfs_equal(
+    expected_output,
+    actual_output,
+    keys = c("USUBJID", "PARAM", "PARAMCD", "PARCAT1", "PARCAT2", "PARAMN")
+  )
+})
+
+
+# testcase - 3
+testthat::test_that("test-3:checking whether PARAM, PARCAT1 and PARCAT2 getting concatenated with
+                    only the existed variables", {
+  lookup_dataset <- tibble::tribble(
+    ~FATESTCD, ~PARAMCD, ~FAOBJ, ~PARAMN,
+    "SEV", "SEVREDN", "Redness", 1,
+    "DIAMETER", "DIARE", "Redness", 2,
+    "MAXDIAM", "MDIRE", "Redness", 3,
+    "MAXTEMP", "MAXTEMP", "Fever", 4,
+    "OCCUR", "OCFEVER", "Fever", 5,
+    "OCCUR", "OCERYTH", "Erythema", 6,
+    "SEV", "SEVPAIN", "Pain at Injection site", 7,
+    "OCCUR", "OCPAIN", "Pain at Injection site", 8,
+    "OCCUR", "OCSWEL", "Swelling", 9
+  )
+
+  input <- tibble::tribble(
+    ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALAT, ~FALOC, ~FADIR,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Redness", "Severity",
+    "DELTOID MUSCLE", "LEFT", NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "DIAMETER", "Redness", "Diameter",
+    "DELTOID MUSCLE", "LEFT", NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "MAXDIAM", "Redness", "Maximum Diameter",
+    "DELTOID MUSCLE", "RIGHT", NA,
+    "ABC101", "REACTOGENICITY", "SYSTEMIC", "MAXTEMP", "Fever", "Maximum Temp",
+    NA, NA, NA,
+    "ABC101", "REACTOGENICITY", "SYSTEMIC", "OCCUR", "Fever", "Occurrence",
+    NA, NA, NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Erythema", "Occurrence",
+    "RIGHT", NA, NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Swelling", "Severity", NA,
+    NA, NA,
+    "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Swelling", "Occurrence",
+    NA, "RIGHT", NA
+  )
+
+
+
+  expected_output <- input %>%
+    left_join(lookup_dataset,
+      by = c("FATESTCD", "FAOBJ")
+    ) %>%
+    mutate(
+      PARCAT1 = FACAT,
+      PARCAT2 = FASCAT,
+      PARAM = ""
+    ) %>%
+    unite(PARAM, FAOBJ, FATEST, FADIR, FALOC, FALAT,
+      sep = " ",
+      na.rm = TRUE, remove = FALSE
+    ) %>%
+    mutate(PARAM = str_to_sentence(PARAM))
+
+  actual_output <- derive_vars_params(
+    dataset = as.data.frame(input),
+    lookup_dataset = lookup_dataset,
+    merge_vars = exprs(PARAMCD, PARAMN)
   )
 
   expect_dfs_equal(

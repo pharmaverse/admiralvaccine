@@ -8,9 +8,11 @@
 #'      `FACAT`,`FATESTCD` and `FATEST`
 #'
 #' @param source_data Input SDTM dataset(VS)
-#'       Input SDTM dataset is expected to have
-#'       `VSCAT = "REACTOGENICITY" & VSTESTCD = "TEMP"`records
+#'       Input SDTM dataset is expected to have temperature records
 #' *Default: "VS"*
+#'
+#' @param source_filter Filter condition for Input SDTM dataset(VS)
+#' *Default: "VSCAT == 'REACTOGENICITY' & VSTESTCD = 'TEMP'"*
 #'
 #' @param faobj  FAOBJ Value for FEVER records in output dataset
 #' *Default: "FEVER"*
@@ -62,11 +64,13 @@
 #' derive_param_fever_occur(
 #'   dataset = input,
 #'   source_data = vs,
+#'   source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
 #'   faobj = "FEVER"
 #' )
 #'
 derive_param_fever_occur <- function(dataset,
                                      source_data,
+                                     source_filter,
                                      faobj) {
   # Checking if there are fever records in face
   assert_data_frame(dataset,
@@ -102,7 +106,7 @@ derive_param_fever_occur <- function(dataset,
     # Filter Reacto records from VS
 
     fever <- source_data %>%
-      filter(VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP") %>%
+      filter(eval(parse(text = source_filter))) %>%
       rename(any_of(lookup)) %>%
       mutate(
         FATEST = "Occurrence Indicator",
@@ -127,5 +131,3 @@ derive_param_fever_occur <- function(dataset,
     adface <- dataset
   }
 }
-
-# ________________________END OF THE FUNCTION___________________________________

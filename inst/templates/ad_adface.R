@@ -27,6 +27,7 @@ data("vx_face")
 data("vx_adsl")
 data("vx_suppdm")
 data("vx_suppex")
+data("vx_suppface")
 
 ex <- vx_ex
 vs <- vx_vs
@@ -62,7 +63,8 @@ adface <- adface %>%
 adface <- derive_param_fever_occur(
   dataset = adface,
   source_data = vs,
-  faobj = "Fever"
+  source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+  faobj = "FEVER"
 )
 
 # Step4 - Creating ADT, ATM, ADTM
@@ -130,7 +132,7 @@ adface <- derive_param_maxdiam(
 
 adface <- derive_param_maxtemp(
   dataset = adface,
-  filter_faobj = "Fever",
+  filter_faobj = "FEVER",
   test_maxtemp = "Maximum Temperature",
   testcd_maxtemp = "MAXTEMP",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
@@ -140,23 +142,24 @@ adface <- derive_param_maxtemp(
 
 library(tibble)
 lookup_dataset <- tribble(
-  ~FATESTCD,    ~PARAMCD,    ~FATEST,                ~FAOBJ,
-  "SEV",        "SEVREDN",   "Severity",             "Redness",
-  "DIAMETER",   "DIARE",     "Diameter",             "Redness",
-  "MAXDIAM",    "MDIRE",     "Maximum Diameter cm",  "Redness",
-  "MAXTEMP",    "MAXTEMP",   "Maximum Temperature",  "Fever",
-  "OCCUR",      "OCFEVER",   "Occurrence Indicator", "Fever",
-  "OCCUR",      "OCERYTH",   "Occurrence Indicator", "Erythema",
-  "SEV",        "SEVPAIN",   "Severity",             "Pain at Injection site",
-  "OCCUR",      "OCPAIN",    "Occurrence Indicator", "Pain at Injection site",
-  "OCCUR",      "OCSWEL",    "Occurrence Indicator", "Swelling",
-  "MAXSEV",     "MAXSWEL",   "Maximum Severity",     "Swelling",
-  "MAXSEV",     "MAXREDN",   "Maximum Severity",     "Redness"
+  ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
+  "SEV", "SEVREDN", 1, "Severity", "Redness",
+  "DIAMETER", "DIARE", 2, "Diameter", "Redness",
+  "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "Redness",
+  "MAXTEMP", "MAXTEMP", 4, "Maximum Temperature", "Fever",
+  "OCCUR", "OCFEVER", 5, "Occurrence Indicator", "Fever",
+  "OCCUR", "OCERYTH", 6, "Occurrence Indicator", "Erythema",
+  "SEV", "SEVPAIN", 7, "Severity", "Pain at Injection site",
+  "OCCUR", "OCPAIN", 8, "Occurrence Indicator", "Pain at Injection site",
+  "OCCUR", "OCSWEL", 9, "Occurrence Indicator", "Swelling",
+  "MAXSEV", "MAXSWEL", 10, "Maximum Severity", "Swelling",
+  "MAXSEV", "MAXREDN", 11, "Maximum Severity", "Redness"
 )
 
 adface <- derive_vars_params(
   dataset = adface,
-  lookup_dataset = lookup_dataset
+  lookup_dataset = lookup_dataset,
+  merge_vars = exprs(PARAMCD, PARAMN)
 )
 
 # Step11 - Maximum flag ANL01FL and ANL02FL
