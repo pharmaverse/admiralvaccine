@@ -38,14 +38,6 @@ PARCAT2 variables"><meta property="og:image" content="https://pharmaverse.github
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -74,7 +66,7 @@ PARCAT2 variables"><meta property="og:image" content="https://pharmaverse.github
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">derive_vars_params</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">lookup_dataset</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">derive_vars_params</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">lookup_dataset</span>, <span class="va">merge_vars</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -94,6 +86,11 @@ lookup file is expected to have variables <code>FATEST</code>, <code>PARAMCD</co
 <code>FATESTCD</code> and <code>FAOBJ</code></p></li>
 </ul></dd>
 
+
+<dt>merge_vars</dt>
+<dd><ul><li><p>List of Variables need to be merged from lookup file</p></li>
+</ul></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -108,10 +105,17 @@ input dataset along with <code>PARAM</code>,<code>PARAMCD</code>,<code>PARCAT1</
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A lookup file is required with PARAMCD values for every combination
 of <code>FATEST</code> &amp; <code>FAOBJ</code>.
-<code>PARAMCD</code> values comes from lookup file.
-<code>PARAMN</code> is assigned with a unique number for every unique PARAM value.
-<code>PARAM</code> value is a combination of <code>FAOBJ</code> <code>FATEST</code> <code>FASTRESU</code> <code>FALOC</code>
-<code>FADIR</code> <code>FALAT</code></p>
+<code>PARAMCD</code> <code>PARAMN</code> <code>PARAMN</code> <code>PARCAT1</code> <code>PARCAT2</code> values can be assigned
+from lookup file.</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="st">`</span><span class="at">PARAMN</span><span class="st">`</span> not assigned <span class="cf">in</span> lookup file then</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARAMN</span><span class="st">`</span> is assigned with a unique number <span class="cf">for</span> every unique PARAM value.</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="st">`</span><span class="at">PARAM</span><span class="st">`</span> value not assigned <span class="cf">in</span> lookup file then</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARAM</span><span class="st">`</span> value is a combination of <span class="st">`</span><span class="at">FAOBJ</span><span class="st">`</span> <span class="st">`</span><span class="at">FATEST</span><span class="st">`</span> <span class="st">`</span><span class="at">FASTRESU</span><span class="st">`</span> <span class="st">`</span><span class="at">FALOC</span><span class="st">`</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">FADIR</span><span class="st">`</span> <span class="st">`</span><span class="at">FALAT</span><span class="st">`</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="st">`</span><span class="at">PARCAT1</span><span class="st">`</span> value not assigned <span class="cf">in</span> lookup file then</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARCAT1</span><span class="st">`</span> is assigned as FACAT</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="st">`</span><span class="at">PARCAT2</span><span class="st">`</span> value not assigned <span class="cf">in</span> lookup file then</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARCAT2</span><span class="st">`</span> is assigned as FASCAT</span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -131,20 +135,23 @@ of <code>FATEST</code> &amp; <code>FAOBJ</code>.
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">lookup_dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="op">~</span><span class="va">FATESTCD</span>,    <span class="op">~</span><span class="va">PARAMCD</span>,    <span class="op">~</span><span class="va">FATEST</span>,                <span class="op">~</span><span class="va">FAOBJ</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"SEV"</span>,        <span class="st">"SEVREDN"</span>,   <span class="st">"Severity"</span>,             <span class="st">"Redness"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"DIAMETER"</span>,   <span class="st">"DIARE"</span>,     <span class="st">"Diameter"</span>,             <span class="st">"Redness"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"MAXDIAM"</span>,    <span class="st">"MDIRE"</span>,     <span class="st">"Maximum Diameter cm"</span>,  <span class="st">"Redness"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"MAXTEMP"</span>,    <span class="st">"MAXTEMP"</span>,   <span class="st">"Maximum Temperature"</span>,  <span class="st">"Fever"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"OCCUR"</span>,      <span class="st">"OCFEVER"</span>,   <span class="st">"Occurrence Indicator"</span>, <span class="st">"Fever"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"OCCUR"</span>,      <span class="st">"OCERYTH"</span>,   <span class="st">"Occurrence Indicator"</span>, <span class="st">"Erythema"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"SEV"</span>,        <span class="st">"SEVPAIN"</span>,   <span class="st">"Severity"</span>,             <span class="st">"Pain at Injection site"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"OCCUR"</span>,      <span class="st">"OCPAIN"</span>,    <span class="st">"Occurrence Indicator"</span>, <span class="st">"Pain at Injection site"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"OCCUR"</span>,      <span class="st">"OCSWEL"</span>,    <span class="st">"Occurrence Indicator"</span>, <span class="st">"Swelling"</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org" class="external-link">rlang</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lookup_dataset</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="op">~</span><span class="va">FATESTCD</span>, <span class="op">~</span><span class="va">PARAMCD</span>, <span class="op">~</span><span class="va">PARAMN</span>, <span class="op">~</span><span class="va">FATEST</span>, <span class="op">~</span><span class="va">FAOBJ</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"SEV"</span>, <span class="st">"SEVREDN"</span>, <span class="fl">1</span>, <span class="st">"Severity"</span>, <span class="st">"Redness"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"DIAMETER"</span>, <span class="st">"DIARE"</span>, <span class="fl">2</span>, <span class="st">"Diameter"</span>, <span class="st">"Redness"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"MAXDIAM"</span>, <span class="st">"MDIRE"</span>, <span class="fl">3</span>, <span class="st">"Maximum Diameter cm"</span>, <span class="st">"Redness"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"MAXTEMP"</span>, <span class="st">"MAXTEMP"</span>, <span class="fl">4</span>, <span class="st">"Maximum Temperature"</span>, <span class="st">"Fever"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"OCCUR"</span>, <span class="st">"OCFEVER"</span>, <span class="fl">5</span>, <span class="st">"Occurrence Indicator"</span>, <span class="st">"Fever"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"OCCUR"</span>, <span class="st">"OCERYTH"</span>, <span class="fl">6</span>, <span class="st">"Occurrence Indicator"</span>, <span class="st">"Erythema"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"SEV"</span>, <span class="st">"SEVPAIN"</span>, <span class="fl">7</span>, <span class="st">"Severity"</span>, <span class="st">"Pain at Injection site"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"OCCUR"</span>, <span class="st">"OCPAIN"</span>, <span class="fl">8</span>, <span class="st">"Occurrence Indicator"</span>, <span class="st">"Pain at Injection site"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"OCCUR"</span>, <span class="st">"OCSWEL"</span>, <span class="fl">9</span>, <span class="st">"Occurrence Indicator"</span>, <span class="st">"Swelling"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="op">~</span><span class="va">USUBJID</span>, <span class="op">~</span><span class="va">FACAT</span>, <span class="op">~</span><span class="va">FASCAT</span>, <span class="op">~</span><span class="va">FATESTCD</span>, <span class="op">~</span><span class="va">FAOBJ</span>, <span class="op">~</span><span class="va">FATEST</span>, <span class="op">~</span><span class="va">FALOC</span>, <span class="op">~</span><span class="va">FALAT</span>,</span></span>
 <span class="r-in"><span>  <span class="st">"ABC101"</span>, <span class="st">"REACTO"</span>, <span class="st">"ADMIN"</span>, <span class="st">"SEV"</span>, <span class="st">"Redness"</span>, <span class="st">"Severity"</span>, <span class="st">"ARM"</span>, <span class="st">"LEFT"</span>,</span></span>
 <span class="r-in"><span>  <span class="st">"ABC101"</span>, <span class="st">"REACTO"</span>, <span class="st">"ADMIN"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"Redness"</span>, <span class="st">"Diameter"</span>, <span class="st">"ARM"</span>, <span class="st">"RIGHT"</span>,</span></span>
@@ -156,9 +163,11 @@ of <code>FATEST</code> &amp; <code>FAOBJ</code>.
 <span class="r-in"><span>  <span class="st">"ABC101"</span>, <span class="st">"REACTO"</span>, <span class="st">"ADMIN"</span>, <span class="st">"OCCUR"</span>, <span class="st">"Swelling"</span>, <span class="st">"Occurrence"</span>, <span class="cn">NA</span>, <span class="cn">NA</span>,</span></span>
 <span class="r-in"><span>  <span class="st">"ABC101"</span>, <span class="st">"REACTO"</span>, <span class="st">"ADMIN"</span>, <span class="st">"OCCUR"</span>, <span class="st">"Swelling"</span>, <span class="st">"Occurrence"</span>, <span class="cn">NA</span>, <span class="cn">NA</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">derive_vars_params</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  dataset <span class="op">=</span> <span class="va">input</span>,</span></span>
-<span class="r-in"><span>  lookup_dataset <span class="op">=</span> <span class="va">lookup_dataset</span></span></span>
+<span class="r-in"><span>  lookup_dataset <span class="op">=</span> <span class="va">lookup_dataset</span>,</span></span>
+<span class="r-in"><span>  merge_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAMCD</span>, <span class="va">PARAMN</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
