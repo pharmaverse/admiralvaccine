@@ -93,6 +93,8 @@ data("vx_vs")
 face <- convert_blanks_to_na(vx_face)
 ex <- convert_blanks_to_na(vx_ex)
 vs <- convert_blanks_to_na(vx_vs)
+suppface <- convert_blanks_to_na(vx_suppface)
+suppex <- convert_blanks_to_na(vx_suppex)
 ```
 
 ## Pre-processing of Input dataset {#input}
@@ -123,8 +125,8 @@ The function `derive_vars_merged_vaccine` is used to merge `face` with `ex` doma
 adface <- derive_vars_merged_vaccine(
   dataset = face,
   dataset_ex = ex,
-  dataset_supp = NULL,
-  dataset_suppex = NULL,
+  dataset_supp = suppface,
+  dataset_suppex = suppex,
   by_vars_sys = exprs(USUBJID, FATPTREF),
   by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
@@ -154,7 +156,8 @@ The function `derive_param_fever_occur` is used to merge fever records. These re
 adface <- derive_param_fever_occur(
   dataset = adface,
   source_data = vs,
-  faobj = "Fever"
+  source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+  faobj = "FEVER"
 )
 ```
 
@@ -207,21 +210,18 @@ example mapping may be:
 ```{r, echo=FALSE}
 adface <- adface %>%
   mutate(
-    AVAL = FAORRES,
-    AVAL = as.numeric(AVAL),
+    AVAL = suppressWarnings(as.numeric(FAORRES)),
     AVALC = as.character(FAORRES),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
-    ATPTN = FATPTNUM,
-    AVISIT = VISIT,
-    AVISITN = VISITNUM
+    ATPTN = FATPTNUM
   )
 ```
 
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, AVAL, AVALC, ATPTREF, ATPTN, VISIT, VISITNUM)
+  display_vars = exprs(USUBJID, FAOBJ, AVAL, AVALC, ATPTREF, ATPTN)
 )
 ```
 
@@ -318,7 +318,7 @@ The values passed to the `filter_faobj` argument should indicate fever records.
 ```{r, echo=FALSE}
 adface <- derive_param_maxtemp(
   dataset = adface,
-  filter_faobj = "Fever",
+  filter_faobj = "FEVER",
   test_maxtemp = "Maximum Temperature",
   testcd_maxtemp = "MAXTEMP",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
@@ -344,40 +344,42 @@ PARCAT1,PARCAT2 variables are assigned from FACAT,FASCAT variables.
 For example, when creating `ADFACE` dataset, a lookup based on the SDTM `--TESTCD` value 
 can be created:
 
-`FATESTCD` | `PARAMCD` | `FATEST` | `FAOBJ`
+`FATESTCD` | `PARAMCD` | `PARAMN` |`FATEST` | `FAOBJ`
 --------- | --------- | -------- | ------- 
-SEV | SEVREDN | Severity | Redness 
-DIAMETER | DIARE | Diameter | Redness 
-MAXDIAM | MDIRE | Maximum Diameter cm | Redness
-MAXTEMP | MAXTEMP | Maximum Temperature | Fever
-OCCUR | OCFEVER | Occurrence Indicator | Fever
-OCCUR | OCERYTH | Occurrence Indicator | Erythema
-SEV | SEVPAIN | Severity | Pain at Injection site
-OCCUR | OCPAIN | Occurrence Indicator | Pain at Injection site
-OCCUR | OCSWEL | Occurrence Indicator | Swelling
+SEV | SEVREDN | 1 | Severity | Redness 
+DIAMETER | DIARE | 2 | Diameter | Redness 
+MAXDIAM | MDIRE | 3 | Maximum Diameter cm | Redness
+MAXTEMP | MAXTEMP | 4 | Maximum Temperature | Fever
+MAXSEV | MAXSWEL | 5 | Maximum Severity | Swelling
+OCCUR | OCFEVER | 6 | Occurrence Indicator | Fever
+OCCUR | OCERYTH | 7 | Occurrence Indicator | Erythema
+SEV | SEVPAIN | 8 | Severity | Pain at Injection site
+OCCUR | OCPAIN | 9 | Occurrence Indicator | Pain at Injection site
+OCCUR | OCSWEL | 10 | Occurrence Indicator | Swelling
 
 This lookup can now be joined to the source data:
 
 ```{r eval=TRUE, include=FALSE}
 lookup_dataset <- tribble(
-  ~FATESTCD,    ~PARAMCD,    ~FATEST,                ~FAOBJ,
-  "SEV",        "SEVREDN",   "Severity",             "Redness",
-  "DIAMETER",   "DIARE",     "Diameter",             "Redness",
-  "MAXDIAM",    "MDIRE",     "Maximum Diameter cm",  "Redness",
-  "MAXTEMP",    "MAXFEV",    "Maximum Temperature",  "Fever",
-  "MAXSEV",     "MAXSWEL",   "Maximum Severity",     "Swelling",
-  "OCCUR",      "OCFEVER",   "Occurrence Indicator", "Fever",
-  "OCCUR",      "OCERYTH",   "Occurrence Indicator", "Erythema",
-  "SEV",        "SEVPAIN",   "Severity",             "Pain at Injection site",
-  "OCCUR",      "OCPAIN",    "Occurrence Indicator", "Pain at Injection site",
-  "OCCUR",      "OCSWEL",    "Occurrence Indicator", "Swelling"
+  ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
+  "SEV", "SEVREDN", 1, "Severity", "Redness",
+  "DIAMETER", "DIARE", 2, "Diameter", "Redness",
+  "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "Redness",
+  "MAXTEMP", "MAXFEV", 4, "Maximum Temperature", "Fever",
+  "MAXSEV", "MAXSWEL", 5, "Maximum Severity", "Swelling",
+  "OCCUR", "OCFEVER", 6, "Occurrence Indicator", "Fever",
+  "OCCUR", "OCERYTH", 7, "Occurrence Indicator", "Erythema",
+  "SEV", "SEVPAIN", 8, "Severity", "Pain at Injection site",
+  "OCCUR", "OCPAIN", 9, "Occurrence Indicator", "Pain at Injection site",
+  "OCCUR", "OCSWEL", 10, "Occurrence Indicator", "Swelling"
 )
 ```
 
 ```{r, echo=FALSE}
 adface <- derive_vars_params(
   dataset = adface,
-  lookup_dataset = lookup_dataset
+  lookup_dataset = lookup_dataset,
+  merge_vars = exprs(PARAMCD, PARAMN)
 )
 ```
 
