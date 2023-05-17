@@ -52,7 +52,11 @@ from lookup file.
 }
 \examples{
 
-lookup_dataset <- tribble(
+library(tibble)
+library(dplyr)
+library(rlang)
+
+lookup_dataset <- tibble::tribble(
   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
   "SEV", "SEVREDN", 1, "Severity", "Redness",
   "DIAMETER", "DIARE", 2, "Diameter", "Redness",
@@ -65,7 +69,7 @@ lookup_dataset <- tribble(
   "OCCUR", "OCSWEL", 9, "Occurrence Indicator", "Swelling"
 )
 
-input <- tribble(
+input <- tibble::tribble(
   ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT,
   "ABC101", "REACTO", "ADMIN", "SEV", "Redness", "Severity", "ARM", "LEFT",
   "ABC101", "REACTO", "ADMIN", "DIAMETER", "Redness", "Diameter", "ARM", "RIGHT",
