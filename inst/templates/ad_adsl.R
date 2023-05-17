@@ -81,7 +81,12 @@ adsl <- dm %>%
   ## derive treatment variables (TRT01P, TRT01A) ----
   # See also the "Visit and Period Variables" vignette
   # (https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html#treatment_adsl)
-  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
+  mutate(
+    TRT01P = substring(ARM, 1, 9),
+    TRT02P = substring(ARM, 11, 100),
+    TRT01A = substring(ARM, 1, 9),
+    TRT02A = substring(ARM, 11, 100)
+  ) %>%
   ## derive treatment start date (TRTSDTM) ----
   derive_vars_merged(
     dataset_add = ex_ext,
