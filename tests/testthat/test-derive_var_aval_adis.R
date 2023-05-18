@@ -187,9 +187,11 @@ testthat::test_that("derive_var_aval_adis Test 3: Derive AVAL variable without I
 
         # ISORRES values with > or <
         !grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~ as.numeric(gsub("^.*?>", "", ISORRES)),
+        !grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~
+          as.numeric(gsub("^.*?>", "", ISORRES)),
         grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(as.numeric(gsub("^.*?>", "", ISORRES)))
+        grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~
+          log10(as.numeric(gsub("^.*?>", "", ISORRES)))
       )
     )
 
