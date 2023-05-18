@@ -5,7 +5,7 @@
 \alias{vx_vs}
 \title{VS Dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 6 rows and 29 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 28 rows and 23 columns.
 }
 \usage{
 vx_vs
@@ -15,14 +15,16 @@ A SDTM VS dataset
 }
 \seealso{
 Other dataset: 
-\code{\link{adface}},
 \code{\link{vx_adsl}},
-\code{\link{vx_ae}},
 \code{\link{vx_ce}},
 \code{\link{vx_dm}},
 \code{\link{vx_ex}},
 \code{\link{vx_face}},
 \code{\link{vx_is}},
+\code{\link{vx_suppce}},
+\code{\link{vx_suppdm}},
+\code{\link{vx_suppex}},
+\code{\link{vx_suppface}},
 \code{\link{vx_suppis}}
 }
 \concept{dataset}

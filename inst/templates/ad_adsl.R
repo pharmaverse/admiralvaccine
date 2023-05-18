@@ -66,6 +66,7 @@ format_region1 <- function(x) {
 
 # Derivations ----
 # impute start and end time of exposure to first and last respectively, do not impute date
+
 ex_ext <- ex %>%
   derive_vars_dtm(
     dtc = EXSTDTC,
@@ -80,7 +81,12 @@ adsl <- dm %>%
   ## derive treatment variables (TRT01P, TRT01A) ----
   # See also the "Visit and Period Variables" vignette
   # (https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html#treatment_adsl)
-  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
+  mutate(
+    TRT01P = substring(ARM, 1, 9),
+    TRT02P = substring(ARM, 11, 100),
+    TRT01A = substring(ARM, 1, 9),
+    TRT02A = substring(ARM, 11, 100)
+  ) %>%
   ## derive treatment start date (TRTSDTM) ----
   derive_vars_merged(
     dataset_add = ex_ext,
@@ -137,15 +143,24 @@ adsl <- derive_vars_vaxdt(
   by_vars = exprs(USUBJID, VISITNUM),
   order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
 )
-
+class(adsl$VAX01DT)
 # Creating period variables (Study Specific)
-adsl <- adsl %>%
-  mutate(
-    AP01SDT = VAX01DT,
-    AP02SDT = VAX02DT,
-    AP01EDT = VAX02DT - 1,
-    AP02EDT = as.POSIXct(RFENDTC)
-  )
+if ("VAX02DT" %in% names(adsl)) {
+  adsl <- adsl %>%
+    mutate(
+      AP01SDT = VAX01DT,
+      AP01EDT = if_else(!is.na(VAX02DT), VAX02DT - 1, as.Date(RFPENDTC)),
+      AP02SDT = if_else(!is.na(VAX02DT), VAX02DT, NA_Date_),
+      AP02EDT = if_else(!is.na(AP02SDT), as.Date(RFPENDTC), NA_Date_)
+    )
+} else {
+  adsl <- adsl %>%
+    mutate(
+      AP01SDT = VAX01DT,
+      AP01EDT = RFPENDTC
+    )
+}
+
 # Save output
 dir <- tempdir()
 save(adsl, file = file.path(dir, "vx_adsl.rda"), compress = "bzip2")
