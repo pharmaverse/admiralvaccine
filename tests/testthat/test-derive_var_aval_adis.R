@@ -50,7 +50,6 @@ testthat::test_that("derive_var_aval_adis Test 1: Derive AVAL variable
   actual_a <- input %>%
     filter(!grepl("LOG", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN,
       upper_rule = ISULOQ
@@ -59,7 +58,6 @@ testthat::test_that("derive_var_aval_adis Test 1: Derive AVAL variable
   actual_b <- input %>%
     filter(grepl("LOG", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = log10(ISLLOQ / 2),
       middle_rule = log10(ISSTRESN),
       upper_rule = log10(ISULOQ)
@@ -122,7 +120,6 @@ testthat::test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
   actual_a <- input %>%
     filter(!grepl("4FOLD", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN,
       upper_rule = ISULOQ
@@ -131,7 +128,6 @@ testthat::test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
   actual_b <- input %>%
     filter(grepl("4FOLD", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = ISLLOQ,
       middle_rule = ISSTRESN,
       upper_rule = ISULOQ
@@ -200,7 +196,6 @@ testthat::test_that("derive_var_aval_adis Test 3: Derive AVAL variable without I
   actual_a <- input %>%
     filter(!grepl("LOG", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN
     )
@@ -208,7 +203,6 @@ testthat::test_that("derive_var_aval_adis Test 3: Derive AVAL variable without I
   actual_b <- input %>%
     filter(grepl("LOG", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = log10(ISLLOQ / 2),
       middle_rule = log10(ISSTRESN)
     )
@@ -280,7 +274,6 @@ testthat::test_that("derive_var_aval_adis Test 4: Derive AVAL variable
   actual_a <- input %>%
     filter(!grepl("LOG", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN,
       upper_rule = ISULOQ,
@@ -290,7 +283,6 @@ testthat::test_that("derive_var_aval_adis Test 4: Derive AVAL variable
   actual_b <- input %>%
     filter(grepl("LOG", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = log10(ISLLOQ / 2),
       middle_rule = log10(ISSTRESN),
       upper_rule = log10(ISULOQ),
@@ -361,7 +353,6 @@ testthat::test_that("derive_var_aval_adis Test 5: Derive AVAL variable
   actual_a <- input %>%
     filter(!grepl("LOG", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN,
       round = 2
@@ -370,7 +361,6 @@ testthat::test_that("derive_var_aval_adis Test 5: Derive AVAL variable
   actual_b <- input %>%
     filter(grepl("LOG", PARAM)) %>%
     derive_var_aval_adis(
-      new_var = "AVAL",
       lower_rule = log10(ISLLOQ / 2),
       middle_rule = log10(ISSTRESN),
       round = 2

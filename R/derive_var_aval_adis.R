@@ -11,11 +11,6 @@
 #' @param dataset
 #' Input dataset.
 #'
-#' @param new_var
-#' Variable to add
-#' AVAL is a numeric analysis value described by PARAM/PARAMCD.
-#' It is standard and required for ADIS domain.
-#'
 #' @param lower_rule
 #' Derivation rule when ISSTRESN value is below ISLLOQ
 #'
@@ -81,27 +76,23 @@
 #'
 #' output <- derive_var_aval(
 #'   dataset = input,
-#'   new_var = "AVAL",
 #'   lower_rule = ISLLOQ / 2,
+#'   middle_rule = ISSTRESN,
 #'   upper_rule = ISULOQ,
 #'   round = 2
 #' )
 #################################################################################
 #'
 derive_var_aval_adis <-
-  function(dataset, new_var, lower_rule, middle_rule, upper_rule, round) {
+  function(dataset, lower_rule, middle_rule, upper_rule, round) {
     assert_data_frame(dataset, required_vars = vars(
       ISORRES, ISSTRESN
     ))
 
-    warn_if_vars_exist(dataset, quo_text(new_var))
-
-
     if (!missing(lower_rule) & !missing(middle_rule) & !missing(upper_rule)) {
       data <- dataset %>%
         mutate(
-          `:=`(
-            !!new_var,
+          AVAL = (
             case_when(
               !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
               !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ ~
@@ -117,8 +108,7 @@ derive_var_aval_adis <-
     if (!missing(lower_rule) & !missing(middle_rule) & missing(upper_rule)) {
       data <- dataset %>%
         mutate(
-          `:=`(
-            !!new_var,
+          AVAL = (
             case_when(
               !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
               !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ {{ middle_rule }},
@@ -133,8 +123,7 @@ derive_var_aval_adis <-
     if (!missing(round)) {
       data <- data %>%
         mutate(
-          `:=`(
-            !!new_var, round(AVAL, round)
+          AVAL = (round(AVAL, round)
           )
         )
     }
