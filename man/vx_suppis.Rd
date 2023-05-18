@@ -15,14 +15,16 @@ A SDTM Supplemental IS dataset
 }
 \seealso{
 Other dataset: 
-\code{\link{adface}},
 \code{\link{vx_adsl}},
-\code{\link{vx_ae}},
 \code{\link{vx_ce}},
 \code{\link{vx_dm}},
 \code{\link{vx_ex}},
 \code{\link{vx_face}},
 \code{\link{vx_is}},
+\code{\link{vx_suppce}},
+\code{\link{vx_suppdm}},
+\code{\link{vx_suppex}},
+\code{\link{vx_suppface}},
 \code{\link{vx_vs}}
 }
 \concept{dataset}
