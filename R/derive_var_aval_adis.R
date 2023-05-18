@@ -17,13 +17,13 @@
 #' It is standard and required for ADIS domain.
 #'
 #' @param lower_rule
-#' Derivation rule when ISSTRESN value is below ISSLOQ.
+#' Derivation rule when ISSTRESN value is below ISLLOQ
 #'
 #' @param middle_rule
-#' Derivation rule when ISSTRESN value is greater than ISSLOQ and
+#' Derivation rule when ISSTRESN value is greater than ISLLOQ and
 #' lower than ISULOQ.
 #' If ISULOQ is not present, derivation rule when ISSTRESN is
-#' greater than ISSLOQ.
+#' greater than ISLLOQ
 #'
 #' @param upper_rule
 #' Derivation rule when ISSTRESN value is greater than ISULOQ.
