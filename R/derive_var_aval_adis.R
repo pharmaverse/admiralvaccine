@@ -88,54 +88,57 @@
 #' )
 #################################################################################
 #'
-derive_var_aval_adis <- function(dataset, new_var, lower_rule, middle_rule, upper_rule, round) {
-  new_var <- assert_symbol(enquo(new_var))
-  assert_data_frame(dataset, required_vars = vars(
-    ISORRES, ISSTRESN
-  ))
+derive_var_aval_adis <-
+  function(dataset, new_var, lower_rule, middle_rule, upper_rule, round) {
+    new_var <- assert_symbol(enquo(new_var))
+    assert_data_frame(dataset, required_vars = vars(
+      ISORRES, ISSTRESN
+    ))
 
-  warn_if_vars_exist(dataset, quo_text(new_var))
+    warn_if_vars_exist(dataset, quo_text(new_var))
 
 
-  if (!missing(lower_rule) & !missing(middle_rule) & !missing(upper_rule)) {
-    data <- dataset %>%
-      mutate(
-        `:=`(
-          !!new_var,
-          case_when(
-            !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
-            !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ ~ {{ middle_rule }},
-            !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ {{ upper_rule }},
-            grepl("<", ISORRES) & !is.na(ISORRES) ~ {{ lower_rule }},
-            grepl(">", ISORRES) & !is.na(ISORRES) ~ {{ upper_rule }}
+    if (!missing(lower_rule) & !missing(middle_rule) & !missing(upper_rule)) {
+      data <- dataset %>%
+        mutate(
+          `:=`(
+            !!new_var,
+            case_when(
+              !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
+              !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ ~
+                {{ middle_rule }},
+              !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ {{ upper_rule }},
+              grepl("<", ISORRES) & !is.na(ISORRES) ~ {{ lower_rule }},
+              grepl(">", ISORRES) & !is.na(ISORRES) ~ {{ upper_rule }}
+            )
           )
         )
-      )
-  }
+    }
 
-  if (!missing(lower_rule) & !missing(middle_rule) & missing(upper_rule)) {
-    data <- dataset %>%
-      mutate(
-        `:=`(
-          !!new_var,
-          case_when(
-            !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
-            !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ {{ middle_rule }},
-            grepl("<", ISORRES) & !is.na(ISORRES) ~ {{ lower_rule }},
-            grepl(">", ISORRES) & !is.na(ISORRES) ~ as.numeric(gsub("^.*?>", "", ISORRES))
+    if (!missing(lower_rule) & !missing(middle_rule) & missing(upper_rule)) {
+      data <- dataset %>%
+        mutate(
+          `:=`(
+            !!new_var,
+            case_when(
+              !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
+              !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ {{ middle_rule }},
+              grepl("<", ISORRES) & !is.na(ISORRES) ~ {{ lower_rule }},
+              grepl(">", ISORRES) & !is.na(ISORRES) ~
+                as.numeric(gsub("^.*?>", "", ISORRES))
+            )
           )
         )
-      )
-  }
+    }
 
-  if (!missing(round)) {
-    data <- data %>%
-      mutate(
-        `:=`(
-          !!new_var, round({{ new_var }}, round)
+    if (!missing(round)) {
+      data <- data %>%
+        mutate(
+          `:=`(
+            !!new_var, round({{ new_var }}, round)
+          )
         )
-      )
-  }
+    }
 
-  return(data)
-}
+    return(data)
+  }
