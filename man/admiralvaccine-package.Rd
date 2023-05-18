@@ -19,11 +19,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Vikram S \email{vikram.s@pfizer.com}
+\strong{Maintainer}: Sukalpo Saha \email{sukalpo.saha@pfizer.com}
 
 Authors:
 \itemize{
   \item Ben Straub \email{ben.x.straub@gsk.com}
+  \item Vikram S \email{vikram.s@pfizer.com}
   \item Arjun Rubalingam
   \item Dhivya Kanagaraj
   \item Federico Baratin
