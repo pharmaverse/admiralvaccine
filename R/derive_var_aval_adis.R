@@ -85,9 +85,6 @@
 #'
 derive_var_aval_adis <-
   function(dataset, lower_rule, middle_rule, upper_rule, round) {
-    assert_data_frame(dataset, required_vars = exprs(
-      ISORRES, ISSTRESN
-    ))
 
     if (!missing(lower_rule) & !missing(middle_rule) & !missing(upper_rule)) {
       data <- dataset %>%
