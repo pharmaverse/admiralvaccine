@@ -81,7 +81,7 @@
 #'
 #' output <- derive_var_aval(
 #'   dataset = input,
-#'   new_var = AVAL,
+#'   new_var = "AVAL",
 #'   lower_rule = ISLLOQ / 2,
 #'   upper_rule = ISULOQ,
 #'   round = 2
@@ -90,7 +90,6 @@
 #'
 derive_var_aval_adis <-
   function(dataset, new_var, lower_rule, middle_rule, upper_rule, round) {
-    new_var <- assert_symbol(enquo(new_var))
     assert_data_frame(dataset, required_vars = vars(
       ISORRES, ISSTRESN
     ))
@@ -135,7 +134,7 @@ derive_var_aval_adis <-
       data <- data %>%
         mutate(
           `:=`(
-            !!new_var, round({{ new_var }}, round)
+            !!new_var, round(AVAL, round)
           )
         )
     }
