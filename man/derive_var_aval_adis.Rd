@@ -74,7 +74,7 @@ input <- tribble(
 )
 
 
-output <- derive_var_aval(
+output <- derive_var_aval_adis(
   dataset = input,
   lower_rule = ISLLOQ / 2,
   middle_rule = ISSTRESN,
