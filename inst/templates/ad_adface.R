@@ -67,7 +67,7 @@ adface <- derive_param_fever_occur(
   faobj = "FEVER"
 )
 
-# Step4 - Creating ADT, ATM, ADTM
+# Step4 - Creating ADT, ATM, ADTM, ADY
 
 adface <- adface %>%
   derive_vars_dt(
@@ -79,6 +79,10 @@ adface <- adface %>%
     dtc = FADTC,
     highest_imputation = "n"
   )
+
+adface <- adface %>%
+  mutate(RFSTDTC = as.Date(RFSTDTC)) %>%
+  derive_vars_dy(adface, reference_date = RFSTDTC, source_vars = exprs(ADT))
 
 # Step5 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT,
 # AVISITN,ATPT,ATPTN)
