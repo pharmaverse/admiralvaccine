@@ -166,105 +166,40 @@ adis <- adis %>%
 
 # STEP 6: AVAL, AVALU, DTYPE and SERCAT1/N derivation
 # AVAL derivation
-derive_var_aval_adis <-
-  function(dataset, new_var, lower_rule, middle_rule, upper_rule, round) {
-    new_var <- assert_symbol(enquo(new_var))
-    assert_data_frame(dataset, required_vars = vars(
-      ISORRES, ISSTRESN
-    ))
+adis <- adis %>%
+  mutate(
+    AVAL = case_when(
+      # ISORRES values without > or <
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      ~ ISSTRESN,
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      ~ log10(ISSTRESN),
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      ~ ISSTRESN,
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ),
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
+        ISSTRESN < ULLOQ ~ log10(ISSTRESN),
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
 
-    warn_if_vars_exist(dataset, quo_text(new_var))
+      # ISORRES values with > or <
+      DERIVED == "ORIG" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
+      DERIVED == "ORIG" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ULLOQ,
+      DERIVED == "LOG10" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
+      DERIVED == "LOG10" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ULLOQ),
+      DERIVED == "4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ,
+      DERIVED == "4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ULLOQ,
+      DERIVED == "LOG10 4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ),
+      DERIVED == "LOG10 4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ULLOQ)
+    ),
 
-
-    if (!missing(lower_rule) & !missing(middle_rule) & !missing(upper_rule)) {
-      data <- dataset %>%
-        mutate(
-          `:=`(
-            !!new_var,
-            case_when(
-              !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
-              !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ ~
-                {{ middle_rule }},
-              !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ {{ upper_rule }},
-              grepl("<", ISORRES) & !is.na(ISORRES) ~ {{ lower_rule }},
-              grepl(">", ISORRES) & !is.na(ISORRES) ~ {{ upper_rule }}
-            )
-          )
-        )
-    }
-
-    if (!missing(lower_rule) & !missing(middle_rule) & missing(upper_rule)) {
-      data <- dataset %>%
-        mutate(
-          `:=`(
-            !!new_var,
-            case_when(
-              !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
-              !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ {{ middle_rule }},
-              grepl("<", ISORRES) & !is.na(ISORRES) ~ {{ lower_rule }},
-              grepl(">", ISORRES) & !is.na(ISORRES) ~
-                as.numeric(gsub("^.*?>", "", ISORRES))
-            )
-          )
-        )
-    }
-
-    if (!missing(round)) {
-      data <- data %>%
-        mutate(
-          `:=`(
-            !!new_var, round({{ new_var }}, round)
-          )
-        )
-    }
-
-    return(data)
-  }
-
-adis_or <- adis %>%
-  filter(DERIVED == "ORIG") %>%
-  derive_var_aval_adis(
-    new_var = AVAL,
-    lower_rule = ISLLOQ / 2,
-    middle_rule = ISSTRESN,
-    upper_rule = ISULOQ,
-    round = 2
-  )
-
-adis_log_or <- adis %>%
-  filter(DERIVED == "LOG10") %>%
-  derive_var_aval_adis(
-    new_var = AVAL,
-    lower_rule = log10(ISLLOQ / 2),
-    middle_rule = log10(ISSTRESN),
-    upper_rule = log10(ISULOQ),
-    round = 2
-  )
-
-adis_4fold <- adis %>%
-  filter(DERIVED == "4FOLD") %>%
-  derive_var_aval_adis(
-    new_var = AVAL,
-    lower_rule = ISLLOQ,
-    middle_rule = ISSTRESN,
-    upper_rule = ISULOQ,
-    round = 2
-  )
-
-adis_log_4fold <- adis %>%
-  filter(DERIVED == "LOG10 4FOLD") %>%
-  derive_var_aval_adis(
-    new_var = AVAL,
-    lower_rule = log10(ISLLOQ),
-    middle_rule = log10(ISSTRESN),
-    upper_rule = log10(ISULOQ),
-    round = 2
-  )
-
-adis <- bind_rows(adis_or, adis_log_or, adis_4fold, adis_log_4fold) %>%
-  arrange(STUDYID, USUBJID, AVISITN, PARAMN) %>%
-  mutate( # AVALU derivation (please delete if not needed for your study)
-    AVALU = if_else(as.numeric(ISSTRESC) == ISSTRESN, ISORRESU, NA_character_),
+    # AVALU derivation (please delete if not needed for your study)
+    AVALU = if_else(as.numeric(ISSTRESC) == ISSTRESN, ISORRESU, as.character(NA)),
 
     # SERCAT1 derivation
     SERCAT1 = case_when(
@@ -273,7 +208,6 @@ adis <- bind_rows(adis_or, adis_log_or, adis_4fold, adis_log_4fold) %>%
       ISBLFL == "Y" & (is.na(AVAL) | is.na(ISLLOQ)) ~ "UNKNOWN"
     )
   )
-
 
 
 # Update param_lookup2 dataset with your SERCAT1N values.
