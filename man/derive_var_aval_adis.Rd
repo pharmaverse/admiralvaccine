@@ -4,21 +4,10 @@
 \alias{derive_var_aval_adis}
 \title{Derive AVAL variable for ADIS ADaM domain}
 \usage{
-derive_var_aval_adis(
-  dataset,
-  new_var,
-  lower_rule,
-  middle_rule,
-  upper_rule,
-  round
-)
+derive_var_aval_adis(dataset, lower_rule, middle_rule, upper_rule, round)
 }
 \arguments{
 \item{dataset}{Input dataset.}
-
-\item{new_var}{Variable to add
-AVAL is a numeric analysis value described by PARAM/PARAMCD.
-It is standard and required for ADIS domain.}
 
 \item{lower_rule}{Derivation rule when ISSTRESN value is below ISLLOQ}
 
@@ -87,8 +76,8 @@ input <- tribble(
 
 output <- derive_var_aval(
   dataset = input,
-  new_var = AVAL,
   lower_rule = ISLLOQ / 2,
+  middle_rule = ISSTRESN,
   upper_rule = ISULOQ,
   round = 2
 )
