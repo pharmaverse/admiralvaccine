@@ -3,7 +3,7 @@
 testthat::test_that("derive_var_aval_adis Test 1: Derive AVAL variable
                     with original and LOG10 values. No rounding applied", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~PARAM, ~ISORRES, ~ISSTRESN, ~ISLLOQ, ~ISULOQ,
     "ABC-1001", 10, "J0033VN", "J0033VN Antibody", NA, NA, 2, 100,
     "ABC-1001", 10, "I0019NT", "I0019NT Antibody", "3", 3.0, 4, 200,
@@ -83,7 +83,7 @@ testthat::test_that("derive_var_aval_adis Test 1: Derive AVAL variable
 testthat::test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
                     applying different rules per PARAMETER. No rounding applied", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~PARAM, ~ISORRES, ~ISSTRESN, ~ISLLOQ, ~ISULOQ,
     "ABC-1001", 10, "J0033VN", "J0033VN Antibody", NA, NA, 2, 100,
     "ABC-1001", 10, "I0019NT", "I0019NT Antibody", "3", 3.0, 4, 200,
@@ -155,7 +155,7 @@ testthat::test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
 # testthat
 testthat::test_that("derive_var_aval_adis Test 3: Derive AVAL variable without ISULOQ", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~PARAM, ~ISORRES, ~ISSTRESN, ~ISLLOQ,
     "ABC-1001", 10, "J0033VN", "J0033VN Antibody", NA, NA, 2,
     "ABC-1001", 10, "I0019NT", "I0019NT Antibody", "3", 3.0, 4,
@@ -232,7 +232,7 @@ testthat::test_that("derive_var_aval_adis Test 3: Derive AVAL variable without I
 testthat::test_that("derive_var_aval_adis Test 4: Derive AVAL variable
                     by applying rounding", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~PARAM, ~ISORRES, ~ISSTRESN, ~ISLLOQ, ~ISULOQ,
     "ABC-1001", 10, "J0033VN", "J0033VN Antibody", NA, NA, 2, 100,
     "ABC-1001", 10, "I0019NT", "I0019NT Antibody", "3", 3.0, 4, 200,
@@ -315,7 +315,7 @@ testthat::test_that("derive_var_aval_adis Test 4: Derive AVAL variable
 testthat::test_that("derive_var_aval_adis Test 5: Derive AVAL variable
                     by applying rounding without ISULOQ", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~PARAM, ~ISORRES, ~ISSTRESN, ~ISLLOQ,
     "ABC-1001", 10, "J0033VN", "J0033VN Antibody", NA, NA, 2,
     "ABC-1001", 10, "I0019NT", "I0019NT Antibody", "3", 3.0, 4,
