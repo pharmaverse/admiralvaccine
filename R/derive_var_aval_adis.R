@@ -85,7 +85,7 @@
 #'
 derive_var_aval_adis <-
   function(dataset, lower_rule, middle_rule, upper_rule, round) {
-    assert_data_frame(dataset, required_vars = vars(
+    assert_data_frame(dataset, required_vars = exprs(
       ISORRES, ISSTRESN
     ))
 
