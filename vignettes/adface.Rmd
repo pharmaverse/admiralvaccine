@@ -129,7 +129,7 @@ adface <- derive_vars_merged_vaccine(
   dataset_suppex = suppex,
   by_vars_sys = exprs(USUBJID, FATPTREF),
   by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
-  ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
+  ex_vars = exprs(EXTRT, EXDOSE, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 )
 ```
   
@@ -140,15 +140,14 @@ dataset_vignette(
 )
 ```  
 
-This call would return the input dataset with columns EXTRT, EXDOSE, EXSTDTC, EXENDTC, VISIT, VISITNUM added if the subjects does not have multiple vaccination at same visit.
-
-If subjects have multiple vaccination at same visit then this call would return the same input dataset with some pre-processing steps added to it.
+This call would return the input dataset with columns from `ex_vars` added if the subjects does not have multiple vaccination at same visit.
 
 Though the function will throw warning if subjects have multiple vaccination at same visit, this call would return the input dataset merging it with supplementary dataset.
 
+
 ## Derive fever records from VS domain {#fever}
 
-In this step, we will merge fever records from the `VS` domain with the input dataset  if the fever records does not present in the input dataset.
+In this step, we will merge fever records from the `VS` domain with the input dataset if the fever records does not present in the input dataset.
 
 The function `derive_param_fever_occur` is used to merge fever records. These records will also be used in maximum temperature calculation.
 
@@ -172,7 +171,7 @@ dataset_vignette(
 This call returns the input dataset with `FEVER` records added if the input dataset does not have `FEVER` records. If the input dataset has `FEVER` records, the output dataset will be same as the input dataset.
 
 
-## Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADY`, `ADTF`, `ATMF`) {#datetime}
+## Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADTF`, `ATMF`) {#datetime}
 
 The function `derive_vars_dt()` can be used to derive `ADT`. This function allows 
 the user to impute the date as well.
@@ -235,8 +234,8 @@ The severity records created will be useful for calculating the maximum severity
 ```{r, echo=FALSE}
 adface <- derive_param_diam_to_sev(
   dataset = adface,
-  filter_diam = c("DIAMETER", "LDIAM"),
-  filter_faobj = c("Redness", "Swelling", "Erythema"),
+  filter_diam = "DIAMETER",
+  filter_faobj = c("Redness", "Swelling"),
   testcd_sev = "SEV",
   test_sev = "Severity/Intensity",
   none = c(0, 2),
@@ -254,7 +253,7 @@ dataset_vignette(
 )
 ```
 
-This call returns the input dataset with severity records added from the diameter records for an event.
+This call returns the input dataset with severity records derived from the diameter records for an event.
 
 By default, we will populate `SEV` and `Severity/Intensity` as the `FATESTCD` and `FATEST` for the newly added records. The function allows the user to change the `FATESTCD` and `FATEST` as well.
 
@@ -419,7 +418,7 @@ This function allows the user to change the name of the new variables created.
 
 The function `derive_vars_event_flag` is used to derive flag variable for the events that occurred.
 
-`new_var1` - Flags the record if at least one of the event occurred within the observation                period. 
+`new_var1` - Flags the record if at least one of the event occurred within the observation period. 
 `new_var2` - Flags the record if the event is occurred.
 
 For derived records with `DTYPE` equals "MAXIMUM" , the `new_var2` will be set to NA.
@@ -442,4 +441,4 @@ dataset_vignette(
 ```
 
 This call would return the input dataset with columns EVENTFL, EVENTDFL added by default. 
-This function allows the user to change the name of the new variables created.
+This function allows the user to change the name of the new variables created as well.
