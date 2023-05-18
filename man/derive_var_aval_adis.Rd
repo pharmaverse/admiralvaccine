@@ -20,12 +20,12 @@ derive_var_aval_adis(
 AVAL is a numeric analysis value described by PARAM/PARAMCD.
 It is standard and required for ADIS domain.}
 
-\item{lower_rule}{Derivation rule when ISSTRESN value is below ISSLOQ.}
+\item{lower_rule}{Derivation rule when ISSTRESN value is below ISLLOQ}
 
-\item{middle_rule}{Derivation rule when ISSTRESN value is greater than ISSLOQ and
+\item{middle_rule}{Derivation rule when ISSTRESN value is greater than ISLLOQ and
 lower than ISULOQ.
 If ISULOQ is not present, derivation rule when ISSTRESN is
-greater than ISSLOQ.}
+greater than ISLLOQ}
 
 \item{upper_rule}{Derivation rule when ISSTRESN value is greater than ISULOQ.
 This is an optional argument since ISULOQ may not be present.}
