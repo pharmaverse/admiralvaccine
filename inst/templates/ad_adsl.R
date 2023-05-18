@@ -84,8 +84,8 @@ adsl <- dm %>%
   mutate(
     TRT01P = substring(ARM, 1, 9),
     TRT02P = substring(ARM, 11, 100),
-    TRT01A = substring(ARM, 1, 9),
-    TRT02A = substring(ARM, 11, 100)
+    TRT01A = substring(ACTARM, 1, 9),
+    TRT02A = substring(ACTARM, 11, 100)
   ) %>%
   ## derive treatment start date (TRTSDTM) ----
   derive_vars_merged(
