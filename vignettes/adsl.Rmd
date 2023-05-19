@@ -35,7 +35,8 @@ otherwise specified.*
 * [Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDT`, `TRTEDT`, `TRTDURD`)](#trtdatetime)
 * [Population Flags (e.g. `SAFFL`)](#popflag)
 * [Derive vaccination date Variables](#vax_date)
-* [Derive Other Variables](#other)
+* [Derive vaccination date Variables](#vax_date)
+* [Create period variables (Study Specific)](#period)
 * [Add Labels and Attributes](#attributes)
 
 
@@ -53,10 +54,8 @@ library(lubridate)
 library(stringr)
 data("vx_dm")
 data("vx_ex")
-dm <- vx_dm
-ex <- vx_ex
-dm <- convert_blanks_to_na(dm)
-ex <- convert_blanks_to_na(ex)
+dm <- convert_blanks_to_na(vx_dm)
+ex <- convert_blanks_to_na(vx_ex)
 ```
 
 The `DM` domain is used as the basis for `ADSL`:
