@@ -36,7 +36,17 @@ adsl <- vx_adsl
 suppface <- vx_suppface
 suppex <- vx_suppex
 
-# Step1 - Merging supplementary datasets and FACE with EX
+
+# Step1 - Basic Filter and Pre-processing for FACE
+
+face <- face %>%
+  filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
+  convert_blanks_to_na() %>%
+  mutate(
+    FAOBJ = str_to_sentence(FAOBJ)
+  )
+
+# Step2 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
   dataset = face,
@@ -48,14 +58,16 @@ adface <- derive_vars_merged_vaccine(
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 )
 
-# Step2 - Basic Filter and Pre-processing for FACE
+# Step3 - Merge required adsl variables needed for analysis.
 
-adface <- adface %>%
-  filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
-  convert_blanks_to_na() %>%
-  mutate(
-    FAOBJ = str_to_sentence(FAOBJ)
-  )
+adsl_vars <- exprs(RFSTDTC, RFENDTC)
+
+adface <- derive_vars_merged(
+  adface,
+  dataset_add = adsl,
+  new_vars = adsl_vars,
+  by_vars = exprs(STUDYID, USUBJID)
+)
 
 # Step3 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not
 # present in FACE
@@ -82,9 +94,22 @@ adface <- adface %>%
 
 adface <- adface %>%
   mutate(RFSTDTC = as.Date(RFSTDTC)) %>%
-  derive_vars_dy(adface, reference_date = RFSTDTC, source_vars = exprs(ADT))
+  derive_vars_dy(reference_date = RFSTDTC, source_vars = exprs(ADT))
 
-# Step5 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT,
+# Step5 - Creating APERIOD variables
+period_ref <- create_period_dataset(
+  dataset = adsl,
+  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
+)
+
+adface <- derive_vars_joined(
+  adface,
+  dataset_add = period_ref,
+  by_vars = exprs(STUDYID, USUBJID),
+  filter_join = ADT >= APERSDT & ADT <= APEREDT
+)
+
+# Step6 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT,
 # AVISITN,ATPT,ATPTN)
 
 adface <- adface %>%
@@ -96,7 +121,7 @@ adface <- adface %>%
     ATPTN = FATPTNUM
   )
 
-# Step6 - Creating severity records from Diameter for Redness,Swelling,etc
+# Step7 - Creating severity records from Diameter for Redness,Swelling,etc
 
 adface <- derive_param_diam_to_sev(
   dataset = adface,
@@ -111,7 +136,7 @@ adface <- derive_param_diam_to_sev(
 )
 
 
-# Step7 - Deriving Maximum Severity for Local and Systemic events
+# Step8 - Deriving Maximum Severity for Local and Systemic events
 
 adface <- derive_param_maxsev(
   dataset = adface,
@@ -122,7 +147,7 @@ adface <- derive_param_maxsev(
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 )
 
-# Step8 - Deriving Maximum Diameter for Administrative site reactions
+# Step9 - Deriving Maximum Diameter for Administrative site reactions
 
 adface <- derive_param_maxdiam(
   dataset = adface,
@@ -132,7 +157,7 @@ adface <- derive_param_maxdiam(
   testcd_maxdiam = "MAXDIAM"
 )
 
-# Step9 - Deriving Maximum Temperature
+# Step10 - Deriving Maximum Temperature
 
 adface <- derive_param_maxtemp(
   dataset = adface,
@@ -142,7 +167,7 @@ adface <- derive_param_maxtemp(
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
 )
 
-# Step 10 - Assigning PARAM, PARAMN, PARAMCD, PARCAT1 and PARCAT2 by Lookup table
+# Step 11 - Assigning PARAM, PARAMN, PARAMCD, PARCAT1 and PARCAT2 by Lookup table
 
 library(tibble)
 lookup_dataset <- tribble(
@@ -166,7 +191,7 @@ adface <- derive_vars_params(
   merge_vars = exprs(PARAMCD, PARAMN)
 )
 
-# Step11 - Maximum flag ANL01FL and ANL02FL
+# Step12 - Maximum flag ANL01FL and ANL02FL
 
 adface <- derive_vars_max_flag(
   dataset = adface,
@@ -174,7 +199,7 @@ adface <- derive_vars_max_flag(
   flag2 = "ANL02FL"
 )
 
-# Step12 - Creating flag variables for occurred events
+# Step13 - Creating flag variables for occurred events
 
 adface <- derive_vars_event_flag(
   dataset = adface,
@@ -182,19 +207,6 @@ adface <- derive_vars_event_flag(
   aval_cutoff = 2.5,
   new_var1 = EVENTFL,
   new_var2 = EVENTDFL
-)
-
-# Creating APERIOD variables
-period_ref <- create_period_dataset(
-  dataset = adsl,
-  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
-)
-
-adface <- derive_vars_joined(
-  adface,
-  dataset_add = period_ref,
-  by_vars = exprs(STUDYID, USUBJID),
-  filter_join = ADT >= APERSDT & ADT <= APEREDT
 )
 
 # Basic filter for ADSL
@@ -205,7 +217,7 @@ adsl <- adsl %>%
 # Merging ADFACE with ADSL
 adface <- derive_vars_merged(
   dataset = adface,
-  dataset_add = adsl,
+  dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
   by_vars = exprs(STUDYID, USUBJID)
 )
 
