@@ -7,6 +7,8 @@
 derive_vars_merged_vaccine(
   dataset,
   dataset_ex,
+  by_vars_sys,
+  by_vars_adms,
   dataset_supp = NULL,
   dataset_suppex = NULL,
   ex_vars
@@ -21,6 +23,14 @@ The variables specified by the \code{by_vars} argument inside the
 \item{dataset_ex}{EX dataset to merge with the input dataset.
 
 The variables specified by the \code{ex_vars} argument are expected.}
+
+\item{by_vars_sys}{Grouping variables for systemic events.
+
+\emph{Default: exprs(USUBJID, FATPTREF)}}
+
+\item{by_vars_adms}{Grouping variables for administration site events.
+
+\emph{Default: exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR)}}
 
 \item{dataset_supp}{Supplementary input dataset
 By default \code{dataset_supp} will be NULL,user has to provide
@@ -47,7 +57,8 @@ The input dataset will be merged with Ex dataset for "ADMINISTRATION SITE" and
 "SYSTEMIC" categories separately and these datasets will be binded together as
 the final output dataset.
 
-The grouping variables are defaulted within the function itself.
+This function is intended to add only \code{EX} variables to the input dataset, an user
+is expected to handle if any pre-processing is required.
 
 Only the variables passed to the \code{ex_vars} will be present in the output dataset
 
@@ -56,31 +67,33 @@ then this function will not merge ex dataset and will return only the input
 dataset merged with its supplementary dataset.
 }
 \examples{
+
+library(tibble)
+library(admiral)
+library(dplyr)
+library(rlang)
+
 derive_vars_merged_vaccine(
-  dataset = face,
-  dataset_ex = ex,
+  dataset = vx_face,
+  dataset_ex = vx_ex,
   dataset_supp = NULL,
   dataset_suppex = NULL,
-  ex_vars = exprs(EXTRT, EXDOSE, EXDOSEU, EXSTDTC, EXENDTC)
+  by_vars_sys = exprs(USUBJID, FATPTREF),
+  by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
+  ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
 )
 
 }
 \seealso{
-ADXX Functions that returns variable appended to dataset: 
-\code{\link{derive_param_diam_to_sev}()},
-\code{\link{derive_param_fever_occur}()},
-\code{\link{derive_param_maxdiam}()},
-\code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()},
+Other der_var: 
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{hello_admiral}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Vikram S
 }
-\concept{der_adxx}
-\keyword{der_adxx}
+\concept{der_var}
+\keyword{der_var}

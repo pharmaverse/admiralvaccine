@@ -4,7 +4,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"is"
+"vx_is"
 
 #' Supplemental IS Dataset
 #'
@@ -12,15 +12,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"suppis"
-
-#' Supplemental AE Dataset
-#'
-#' A SDTM AE dataset
-#'
-#' @keywords dataset
-#' @family dataset
-"ae"
+"vx_suppis"
 
 #' CE Dataset
 #'
@@ -28,7 +20,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"ce"
+"vx_ce"
 
 #' DM Dataset
 #'
@@ -36,7 +28,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"dm"
+"vx_dm"
 
 #' EX Dataset
 #'
@@ -44,7 +36,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"ex"
+"vx_ex"
 
 #' FACE Dataset
 #'
@@ -52,7 +44,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"face"
+"vx_face"
 
 #' VS Dataset
 #'
@@ -60,26 +52,7 @@
 #'
 #' @keywords dataset
 #' @family dataset
-"vs"
-
-#' Subject Level Analysis Dataset
-#'
-#' An example subject level analysis dataset
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' Template adsl dataset associated with the `dm` and `ex` datasets
-#'
-"admiralvaccine_adsl"
-
-#' Subject Level Analysis Dataset
-#'
-#' A subject level analysis dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#'
-"adsl"
+"vx_vs"
 
 #' Vx - Subject Level Analysis Dataset
 #'
@@ -87,5 +60,36 @@
 #'
 #' @keywords dataset
 #' @family dataset
-#'
 "vx_adsl"
+
+#' Supplementary CE Dataset
+#'
+#' A SDTM Supplementary CE dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppce"
+
+#' Supplementary DM Dataset
+#'
+#' A SDTM Supplementary DM dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppdm"
+
+#' Supplementary EX Dataset
+#'
+#' A SDTM Supplementary EX dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppex"
+
+#' Supplementary FACE Dataset
+#'
+#' A SDTM Supplementary FACE dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppface"

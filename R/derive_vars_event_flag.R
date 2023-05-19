@@ -54,9 +54,9 @@
 #'
 #' @export
 #'
-#' @keywords der_adxx
+#' @keywords der_var
 #'
-#' @family der_adxx
+#' @family der_var
 #'
 #' @examples
 #' library(tibble)
@@ -103,34 +103,46 @@ derive_vars_event_flag <- function(dataset,
   new_var2 <- assert_symbol(enexpr(new_var2), optional = TRUE)
   assert_numeric_vector(aval_cutoff)
 
+  dataset <- convert_na_to_blanks(dataset)
 
   if (!is.null(new_var1) && is.null(new_var2)) {
     # Derive only `new_var1`
     data_flag <- dataset %>%
       group_by(!!!by_vars) %>%
-      mutate(!!new_var1 := if_else(any(!(is.na(AVAL)) &
-        AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N"))
+      mutate(
+        !!new_var1 := if_else(any(!(is.na(AVAL)) &
+          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N")
+      )
   } else if (is.null(new_var1) && !is.null(new_var2)) {
     # Derive only `new_var2`
     data_flag <- dataset %>%
       mutate(
-        !!new_var2 := ifelse(!(is.na(AVAL)) &
-          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE"), "Y", "N"),
-        !!new_var2 := ifelse(DTYPE == "MAXIMUM", NA_character_, !!new_var2)
+        !!new_var2 := if_else(!(is.na(AVAL)) &
+          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE"), "Y", "N")
       )
   } else if (!is.null(new_var1) && !is.null(new_var2)) {
     # Derive both `new_var1` and `new_var2`
     data_flag <- dataset %>%
       group_by(!!!by_vars) %>%
-      mutate(!!new_var1 := ifelse(any(!(is.na(AVAL)) &
-        AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N")) %>%
+      mutate(
+        !!new_var1 := ifelse(any(!(is.na(AVAL)) &
+          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N")
+      ) %>%
       ungroup() %>%
       mutate(
-        !!new_var2 := ifelse(DTYPE != "MAXIMUM" & !(is.na(AVAL)) &
-          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE"), "Y", "N"),
-        !!new_var2 := ifelse(DTYPE == "MAXIMUM", NA_character_, !!new_var2)
+        !!new_var2 := ifelse(!(is.na(AVAL)) &
+          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE"), "Y", "N")
       )
   } else {
     data_flag <- dataset
   }
+
+  # Flag maximum records in `DTYPE` as `NA` for new_var2
+  if ("MAXIMUM" %in% data_flag$DTYPE) {
+    data_flag <- data_flag %>%
+      mutate(
+        !!new_var2 := if_else(DTYPE == "MAXIMUM", NA_character_, !!new_var2)
+      )
+  }
+  data_flag <- convert_blanks_to_na(data_flag)
 }

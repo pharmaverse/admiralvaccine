@@ -1,0 +1,519 @@
+---
+title: "Creating ADIS"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating ADIS}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(admiral)
+link <- function(text, url) {
+  return(
+    paste0(
+      "[", text, "]",
+      "(", url, ")"
+    )
+  )
+}
+dyn_link <- function(text,
+                     base_url,
+                     relative_url = "",
+                     # Change to TRUE when admiral adopts multiversion docs
+                     is_multiversion = FALSE,
+                     multiversion_default_ref = "main") {
+  url <- paste(base_url, relative_url, sep = "/")
+  if (is_multiversion) {
+    url <- paste(
+      base_url,
+      Sys.getenv("BRANCH_NAME", multiversion_default_ref),
+      relative_url,
+      sep = "/"
+    )
+  }
+  return(link(text, url))
+}
+# Other variables
+admiral_homepage <- "https://pharmaverse.github.io/admiral"
+library(admiraldev)
+```
+
+# Introduction
+
+This article describes how to create an `ADIS` ADaM domain.
+The parameters derived reflects common vaccine immunogenicity
+endpoints.
+
+Examples are currently presented and tested using `ADSL` (ADaM) and
+`is` and `suppis` (SDTM) inputs.
+
+**Note**: *All examples assume CDISC SDTM and/or ADaM format as input
+unless otherwise specified.*
+
+  # Programming Workflow
+
+  - [Read in Data](#readdata)
+  - [Combine IS with SUPPIS](#combine_supp)
+  - [Derive timing variables](#avisit)
+  - [Derive ADT and ADY variables](#adt)
+  - [Parameters derivation](#param)
+  - [Derive PARCAT1 and CUTOFFx variables](#parcat)
+  - [Derive AVAL, AVALU and DTYPE variables](#aval)
+  - [Derive BASE variables](#base)
+  - [Derive CHG and R2BASE variables](#chg)
+  - [Derive CRITx variables](#crit)
+  - [Add ADSL variables](#adsl_vars)
+  - [Derive TRTP/A variables](#trtp)
+  - [Derive PPS record level flag variable](#pps)
+
+
+## Read in Data {#readdata}
+In this first step you may read all the input data you need in order to proceed with
+ADIS development.
+In this template, `SDTM.IS`, `SDTM.SUPPIS` and `ADAM.ADSL` has been used.
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+library(metatools)
+library(dplyr)
+library(lubridate)
+library(rlang)
+library(admiralvaccine)
+
+# Load source datasets ----
+data("vx_is")
+data("vx_suppis")
+data("vx_adsl")
+
+# Convert blanks into NA
+is <- convert_blanks_to_na(vx_is)
+suppis <- convert_blanks_to_na(vx_suppis)
+adsl <- convert_blanks_to_na(vx_adsl)
+```
+
+
+
+## Combine IS with SUPPIS {#combine_supp}
+Combine `IS` with its supplemental domain `SUPPIS`.
+```{r eval=TRUE}
+is_suppis <- combine_supp(is, suppis)
+```
+
+
+## Derive timing variables {#avisit}
+Derive `AVISIT`, `AVISITN`, `ATPT`, `ATPTN` and `ATPTREF` variables.
+Please, update visit records according to your study design/Protocol.
+For the visit values, please refers to your ADAM SPECIFICATIONS.
+```{r eval=TRUE}
+is1 <- is_suppis %>%
+  mutate(
+    AVISITN = as.numeric(VISITNUM),
+    AVISIT = case_when(
+      VISITNUM == 10 ~ "Visit 1",
+      VISITNUM == 20 ~ "Visit 2",
+      VISITNUM == 30 ~ "Visit 3",
+      VISITNUM == 40 ~ "Visit 4",
+      is.na(VISITNUM) ~ NA_character_
+    ),
+    ATPTN = as.numeric(VISITNUM / 10),
+    ATPT = case_when(
+      VISITNUM == 10 ~ "Visit 1 (Day 1)",
+      VISITNUM == 20 ~ "Visit 2 (Day #)",
+      VISITNUM == 30 ~ "Visit 3 (Day #)",
+      VISITNUM == 40 ~ "Visit 4 (Day #)",
+      is.na(VISITNUM) ~ NA_character_
+    ),
+    ATPTREF = case_when(
+      VISITNUM %in% c(10, 20) ~ "FIRST TREATMENT",
+      VISITNUM %in% c(30, 40) ~ "SECOND TREATMENT",
+      is.na(VISITNUM) ~ NA_character_
+    )
+  )
+```
+
+
+## Derive ADT and ADY variables {#adt}
+For `ADT` derivation, please follow your imputation rules.
+In the example below:
+
+- when day is missing then 15 is imputed;
+
+- When both day and month are missing then 30-06 is imputed;
+
+- If input date is missing then no imputation is done;
+
+For `ADY` derivation RFSTDTC has been used in this template.
+
+If your derivation is different, please adapt.
+```{r eval=TRUE}
+# ADT derivation
+is2_adt <- derive_vars_dt(
+  dataset = is1,
+  new_vars_prefix = "A",
+  dtc = ISDTC,
+  highest_imputation = "M",
+  date_imputation = "mid",
+  flag_imputation = "none"
+)
+
+# Merge with ADSL to get RFSTDTC info in order to derive ADY
+is2_rf <- derive_var_merged_character(
+  dataset = is2_adt,
+  dataset_add = adsl,
+  by_vars = exprs(STUDYID, USUBJID),
+  new_var = RFSTDTC,
+  source_var = RFSTDTC
+) %>%
+  mutate(
+    ADT = as.Date(ADT),
+    RFSTDTC = as.Date(RFSTDTC)
+  )
+
+
+# ADY derivation
+is2_ady <- derive_vars_dy(
+  dataset = is2_rf,
+  reference_date = RFSTDTC,
+  source_vars = exprs(ADT)
+)
+```
+
+
+## Parameters derivation {#param}
+In this template, duplicated records for `PARAMCD` have been created.
+In particular, you may find 4 different parameters values:
+
+- Original values and relative log10 values;
+
+- 4fold values and relative log10 values;
+
+Please, add or remove datasets according to your study needs.
+```{r eval=TRUE}
+# Create record duplication in order to plot both original and LOG10 parameter values.
+# Add also records related to 4fold.
+# Please, keep or modify PARAM values according to your purposes.
+
+is_log <- is2_ady %>%
+  mutate(DERIVED = "LOG10")
+
+is_4fold <- is2_ady %>%
+  mutate(DERIVED = "4FOLD")
+
+is_log_4fold <- is2_ady %>%
+  mutate(DERIVED = "LOG10 4FOLD")
+
+is_derived <- bind_rows(is2_ady, is_log, is_4fold, is_log_4fold) %>%
+  arrange(STUDYID, USUBJID, VISITNUM, ISSEQ, !is.na(DERIVED)) %>%
+  mutate(DERIVED = if_else(is.na(DERIVED), "ORIG", DERIVED))
+
+
+is3 <- is_derived %>%
+  mutate(
+    # PARAMCD: for log values, concatenation of L and ISTESTCD.
+    PARAMCD = case_when(
+      DERIVED == "ORIG" ~ ISTESTCD,
+      DERIVED == "LOG10" ~ paste0(ISTESTCD, "L"),
+      DERIVED == "4FOLD" ~ paste0(ISTESTCD, "F"),
+      # As per CDISC rule, PARAMCD should be 8 charcaters long. Please, adapt if needed
+      DERIVED == "LOG10 4FOLD" ~ paste0(substr(ISTESTCD, 1, 6), "LF")
+    )
+  )
+
+
+# Update param_lookup dataset with your PARAM values.
+param_lookup <- tribble(
+  ~PARAMCD, ~PARAM, ~PARAMN,
+  "J0033VN", "J0033VN Antibody", 1,
+  "I0019NT", "I0019NT Antibody", 2,
+  "M0019LN", "M0019LN Antibody", 3,
+  "R0003MA", "R0003MA Antibody", 4,
+  "J0033VNL", "LOG10 (J0033VN Antibody)", 11,
+  "I0019NTL", "LOG10 (I0019NT Antibody)", 12,
+  "M0019LNL", "LOG10 (M0019LN Antibody)", 13,
+  "R0003MAL", "LOG10 (R0003MA Antibody)", 14,
+  "J0033VNF", "4FOLD (J0033VN Antibody)", 21,
+  "I0019NTF", "4FOLD (I0019NT Antibody)", 22,
+  "M0019LNF", "4FOLD (M0019LN Antibody)", 23,
+  "R0003MAF", "4FOLD (R0003MA Antibody)", 24,
+  "J0033VLF", "LOG10 4FOLD (J0033VN Antibody)", 31,
+  "I0019NLF", "LOG10 4FOLD (I0019NT Antibody)", 32,
+  "M0019LLF", "LOG10 4FOLD (M0019LN Antibody)", 33,
+  "R0003MLF", "LOG10 4FOLD (R0003MA Antibody)", 34
+)
+
+is3_1 <- derive_vars_merged_lookup(
+  dataset = is3,
+  dataset_add = param_lookup,
+  new_vars = exprs(PARAM),
+  by_vars = exprs(PARAMCD)
+)
+
+is4 <- derive_vars_merged_lookup(
+  dataset = is3_1,
+  dataset_add = param_lookup,
+  new_vars = exprs(PARAMN),
+  by_vars = exprs(PARAM)
+)
+```
+
+
+## Derive PARCAT1 and CUTOFFx variables {#parcat}
+Derive `PARCAT1` and `CUTOFF`x variables.
+
+Fake values has been put for CUTOFF values. Please, adapt base on your objectives.
+```{r eval=TRUE}
+is5 <- is4 %>%
+  mutate(
+    PARCAT1 = ISCAT,
+    # Please, define your additional cutoff values. Delete if not needed.
+    CUTOFF02 = 4,
+    CUTOFF03 = 8
+  )
+```
+
+
+## Derive AVAL, AVALU and DTYPE variables {#aval}
+This is the core of ADIS template.
+
+For ORIGINAL (and relative log10 values) the following rule has been followed for `AVAL` derivation:
+
+- when the lab result (ISSTRESN) is below the Lower Limit Of Quantitation, then set ISSTRESN/2;
+
+- when the lab result (ISSTRESN) falls in the Lower Limit Of Quantitation and Upper Limit Of Quantitation range, then set ISSTRESN;
+
+- when the lab result (ISSTRESN) is greater then the Upper Limit Of Quantitation, then set ISSTRESN;
+
+For 4fold (and relative log10 values) the rule is pretty the same, except when the LAB result (ISSTRESN) is lower than the Lower Limit Of Quantitation. In that case put ISSTRESN instead of ISSTRESN/2.
+
+With log10 transformations, simply follow the before rules and apply log10 function.
+
+Please, update this algorithm according to your Protocol/SAP.
+
+`AVALU` is set equal to `IS.ISSTRESU` when ISSTRESN and its character value (ISSTRESC) are equal. Blank otherwise.
+
+Later you can find `SERCAT1/N` and `DTYPE` derivations.
+```{r eval=TRUE}
+is5_aval <- is5 %>%
+  mutate(
+    AVAL = case_when(
+      # ISORRES values without > or <
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      ~ ISSTRESN,
+      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      ~ log10(ISSTRESN),
+      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ULLOQ
+      ~ ISSTRESN,
+      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ ULLOQ,
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ),
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
+        ISSTRESN < ULLOQ ~ log10(ISSTRESN),
+      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ULLOQ ~ log10(ULLOQ),
+
+      # ISORRES values with > or <
+      DERIVED == "ORIG" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
+      DERIVED == "ORIG" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ULLOQ,
+      DERIVED == "LOG10" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
+      DERIVED == "LOG10" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ULLOQ),
+      DERIVED == "4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ,
+      DERIVED == "4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ULLOQ,
+      DERIVED == "LOG10 4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ),
+      DERIVED == "LOG10 4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ULLOQ)
+    ),
+
+    # AVALU derivation (please delete if not needed for your study)
+    AVALU = if_else(as.numeric(ISSTRESC) == ISSTRESN, ISORRESU, as.character(NA)),
+
+    # SERCAT1 derivation
+    SERCAT1 = case_when(
+      ISBLFL == "Y" & !is.na(AVAL) & !is.na(ISLLOQ) & AVAL < ISLLOQ ~ "S-",
+      ISBLFL == "Y" & !is.na(AVAL) & !is.na(ISLLOQ) & AVAL >= ISLLOQ ~ "S+",
+      ISBLFL == "Y" & (is.na(AVAL) | is.na(ISLLOQ)) ~ "UNKNOWN"
+    )
+  )
+
+
+# Update param_lookup2 dataset with your SERCAT1N values.
+param_lookup2 <- tribble(
+  ~SERCAT1, ~SERCAT1N,
+  "S-", 1,
+  "S+", 2,
+  "UNKNOWN", 3,
+  as.character(NA), as.numeric(NA)
+)
+
+is5_sercat1n <- derive_vars_merged_lookup(
+  dataset = is5_aval,
+  dataset_add = param_lookup2,
+  new_vars = exprs(SERCAT1N),
+  by_vars = exprs(SERCAT1)
+)
+
+
+# DTYPE derivation.
+# Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
+# and/or ULOQ is present in your study
+is6 <- is5_sercat1n %>%
+  mutate(DTYPE = if_else(DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) & ISSTRESN < ISLLOQ,
+    "HALFLLQ",
+    as.character(NA)
+  ))
+```
+
+
+## Derive BASE variables {#base}
+Derive Baseline values for each Subject/Visit and relative flag, `ABLFL.
+
+In a later stage, derive `BASECAT` variable, which represents the base category.
+Update accordingly.
+```{r eval=TRUE}
+# ABLFL derivation
+is6_ablfl <- derive_var_relative_flag(
+  dataset = is6,
+  by_vars = exprs(STUDYID, USUBJID, PARAMN),
+  order = exprs(STUDYID, USUBJID, VISITNUM, PARAMN),
+  new_var = ABLFL,
+  condition = VISITNUM == 10,
+  mode = "first",
+  selection = "before",
+  inclusive = TRUE
+)
+
+# BASE derivation
+is6_base <- derive_var_base(
+  dataset = is6_ablfl,
+  by_vars = exprs(STUDYID, USUBJID, PARAMN),
+  source_var = AVAL,
+  new_var = BASE,
+  filter = ABLFL == "Y"
+)
+
+# BASETYPE derivation
+is6_basetype <- derive_var_basetype(
+  dataset = is6_base,
+  basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
+)
+
+
+# BASECAT derivation
+base_data <- is6_basetype %>%
+  select(STUDYID, USUBJID, VISITNUM, PARAMCD, BASE) %>%
+  distinct()
+
+basecat1 <- function(base) {
+  case_when(
+    !grepl("L", base_data$PARAMCD) & base < 10 ~ "Titer value < 1:10",
+    !grepl("L", base_data$PARAMCD) & base >= 10 ~ "Titer value >= 1:10",
+    grepl("L", base_data$PARAMCD) & base < 10 ~ "Titer value < 1:10",
+    grepl("L", base_data$PARAMCD) & base >= 10 ~ "Titer value >= 1:10"
+  )
+}
+
+is7 <- derive_var_merged_cat(
+  dataset = is6_basetype,
+  dataset_add = base_data,
+  by_vars = exprs(STUDYID, USUBJID, PARAMCD, VISITNUM),
+  new_var = BASECAT1,
+  source_var = BASE,
+  cat_fun = basecat1
+)
+```
+
+
+## Derive CHG and R2BASE variables {#chg}
+Derive change from baseline values.
+
+Derive ratio to base values.
+```{r eval=TRUE}
+is8 <- is7 %>%
+  derive_var_chg() %>%
+  derive_var_analysis_ratio(numer_var = AVAL, denom_var = BASE)
+```
+
+
+
+## Derive CRITx variables {#crit}
+Derive Criteria Evaluation Analysis Flags.
+
+The function selects a subset of rows from the input dataset and apply to them a
+criterion. If this criterion is met then `CRIT1FL` (or the name you specified in the first argument) is equal to "Y". "N" otherwise.
+
+The function returns a relative numeric `CRIT1FN` variable (1 or 0 if the criterion is met, respectively) and a label `CRIT1` variable (with the text specified in label_var argument).
+```{r eval=TRUE}
+is9 <- derive_vars_crit(
+  dataset = is8,
+  new_var = "CRIT1",
+  label_var = "Titer >= ISLLOQ",
+  condition = !is.na(AVAL) & !is.na(ISLLOQ),
+  criterion = AVAL >= ISLLOQ
+)
+```
+
+
+## Add ADSL variables {#adsl_vars}
+Attach all `ADAM.ADSL` variables to the is build-in dataset.
+
+If you may need to keep only a subset of them, please update accordingly.
+```{r eval=TRUE}
+# Get list of ADSL variables not to be added to ADIS
+vx_adsl_vars <- exprs(RFSTDTC)
+
+is10 <- derive_vars_merged(
+  dataset = is9,
+  dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
+  by_vars = exprs(STUDYID, USUBJID)
+)
+```
+
+
+## Derive TRTP/A variables {#trtp}
+```{r eval=TRUE}
+# Get list of ADSL variables not to be added to ADIS
+is11 <- is10 %>%
+  mutate(TRTP = TRT01P, TRTA = TRT01A)
+```
+
+
+
+## Derive PPS record level flag variable {#pps}
+This is a record level flag which identifies which rows are included/excluded for the PPS related objectives.
+
+This step could change according to your study needs.
+```{r eval=TRUE}
+is12a <- is11 %>%
+  filter(VISITNUM == 10) %>%
+  derive_var_merged_exist_flag(
+    dataset_add = vx_adsl,
+    by_vars = exprs(STUDYID, USUBJID),
+    new_var = PPSRFL,
+    condition = PPROTFL == "Y",
+    true_value = "Y"
+  )
+
+is12b <- is11 %>%
+  filter(VISITNUM == 30) %>%
+  derive_var_merged_exist_flag(
+    dataset_add = vx_adsl,
+    by_vars = exprs(STUDYID, USUBJID),
+    new_var = PPSRFL,
+    condition = PPROTFL == "Y",
+    true_value = "Y"
+  )
+
+is12 <- bind_rows(is12a, is12b)
+```
+
+
+NOTE: All these packages are in the experimental phase, but the vision is to
+have them associated with an End to End pipeline under the umbrella of the
+[pharmaverse](https://github.com/pharmaverse). An example of applying metadata 
+and perform associated checks can be found at the [pharmaverse E2E example](https://examples.pharmaverse.org/data/adsl/).

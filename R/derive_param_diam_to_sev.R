@@ -20,7 +20,7 @@
 #' @param filter_diam Diameter record filter
 #'
 #' *Default: "DIAMETER"*
-#' *Permitted Value*: A character scalar.
+#' *Permitted Value*: A character vector or scalar.
 #'
 #' Helps to filter the diameter records to derive the severity records by
 #' passing the `FATESTCD` value for diameter  which is corresponding to the
@@ -142,8 +142,8 @@
 #' )
 #'
 #' @export
-#' @keywords der_adxx
-#' @family der_adxx
+#' @keywords der_rec
+#' @family der_rec
 #'
 derive_param_diam_to_sev <- function(dataset = NULL,
                                      filter_diam = "DIAMETER",
@@ -165,50 +165,54 @@ derive_param_diam_to_sev <- function(dataset = NULL,
   )
 
   # Checking & Removing the records which has severity records for the FAOBJ
+
   diam <- dataset %>% filter(FAOBJ %in% filter_faobj)
   if (testcd_sev %in% diam$FATESTCD) {
     fil_rec <- dataset %>% filter(FAOBJ == filter_faobj & FATESTCD != testcd_sev)
   } else {
     fil_rec <- dataset
   }
-
   # Replacing FATESTCD and FATEST for Diameter with Severity
-  if (c(filter_diam) %in% diam$FATESTCD) {
-    sev <- fil_rec %>%
-      filter(FAOBJ %in% filter_faobj & FATESTCD %in% filter_diam) %>%
-      mutate(
-        FATESTCD = testcd_sev,
-        FATEST = test_sev,
-        DTYPE = "DERIVED",
-        FASEQ = NA_integer_,
-        AVALC = if_else(
-          none[1] <= AVAL & AVAL <= none[2],
-          "NONE",
-          if_else(
-            mild[1] < AVAL & AVAL <= mild[2],
-            "MILD",
+  ds <- function(filter_diam) {
+    if (c(filter_diam) %in% diam$FATESTCD) {
+      sev <- fil_rec %>%
+        filter(FAOBJ %in% filter_faobj & FATESTCD %in% filter_diam) %>%
+        mutate(
+          FATESTCD = testcd_sev,
+          FATEST = test_sev,
+          DTYPE = "DERIVED",
+          FASEQ = NA_integer_,
+          AVALC = if_else(
+            none[1] <= AVAL & AVAL <= none[2],
+            "NONE",
             if_else(
-              mod[1] < AVAL & AVAL <= mod[2],
-              "MODERATE",
-              if_else(sev[1] < AVAL, "SEVERE", AVALC)
+              mild[1] < AVAL & AVAL <= mild[2],
+              "MILD",
+              if_else(
+                mod[1] < AVAL & AVAL <= mod[2],
+                "MODERATE",
+                if_else(sev[1] < AVAL, "SEVERE", AVALC)
+              )
             )
-          )
-        ),
-        # Deriving AVAL
-        AVAL = case_when(
-          AVALC == "NONE" ~ 0,
-          AVALC == "MILD" ~ 1,
-          AVALC == "MODERATE" ~ 2,
-          AVALC == "SEVERE" ~ 3
-        ),
-        AVAL = as.numeric(AVAL)
-      )
-    # binding with Input data set
-    finalsev <- bind_rows(sev, fil_rec)
-    return(data.frame(finalsev))
-  } else {
-    stop(
-      paste0(filter_diam, " ", "doesn't exist in the filtered record")
-    )
+          ),
+          # Deriving AVAL
+          AVAL = case_when(
+            AVALC == "NONE" ~ 0,
+            AVALC == "MILD" ~ 1,
+            AVALC == "MODERATE" ~ 2,
+            AVALC == "SEVERE" ~ 3
+          ),
+          AVAL = as.numeric(AVAL)
+        )
+      # binding with Input data set
+
+      return(sev)
+    } else {
+      warning(filter_diam, " ", "doesn't exist in the filtered record")
+      return(NULL)
+    }
   }
+  final <- lapply(filter_diam, ds)
+  df <- do.call("bind_rows", final) %>%
+    bind_rows(fil_rec)
 }

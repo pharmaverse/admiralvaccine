@@ -2,12 +2,13 @@
 #
 # Label: Subject Level Analysis Dataset for Vaccine
 #
-# Input: dm, ex,
+# Input: dm, ex
 library(admiral)
 library(admiral.test) # Contains example datasets from the CDISC pilot project
 library(dplyr)
 library(lubridate)
 library(stringr)
+library(tidyr)
 library(admiraldev)
 library(admiralvaccine)
 # Load source datasets
@@ -16,8 +17,11 @@ library(admiralvaccine)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-data("dm")
-data("ex")
+data("vx_dm")
+data("vx_ex")
+
+dm <- vx_dm
+ex <- vx_ex
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -25,7 +29,7 @@ data("ex")
 # https://pharmaverse.github.io/admiral/cran-release/articles/admiral.html#handling-of-missing-values # nolint
 
 
-dm <- convert_blanks_to_na(dm) %>% head(1)
+dm <- convert_blanks_to_na(dm)
 ex <- convert_blanks_to_na(ex)
 
 # User defined functions ----
@@ -34,6 +38,7 @@ ex <- convert_blanks_to_na(ex)
 #  operates on vectors, which can be used in `mutate`.
 
 # Grouping
+
 format_racegr1 <- function(x) {
   case_when(
     x == "WHITE" ~ "White",
@@ -59,26 +64,9 @@ format_region1 <- function(x) {
   )
 }
 
-format_lddthgr1 <- function(x) {
-  case_when(
-    x <= 30 ~ "<= 30",
-    x > 30 ~ "> 30",
-    TRUE ~ NA_character_
-  )
-}
-
-# EOSSTT mapping
-format_eosstt <- function(x) {
-  case_when(
-    x %in% c("COMPLETED") ~ "COMPLETED",
-    x %in% c("SCREEN FAILURE") ~ NA_character_,
-    !is.na(x) ~ "DISCONTINUED",
-    TRUE ~ "ONGOING"
-  )
-}
-
 # Derivations ----
 # impute start and end time of exposure to first and last respectively, do not impute date
+
 ex_ext <- ex %>%
   derive_vars_dtm(
     dtc = EXSTDTC,
@@ -86,15 +74,19 @@ ex_ext <- ex %>%
   ) %>%
   derive_vars_dtm(
     dtc = EXENDTC,
-    new_vars_prefix = "EXEN",
-    time_imputation = "last"
+    new_vars_prefix = "EXEN"
   )
 
 adsl <- dm %>%
   ## derive treatment variables (TRT01P, TRT01A) ----
   # See also the "Visit and Period Variables" vignette
   # (https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html#treatment_adsl)
-  mutate(TRT01P = ARM, TRT01A = ACTARM) %>%
+  mutate(
+    TRT01P = substring(ARM, 1, 9),
+    TRT02P = substring(ARM, 11, 100),
+    TRT01A = substring(ARM, 1, 9),
+    TRT02A = substring(ARM, 11, 100)
+  ) %>%
   ## derive treatment start date (TRTSDTM) ----
   derive_vars_merged(
     dataset_add = ex_ext,
@@ -102,7 +94,7 @@ adsl <- dm %>%
       (EXDOSE == 0 &
         str_detect(EXTRT, "VACCINE"))) &
       !is.na(EXSTDTM),
-    new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
+    new_vars = exprs(TRTSDTM = EXSTDTM),
     order = exprs(EXSTDTM, EXSEQ),
     mode = "first",
     by_vars = exprs(STUDYID, USUBJID)
@@ -113,7 +105,7 @@ adsl <- dm %>%
     filter_add = (EXDOSE > 0 |
       (EXDOSE == 0 &
         str_detect(EXTRT, "VACCINE"))) & !is.na(EXENDTM),
-    new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
+    new_vars = exprs(TRTEDTM = EXENDTM),
     order = exprs(EXENDTM, EXSEQ),
     mode = "last",
     by_vars = exprs(STUDYID, USUBJID)
@@ -129,8 +121,12 @@ adsl <- derive_var_merged_exist_flag(
   dataset_add = ex,
   by_vars = exprs(STUDYID, USUBJID),
   new_var = SAFFL,
-  condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "PLACEBO")))
+  condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "VACCINE")))
 ) %>%
+  ## creating PPROTFL variable
+  mutate(
+    PPROTFL = "Y"
+  ) %>%
   ## Groupings and others variables
   mutate(
     RACEGR1 = format_racegr1(RACE),
@@ -147,8 +143,24 @@ adsl <- derive_vars_vaxdt(
   by_vars = exprs(USUBJID, VISITNUM),
   order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
 )
-
+class(adsl$VAX01DT)
+# Creating period variables (Study Specific)
+if ("VAX02DT" %in% names(adsl)) {
+  adsl <- adsl %>%
+    mutate(
+      AP01SDT = VAX01DT,
+      AP01EDT = if_else(!is.na(VAX02DT), VAX02DT - 1, as.Date(RFPENDTC)),
+      AP02SDT = if_else(!is.na(VAX02DT), VAX02DT, NA_Date_),
+      AP02EDT = if_else(!is.na(AP02SDT), as.Date(RFPENDTC), NA_Date_)
+    )
+} else {
+  adsl <- adsl %>%
+    mutate(
+      AP01SDT = VAX01DT,
+      AP01EDT = RFPENDTC
+    )
+}
 
 # Save output
 dir <- tempdir()
-save(adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")
+save(adsl, file = file.path(dir, "vx_adsl.rda"), compress = "bzip2")

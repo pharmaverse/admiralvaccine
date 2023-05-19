@@ -1,13 +1,8 @@
-library(tibble)
-library(dplyr)
-library(rlang)
-library(admiral)
-library(admiraldev)
-
 # testcase-1
+
 testthat::test_that("testcase-1 : checking whether its handling the NA values
                     and cutoff value is working fine", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
     "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
@@ -59,7 +54,7 @@ testthat::test_that("testcase-1 : checking whether its handling the NA values
 
 testthat::test_that("test case - 2: Checking whether its creating the user input
                     varibales name for both flag", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
     "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
@@ -110,8 +105,9 @@ testthat::test_that("test case - 2: Checking whether its creating the user input
 })
 
 # testcase - 3
+
 testthat::test_that("test case - 3: Checking whether its creating only first flag", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
     "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
@@ -154,9 +150,10 @@ testthat::test_that("test case - 3: Checking whether its creating only first fla
   )
 })
 
+## test case - 4
 
 testthat::test_that("test case - 4: Checking whether its creating only second flag", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
     "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
@@ -198,10 +195,11 @@ testthat::test_that("test case - 4: Checking whether its creating only second fl
   )
 })
 
+## test case - 5
 
 testthat::test_that("test case - 5: Checking whether return the input dataset
                     when user pass null in both flags", {
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
     "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",

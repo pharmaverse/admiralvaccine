@@ -4,7 +4,7 @@
 \alias{derive_vars_params}
 \title{Assigning Parameter variables}
 \usage{
-derive_vars_params(dataset, lookup_dataset)
+derive_vars_params(dataset, lookup_dataset, merge_vars)
 }
 \arguments{
 \item{dataset}{\itemize{
@@ -20,6 +20,10 @@ lookup file is expected to have variables \code{FATEST}, \code{PARAMCD},
 \code{FATESTCD}, \code{FAOBJ} and one entry for every unique
 \code{FATESTCD} and \code{FAOBJ}
 }}
+
+\item{merge_vars}{\itemize{
+\item List of Variables need to be merged from lookup file
+}}
 }
 \value{
 The output dataset contains all observations and variables of the
@@ -32,28 +36,40 @@ Creating \code{PARAMCD} from lookup file and assigning \code{PARAM},\code{PARAMN
 \details{
 A lookup file is required with PARAMCD values for every combination
 of \code{FATEST} & \code{FAOBJ}.
-\code{PARAMCD} values comes from lookup file.
-\code{PARAMN} is assigned with a unique number for every unique PARAM value.
-\code{PARAM} value is a combination of \code{FAOBJ} \code{FATEST} \code{FASTRESU} \code{FALOC}
-\code{FADIR} \code{FALAT}
+\code{PARAMCD} \code{PARAMN} \code{PARAMN} \code{PARCAT1} \code{PARCAT2} values can be assigned
+from lookup file.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ if `PARAMN` not assigned in lookup file then
+ `PARAMN` is assigned with a unique number for every unique PARAM value.
+ if `PARAM` value not assigned in lookup file then
+ `PARAM` value is a combination of `FAOBJ` `FATEST` `FASTRESU` `FALOC`
+ `FADIR` `FALAT`
+ if `PARCAT1` value not assigned in lookup file then
+ `PARCAT1` is assigned as FACAT
+ if `PARCAT2` value not assigned in lookup file then
+ `PARCAT2` is assigned as FASCAT
+}\if{html}{\out{</div>}}
 }
 \examples{
 
 library(tibble)
-lookup_dataset <- tribble(
-  ~FATESTCD,    ~PARAMCD,    ~FATEST,                ~FAOBJ,
-  "SEV",        "SEVREDN",   "Severity",             "Redness",
-  "DIAMETER",   "DIARE",     "Diameter",             "Redness",
-  "MAXDIAM",    "MDIRE",     "Maximum Diameter cm",  "Redness",
-  "MAXTEMP",    "MAXTEMP",   "Maximum Temperature",  "Fever",
-  "OCCUR",      "OCFEVER",   "Occurrence Indicator", "Fever",
-  "OCCUR",      "OCERYTH",   "Occurrence Indicator", "Erythema",
-  "SEV",        "SEVPAIN",   "Severity",             "Pain at Injection site",
-  "OCCUR",      "OCPAIN",    "Occurrence Indicator", "Pain at Injection site",
-  "OCCUR",      "OCSWEL",    "Occurrence Indicator", "Swelling"
+library(dplyr)
+library(rlang)
+
+lookup_dataset <- tibble::tribble(
+  ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
+  "SEV", "SEVREDN", 1, "Severity", "Redness",
+  "DIAMETER", "DIARE", 2, "Diameter", "Redness",
+  "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "Redness",
+  "MAXTEMP", "MAXTEMP", 4, "Maximum Temperature", "Fever",
+  "OCCUR", "OCFEVER", 5, "Occurrence Indicator", "Fever",
+  "OCCUR", "OCERYTH", 6, "Occurrence Indicator", "Erythema",
+  "SEV", "SEVPAIN", 7, "Severity", "Pain at Injection site",
+  "OCCUR", "OCPAIN", 8, "Occurrence Indicator", "Pain at Injection site",
+  "OCCUR", "OCSWEL", 9, "Occurrence Indicator", "Swelling"
 )
 
-input <- tribble(
+input <- tibble::tribble(
   ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT,
   "ABC101", "REACTO", "ADMIN", "SEV", "Redness", "Severity", "ARM", "LEFT",
   "ABC101", "REACTO", "ADMIN", "DIAMETER", "Redness", "Diameter", "ARM", "RIGHT",
@@ -65,28 +81,24 @@ input <- tribble(
   "ABC101", "REACTO", "ADMIN", "OCCUR", "Swelling", "Occurrence", NA, NA,
   "ABC101", "REACTO", "ADMIN", "OCCUR", "Swelling", "Occurrence", NA, NA
 )
+
 derive_vars_params(
   dataset = input,
-  lookup_dataset = lookup_dataset
+  lookup_dataset = lookup_dataset,
+  merge_vars = exprs(PARAMCD, PARAMN)
 )
 
 }
 \seealso{
-ADXX Functions that returns variable appended to dataset: 
-\code{\link{derive_param_diam_to_sev}()},
-\code{\link{derive_param_fever_occur}()},
-\code{\link{derive_param_maxdiam}()},
-\code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()},
+Other der_var: 
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{hello_admiral}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Dhivya Kanagaraj
 }
-\concept{der_adxx}
-\keyword{der_adxx}
+\concept{der_var}
+\keyword{der_var}

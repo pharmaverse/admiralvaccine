@@ -37,9 +37,10 @@ Creates vaccination date variables from ex domain.A date variable will be
 created for each vaccination taking values from the variable \code{EXSTDTC}.
 }
 \details{
-If there are multiple vaccinations for a visit per subject,only first
-observation will be filtered based on the variable order specified
-on the \code{order} argument.
+If there are multiple vaccinations for a visit per subject,warning will be
+provided and only first observation will be filtered based on the variable
+order specified on the \code{order} argument. In this case, user need to select
+the \code{by_vars} appropriately.
 
 The number of variables created will be based on the number of vaccinations
 per subject per visit.
@@ -64,23 +65,24 @@ adsl <- tribble(
   "ABC001", "MALE", 23,
   "ABC002", "FEMALE", 26,
 )
+
+derive_vars_vaxdt(
+  dataset = input,
+  dataset_adsl = adsl,
+  by_vars = exprs(USUBJID, VISITNUM),
+  order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
+)
 }
 \seealso{
-ADXX Functions that returns variable appended to dataset: 
-\code{\link{derive_param_diam_to_sev}()},
-\code{\link{derive_param_fever_occur}()},
-\code{\link{derive_param_maxdiam}()},
-\code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()},
+Other der_var: 
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_params}()},
-\code{\link{hello_admiral}()}
+\code{\link{derive_vars_params}()}
 }
 \author{
 Vikram S
 }
-\concept{der_adxx}
-\keyword{der_adxx}
+\concept{der_var}
+\keyword{der_var}

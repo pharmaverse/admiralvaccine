@@ -1,15 +1,9 @@
-# test_derive_param_maxsev
-library(rlang)
-library(dplyr)
-library(tibble)
-library(admiraldev)
-# test case 1 -------------------------------------------------------------
+## Test 1: Check whether`AVAL`is derived when AVAL is NA
 
-# testthat
 testthat::test_that("derive_param_maxsev Test 1: Check whether`AVAL`is derived
                     when AVAL is NA", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -37,7 +31,7 @@ testthat::test_that("derive_param_maxsev Test 1: Check whether`AVAL`is derived
     mutate(AVAL = format_aval(AVALC)) %>%
     arrange(USUBJID, FATESTCD, FATEST, FASCAT, FAOBJ, ATPTREF, AVAL) %>%
     group_by(USUBJID, FASCAT, FATESTCD, FATEST, FAOBJ, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     filter(FATESTCD == "SEV" & FAOBJ != "REDNESS") %>%
     mutate(DTYPE = "MAXIMUM", FATESTCD = "MAXSEV", FATEST = "Maximum severity")
 
@@ -65,12 +59,12 @@ testthat::test_that("derive_param_maxsev Test 1: Check whether`AVAL`is derived
 
 
 
-# test case 2 -------------------------------------------------------------
+## Test 2: Check whether`AVAL`is derived even though AVAL is populated
 
 testthat::test_that("derive_param_maxsev Test 2: Check whether`AVAL`is derived
                     eventhough AVAL is populated", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -96,7 +90,7 @@ testthat::test_that("derive_param_maxsev Test 2: Check whether`AVAL`is derived
     mutate(AVAL = format_aval(AVALC)) %>%
     arrange(USUBJID, FATESTCD, FATEST, FASCAT, FAOBJ, ATPTREF, AVAL) %>%
     group_by(USUBJID, FASCAT, FATESTCD, FATEST, FAOBJ, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     filter(FATESTCD == "SEV" & FAOBJ != "REDNESS") %>%
     mutate(DTYPE = "MAXIMUM", FATESTCD = "MAXSEV", FATEST = "Maximum severity")
   # expected dataset
@@ -122,12 +116,11 @@ testthat::test_that("derive_param_maxsev Test 2: Check whether`AVAL`is derived
 })
 
 
-# test case 3 -------------------------------------------------------------
+## Test 3: Checking whether the `exclude_events` argument excluding the events which is passed
 
 testthat::test_that("derive_param_maxsev Test 3: Checking whether the
 `exclude_events` argument excluding the events which is passed", {
-  # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -153,7 +146,7 @@ testthat::test_that("derive_param_maxsev Test 3: Checking whether the
     mutate(AVAL = format_aval(AVALC)) %>%
     arrange(USUBJID, FATESTCD, FATEST, FASCAT, FAOBJ, ATPTREF, AVAL) %>%
     group_by(USUBJID, FASCAT, FATESTCD, FATEST, FAOBJ, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     filter(FATESTCD == "SEV" & FAOBJ != "CHILLS") %>%
     mutate(DTYPE = "MAXIMUM", FATESTCD = "MAXSEV", FATEST = "Maximum severity")
   # expected_dataset
@@ -180,10 +173,12 @@ testthat::test_that("derive_param_maxsev Test 3: Checking whether the
   )
 })
 
-testthat::test_that("Check whether we get max sev for the SEV recoreds
+## Test 4:Check whether we get max sev for the SEV records when exclude event is null
+
+testthat::test_that("derive_param_maxsev Test 4:Check whether we get max sev for the SEV records
                     when exclude event is null", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",
@@ -209,7 +204,7 @@ testthat::test_that("Check whether we get max sev for the SEV recoreds
     mutate(AVAL = format_aval(AVALC)) %>%
     arrange(USUBJID, FATESTCD, FATEST, FASCAT, FAOBJ, ATPTREF, AVAL) %>%
     group_by(USUBJID, FASCAT, FATESTCD, FATEST, FAOBJ, ATPTREF) %>%
-    slice_tail(n = 1) %>%
+    dplyr::slice_tail(n = 1) %>%
     filter(FATESTCD == "SEV") %>%
     mutate(DTYPE = "MAXIMUM", FATESTCD = "MAXSEV", FATEST = "Maximum severity")
   # expected_dataset
@@ -236,10 +231,12 @@ testthat::test_that("Check whether we get max sev for the SEV recoreds
   )
 })
 
-testthat::test_that("Check whether its throwing error when passing invalid
-                    Category in filter_sev", {
+## Test 5:Check whether its throwing error when passing invalid Category in filter_sev
+
+testthat::test_that("derive_param_maxsev Test 5:Check whether its throwing error when
+          passing invalid Category in filter_sev", {
   # input data
-  input <- tribble(
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FASCAT,
     "XYZ1001", "REDNESS", 1, "MILD", "VACC1", "Severity", "SEV", "ADMIN-SITE",
     "XYZ1001", "REDNESS", 2, "MODERATE", "VACC1", "Severity", "SEV", "ADMIN-SITE",

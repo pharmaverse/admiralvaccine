@@ -6,6 +6,7 @@
 library(admiral)
 library(dplyr)
 library(lubridate)
+library(admiralvaccine)
 
 
 # Load source datasets ----
@@ -14,12 +15,12 @@ library(lubridate)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-data("ce")
-data("admiralvaccine_adsl")
+data("vx_ce")
+data("vx_adsl")
 
 
-adsl <- admiralvaccine_adsl
-ce <- ce
+adsl <- vx_adsl
+ce <- vx_ce
 
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
@@ -32,7 +33,7 @@ adsl <- convert_blanks_to_na(adsl)
 
 # Derivations ----
 # Get CE records
-ce01 <- ce %>%
+adce <- ce %>%
   filter(CECAT == "REACTOGENICITY")
 
 # Get list of ADSL vars required for derivations
@@ -49,7 +50,7 @@ adperiods <- create_period_dataset(
 )
 
 # Derive analysis dates/days
-ce02 <- ce01 %>%
+adce <- adce %>%
   # join adsl to ce
   derive_vars_merged(
     dataset_add = adsl,
@@ -57,38 +58,42 @@ ce02 <- ce01 %>%
     by = exprs(STUDYID, USUBJID)
   ) %>%
   ## Derive analysis start time ----
-  derive_vars_dtm(
+  ## Proposed imputations depending on situation: no needed -> highest imputation = “n”
+  ## some missing dates: highest imputation = “D”
+  derive_vars_dt(
     dtc = CESTDTC,
     new_vars_prefix = "AST",
-    highest_imputation = "M",
-    min_dates = exprs(TRTSDT)
+    highest_imputation = "n"
   ) %>%
   ## Derive analysis end time ----
-  derive_vars_dtm(
+  derive_vars_dt(
     dtc = CEENDTC,
     new_vars_prefix = "AEN",
-    highest_imputation = "M"
+    highest_imputation = "n"
   ) %>%
-  ## Derive analysis end/start date ----
-  derive_vars_dtm_to_dt(exprs(ASTDTM, AENDTM)) %>%
   ## Derive analysis start relative day and  analysis end relative day ----
   derive_vars_dy(
     reference_date = TRTSDT,
     source_vars = exprs(ASTDT, AENDT)
   )
 
-ce03 <-
+
+
+adce <-
   derive_vars_joined(
-    ce02,
+    adce,
     dataset_add = adperiods,
     by_vars = exprs(STUDYID, USUBJID),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT
   ) %>%
   mutate(
     APERSTDY = as.integer(ASTDT - APERSDT) + 1,
-    ADECOD = CEDECOD,
     AREL = CEREL
-  ) %>%
+  )
+
+
+
+adce <- adce %>%
   ## depending on collection of TOXGR or SEV in CE domain ----
   ## Analysis variant of ASEV and ASEVN ----
   mutate(
@@ -97,31 +102,26 @@ ce03 <-
       levels = c("MILD", "MODERATE", "SEVERE", "DEATH THREATENING")
     ))
   ) %>%
-  ## Analysis variant of ATOXGR and ATOXGRN ----
-  # mutate(
-  # ATOXGR = CETOXGR,
-  # ATOXGRN = as.integer(factor(ATOXGR, levels = c("0", "1", "2", "3", "4"))),
-  # )
-  # ) %>%
   ## Derive occurrence flags: first occurrence of most severe solicited AE ----
-  ## - Janssen specific ----
+  ## - Company specific ----
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
       by_vars = exprs(USUBJID, APERIOD),
-      order = exprs(desc(ASEVN), ASTDY, CEDECOD),
+      order = exprs(desc(ASEVN), ASTDY, CEDECOD, CESEQ),
       new_var = AOCC01FL,
       mode = "first"
     ),
     filter = !is.na(APERIOD) & !is.na(ASEV)
   )
 
-ce04 <-
+adce <- adce %>%
   ## Derive ASEQ ----
   derive_var_obs_number(
-    ce03,
-    by_vars = exprs(USUBJID, APERIOD),
-    order = exprs(ADECOD)
+    new_var = ASEQ,
+    by_vars = exprs(STUDYID, USUBJID),
+    order = exprs(CEDECOD, CELAT, CETPTREF, APERIOD),
+    check_type = "error"
   ) %>%
   ## Derive analysis duration (value and unit) ----
   derive_vars_duration(
@@ -135,15 +135,17 @@ ce04 <-
     trunc_out = FALSE
   )
 
+# Get list of ADSL vars, list is trial specific and needs to be adjusted when using the template
+adsl_list <- adsl %>%
+  select(STUDYID, USUBJID, TRT01A, TRT01P, AGE, AGEU, SEX, RACE, COUNTRY, ETHNIC, SITEID, SUBJID)
 
 
-# Join all ADSL with CE
-adce <- ce04 %>%
+# Join ADSL_list with CE
+adce <- adce %>%
   derive_vars_merged(
-    dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
+    dataset_add = adsl_list,
     by_vars = exprs(STUDYID, USUBJID)
-  ) %>%
-  mutate(APERSTDY = as.integer(ASTDT - APERSDT) + 1)
+  )
 
 
 # Save output ----

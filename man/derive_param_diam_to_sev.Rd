@@ -25,7 +25,7 @@ The variables \code{USUBJID}, \code{APTPTREF}, \code{FAOBJ}, \code{FASCAT},\code
 \item{filter_diam}{Diameter record filter
 
 \emph{Default: "DIAMETER"}
-\emph{Permitted Value}: A character scalar.
+\emph{Permitted Value}: A character vector or scalar.
 
 Helps to filter the diameter records to derive the severity records by
 passing the \code{FATESTCD} value for diameter  which is corresponding to the
@@ -161,18 +161,11 @@ derive_param_diam_to_sev(
 
 }
 \seealso{
-ADXX Functions that returns variable appended to dataset: 
+Other der_rec: 
 \code{\link{derive_param_fever_occur}()},
 \code{\link{derive_param_maxdiam}()},
 \code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()},
-\code{\link{derive_vars_crit}()},
-\code{\link{derive_vars_event_flag}()},
-\code{\link{derive_vars_max_flag}()},
-\code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{hello_admiral}()}
+\code{\link{derive_param_maxtemp}()}
 }
-\concept{der_adxx}
-\keyword{der_adxx}
+\concept{der_rec}
+\keyword{der_rec}
