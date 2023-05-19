@@ -19,7 +19,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
-  <a class="nav-link" href="../articles/admiralext.html">Get Started</a>
+  <a class="nav-link" href="../articles/admiralvaccine.html">Get Started</a>
 </li>
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
@@ -27,20 +27,15 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-user-guides">User Guides</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-user-guides">
-    <a class="dropdown-item" href="../articles/adxx.html">Creating ADXX</a>
+    <a class="dropdown-item" href="../articles/adsl.html">Creating ADSL</a>
+    <a class="dropdown-item" href="../articles/adis.html">Creating ADIS</a>
+    <a class="dropdown-item" href="../articles/adce.html">Creating ADCE</a>
+    <a class="dropdown-item" href="../articles/adface.html">Creating ADFACE</a>
   </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -61,15 +56,15 @@
     </div>
 
     <div class="section level2">
-      <h2 id="derivations-for-adding-variables">Derivations for Adding Variables<a class="anchor" aria-label="anchor" href="#derivations-for-adding-variables"></a></h2>
+      <h2 id="derivations-for-adding-parameters-records">Derivations for Adding Parameters/Records<a class="anchor" aria-label="anchor" href="#derivations-for-adding-parameters-records"></a></h2>
       
       
 
       
     </div><div class="section level2">
       
-      <h3 id="adxx-specific">ADXX-specific<a class="anchor" aria-label="anchor" href="#adxx-specific"></a></h3>
-      <p class="section-desc"></p><p>Derivation Functions helpful for building the ADXX dataset</p>
+      <h3 id="adface-specific">ADFACE-specific<a class="anchor" aria-label="anchor" href="#adface-specific"></a></h3>
+      <p class="section-desc"></p><p>Parameter Derivation Functions helpful for building the ADFACE datasets</p>
 
       
     </div><div id="" class="section level2">
@@ -103,7 +98,24 @@ output dataset.</dd>
           <code><a href="derive_param_maxtemp.html">derive_param_maxtemp()</a></code> 
         </dt>
         <dd>Deriving maximum temperature record</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="derivations-for-adding-variables">Derivations for Adding Variables<a class="anchor" aria-label="anchor" href="#derivations-for-adding-variables"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="functions-used-for-deriving-new-variables">Functions used for deriving new variables<a class="anchor" aria-label="anchor" href="#functions-used-for-deriving-new-variables"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="derive_vars_crit.html">derive_vars_crit()</a></code> 
         </dt>
@@ -133,93 +145,10 @@ output dataset.</dd>
           <code><a href="derive_vars_vaxdt.html">derive_vars_vaxdt()</a></code> 
         </dt>
         <dd>Adds vaccination date variables to the output dataset.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="hello_admiral.html">hello_admiral()</a></code> 
-        </dt>
-        <dd>Derive Extension Example</dd>
       </dl></div><div class="section level2">
-      <h2 id="derivations-for-adding-parameters">Derivations for Adding Parameters<a class="anchor" aria-label="anchor" href="#derivations-for-adding-parameters"></a></h2>
-      
-      
-
-      
-    </div><div class="section level2">
-      
-      <h3 id="adxx-specific-1">ADXX-specific<a class="anchor" aria-label="anchor" href="#adxx-specific-1"></a></h3>
-      <p class="section-desc"></p><p>Parameter Derivation Functions helpful for building the ADXX dataset</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      
-    </div><div class="section level2">
-      <h2 id="advanced-functions">Advanced Functions<a class="anchor" aria-label="anchor" href="#advanced-functions"></a></h2>
-      
-      
-
-      
-    </div><div class="section level2">
-      
-      <h3 id="pre-defined-source-objects">Pre-Defined Source Objects<a class="anchor" aria-label="anchor" href="#pre-defined-source-objects"></a></h3>
-      <p class="section-desc"></p><p>Source objects defined by {admiralext}</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      
-    </div><div class="section level2">
-      <h2 id="utility-functions">Utility Functions<a class="anchor" aria-label="anchor" href="#utility-functions"></a></h2>
-      
-      
-
-      
-    </div><div class="section level2">
-      
-      <h3 id="utilities-for-formatting-observations">Utilities for Formatting Observations<a class="anchor" aria-label="anchor" href="#utilities-for-formatting-observations"></a></h3>
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      
-    </div><div class="section level2">
-      
-      <h3 id="utilities-for-dataset-checking">Utilities for Dataset Checking<a class="anchor" aria-label="anchor" href="#utilities-for-dataset-checking"></a></h3>
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      
-    </div><div class="section level2">
-      
-      <h3 id="utilities-for-filtering-observations">Utilities for Filtering Observations<a class="anchor" aria-label="anchor" href="#utilities-for-filtering-observations"></a></h3>
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      
-    </div><div class="section level2">
       <h2 id="example-datasets">Example Datasets<a class="anchor" aria-label="anchor" href="#example-datasets"></a></h2>
       
-      <p class="section-desc"></p><p>You can run <code><a href="https://pharmaverse.github.io/admiral/reference/use_ad_template.html" class="external-link">admiral::use_ad_template()</a></code> to produce additional datasets</p>
+      <p class="section-desc"></p><p>You can run <code><a href="https://rdrr.io/pkg/admiral/man/use_ad_template.html" class="external-link">admiral::use_ad_template()</a></code> to produce additional datasets</p>
 
       
     </div><div id="" class="section level2">
@@ -229,59 +158,64 @@ output dataset.</dd>
 
       <dl><dt>
           
-          <code><a href="admiralvaccine_adsl.html">admiralvaccine_adsl</a></code> 
+          <code><a href="vx_adsl.html">vx_adsl</a></code> 
         </dt>
-        <dd>Subject Level Analysis Dataset</dd>
+        <dd>Vx - Subject Level Analysis Dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="adsl.html">adsl</a></code> 
-        </dt>
-        <dd>Subject Level Analysis Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="ae.html">ae</a></code> 
-        </dt>
-        <dd>Supplemental AE Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="ce.html">ce</a></code> 
+          <code><a href="vx_ce.html">vx_ce</a></code> 
         </dt>
         <dd>CE Dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="dm.html">dm</a></code> 
+          <code><a href="vx_dm.html">vx_dm</a></code> 
         </dt>
         <dd>DM Dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="ex.html">ex</a></code> 
+          <code><a href="vx_ex.html">vx_ex</a></code> 
         </dt>
         <dd>EX Dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="face.html">face</a></code> 
+          <code><a href="vx_face.html">vx_face</a></code> 
         </dt>
         <dd>FACE Dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="is.html">is</a></code> 
+          <code><a href="vx_is.html">vx_is</a></code> 
         </dt>
         <dd>IS Dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="suppis.html">suppis</a></code> 
+          <code><a href="vx_suppce.html">vx_suppce</a></code> 
+        </dt>
+        <dd>Supplementary CE Dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="vx_suppdm.html">vx_suppdm</a></code> 
+        </dt>
+        <dd>Supplementary DM Dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="vx_suppex.html">vx_suppex</a></code> 
+        </dt>
+        <dd>Supplementary EX Dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="vx_suppface.html">vx_suppface</a></code> 
+        </dt>
+        <dd>Supplementary FACE Dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="vx_suppis.html">vx_suppis</a></code> 
         </dt>
         <dd>Supplemental IS Dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="vs.html">vs</a></code> 
+          <code><a href="vx_vs.html">vx_vs</a></code> 
         </dt>
         <dd>VS Dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="vx_adsl.html">vx_adsl</a></code> 
-        </dt>
-        <dd>Vx - Subject Level Analysis Dataset</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
