@@ -60,8 +60,10 @@ unless otherwise specified.*
 -   [Read in Data](#readdata)
 -   [Pre-processing of Input dataset](#input)
 -   [Merge face with ex](#merge)
+-   [Merge required adsl variables needed for analysis](#adsl)
 -   [Derive fever records from VS domain](#fever)
 -   [Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADY`, `ADTF`, `ATMF`)](#datetime)
+-   [Derive Period Variables (e.g. `APxxSDT`, `APxxEDT`, ...)](#period)
 -   [Derive direct mapping variables](#mapping)
 -   [Derive severity records for Administration Site events](#sev)
 -   [Derive maximum severity records](#maxsev)
@@ -87,14 +89,18 @@ library(stringr)
 library(tidyr)
 library(tibble)
 data("vx_face")
+data("vx_suppface")
 data("vx_ex")
+data("vx_suppex")
 data("vx_vs")
+data("vx_adsl")
 
 face <- convert_blanks_to_na(vx_face)
 ex <- convert_blanks_to_na(vx_ex)
 vs <- convert_blanks_to_na(vx_vs)
 suppface <- convert_blanks_to_na(vx_suppface)
 suppex <- convert_blanks_to_na(vx_suppex)
+adsl <- convert_blanks_to_na(vx_adsl)
 ```
 
 ## Pre-processing of Input dataset {#input}
@@ -144,6 +150,24 @@ This call would return the input dataset with columns from `ex_vars` added if th
 
 Though the function will throw warning if subjects have multiple vaccination at same visit, this call would return the input dataset merging it with supplementary dataset.
 
+## Merge required adsl variables needed for analysis {#adsl}
+
+At this step, it may be useful to join `ADSL` to your `face` domain. Only the 
+`ADSL` variables used for derivations are selected at this step. The rest of the
+relevant `ADSL` variables would be added later.
+
+```{r eval=TRUE}
+adsl_vars <- exprs(RFSTDTC, RFENDTC)
+
+adface <- derive_vars_merged(
+  face,
+  dataset_add = adsl,
+  new_vars = adsl_vars,
+  by_vars = exprs(STUDYID, USUBJID)
+)
+```
+
+This call would return the input dataset with columns RFSTDTC,RFENDTC added.
 
 ## Derive fever records from VS domain {#fever}
 
@@ -171,7 +195,7 @@ dataset_vignette(
 This call returns the input dataset with `FEVER` records added if the input dataset does not have `FEVER` records. If the input dataset has `FEVER` records, the output dataset will be same as the input dataset.
 
 
-## Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADTF`, `ATMF`) {#datetime}
+## Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADTF`, `ATMF`, `ADY`) {#datetime}
 
 The function `derive_vars_dt()` can be used to derive `ADT`. This function allows 
 the user to impute the date as well.
@@ -194,10 +218,44 @@ adface <- adface %>%
   )
 ```
 
+Once `ADT` is derived, the function `derive_vars_dy()` can be used to derive `ADY`.
+This example assumes both `ADT` and `RFSTDTC` exist on the data frame.
+
+```{r eval=TRUE}
+adface <- adface %>%
+  mutate(RFSTDTC = as.Date(RFSTDTC)) %>%
+  derive_vars_dy(reference_date = RFSTDTC, source_vars = exprs(ADT))
+```
+
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FATPTREF, FAOBJ, ADT, ADTM)
+  display_vars = exprs(USUBJID, FATPTREF, FAOBJ, ADT, ADTM, ADY)
+)
+```
+
+## Derive Period Variables (e.g. `APxxSDT`, `APxxEDT`, ...) {#periodvars}
+
+The `{admiral}` core package has separate functions to handle period variables since these variables are study specific.
+
+See the ["Visit and Period Variables"
+vignette](visits_periods.html#periods_adsl) for more information.
+
+If the variables are not derived based on a period reference dataset, they may
+be derived at a later point of the flow. For example, phases like "Treatment
+Phase" and "Follow up" could be derived based on treatment start and end date.
+
+```{r eval=TRUE}
+period_ref <- create_period_dataset(
+  dataset = adsl,
+  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
+)
+
+adface <- derive_vars_joined(
+  adface,
+  dataset_add = period_ref,
+  by_vars = exprs(STUDYID, USUBJID),
+  filter_join = ADT >= APERSDT & ADT <= APEREDT
 )
 ```
 
@@ -442,3 +500,27 @@ dataset_vignette(
 
 This call would return the input dataset with columns EVENTFL, EVENTDFL added by default. 
 This function allows the user to change the name of the new variables created as well.
+
+## Add ADSL variables {#adsl_vars}
+
+If needed, the other `ADSL` variables can now be added.
+List of ADSL variables already merged held in vector `adsl_vars`
+
+```{r eval=TRUE}
+adsl <- adsl %>%
+  convert_blanks_to_na() %>%
+  filter(!is.na(USUBJID))
+
+adface <- derive_vars_merged(
+  dataset = adface,
+  dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
+  by_vars = exprs(STUDYID, USUBJID)
+)
+```
+
+```{r, eval=TRUE, echo=FALSE}
+dataset_vignette(
+  adface,
+  display_vars = exprs(USUBJID, TRTSDT, TRTEDT, AGE, SEX)
+)
+```
