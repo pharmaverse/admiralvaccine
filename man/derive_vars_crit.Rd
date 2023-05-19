@@ -13,7 +13,9 @@ derive_vars_crit(dataset, new_var, label_var, condition, criterion)
 The analysis criterion evaluation variable's name (i.e., CRIT1)
 This name is also used in order to create both character and numeric
 flags variables (i.e., CRIT1FL and CRIT1FN).
-Is possible to give a different name, base on needs (i.e., ANL01)}
+If the name does not contain CRIT wording, it generates a flag variable
+(ex: ANL01FL) whose logic is equals to CRIT1 variable, without generate
+additional numeric (ex: ANL01FN) and character (ANL01) variables.}
 
 \item{label_var}{Criterion value
 A text description defining the condition necessary to satisfy the presence
@@ -38,6 +40,9 @@ dataset with criterion variables
 
 Derive analysis criterion evaluation result variable, paired with character    +
 and numeric flags.                                                             +
+This function allows also the derivation of a CRIT like variable with a        +
+different name (ex: ANL01FL), without plotting additional numeric and          +
+character variables.                                                           +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 \details{
