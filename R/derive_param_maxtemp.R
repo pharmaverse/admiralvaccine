@@ -46,6 +46,9 @@
 #'
 #' @export
 #'
+#' @details
+#' If we are creating the fever occurrence records from VS, we can use `derive_param_fever_occur` function. So we will have VSSTRESN variable in your output. Then you can use this function to derive the maximum temperature. Otherwise user will get the input as the output.
+#'
 #' @family der_rec
 #' @keywords der_rec
 #'
@@ -99,13 +102,15 @@ derive_param_maxtemp <- function(dataset = NULL,
   # assertion
 
   assert_data_frame(dataset, required_vars = exprs(
-    USUBJID, FAOBJ, VSSTRESN,
+    USUBJID, FAOBJ,
     FATEST, FATESTCD, ATPTREF
   ))
   assert_character_scalar(testcd_maxtemp, optional = FALSE)
   assert_character_scalar(test_maxtemp, optional = FALSE)
   assert_character_scalar(filter_faobj, optional = FALSE)
   # retaining variables for summary record
+
+  if("VSSTRESN" %in% names(dataset)){
 
   retain_vars <- c(
     "USUBJID", "FAOBJ", "ATPTREF", "FALNKGRP", "STUDYID", "SRCDOM",
@@ -138,5 +143,10 @@ derive_param_maxtemp <- function(dataset = NULL,
     stop(
       paste0(filter_faobj, " ", "doesn't exist in the FAOBJ variable.")
     )
+  }
+
+  }else{
+    dataset <- dataset
+    warning("VSSTRESN doesn't exist in the input dataset")
   }
 }
