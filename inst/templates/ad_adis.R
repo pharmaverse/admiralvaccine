@@ -233,14 +233,27 @@ adis <- derive_vars_merged_lookup(
 
 # DTYPE derivation.
 # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
-adis <- adis %>%
-  mutate(DTYPE = case_when(
-    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
-      ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
-    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
-      ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
-    TRUE ~ NA_character_
-  ))
+
+if (any(names(adis) == "ISULOQ") == T) {
+  adis <- adis %>%
+    mutate(DTYPE = case_when(
+      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
+        ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
+      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
+        ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
+      TRUE ~ NA_character_
+    ))
+}
+
+if (any(names(adis) == "ISULOQ") == F) {
+  adis <- adis %>%
+    mutate(DTYPE = case_when(
+      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
+        ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
+      TRUE ~ NA_character_
+    ))
+}
+
 
 
 # STEP 7: ABLFL and BASE variables derivation
