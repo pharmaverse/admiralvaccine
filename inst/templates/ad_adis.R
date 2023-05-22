@@ -201,7 +201,8 @@ adis_log_4fold <- adis %>%
   )
 
 adis <- bind_rows(adis_or, adis_log_or, adis_4fold, adis_log_4fold) %>%
-  mutate( # AVALU derivation (please delete if not needed for your study)
+  mutate(
+    # AVALU derivation (please delete if not needed for your study)
     AVALU = ISSTRESU,
 
     # SERCAT1 derivation
@@ -232,27 +233,14 @@ adis <- derive_vars_merged_lookup(
 
 # DTYPE derivation.
 # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
-
-if (any(names(adis) == "ISULOQ") == T) {
-  adis <- adis %>%
-    mutate(DTYPE = case_when(
-      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
-        ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
-      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
-        ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
-      TRUE ~ NA_character_
-    ))
-}
-
-if (any(names(adis) == "ISULOQ") == F) {
-  adis <- adis %>%
-    mutate(DTYPE = case_when(
-      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
-        ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
-      TRUE ~ NA_character_
-    ))
-}
-
+adis <- adis %>%
+  mutate(DTYPE = case_when(
+    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
+      ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
+    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
+      ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
+    TRUE ~ NA_character_
+  ))
 
 
 # STEP 7: ABLFL and BASE variables derivation
