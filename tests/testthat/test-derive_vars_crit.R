@@ -46,7 +46,10 @@ testthat::test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
 
   expect_dfs_equal(actual,
     expected,
-    keys = c("USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ")
+    keys = c(
+      "USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ", "CRIT1FL",
+      "CRIT1FN", "CRIT1"
+    )
   )
 })
 
@@ -102,7 +105,10 @@ testthat::test_that("derive_vars_crit Test 2: Derive CRIT1 variables
 
   expect_dfs_equal(actual,
     expected,
-    keys = c("USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ")
+    keys = c(
+      "USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ", "CRIT1FL",
+      "CRIT1FN", "CRIT1"
+    )
   )
 })
 
@@ -141,9 +147,7 @@ testthat::test_that("derive_vars_crit Test 3: Try to apply different vars name a
         !is.na(AVAL) & !is.na(ISLLOQ) & AVAL >= ISLLOQ ~ "Y",
         !is.na(AVAL) & !is.na(ISLLOQ) & AVAL < ISLLOQ ~ "N",
         TRUE ~ as.character(NA)
-      ),
-      ANL01FN = if_else(ANL01FL == "Y", 1, 0),
-      ANL01 = if_else(!is.na(ANL01FL), "Titer >= ISLLOQ", as.character(NA))
+      )
     )
 
 
@@ -158,7 +162,7 @@ testthat::test_that("derive_vars_crit Test 3: Try to apply different vars name a
 
   expect_dfs_equal(actual,
     expected,
-    keys = c("USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ")
+    keys = c("USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ", "ANL01FL")
   )
 })
 
@@ -214,6 +218,9 @@ testthat::test_that("derive_vars_crit Test 4: Complicated selections and missing
 
   expect_dfs_equal(actual,
     expected,
-    keys = c("USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ")
+    keys = c(
+      "USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ", "CRIT1FL",
+      "CRIT1FN", "CRIT1"
+    )
   )
 })
