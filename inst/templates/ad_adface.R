@@ -53,8 +53,8 @@ adface <- derive_vars_merged_vaccine(
   dataset_ex = ex,
   dataset_supp = suppface,
   dataset_suppex = suppex,
-  by_vars_sys = exprs(USUBJID, FATPTREF),
-  by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
+  by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
+  by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 )
 
