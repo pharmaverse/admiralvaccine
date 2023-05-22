@@ -279,7 +279,7 @@ adis <- restrict_derivation(
   derive_var_basetype(
     basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
   ) %>%
-  arrange(STUDYID,USUBJID,DERIVED)
+  arrange(STUDYID, USUBJID, DERIVED)
 
 
 # BASECAT derivation
@@ -307,7 +307,7 @@ adis <- restrict_derivation(adis,
     ),
     filter = AVISITN > 10
   ) %>%
-  arrange(STUDYID,USUBJID,DERIVED,ISSEQ)
+  arrange(STUDYID, USUBJID, DERIVED, ISSEQ)
 
 
 # STEP 9 Derivation of CRITyFL and CRITyFN ----
@@ -361,7 +361,7 @@ adis <- bind_rows(is12a, is12b)
 # STEP 12  Merge with ADSL ----
 
 # Get list of ADSL variables not to be added to ADIS
-vx_adsl_vars <- exprs(RFSTDTC,PPROTFL)
+vx_adsl_vars <- exprs(RFSTDTC, PPROTFL)
 
 adis <- derive_vars_merged(
   dataset = adis,
