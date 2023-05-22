@@ -65,11 +65,9 @@ adis <- is_suppis %>%
 
 # STEP 3: ADT and ADY derivation
 
-# Tried to test this function with missing days and/or months and missing dates:
-# To put highest_imputation = "M" and date_imputation = "mid" to be in line with GSK rules.
-# flag_imputation = "none" to suppress ADTF variable.
-
 # ADT derivation and Merge with ADSL to get RFSTDTC info in order to derive ADY
+# Add also PPROTFL from ADSL (to avoid additional merges) in order to derive
+# PPSRFL at step 11.
 adis <- derive_vars_dt(
   dataset = adis,
   new_vars_prefix = "A",
@@ -80,7 +78,7 @@ adis <- derive_vars_dt(
 ) %>%
   derive_vars_merged(
     dataset_add = adsl,
-    new_vars = exprs(RFSTDTC),
+    new_vars = exprs(RFSTDTC, PPROTFL),
     by_vars = exprs(STUDYID, USUBJID),
   ) %>%
   mutate(
@@ -166,40 +164,45 @@ adis <- adis %>%
 
 # STEP 6: AVAL, AVALU, DTYPE and SERCAT1/N derivation
 # AVAL derivation
-adis <- adis %>%
-  mutate(
-    AVAL = case_when(
-      # ISORRES values without > or <
-      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
-      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
-      ~ ISSTRESN,
-      DERIVED == "ORIG" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
-      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
-      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
-      ~ log10(ISSTRESN),
-      DERIVED == "LOG10" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
-      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
-      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
-      ~ ISSTRESN,
-      DERIVED == "4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
-      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ),
-      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ &
-        ISSTRESN < ISULOQ ~ log10(ISSTRESN),
-      DERIVED == "LOG10 4FOLD" & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
+adis_or <- adis %>%
+  filter(DERIVED == "ORIG") %>%
+  derive_var_aval_adis(
+    lower_rule = ISLLOQ / 2,
+    middle_rule = ISSTRESN,
+    upper_rule = ISULOQ,
+    round = 2
+  )
 
-      # ISORRES values with > or <
-      DERIVED == "ORIG" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
-      DERIVED == "ORIG" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ISULOQ,
-      DERIVED == "LOG10" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
-      DERIVED == "LOG10" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ISULOQ),
-      DERIVED == "4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ,
-      DERIVED == "4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ ISULOQ,
-      DERIVED == "LOG10 4FOLD" & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ),
-      DERIVED == "LOG10 4FOLD" & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ISULOQ)
-    ),
+adis_log_or <- adis %>%
+  filter(DERIVED == "LOG10") %>%
+  derive_var_aval_adis(
+    lower_rule = log10(ISLLOQ / 2),
+    middle_rule = log10(ISSTRESN),
+    upper_rule = log10(ISULOQ),
+    round = 2
+  )
 
-    # AVALU derivation (please delete if not needed for your study)
-    AVALU = if_else(as.numeric(ISSTRESC) == ISSTRESN, ISORRESU, as.character(NA)),
+adis_4fold <- adis %>%
+  filter(DERIVED == "4FOLD") %>%
+  derive_var_aval_adis(
+    lower_rule = ISLLOQ,
+    middle_rule = ISSTRESN,
+    upper_rule = ISULOQ,
+    round = 2
+  )
+
+adis_log_4fold <- adis %>%
+  filter(DERIVED == "LOG10 4FOLD") %>%
+  derive_var_aval_adis(
+    lower_rule = log10(ISLLOQ),
+    middle_rule = log10(ISSTRESN),
+    upper_rule = log10(ISULOQ),
+    round = 2
+  )
+
+adis <- bind_rows(adis_or, adis_log_or, adis_4fold, adis_log_4fold) %>%
+  mutate( # AVALU derivation (please delete if not needed for your study)
+    AVALU = ISSTRESU,
 
     # SERCAT1 derivation
     SERCAT1 = case_when(
@@ -224,18 +227,33 @@ adis <- derive_vars_merged_lookup(
   dataset_add = param_lookup2,
   new_vars = exprs(SERCAT1N),
   by_vars = exprs(SERCAT1)
-) %>%
-  # DTYPE derivation.
-  # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
-  # and/or ULOQ is present in your study
-  mutate(DTYPE = case_when(
-    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
-      ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
-    DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
-      ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
-    TRUE ~ NA_character_
-  )) %>%
-  select(-DERIVED)
+)
+
+
+# DTYPE derivation.
+# Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
+
+if (any(names(adis) == "ISULOQ") == T) {
+  adis <- adis %>%
+    mutate(DTYPE = case_when(
+      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
+        ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
+      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISULOQ) &
+        ((ISSTRESN > ISULOQ) | grepl(">", ISORRES)) ~ "ULOQ",
+      TRUE ~ NA_character_
+    ))
+}
+
+if (any(names(adis) == "ISULOQ") == F) {
+  adis <- adis %>%
+    mutate(DTYPE = case_when(
+      DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
+        ((ISSTRESN < ISLLOQ) | grepl("<", ISORRES)) ~ "HALFLLOQ",
+      TRUE ~ NA_character_
+    ))
+}
+
+
 
 # STEP 7: ABLFL and BASE variables derivation
 # ABLFL derivation
@@ -260,7 +278,9 @@ adis <- restrict_derivation(
   # BASETYPE derivation
   derive_var_basetype(
     basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
-  )
+  ) %>%
+  arrange(STUDYID,USUBJID,DERIVED)
+
 
 # BASECAT derivation
 adis <- adis %>%
@@ -272,6 +292,7 @@ adis <- adis %>%
       grepl("L", PARAMCD) & BASE >= 10 ~ "Titer value >= 1:10"
     )
   )
+
 
 # STEP 8 Derivation of Change from baseline and Ratio to baseline ----
 adis <- restrict_derivation(adis,
@@ -285,10 +306,11 @@ adis <- restrict_derivation(adis,
       denom_var = BASE
     ),
     filter = AVISITN > 10
-  )
+  ) %>%
+  arrange(STUDYID,USUBJID,DERIVED,ISSEQ)
+
 
 # STEP 9 Derivation of CRITyFL and CRITyFN ----
-
 adis <- derive_vars_crit(
   dataset = adis,
   new_var = "CRIT1",
@@ -297,24 +319,22 @@ adis <- derive_vars_crit(
   criterion = AVAL >= ISLLOQ
 )
 
-# STEP 10  Merge with ADSL ----
 
-# Get list of ADSL variables not to be added to ADIS
-vx_adsl_vars <- exprs(RFSTDTC)
-
-adis <- derive_vars_merged(
-  dataset = adis,
-  dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
-  by_vars = exprs(STUDYID, USUBJID)
+# STEP 10 Derivation of TRTP/A treatment variables ----
+period_ref <- create_period_dataset(
+  dataset = adsl,
+  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
 )
 
-# STEP 11 Derivation of TRTP/A treatment variables ----
+adis <- derive_vars_joined(
+  adis,
+  dataset_add = period_ref,
+  by_vars = exprs(STUDYID, USUBJID),
+  filter_join = ADT >= APERSDT & ADT <= APEREDT
+)
 
-adis <- adis %>%
-  mutate(TRTP = TRT01P, TRTA = TRT01A)
 
-# STEP 12 Derivation of PPSRFL ----
-
+# STEP 11 Derivation of PPSRFL ----
 is12a <- adis %>%
   filter(VISITNUM == 10) %>%
   derive_var_merged_exist_flag(
@@ -337,7 +357,19 @@ is12b <- adis %>%
 
 adis <- bind_rows(is12a, is12b)
 
-# Save output ----
 
+# STEP 12  Merge with ADSL ----
+
+# Get list of ADSL variables not to be added to ADIS
+vx_adsl_vars <- exprs(RFSTDTC,PPROTFL)
+
+adis <- derive_vars_merged(
+  dataset = adis,
+  dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
+  by_vars = exprs(STUDYID, USUBJID)
+)
+
+
+# Save output ----
 dir <- tempdir() # Change to whichever directory you want to save the dataset in
 saveRDS(adis, file = file.path(dir, "adis.rda"), compress = "bzip2")
