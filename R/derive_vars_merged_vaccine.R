@@ -101,65 +101,6 @@ derive_vars_merged_vaccine <- function(dataset,
     dataset_ex <- combine_supp(dataset_ex, dataset_suppex)
   }
 
-  # Variables check for FACE
-
-  if (!("FATPTREF" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FATPTREF = "VACCINATION 1")
-  }
-
-  if (!("FALAT" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FALAT = "")
-  }
-
-  if (!("FADIR" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FADIR = "")
-  }
-
-  if (!("FALOC" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FALOC = "")
-  }
-
-  if (("FALNKGRP" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FALNKGRP = str_to_upper(FALNKGRP))
-  }
-
-  # Variables check for EX
-
-  if (!("EXTPTREF" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXTPTREF = "VACCINATION 1")
-  }
-
-  if (!("EXLAT" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXLAT = "")
-  }
-
-  if (!("EXDIR" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXDIR = "")
-  }
-
-  if (!("EXLOC" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXLOC = "")
-  }
-
-  if (!("EXLNKGRP" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXLNKGRP = EXTPTREF)
-
-    if (!("EXLNKID" %in% names(dataset_ex))) {
-      dataset_ex <- dataset_ex %>%
-        mutate(EXLNKID = paste0(EXLNKGRP, EXLOC, EXLAT, EXDIR))
-    }
-  }
-
   if ("VISIT" %in% names(dataset_ex)) {
     ex_distinct <- dataset_ex %>% distinct(USUBJID, VISIT, .keep_all = TRUE)
   } else {
@@ -171,9 +112,6 @@ derive_vars_merged_vaccine <- function(dataset,
 
     dataset <- dataset
   } else {
-    # rename EX variables
-    dataset_ex <- dataset_ex %>%
-      dplyr::rename(FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT, FADIR = EXDIR)
 
     # Filter records for  ADMINISTRATION SITE events and merge it with EX dataset
     dataset_adminstration <- dataset %>%
