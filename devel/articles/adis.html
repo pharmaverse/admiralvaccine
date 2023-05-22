@@ -60,14 +60,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -167,7 +159,7 @@ to proceed with ADIS development. In this template,
 visit records according to your study design/Protocol. For the visit
 values, please refers to your ADAM SPECIFICATIONS.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">is1</span> <span class="op">&lt;-</span> <span class="va">is_suppis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="va">is_suppis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    AVISITN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">VISITNUM</span><span class="op">)</span>,</span>
 <span>    AVISIT <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
@@ -180,9 +172,9 @@ values, please refers to your ADAM SPECIFICATIONS.</p>
 <span>    ATPTN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">VISITNUM</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>    ATPT <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>      <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Visit 1 (Day 1)"</span>,</span>
-<span>      <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">20</span> <span class="op">~</span> <span class="st">"Visit 2 (Day #)"</span>,</span>
-<span>      <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">30</span> <span class="op">~</span> <span class="st">"Visit 3 (Day #)"</span>,</span>
-<span>      <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">40</span> <span class="op">~</span> <span class="st">"Visit 4 (Day #)"</span>,</span>
+<span>      <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">20</span> <span class="op">~</span> <span class="st">"Visit 2 (Day 31)"</span>,</span>
+<span>      <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">30</span> <span class="op">~</span> <span class="st">"Visit 3 (Day 61)"</span>,</span>
+<span>      <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">40</span> <span class="op">~</span> <span class="st">"Visit 4 (Day 121)"</span>,</span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">VISITNUM</span><span class="op">)</span> <span class="op">~</span> <span class="cn">NA_character_</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    ATPTREF <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
@@ -208,37 +200,29 @@ template.</p>
 <p>If your derivation is different, please adapt.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># ADT derivation</span></span>
-<span><span class="va">is2_adt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_dt.html" class="external-link">derive_vars_dt</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is1</span>,</span>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_dt.html" class="external-link">derive_vars_dt</a></span><span class="op">(</span></span>
+<span>  dataset <span class="op">=</span> <span class="va">adis</span>,</span>
 <span>  new_vars_prefix <span class="op">=</span> <span class="st">"A"</span>,</span>
 <span>  dtc <span class="op">=</span> <span class="va">ISDTC</span>,</span>
 <span>  highest_imputation <span class="op">=</span> <span class="st">"M"</span>,</span>
 <span>  date_imputation <span class="op">=</span> <span class="st">"mid"</span>,</span>
 <span>  flag_imputation <span class="op">=</span> <span class="st">"none"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Merge with ADSL to get RFSTDTC info in order to derive ADY</span></span>
-<span><span class="va">is2_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_merged_character.html" class="external-link">derive_var_merged_character</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is2_adt</span>,</span>
-<span>  dataset_add <span class="op">=</span> <span class="va">adsl</span>,</span>
-<span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span><span class="op">)</span>,</span>
-<span>  new_var <span class="op">=</span> <span class="va">RFSTDTC</span>,</span>
-<span>  source_var <span class="op">=</span> <span class="va">RFSTDTC</span></span>
 <span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># Attach RFSTDTC from ADSL in order to derive ADY</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_merged.html" class="external-link">derive_vars_merged</a></span><span class="op">(</span></span>
+<span>    dataset_add <span class="op">=</span> <span class="va">adsl</span>,</span>
+<span>    new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">RFSTDTC</span><span class="op">)</span>,</span>
+<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span><span class="op">)</span>,</span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    ADT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span>,</span>
 <span>    RFSTDTC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">RFSTDTC</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `derive_var_merged_character()` was deprecated in admiral 0.11.0.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span><span> Please use `derive_vars_merged()` instead.</span></span></span>
-<span></span>
-<span></span>
-<span><span class="co"># ADY derivation</span></span>
-<span><span class="va">is2_ady</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_dy.html" class="external-link">derive_vars_dy</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is2_rf</span>,</span>
-<span>  reference_date <span class="op">=</span> <span class="va">RFSTDTC</span>,</span>
-<span>  source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># ADY derivation</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_dy.html" class="external-link">derive_vars_dy</a></span><span class="op">(</span></span>
+<span>    reference_date <span class="op">=</span> <span class="va">RFSTDTC</span>,</span>
+<span>    source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="param">Parameters derivation<a class="anchor" aria-label="anchor" href="#param"></a>
@@ -256,21 +240,21 @@ values:</p>
 <span><span class="co"># Add also records related to 4fold.</span></span>
 <span><span class="co"># Please, keep or modify PARAM values according to your purposes.</span></span>
 <span></span>
-<span><span class="va">is_log</span> <span class="op">&lt;-</span> <span class="va">is2_ady</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">is_log</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DERIVED <span class="op">=</span> <span class="st">"LOG10"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">is_4fold</span> <span class="op">&lt;-</span> <span class="va">is2_ady</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">is_4fold</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DERIVED <span class="op">=</span> <span class="st">"4FOLD"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">is_log_4fold</span> <span class="op">&lt;-</span> <span class="va">is2_ady</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">is_log_4fold</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DERIVED <span class="op">=</span> <span class="st">"LOG10 4FOLD"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">is_derived</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">is2_ady</span>, <span class="va">is_log</span>, <span class="va">is_4fold</span>, <span class="va">is_log_4fold</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">adis</span>, <span class="va">is_log</span>, <span class="va">is_4fold</span>, <span class="va">is_log_4fold</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">VISITNUM</span>, <span class="va">ISSEQ</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">DERIVED</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DERIVED <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">DERIVED</span><span class="op">)</span>, <span class="st">"ORIG"</span>, <span class="va">DERIVED</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
-<span><span class="va">is3</span> <span class="op">&lt;-</span> <span class="va">is_derived</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    <span class="co"># PARAMCD: for log values, concatenation of L and ISTESTCD.</span></span>
 <span>    PARAMCD <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
@@ -304,21 +288,13 @@ values:</p>
 <span>  <span class="st">"R0003MLF"</span>, <span class="st">"LOG10 4FOLD (R0003MA Antibody)"</span>, <span class="fl">34</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">is3_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_merged_lookup.html" class="external-link">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is3</span>,</span>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_merged_lookup.html" class="external-link">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
+<span>  dataset <span class="op">=</span> <span class="va">adis</span>,</span>
 <span>  dataset_add <span class="op">=</span> <span class="va">param_lookup</span>,</span>
-<span>  new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAM</span><span class="op">)</span>,</span>
+<span>  new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAM</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
 <span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAMCD</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; All `PARAMCD` are mapped.</span></span>
-<span></span>
-<span><span class="va">is4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_merged_lookup.html" class="external-link">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is3_1</span>,</span>
-<span>  dataset_add <span class="op">=</span> <span class="va">param_lookup</span>,</span>
-<span>  new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAMN</span><span class="op">)</span>,</span>
-<span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAM</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; All `PARAM` are mapped.</span></span></code></pre></div>
+<span><span class="co">#&gt; All `PARAMCD` are mapped.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="parcat">Derive PARCAT1 and CUTOFFx variables<a class="anchor" aria-label="anchor" href="#parcat"></a>
@@ -327,7 +303,7 @@ values:</p>
 <p>Fake values has been put for CUTOFF values. Please, adapt base on
 your objectives.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">is5</span> <span class="op">&lt;-</span> <span class="va">is4</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    PARCAT1 <span class="op">=</span> <span class="va">ISCAT</span>,</span>
 <span>    <span class="co"># Please, define your additional cutoff values. Delete if not needed.</span></span>
@@ -362,36 +338,36 @@ otherwise.</p>
 <p>Later you can find <code>SERCAT1/N</code> and <code>DTYPE</code>
 derivations.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">is5_aval</span> <span class="op">&lt;-</span> <span class="va">is5</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    AVAL <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>      <span class="co"># ISORRES values without &gt; or &lt;</span></span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"ORIG"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISLLOQ</span> <span class="op">~</span> <span class="va">ISLLOQ</span> <span class="op">/</span> <span class="fl">2</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"ORIG"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISLLOQ</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ULLOQ</span></span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"ORIG"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISLLOQ</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISULOQ</span></span>
 <span>      <span class="op">~</span> <span class="va">ISSTRESN</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"ORIG"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ULLOQ</span> <span class="op">~</span> <span class="va">ULLOQ</span>,</span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"ORIG"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISULOQ</span> <span class="op">~</span> <span class="va">ISULOQ</span>,</span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISLLOQ</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISLLOQ</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISLLOQ</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ULLOQ</span></span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISLLOQ</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISULOQ</span></span>
 <span>      <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ULLOQ</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ULLOQ</span><span class="op">)</span>,</span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISULOQ</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISULOQ</span><span class="op">)</span>,</span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISLLOQ</span> <span class="op">~</span> <span class="va">ISLLOQ</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISLLOQ</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ULLOQ</span></span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISLLOQ</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISULOQ</span></span>
 <span>      <span class="op">~</span> <span class="va">ISSTRESN</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ULLOQ</span> <span class="op">~</span> <span class="va">ULLOQ</span>,</span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISULOQ</span> <span class="op">~</span> <span class="va">ISULOQ</span>,</span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10 4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISLLOQ</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISLLOQ</span><span class="op">)</span>,</span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10 4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISLLOQ</span> <span class="op">&amp;</span></span>
-<span>        <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ULLOQ</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10 4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ULLOQ</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ULLOQ</span><span class="op">)</span>,</span>
+<span>        <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISULOQ</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span>,</span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10 4FOLD"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISSTRESN</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&gt;=</span> <span class="va">ISULOQ</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISULOQ</span><span class="op">)</span>,</span>
 <span></span>
 <span>      <span class="co"># ISORRES values with &gt; or &lt;</span></span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"ORIG"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&lt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="va">ISLLOQ</span> <span class="op">/</span> <span class="fl">2</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"ORIG"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="va">ULLOQ</span>,</span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"ORIG"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="va">ISULOQ</span>,</span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&lt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISLLOQ</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ULLOQ</span><span class="op">)</span>,</span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISULOQ</span><span class="op">)</span>,</span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"4FOLD"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&lt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="va">ISLLOQ</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"4FOLD"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="va">ULLOQ</span>,</span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"4FOLD"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="va">ISULOQ</span>,</span>
 <span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10 4FOLD"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&lt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISLLOQ</span><span class="op">)</span>,</span>
-<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10 4FOLD"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ULLOQ</span><span class="op">)</span></span>
+<span>      <span class="va">DERIVED</span> <span class="op">==</span> <span class="st">"LOG10 4FOLD"</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISORRES</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ISULOQ</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span></span>
 <span>    <span class="co"># AVALU derivation (please delete if not needed for your study)</span></span>
@@ -415,23 +391,23 @@ derivations.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">is5_sercat1n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_merged_lookup.html" class="external-link">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is5_aval</span>,</span>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_merged_lookup.html" class="external-link">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
+<span>  dataset <span class="op">=</span> <span class="va">adis</span>,</span>
 <span>  dataset_add <span class="op">=</span> <span class="va">param_lookup2</span>,</span>
 <span>  new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">SERCAT1N</span><span class="op">)</span>,</span>
 <span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">SERCAT1</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; All `SERCAT1` are mapped.</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># DTYPE derivation.</span></span>
-<span><span class="co"># Please update code when &lt;,&lt;=,&gt;,&gt;= are present in your lab results (in ISSTRESC)</span></span>
-<span><span class="co"># and/or ULOQ is present in your study</span></span>
-<span><span class="va">is6</span> <span class="op">&lt;-</span> <span class="va">is5_sercat1n</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DTYPE <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">DERIVED</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ORIG"</span>, <span class="st">"LOG10"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISLLOQ</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISLLOQ</span>,</span>
-<span>    <span class="st">"HALFLLQ"</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
-<span>  <span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># DTYPE derivation.</span></span>
+<span>  <span class="co"># Please update code when &lt;,&lt;=,&gt;,&gt;= are present in your lab results (in ISSTRESC)</span></span>
+<span>  <span class="co"># and/or ULOQ is present in your study</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DTYPE <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="va">DERIVED</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ORIG"</span>, <span class="st">"LOG10"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISLLOQ</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>      <span class="op">(</span><span class="op">(</span><span class="va">ISSTRESN</span> <span class="op">&lt;</span> <span class="va">ISLLOQ</span><span class="op">)</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&lt;"</span>, <span class="va">ISORRES</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"HALFLLOQ"</span>,</span>
+<span>    <span class="va">DERIVED</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ORIG"</span>, <span class="st">"LOG10"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISULOQ</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>      <span class="op">(</span><span class="op">(</span><span class="va">ISSTRESN</span> <span class="op">&gt;</span> <span class="va">ISULOQ</span><span class="op">)</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="va">ISORRES</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="st">"ULOQ"</span>,</span>
+<span>    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; All `SERCAT1` are mapped.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="base">Derive BASE variables<a class="anchor" aria-label="anchor" href="#base"></a>
@@ -442,57 +418,40 @@ derivations.</p>
 represents the base category. Update accordingly.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># ABLFL derivation</span></span>
-<span><span class="va">is6_ablfl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_relative_flag.html" class="external-link">derive_var_relative_flag</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is6</span>,</span>
-<span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
-<span>  order <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">VISITNUM</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
-<span>  new_var <span class="op">=</span> <span class="va">ABLFL</span>,</span>
-<span>  condition <span class="op">=</span> <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">10</span>,</span>
-<span>  mode <span class="op">=</span> <span class="st">"first"</span>,</span>
-<span>  selection <span class="op">=</span> <span class="st">"before"</span>,</span>
-<span>  inclusive <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># BASE derivation</span></span>
-<span><span class="va">is6_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_base.html" class="external-link">derive_var_base</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is6_ablfl</span>,</span>
-<span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
-<span>  source_var <span class="op">=</span> <span class="va">AVAL</span>,</span>
-<span>  new_var <span class="op">=</span> <span class="va">BASE</span>,</span>
-<span>  filter <span class="op">=</span> <span class="va">ABLFL</span> <span class="op">==</span> <span class="st">"Y"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># BASETYPE derivation</span></span>
-<span><span class="va">is6_basetype</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_basetype.html" class="external-link">derive_var_basetype</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is6_base</span>,</span>
-<span>  basetypes <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="st">"VISIT 1"</span> <span class="op">=</span> <span class="va">AVISITN</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
+<span><span class="co"># ABLFL derivation</span></span>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/restrict_derivation.html" class="external-link">restrict_derivation</a></span><span class="op">(</span></span>
+<span>  <span class="va">adis</span>,</span>
+<span>  derivation <span class="op">=</span> <span class="va">derive_var_extreme_flag</span>,</span>
+<span>  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/params.html" class="external-link">params</a></span><span class="op">(</span></span>
+<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
+<span>    order <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">VISITNUM</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
+<span>    new_var <span class="op">=</span> <span class="va">ABLFL</span>,</span>
+<span>    mode <span class="op">=</span> <span class="st">"first"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  filter <span class="op">=</span> <span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">10</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># BASE derivation</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_base.html" class="external-link">derive_var_base</a></span><span class="op">(</span></span>
+<span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
+<span>    source_var <span class="op">=</span> <span class="va">AVAL</span>,</span>
+<span>    new_var <span class="op">=</span> <span class="va">BASE</span>,</span>
+<span>    filter <span class="op">=</span> <span class="va">ABLFL</span> <span class="op">==</span> <span class="st">"Y"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># BASETYPE derivation</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_basetype.html" class="external-link">derive_var_basetype</a></span><span class="op">(</span></span>
+<span>    basetypes <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="st">"VISIT 1"</span> <span class="op">=</span> <span class="va">AVISITN</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># BASECAT derivation</span></span>
-<span><span class="va">base_data</span> <span class="op">&lt;-</span> <span class="va">is6_basetype</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">VISITNUM</span>, <span class="va">PARAMCD</span>, <span class="va">BASE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">basecat1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">base</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="va">base_data</span><span class="op">$</span><span class="va">PARAMCD</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">base</span> <span class="op">&lt;</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Titer value &lt; 1:10"</span>,</span>
-<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="va">base_data</span><span class="op">$</span><span class="va">PARAMCD</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">base</span> <span class="op">&gt;=</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Titer value &gt;= 1:10"</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="va">base_data</span><span class="op">$</span><span class="va">PARAMCD</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">base</span> <span class="op">&lt;</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Titer value &lt; 1:10"</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="va">base_data</span><span class="op">$</span><span class="va">PARAMCD</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">base</span> <span class="op">&gt;=</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Titer value &gt;= 1:10"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">is7</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_merged_cat.html" class="external-link">derive_var_merged_cat</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is6_basetype</span>,</span>
-<span>  dataset_add <span class="op">=</span> <span class="va">base_data</span>,</span>
-<span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">PARAMCD</span>, <span class="va">VISITNUM</span><span class="op">)</span>,</span>
-<span>  new_var <span class="op">=</span> <span class="va">BASECAT1</span>,</span>
-<span>  source_var <span class="op">=</span> <span class="va">BASE</span>,</span>
-<span>  cat_fun <span class="op">=</span> <span class="va">basecat1</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `derive_var_merged_cat()` was deprecated in admiral 0.11.0.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span><span> Please use `derive_vars_merged()` instead.</span></span></span></code></pre></div>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    BASECAT1 <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="va">PARAMCD</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">BASE</span> <span class="op">&lt;</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Titer value &lt; 1:10"</span>,</span>
+<span>      <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="va">PARAMCD</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">BASE</span> <span class="op">&gt;=</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Titer value &gt;= 1:10"</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="va">PARAMCD</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">BASE</span> <span class="op">&lt;</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Titer value &lt; 1:10"</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="va">PARAMCD</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">BASE</span> <span class="op">&gt;=</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Titer value &gt;= 1:10"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="chg">Derive CHG and R2BASE variables<a class="anchor" aria-label="anchor" href="#chg"></a>
@@ -500,9 +459,18 @@ represents the base category. Update accordingly.</p>
 <p>Derive change from baseline values.</p>
 <p>Derive ratio to base values.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">is8</span> <span class="op">&lt;-</span> <span class="va">is7</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_chg.html" class="external-link">derive_var_chg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_analysis_ratio.html" class="external-link">derive_var_analysis_ratio</a></span><span class="op">(</span>numer_var <span class="op">=</span> <span class="va">AVAL</span>, denom_var <span class="op">=</span> <span class="va">BASE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/restrict_derivation.html" class="external-link">restrict_derivation</a></span><span class="op">(</span><span class="va">adis</span>,</span>
+<span>  derivation <span class="op">=</span> <span class="va">derive_var_chg</span>,</span>
+<span>  filter <span class="op">=</span> <span class="va">AVISITN</span> <span class="op">&gt;</span> <span class="fl">10</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/restrict_derivation.html" class="external-link">restrict_derivation</a></span><span class="op">(</span></span>
+<span>    derivation <span class="op">=</span> <span class="va">derive_var_analysis_ratio</span>,</span>
+<span>    args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/params.html" class="external-link">params</a></span><span class="op">(</span></span>
+<span>      numer_var <span class="op">=</span> <span class="va">AVAL</span>,</span>
+<span>      denom_var <span class="op">=</span> <span class="va">BASE</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    filter <span class="op">=</span> <span class="va">AVISITN</span> <span class="op">&gt;</span> <span class="fl">10</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="crit">Derive CRITx variables<a class="anchor" aria-label="anchor" href="#crit"></a>
@@ -517,8 +485,8 @@ is equal to “Y”. “N” otherwise.</p>
 <code>CRIT1</code> variable (with the text specified in label_var
 argument).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">is9</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_vars_crit.html">derive_vars_crit</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is8</span>,</span>
+<code class="sourceCode R"><span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_vars_crit.html">derive_vars_crit</a></span><span class="op">(</span></span>
+<span>  dataset <span class="op">=</span> <span class="va">adis</span>,</span>
 <span>  new_var <span class="op">=</span> <span class="st">"CRIT1"</span>,</span>
 <span>  label_var <span class="op">=</span> <span class="st">"Titer &gt;= ISLLOQ"</span>,</span>
 <span>  condition <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">AVAL</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ISLLOQ</span><span class="op">)</span>,</span>
@@ -534,10 +502,11 @@ dataset.</p>
 accordingly.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get list of ADSL variables not to be added to ADIS</span></span>
+<span><span class="co"># Get list of ADSL variables not to be added to ADIS</span></span>
 <span><span class="va">vx_adsl_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">RFSTDTC</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">is10</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_merged.html" class="external-link">derive_vars_merged</a></span><span class="op">(</span></span>
-<span>  dataset <span class="op">=</span> <span class="va">is9</span>,</span>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_vars_merged.html" class="external-link">derive_vars_merged</a></span><span class="op">(</span></span>
+<span>  dataset <span class="op">=</span> <span class="va">adis</span>,</span>
 <span>  dataset_add <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">vx_adsl</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/pkg/admiral/man/negate_vars.html" class="external-link">negate_vars</a></span><span class="op">(</span><span class="va">vx_adsl_vars</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -546,8 +515,7 @@ accordingly.</p>
 <h3 id="trtp">Derive TRTP/A variables<a class="anchor" aria-label="anchor" href="#trtp"></a>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Get list of ADSL variables not to be added to ADIS</span></span>
-<span><span class="va">is11</span> <span class="op">&lt;-</span> <span class="va">is10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>TRTP <span class="op">=</span> <span class="va">TRT01P</span>, TRTA <span class="op">=</span> <span class="va">TRT01A</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -557,7 +525,7 @@ accordingly.</p>
 included/excluded for the PPS related objectives.</p>
 <p>This step could change according to your study needs.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">is12a</span> <span class="op">&lt;-</span> <span class="va">is11</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">is12a</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_merged_exist_flag.html" class="external-link">derive_var_merged_exist_flag</a></span><span class="op">(</span></span>
 <span>    dataset_add <span class="op">=</span> <span class="va">vx_adsl</span>,</span>
@@ -567,7 +535,7 @@ included/excluded for the PPS related objectives.</p>
 <span>    true_value <span class="op">=</span> <span class="st">"Y"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">is12b</span> <span class="op">&lt;-</span> <span class="va">is11</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">is12b</span> <span class="op">&lt;-</span> <span class="va">adis</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">VISITNUM</span> <span class="op">==</span> <span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/derive_var_merged_exist_flag.html" class="external-link">derive_var_merged_exist_flag</a></span><span class="op">(</span></span>
 <span>    dataset_add <span class="op">=</span> <span class="va">vx_adsl</span>,</span>
@@ -577,7 +545,7 @@ included/excluded for the PPS related objectives.</p>
 <span>    true_value <span class="op">=</span> <span class="st">"Y"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">is12</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">is12a</span>, <span class="va">is12b</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">adis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">is12a</span>, <span class="va">is12b</span><span class="op">)</span></span></code></pre></div>
 <p>NOTE: All these packages are in the experimental phase, but the
 vision is to have them associated with an End to End pipeline under the
 umbrella of the <a href="https://github.com/pharmaverse" class="external-link">pharmaverse</a>. An example of
