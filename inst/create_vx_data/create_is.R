@@ -113,10 +113,10 @@ is <- is1 %>%
       row_number() == 10 ~ NA_character_,
       row_number() == 11 ~ "2021",
       row_number() == 12 ~ "2021",
-      row_number() == 13 ~ NA_character_,
-      row_number() == 14 ~ NA_character_,
-      row_number() == 15 ~ NA_character_,
-      row_number() == 16 ~ NA_character_,
+      row_number() == 13 ~ "2021",
+      row_number() == 14 ~ "2021",
+      row_number() == 15 ~ "2021",
+      row_number() == 16 ~ "2021",
       TRUE ~ ISDTC
     ),
     # Add higher ISSTRESN values
