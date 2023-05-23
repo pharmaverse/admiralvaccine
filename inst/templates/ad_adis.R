@@ -255,7 +255,6 @@ if (any(names(adis) == "ISULOQ") == F) {
 }
 
 
-
 # STEP 7: ABLFL and BASE variables derivation
 # ABLFL derivation
 adis <- restrict_derivation(
