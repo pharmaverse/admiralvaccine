@@ -55,6 +55,9 @@ records.
 \description{
 Create a summary record for maximum temperature per subject per period.
 }
+\details{
+If we are creating the fever occurrence records from VS, we can use \code{derive_param_fever_occur} function. So we will have VSSTRESN variable in your output. Then you can use this function to derive the maximum temperature. Otherwise user will get the input as the output.
+}
 \examples{
 library(tibble)
 library(admiral)
