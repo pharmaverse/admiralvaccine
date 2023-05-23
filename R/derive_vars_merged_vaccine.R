@@ -112,7 +112,6 @@ derive_vars_merged_vaccine <- function(dataset,
 
     dataset <- dataset
   } else {
-
     # Filter records for  ADMINISTRATION SITE events and merge it with EX dataset
     dataset_adminstration <- dataset %>%
       filter(FASCAT == "ADMINISTRATION SITE")
