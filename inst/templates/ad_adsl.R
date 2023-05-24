@@ -143,7 +143,7 @@ adsl <- derive_vars_vaxdt(
   by_vars = exprs(USUBJID, VISITNUM),
   order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
 )
-class(adsl$VAX01DT)
+
 # Creating period variables (Study Specific)
 if ("VAX02DT" %in% names(adsl)) {
   adsl <- adsl %>%
