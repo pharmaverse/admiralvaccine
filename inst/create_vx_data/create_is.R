@@ -6,7 +6,7 @@ colnames(table) <- c(
   "STUDYID", "DOMAIN", "USUBJID", "ISSEQ", "ISGRPID", "ISREFID", "ISSPID", "ISLNKID",
   "ISTESTCD", "ISTEST", "ISCAT", "ISORRES", "ISORRESU", "ISSTRESC", "ISSTRESN",
   "ISSTRESU", "ISSTAT", "ISREASND", "ISNAM", "ISSPEC", "ISMETHOD", "ISBLFL", "ISLLOQ",
-  "VISITNUM", "EPOCH", "ISDTC", "ISDY", "ULLOQ"
+  "VISITNUM", "EPOCH", "ISDTC", "ISDY", "ISULOQ"
 )
 
 table1 <- as.data.frame(table)
@@ -34,7 +34,7 @@ table1$VISITNUM <- c(
 )
 
 set.seed(1234)
-table1$ISORRES <- sample(c("2.0", "3.0", "5.0", "<2", ">8"), NROW(table1), replace = T)
+table1$ISORRES <- sample(c("2", "3", "5", "<2", ">8"), NROW(table1), replace = T)
 
 is1 <- table1 %>%
   group_by(STUDYID, USUBJID) %>%
@@ -58,23 +58,23 @@ is1 <- table1 %>%
       ISTESTCD == "M0019LN" ~ 8,
       ISTESTCD == "R0003MA" ~ 4
     ),
-    ULLOQ = case_when(
+    ISULOQ = case_when(
       ISTESTCD == "J0033VN" ~ 100,
       ISTESTCD == "I0019NT" ~ 200,
       ISTESTCD == "M0019LN" ~ 150,
       ISTESTCD == "R0003MA" ~ 120
     ),
     ISSTRESC = case_when(
-      ISORRES == "2.0" ~ "2",
-      ISORRES == "3.0" ~ "3",
-      ISORRES == "5.0" ~ "5",
+      ISORRES == "2" ~ "2",
+      ISORRES == "3" ~ "3",
+      ISORRES == "5" ~ "5",
       ISORRES == "<2" ~ as.character(NA),
       ISORRES == ">8" ~ as.character(NA)
     ),
     ISSTRESN = case_when(
-      ISORRES == "2.0" ~ 2,
-      ISORRES == "3.0" ~ 3,
-      ISORRES == "5.0" ~ 5,
+      ISORRES == "2" ~ 2,
+      ISORRES == "3" ~ 3,
+      ISORRES == "5" ~ 5,
       ISORRES == "<2" ~ as.numeric(NA),
       ISORRES == ">8" ~ as.numeric(NA)
     )
@@ -96,8 +96,9 @@ is <- is1 %>%
     ISSTRESC = if_else(row_number() == 1 | row_number() == 10, as.character(NA), ISSTRESC),
     ISSTRESN = if_else(row_number() == 1 | row_number() == 10, as.numeric(NA), ISSTRESN),
     ISSTRESU = if_else(row_number() == 1 | row_number() == 10, as.character(NA), ISSTRESU),
+    ISORRESU = if_else(row_number() == 1 | row_number() == 10, as.character(NA), ISORRESU),
     ISSTAT = if_else(row_number() == 1 | row_number() == 10, "NOT DONE", as.character(NA)),
-    ISREASND = if_else(row_number() == 1 | row_number() == 10, "NO SAMPLE TAKEN", as.character(NA)),
+    ISREASND = if_else(row_number() == 1 | row_number() == 10, "INVALID RESULT", as.character(NA)),
     # Add missing dates
     ISDTC = case_when(
       row_number() == 1 ~ "2015-01",
@@ -178,7 +179,7 @@ var_label(is$EPOCH) <- "Epoch"
 var_label(is$ISDTC) <- "Date/Time of Collection"
 var_label(is$ISDY) <- "Study Day of Visit/Collection/Exam"
 var_label(is$LOD) <- "Limit of Detection"
-var_label(is$ULLOQ) <- "Upper Limit of Quantitation"
+var_label(is$ISULOQ) <- "Upper Limit of Quantitation"
 
 
 
