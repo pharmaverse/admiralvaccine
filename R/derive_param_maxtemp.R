@@ -47,7 +47,9 @@
 #' @export
 #'
 #' @details
-#' If we are creating the fever occurrence records from VS, we can use `derive_param_fever_occur` function. So we will have VSSTRESN variable in your output. Then you can use this function to derive the maximum temperature. Otherwise user will get the input as the output.
+#' If we are creating the fever occurrence records from VS, we can use `derive_param_fever_occur`
+#' function. So we will have VSSTRESN variable in your output. Then you can use this function to
+#' derive the maximum temperature. Otherwise user will get the input as the output.
 #'
 #' @family der_rec
 #' @keywords der_rec
