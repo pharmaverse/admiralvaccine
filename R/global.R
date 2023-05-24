@@ -108,5 +108,6 @@ globalVariables(c(
   'FATEST = "MAXIMUM SEVERITY"',
   "FASCAT",
   "VISITNUM",
-  "VISIT"
+  "VISIT",
+  "FATPT"
 ))
