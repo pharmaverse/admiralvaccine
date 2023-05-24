@@ -127,7 +127,7 @@ derive_vars_event_flag <- function(dataset,
           case_when(
             AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
             AVAL <= aval_cutoff | AVALC == "N" ~ "N"
-            #is.na(AVAL) & is.na(AVALC) ~ "NA"
+            # is.na(AVAL) & is.na(AVALC) ~ "NA"
           )
         )
       )
@@ -160,8 +160,7 @@ derive_vars_event_flag <- function(dataset,
   }
 
   # Flag maximum records in `DTYPE` as `NA` for new_var2
-  if("DTYPE" %in% names(data_flag)){
-
+  if ("DTYPE" %in% names(data_flag)) {
     if ("MAXIMUM" %in% data_flag$DTYPE) {
       data_flag <- data_flag %>%
         mutate(
