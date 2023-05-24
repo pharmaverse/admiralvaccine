@@ -114,8 +114,8 @@ adface <- derive_vars_joined(
 
 adface <- adface %>%
   mutate(
-    AVAL = suppressWarnings(as.numeric(FAORRES)),
-    AVALC = as.character(FAORRES),
+    AVAL = suppressWarnings(as.numeric(FASTRESN)),
+    AVALC = as.character(FASTRESC),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
     ATPTN = FATPTNUM
