@@ -12,7 +12,6 @@ library(rlang)
 library(admiralvaccine)
 
 
-
 # Load source datasets ----
 data("vx_is")
 data("vx_suppis")
