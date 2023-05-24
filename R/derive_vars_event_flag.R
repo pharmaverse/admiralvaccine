@@ -127,7 +127,6 @@ derive_vars_event_flag <- function(dataset,
           case_when(
             AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
             AVAL <= aval_cutoff | AVALC == "N" ~ "N"
-            # is.na(AVAL) & is.na(AVALC) ~ "NA"
           )
         )
       )
@@ -151,7 +150,6 @@ derive_vars_event_flag <- function(dataset,
           case_when(
             AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
             AVAL <= aval_cutoff | AVALC == "N" ~ "N",
-            is.na(AVAL) & is.na(AVALC) ~ "NA"
           )
         )
       )
