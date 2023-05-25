@@ -148,7 +148,12 @@ is <- is1 %>%
       ISORRES == ">8" & ISTESTCD == "R0003MA" ~ ">120",
       TRUE ~ ISORRES
     ),
-    ISSTRESC = ISORRES
+    ISSTRESC = ISORRES,
+    ISDY = case_when(
+      row_number() == 1 ~ NA_character_,
+      row_number() == 10 ~ NA_character_,
+      TRUE ~ ISDY
+    )
   )
 
 
