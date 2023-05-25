@@ -40,14 +40,6 @@ passed on ex_vars argument"><meta property="og:image" content="https://pharmaver
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -175,11 +167,11 @@ dataset merged with its supplementary dataset.</p>
 <span class="r-in"><span>  dataset_ex <span class="op">=</span> <span class="va">vx_ex</span>,</span></span>
 <span class="r-in"><span>  dataset_supp <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  dataset_suppex <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>  by_vars_sys <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">FATPTREF</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  by_vars_adms <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">FATPTREF</span>, <span class="va">FALOC</span>, <span class="va">FALAT</span>, <span class="va">FADIR</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  by_vars_sys <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, FATPTREF <span class="op">=</span> <span class="va">EXLNKGRP</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  by_vars_adms <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">USUBJID</span>, FATPTREF <span class="op">=</span> <span class="va">EXLNKGRP</span>, FALOC <span class="op">=</span> <span class="va">EXLOC</span>, FALAT <span class="op">=</span> <span class="va">EXLAT</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  ex_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">EXTRT</span>, <span class="va">EXDOSE</span>, <span class="va">EXDOSU</span>, <span class="va">EXSTDTC</span>, <span class="va">EXENDTC</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 307 x 33</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 307 x 35</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    STUDYID DOMAIN USUBJID  FASEQ FALNKGRP   FALAT FALNKID  FALOC FATESTCD FATEST</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #949494;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>      </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span> </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span><span> ABC     FA     ABC-1001     8 VACCINATI… LEFT  VACCINA… DELT… OCCUR    Occur…</span></span>
@@ -192,12 +184,12 @@ dataset merged with its supplementary dataset.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span><span> ABC     FA     ABC-1001    15 VACCINATI… LEFT  VACCINA… DELT… OCCUR    Occur…</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span><span> ABC     FA     ABC-1001    16 VACCINATI… LEFT  VACCINA… DELT… SEV      Sever…</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span><span> ABC     FA     ABC-1001    17 VACCINATI… LEFT  VACCINA… DELT… OCCUR    Occur…</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 297 more rows, and 23 more variables: FAOBJ &lt;chr&gt;, FACAT &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 297 more rows, and 25 more variables: FAOBJ &lt;chr&gt;, FACAT &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FASCAT &lt;chr&gt;, FAEVAL &lt;chr&gt;, FAORRES &lt;chr&gt;, FAORRESU &lt;chr&gt;, EPOCH &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FADTC &lt;chr&gt;, FADY &lt;dbl&gt;, FATPT &lt;chr&gt;, FATPTNUM &lt;dbl&gt;, FATPTREF &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FARFTDTC &lt;chr&gt;, FAEVLINT &lt;chr&gt;, FAEVINTX &lt;chr&gt;, FASTAT &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FAREASND &lt;chr&gt;, FADIR &lt;chr&gt;, EXTRT &lt;chr&gt;, EXDOSE &lt;dbl&gt;, EXDOSU &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   EXSTDTC &lt;chr&gt;, EXENDTC &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FAREASND &lt;chr&gt;, FASTRESC &lt;chr&gt;, FASTRESN &lt;dbl&gt;, FASTRESU &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   EXTRT &lt;chr&gt;, EXDOSE &lt;dbl&gt;, EXDOSU &lt;chr&gt;, EXSTDTC &lt;chr&gt;, EXENDTC &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

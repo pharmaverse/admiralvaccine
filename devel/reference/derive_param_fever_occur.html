@@ -38,14 +38,6 @@ FEVER records in input dataset'><meta property="og:image" content="https://pharm
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -169,21 +161,22 @@ made as output with no further analysis.</p>
 <span class="r-in"><span>  source_filter <span class="op">=</span> <span class="st">"VSCAT == 'REACTOGENICITY' &amp; VSTESTCD == 'TEMP'"</span>,</span></span>
 <span class="r-in"><span>  faobj <span class="op">=</span> <span class="st">"FEVER"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 11 x 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID FAOBJ  FATESTCD FACAT  FASCAT FATPT VSTESTCD VSSTRESN VSSTRESU FATEST</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>       </span><span style="color: #949494;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span> </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span><span> ABC101  REDNE… SEV      REACT… ADMIN… DAY 1 </span><span style="color: #BB0000;">NA</span><span>           </span><span style="color: #BB0000;">NA</span><span>   </span><span style="color: #BB0000;">NA</span><span>       </span><span style="color: #BB0000;">NA</span><span>    </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span><span> ABC101  REDNE… DIAM     REACT… ADMIN… DAY 2 </span><span style="color: #BB0000;">NA</span><span>           </span><span style="color: #BB0000;">NA</span><span>   </span><span style="color: #BB0000;">NA</span><span>       </span><span style="color: #BB0000;">NA</span><span>    </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span><span> ABC101  VOMIT… SEV      REACT… SYSTE… DAY 1 </span><span style="color: #BB0000;">NA</span><span>           </span><span style="color: #BB0000;">NA</span><span>   </span><span style="color: #BB0000;">NA</span><span>       </span><span style="color: #BB0000;">NA</span><span>    </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span><span> ABC101  FATIQ… OCCUR    REACT… SYSTE… DAY 3 </span><span style="color: #BB0000;">NA</span><span>           </span><span style="color: #BB0000;">NA</span><span>   </span><span style="color: #BB0000;">NA</span><span>       </span><span style="color: #BB0000;">NA</span><span>    </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span><span> ABC101  FEVER  OCCUR    REACT… SYSTE… DAY 1 TEMP         38.3 C        Occur…</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span><span> ABC101  FEVER  OCCUR    REACT… SYSTE… DAY 2 TEMP         38   C        Occur…</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span><span> ABC101  FEVER  OCCUR    REACT… SYSTE… DAY 3 TEMP         36   C        Occur…</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span><span> ABC101  FEVER  OCCUR    REACT… SYSTE… DAY 4 TEMP         37   C        Occur…</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span><span> ABC101  FEVER  OCCUR    REACT… SYSTE… DAY 5 TEMP         39   C        Occur…</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span><span> ABC101  FEVER  OCCUR    REACT… SYSTE… DAY 6 TEMP         39   C        Occur…</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span><span> ABC101  FEVER  OCCUR    REACT… SYSTE… DAY 7 TEMP         38   C        Occur…</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: FAORRES &lt;chr&gt;, FASTRESC &lt;chr&gt;, DTYPE &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 11 x 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID FAOBJ  FATESTCD FACAT  FASCAT  FATPT VSTESTCD VSCAT VSSTRESN VSSTRESU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #949494;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #949494;font-style: italic;">&lt;chr&gt;</span><span>   </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span><span> ABC101  REDNE… SEV      REACT… ADMINI… DAY 1 </span><span style="color: #BB0000;">NA</span><span>       </span><span style="color: #BB0000;">NA</span><span>        </span><span style="color: #BB0000;">NA</span><span>   </span><span style="color: #BB0000;">NA</span><span>      </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span><span> ABC101  REDNE… DIAM     REACT… ADMINI… DAY 2 </span><span style="color: #BB0000;">NA</span><span>       </span><span style="color: #BB0000;">NA</span><span>        </span><span style="color: #BB0000;">NA</span><span>   </span><span style="color: #BB0000;">NA</span><span>      </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span><span> ABC101  VOMIT… SEV      REACT… SYSTEM… DAY 1 </span><span style="color: #BB0000;">NA</span><span>       </span><span style="color: #BB0000;">NA</span><span>        </span><span style="color: #BB0000;">NA</span><span>   </span><span style="color: #BB0000;">NA</span><span>      </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span><span> ABC101  FATIQ… OCCUR    REACT… SYSTEM… DAY 3 </span><span style="color: #BB0000;">NA</span><span>       </span><span style="color: #BB0000;">NA</span><span>        </span><span style="color: #BB0000;">NA</span><span>   </span><span style="color: #BB0000;">NA</span><span>      </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span><span> ABC101  FEVER  OCCUR    REACT… SYSTEM… DAY 1 TEMP     REAC…     38.3 C       </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span><span> ABC101  FEVER  OCCUR    REACT… SYSTEM… DAY 2 TEMP     REAC…     38   C       </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span><span> ABC101  FEVER  OCCUR    REACT… SYSTEM… DAY 3 TEMP     REAC…     36   C       </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span><span> ABC101  FEVER  OCCUR    REACT… SYSTEM… DAY 4 TEMP     REAC…     37   C       </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span><span> ABC101  FEVER  OCCUR    REACT… SYSTEM… DAY 5 TEMP     REAC…     39   C       </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span><span> ABC101  FEVER  OCCUR    REACT… SYSTEM… DAY 6 TEMP     REAC…     39   C       </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span><span> ABC101  FEVER  OCCUR    REACT… SYSTEM… DAY 7 TEMP     REAC…     38   C       </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 4 more variables: FATEST &lt;chr&gt;, FAORRES &lt;chr&gt;, FASTRESC &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   DTYPE &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
