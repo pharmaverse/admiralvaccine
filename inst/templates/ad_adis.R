@@ -96,17 +96,29 @@ adis <- derive_vars_dt(
 # Add also records related to 4fold.
 # Please, keep or modify PARAM values according to your purposes.
 
+# Put ISSEQ empty for derived records.
+# If you would like to maintain traciability, please delete these part of the code.
+
 is_log <- adis %>%
-  mutate(DERIVED = "LOG10")
+  mutate(
+    DERIVED = "LOG10",
+    ISSEQ = NA_real_
+  )
 
 is_4fold <- adis %>%
-  mutate(DERIVED = "4FOLD")
+  mutate(
+    DERIVED = "4FOLD",
+    ISSEQ = NA_real_
+  )
 
 is_log_4fold <- adis %>%
-  mutate(DERIVED = "LOG10 4FOLD")
+  mutate(
+    DERIVED = "LOG10 4FOLD",
+    ISSEQ = NA_real_
+  )
 
 adis <- bind_rows(adis, is_log, is_4fold, is_log_4fold) %>%
-  arrange(STUDYID, USUBJID, VISITNUM, ISSEQ, !is.na(DERIVED)) %>%
+  arrange(STUDYID, USUBJID, !is.na(DERIVED), ISSEQ) %>%
   mutate(DERIVED = if_else(is.na(DERIVED), "ORIG", DERIVED))
 
 
@@ -278,7 +290,7 @@ adis <- restrict_derivation(
   derive_var_basetype(
     basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
   ) %>%
-  arrange(STUDYID, USUBJID, DERIVED)
+  arrange(STUDYID, USUBJID, !is.na(DERIVED), ISSEQ)
 
 
 # BASECAT derivation
