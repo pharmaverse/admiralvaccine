@@ -322,7 +322,7 @@ adis <- derive_vars_crit(
 # STEP 10 Derivation of TRTP/A treatment variables ----
 period_ref <- create_period_dataset(
   dataset = adsl,
-  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
+  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA, TRTP = TRTxxP)
 )
 
 adis <- derive_vars_joined(
