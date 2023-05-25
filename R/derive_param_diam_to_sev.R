@@ -168,7 +168,7 @@ derive_param_diam_to_sev <- function(dataset = NULL,
 
   diam <- dataset %>% filter(FAOBJ %in% filter_faobj)
   if (testcd_sev %in% diam$FATESTCD) {
-    fil_rec <- dataset %>% filter(FAOBJ == filter_faobj & FATESTCD != testcd_sev)
+    fil_rec <- dataset %>% filter(!(FAOBJ %in% filter_faobj & FATESTCD == testcd_sev))
   } else {
     fil_rec <- dataset
   }

@@ -86,7 +86,6 @@ derive_param_fever_occur <- function(dataset,
   lookup <-
     c(
       FASEQ = "VSSEQ",
-      FACAT = "VSCAT",
       FAREASND = "VSREASND",
       FSSCAT = "VSSCAT",
       FAEVAL = "VSEVAL",
@@ -101,6 +100,7 @@ derive_param_fever_occur <- function(dataset,
       FALNKGRP = "VSLNKGRP",
       FATPT = "VSTPT"
     )
+
   # Getting fever records from VS
   if (x == 0) {
     # Filter Reacto records from VS
@@ -111,6 +111,7 @@ derive_param_fever_occur <- function(dataset,
       mutate(
         FATEST = "Occurrence Indicator",
         FATESTCD = "OCCUR",
+        FACAT = "REACTOGENICITY",
         FASCAT = "SYSTEMIC",
         FAOBJ = faobj
       ) %>%

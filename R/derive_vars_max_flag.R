@@ -37,15 +37,15 @@
 #' library(admiral)
 #' library(tibble)
 #' input <- tribble(
-#'   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
-#'   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
-#'   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
-#'   "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "2015-02-10", "DIARE",
-#'   "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "2015-02-11", "DIARE",
-#'   "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-10", "SEVFAT",
-#'   "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-11", "SEVFAT",
-#'   "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "2015-02-10", "SEVFAT",
-#'   "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "2015-02-11", "SEVFAT"
+#'   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
+#'   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
+#'   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "DAY 2", "DIARE",
+#'   "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "DAY 1", "DIARE",
+#'   "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "DAY 2", "DIARE",
+#'   "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 1", "SEVFAT",
+#'   "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 2", "SEVFAT",
+#'   "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "DAY 1", "SEVFAT",
+#'   "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "DAY 2", "SEVFAT"
 #' )
 #'
 #' derive_vars_max_flag(
@@ -77,20 +77,20 @@ derive_vars_max_flag <- function(dataset,
 
   flag <- function(dataset,
                    by_vars,
-                   by_join,
                    fl) {
     temp <- dataset %>%
       filter(!is.na(AVAL)) %>%
       group_by(!!!by_vars) %>%
-      arrange(desc(AVAL), FADTC, .by_group = TRUE) %>%
-      summarise(FADTC = first(FADTC)) %>%
-      mutate(!!fl := "Y") %>%
-      ungroup()
+      arrange(desc(AVAL), FATPT, .by_group = TRUE) %>%
+      filter(AVAL == max(AVAL)) %>%
+      mutate(
+        !!fl := ifelse(row_number() == 1, "Y", NA_character_)
+      )
+
 
     dataset <- left_join(
       x = dataset,
       y = temp,
-      by = by_join,
       keep = FALSE
     )
   }
@@ -98,29 +98,21 @@ derive_vars_max_flag <- function(dataset,
   if (!is.null(flag1) && !is.null(flag2)) {
     dataset <- flag(dataset,
       by_vars = exprs(USUBJID, FAOBJ, FATPTREF, PARAMCD),
-      by_join = c("USUBJID", "FAOBJ", "FATPTREF", "PARAMCD", "FADTC"),
       fl = flag1
     )
     dataset <- flag(dataset,
       by_vars = exprs(USUBJID, FAOBJ, PARAMCD),
-      by_join = c("USUBJID", "FAOBJ", "PARAMCD", "FADTC"),
       fl = flag2
     )
   } else if (!is.null(flag1)) {
     dataset <- flag(dataset,
       by_vars = exprs(USUBJID, FAOBJ, FATPTREF, PARAMCD),
-      by_join = c("USUBJID", "FAOBJ", "FATPTREF", "PARAMCD", "FADTC"),
       fl = flag1
     )
-  } else
-  # Flagging maximum record per subject per event for Overall
-  if (!is.null(flag2)) {
+  } else if (!is.null(flag2)) {
     dataset <- flag(dataset,
       by_vars = exprs(USUBJID, FAOBJ, PARAMCD),
-      by_join = c("USUBJID", "FAOBJ", "PARAMCD", "FADTC"),
       fl = flag2
     )
   }
 }
-
-# ________________________END OF THE FUNCTION___________________________________

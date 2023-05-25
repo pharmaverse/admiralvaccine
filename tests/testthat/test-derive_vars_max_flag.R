@@ -2,19 +2,19 @@
 
 test_that("derive maximum severity flag varibles", {
   input <- tibble::tribble(
-    ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
-    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "2015-02-10", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "2015-02-11", "DIARE",
-    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-10", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-11", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "2015-02-10", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "2015-02-11", "SEVFAT"
+    ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
+    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "DAY 2", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "DAY 1", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "DAY 2", "DIARE",
+    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 1", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 2", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "DAY 1", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "DAY 2", "SEVFAT"
   )
 
   expected1 <- input %>%
-    arrange(desc(AVAL), FADTC) %>%
+    arrange(desc(AVAL), FATPT) %>%
     group_by(USUBJID, FAOBJ, FATPTREF) %>%
     mutate(temp = row_number()) %>%
     mutate(flag1 = if_else(temp == 1, "Y", NA_character_)) %>%
@@ -22,7 +22,7 @@ test_that("derive maximum severity flag varibles", {
     select(-temp)
 
   expected2 <- input %>%
-    arrange(desc(AVAL), FADTC) %>%
+    arrange(desc(AVAL), FATPT) %>%
     group_by(USUBJID, FAOBJ) %>%
     mutate(temp = row_number()) %>%
     mutate(flag2 = if_else(temp == 1, "Y", NA_character_)) %>%
@@ -43,7 +43,7 @@ test_that("derive maximum severity flag varibles", {
     expected_output,
     actual_output,
     keys = c(
-      "USUBJID", "FAOBJ", "AVAL", "FADTC",
+      "USUBJID", "FAOBJ", "AVAL", "FATPT",
       "FATESTCD", "FATPTREF", "ANL01FL", "ANL02FL"
     )
   )
@@ -53,19 +53,19 @@ test_that("derive maximum severity flag varibles", {
 
 test_that("derive maximum severity flag variable per event", {
   input <- tibble::tribble(
-    ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
-    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "2015-02-10", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "2015-02-11", "DIARE",
-    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-10", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-11", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "2015-02-10", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "2015-02-11", "SEVFAT"
+    ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
+    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "DAY 2", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "DAY 1", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "DAY 2", "DIARE",
+    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 1", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 2", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "DAY 1", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "DAY 2", "SEVFAT"
   )
 
   expected_output <- input %>%
-    arrange(desc(AVAL), FADTC) %>%
+    arrange(desc(AVAL), FATPT) %>%
     group_by(USUBJID, FAOBJ, FATPTREF) %>%
     mutate(temp = row_number()) %>%
     mutate(flag1 = if_else(temp == 1, "Y", NA_character_)) %>%
@@ -84,7 +84,7 @@ test_that("derive maximum severity flag variable per event", {
     expected_output,
     actual_output,
     keys = c(
-      "USUBJID", "FAOBJ", "AVAL", "FADTC",
+      "USUBJID", "FAOBJ", "AVAL", "FATPT",
       "FATESTCD", "FATPTREF"
     )
   )
@@ -95,25 +95,25 @@ test_that("derive maximum severity flag variable per event", {
 test_that("check if the records with `FATEST`='OCCUR' are not included
 in the dataset", {
   input <- tibble::tribble(
-    ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
-    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "2015-02-10", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "2015-02-11", "DIARE",
-    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-10", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-11", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "2015-02-10", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "2015-02-11", "SEVFAT",
-    "ABC101", "REDNESS", "OCCUR", "VACC 1", NA, "2015-01-10", "LOCISR",
-    "ABC101", "REDNESS", "OCCUR", "VACC 1", NA, "2015-01-11", "LOCISR",
-    "ABC101", "REDNESS", "OCCUR", "VACC 2", NA, "2015-02-10", "LOCISR",
-    "ABC101", "REDNESS", "OCCUR", "VACC 2", NA, "2015-02-11", "LOCISR"
+    ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
+    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "DAY 2", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "DAY 1", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "DAY 2", "DIARE",
+    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 1", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 2", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "DAY 1", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "DAY 2", "SEVFAT",
+    "ABC101", "REDNESS", "OCCUR", "VACC 1", NA, "DAY 1", "LOCISR",
+    "ABC101", "REDNESS", "OCCUR", "VACC 1", NA, "DAY 2", "LOCISR",
+    "ABC101", "REDNESS", "OCCUR", "VACC 2", NA, "DAY 1", "LOCISR",
+    "ABC101", "REDNESS", "OCCUR", "VACC 2", NA, "DAY 2", "LOCISR"
   )
 
   input <- input %>% filter(!is.na(PARAMCD) & FATESTCD != "OCCUR")
 
   expected_output <- input %>%
-    arrange(desc(AVAL), FADTC) %>%
+    arrange(desc(AVAL), FATPT) %>%
     group_by(USUBJID, FAOBJ) %>%
     mutate(temp = row_number()) %>%
     mutate(ANL02FL = if_else(temp == 1, "Y", NA_character_)) %>%
@@ -132,7 +132,7 @@ in the dataset", {
     expected_output,
     actual_output,
     keys = c(
-      "USUBJID", "FAOBJ", "AVAL", "FADTC",
+      "USUBJID", "FAOBJ", "AVAL", "FATPT",
       "FATESTCD", "FATPTREF"
     )
   )
@@ -142,15 +142,15 @@ in the dataset", {
 
 testthat::test_that("derive maximum severity flag varibles", {
   input <- tibble::tribble(
-    ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
-    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "2015-02-10", "DIARE",
-    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "2015-02-11", "DIARE",
-    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-10", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-11", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "2015-02-10", "SEVFAT",
-    "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "2015-02-11", "SEVFAT"
+    ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
+    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "DAY 2", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "DAY 1", "DIARE",
+    "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "DAY 2", "DIARE",
+    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 1", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 2", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "DAY 1", "SEVFAT",
+    "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "DAY 2", "SEVFAT"
   )
 
   testthat::expect_error(
