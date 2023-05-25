@@ -475,7 +475,7 @@ adis <- derive_vars_crit(
 ```{r eval=TRUE}
 period_ref <- create_period_dataset(
   dataset = adsl,
-  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
+  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA, TRTP = TRTxxP)
 )
 
 adis <- derive_vars_joined(
