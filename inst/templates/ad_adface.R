@@ -99,7 +99,7 @@ adface <- adface %>%
 # Step5 - Creating APERIOD variables
 period_ref <- create_period_dataset(
   dataset = adsl,
-  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
+  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA, TRTP = TRTxxP)
 )
 
 adface <- derive_vars_joined(
