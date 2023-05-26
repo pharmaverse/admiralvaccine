@@ -75,6 +75,7 @@ derive_vars_max_flag <- function(dataset,
     stop("Please mention flag name")
   }
 
+
   flag <- function(dataset,
                    by_vars,
                    fl) {
@@ -84,7 +85,7 @@ derive_vars_max_flag <- function(dataset,
       arrange(desc(AVAL), FATPT, .by_group = TRUE) %>%
       filter(AVAL == max(AVAL)) %>%
       mutate(
-        !!fl := ifelse(row_number() == 1, "Y", NA_character_)
+        !!fl := ifelse(row_number() == 1 & AVAL > 0, "Y", NA_character_)
       )
 
 
@@ -94,6 +95,7 @@ derive_vars_max_flag <- function(dataset,
       keep = FALSE
     )
   }
+
 
   if (!is.null(flag1) && !is.null(flag2)) {
     dataset <- flag(dataset,
