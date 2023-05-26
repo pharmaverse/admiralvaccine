@@ -103,10 +103,7 @@ derive_param_maxtemp <- function(dataset = NULL,
                                  testcd_maxtemp = "MAXTEMP") {
   # assertion
 
-  assert_data_frame(dataset, required_vars = exprs(
-    USUBJID, FAOBJ,
-    FATEST, FATESTCD, ATPTREF
-  ))
+  assert_data_frame(dataset, required_vars = by_vars)
   assert_character_scalar(testcd_maxtemp, optional = FALSE)
   assert_character_scalar(test_maxtemp, optional = FALSE)
   assert_character_scalar(filter_faobj, optional = FALSE)
