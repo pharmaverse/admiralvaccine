@@ -42,9 +42,7 @@ suppex <- vx_suppex
 face <- face %>%
   filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
   convert_blanks_to_na() %>%
-  mutate(
-    FAOBJ = str_to_sentence(FAOBJ)
-  )
+  mutate(FAOBJ = str_to_upper(FAOBJ))
 
 # Step2 - Merging supplementary datasets and FACE with EX
 
@@ -126,7 +124,7 @@ adface <- adface %>%
 adface <- derive_param_diam_to_sev(
   dataset = adface,
   filter_diam = "DIAMETER",
-  filter_faobj = c("Redness", "Swelling"),
+  filter_faobj = c("REDNESS", "SWELLING"),
   testcd_sev = "SEV",
   test_sev = "Severity/Intensity",
   none = c(0, 2),
@@ -151,7 +149,7 @@ adface <- derive_param_maxsev(
 
 adface <- derive_param_maxdiam(
   dataset = adface,
-  filter = FAOBJ %in% c("Redness", "Swelling") & FATESTCD == "DIAMETER",
+  filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
   by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
   test_maxdiam = "Maximum Diameter",
   testcd_maxdiam = "MAXDIAM"
@@ -169,20 +167,19 @@ adface <- derive_param_maxtemp(
 
 # Step 11 - Assigning PARAM, PARAMN, PARAMCD, PARCAT1 and PARCAT2 by Lookup table
 
-library(tibble)
 lookup_dataset <- tribble(
   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
-  "SEV", "SEVREDN", 1, "Severity", "Redness",
-  "DIAMETER", "DIARE", 2, "Diameter", "Redness",
-  "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "Redness",
-  "MAXTEMP", "MAXTEMP", 4, "Maximum Temperature", "Fever",
-  "OCCUR", "OCFEVER", 5, "Occurrence Indicator", "Fever",
-  "OCCUR", "OCERYTH", 6, "Occurrence Indicator", "Erythema",
-  "SEV", "SEVPAIN", 7, "Severity", "Pain at Injection site",
-  "OCCUR", "OCPAIN", 8, "Occurrence Indicator", "Pain at Injection site",
-  "OCCUR", "OCSWEL", 9, "Occurrence Indicator", "Swelling",
-  "MAXSEV", "MAXSWEL", 10, "Maximum Severity", "Swelling",
-  "MAXSEV", "MAXREDN", 11, "Maximum Severity", "Redness"
+  "SEV", "SEVREDN", 1, "Severity", "REDNESS",
+  "DIAMETER", "DIARE", 2, "Diameter", "REDNESS",
+  "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "REDNESS",
+  "MAXTEMP", "MAXTEMP", 4, "Maximum Temperature", "FEVER",
+  "OCCUR", "OCFEVER", 5, "Occurrence Indicator", "FEVER",
+  "OCCUR", "OCERYTH", 6, "Occurrence Indicator", "ERYTHEMA",
+  "SEV", "SEVPAIN", 7, "Severity", "PAIN AT INJECTION SITE",
+  "OCCUR", "OCPAIN", 8, "Occurrence Indicator", "PAIN AT INJECTION SITE",
+  "OCCUR", "OCSWEL", 9, "Occurrence Indicator", "SWELLING",
+  "MAXSEV", "MAXSWEL", 10, "Maximum Severity", "SWELLING",
+  "MAXSEV", "MAXREDN", 11, "Maximum Severity", "REDNESS"
 )
 
 adface <- derive_vars_params(
