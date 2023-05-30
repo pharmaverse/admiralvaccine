@@ -1,4 +1,4 @@
-#' Assigning Parameter variables
+#' Assigning Parameter Variables
 #'
 #' Creating `PARAMCD` from lookup file and assigning `PARAM`,`PARAMN`,`PARCAT1`,
 #' `PARCAT2` variables
@@ -20,7 +20,7 @@
 #'
 #' @author Dhivya Kanagaraj
 #'
-#' @details A lookup file is required with PARAMCD values for every combination
+#' @details A lookup dataset is required with `PARAMCD` values for every combination
 #'      of `FATEST` & `FAOBJ`.
 #'      `PARAMCD` `PARAMN` `PARAMN` `PARCAT1` `PARCAT2` values can be assigned
 #'      from lookup file.
