@@ -169,23 +169,44 @@ adface <- derive_param_maxtemp(
 
 lookup_dataset <- tribble(
   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
-  "SEV", "SEVREDN", 1, "Severity", "REDNESS",
+  "SEV", "SEVREDN", 1, "Severity/Intensity", "REDNESS",
   "DIAMETER", "DIARE", 2, "Diameter", "REDNESS",
-  "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "REDNESS",
+  "MAXDIAM", "MDIRE", 3, "Maximum Diameter", "REDNESS",
   "MAXTEMP", "MAXTEMP", 4, "Maximum Temperature", "FEVER",
   "OCCUR", "OCFEVER", 5, "Occurrence Indicator", "FEVER",
   "OCCUR", "OCERYTH", 6, "Occurrence Indicator", "ERYTHEMA",
-  "SEV", "SEVPAIN", 7, "Severity", "PAIN AT INJECTION SITE",
-  "OCCUR", "OCPAIN", 8, "Occurrence Indicator", "PAIN AT INJECTION SITE",
-  "OCCUR", "OCSWEL", 9, "Occurrence Indicator", "SWELLING",
-  "MAXSEV", "MAXSWEL", 10, "Maximum Severity", "SWELLING",
-  "MAXSEV", "MAXREDN", 11, "Maximum Severity", "REDNESS"
+  "MAXSEV", "MAXSWEL", 7, "Maximum Severity", "SWELLING",
+  "MAXSEV", "MAXREDN", 8, "Maximum Severity", "REDNESS",
+  "MAXSEV", "MAXSFAT", 9, "Maximum Severity", "FATIGUE",
+  "MAXSEV", "MAXSHEA", 10, "Maximum Severity", "HEADACHE",
+  "MAXSEV", "MSEVNWJP", 11, "Maximum Severity", "NEW OR WORSENED JOINT PAIN",
+  "MAXSEV", "MSEVNWMP", 12, 'Maximum Severity', "NEW OR WORSENED MUSCLE PAIN",
+  "OCCUR", "OCISR", 13, "Occurrence Indicator", "REDNESS",
+  "OCCUR", "OCINS", 14, "Occurrence Indicator", "SWELLING",
+  "OCCUR", "OCPIS", 15, "Occurrence Indicator", "PAIN AT INJECTION SITE",
+  "OCCUR", "OCFATIG",16, "Occurrence Indicator", "FATIGUE",
+  "OCCUR", "OCHEAD", 17, "Occurrence Indicator", "HEADACHE",
+  "OCCUR", "OCCHILLS", 18, "Occurrence Indicator", "CHILLS",
+  "OCCUR", "OCDIAR", 19, "Occurrence Indicator", "DIARRHEA",
+  "OCCUR", "OCCNWJP", 20, "Occurrence Indicator", "NEW OR WORSENED JOINT PAIN",
+  "OCCUR", "OCCNWMP", 21, "Occurrence Indicator", "NEW OR WORSENED MUSCLE PAIN",
+  "SEV", "SEVSWEL", 22, "Severity/Intensity", "SWELLING",
+  "SEV", "SEVPIS", 23, "Severity/Intensity", "PAIN AT INJECTION SITE",
+  "SEV", "SEVFAT",24, "Severity/Intensity", "FATIGUE",
+  "SEV", "SEVHEAD", 25, "Severity/Intensity", "HEADACHE",
+  "SEV", "SEVDIAR", 26, "Severity/Intensity", "DIARRHEA",
+  "SEV", "SEVNWJP", 27, "Severity/Intensity", "NEW OR WORSENED JOINT PAIN",
+  "SEV", "SEVNWMP", 28, "Severity/Intensity", "NEW OR WORSENED MUSCLE PAIN",
+  "MAXDIAM", "MDISW", 29, "Maximum Diameter", "SWELLING",
+  "MAXSEV", "MAXSPIS", 30, "Maximum Severity", "PAIN AT INJECTION SITE",
+  "OCCUR", "OCCVOM", 31, "Occurrence Indicator", "VOMITING",
+  "DIAMETER", "DIASWEL", 2, "Diameter", "SWELLING",
 )
 
 adface <- derive_vars_params(
   dataset = adface,
   lookup_dataset = lookup_dataset,
-  merge_vars = exprs(PARAMCD, PARAMN)
+  merge_vars = exprs(PARAMCD)
 )
 
 # Step12 - Maximum flag ANL01FL and ANL02FL
@@ -242,3 +263,4 @@ adface <- adface %>% select(
 
 dir <- tempdir()
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
+
