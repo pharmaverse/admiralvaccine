@@ -1,4 +1,4 @@
-#' Creating Severity Records from Diameters
+#' Creating Severity Records From Diameters
 #'
 #' @description
 #' To derive the severity records from the diameter records per subject per event per period.
@@ -135,7 +135,7 @@ derive_diamtosev_records <- function(dataset = NULL,
                                      mod = 5,
                                      sev = 10) {
   assert_data_frame(dataset,
-                    required_vars = exprs(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
+    required_vars = exprs(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
   )
 
   assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
