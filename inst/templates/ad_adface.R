@@ -149,7 +149,7 @@ adface <- derive_param_maxsev(
 
 adface <- derive_param_maxdiam(
   dataset = adface,
-  filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+  filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMlETER",
   by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
   test_maxdiam = "Maximum Diameter",
   testcd_maxdiam = "MAXDIAM"
