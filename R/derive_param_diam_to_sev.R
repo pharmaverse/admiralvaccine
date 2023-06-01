@@ -9,7 +9,7 @@
 #' The variables `USUBJID`, `APTPTREF`, `FAOBJ`, `FASCAT`,`AVAL`, `AVALC`,
 #' `FAOBJ`, `FATESTCD` and `FATEST` are expected for Input data set.(`data set`)
 #'
-#' @param filter_faobj Event filter
+#' @param faobj_values Event filter
 #'
 #' *Default: c("REDNESS","SWELLING")*
 #' *Permitted Value*: A character vector or Scalar.
@@ -17,14 +17,14 @@
 #'  Helps to filter the events (Redness and swelling) which has diameter records
 #'  to derive severity records by passing the events from `FAOBJ`.
 #'
-#' @param filter_diam Diameter record filter
+#' @param diam_code Diameter record filter
 #'
 #' *Default: "DIAMETER"*
 #' *Permitted Value*: A character vector or scalar.
 #'
 #' Helps to filter the diameter records to derive the severity records by
 #' passing the `FATESTCD` value for diameter  which is corresponding to the
-#' specified events in `filter_faobj`.
+#' specified events in `faobj_values`.
 #'
 #' @param testcd_sev `FATESTCD`value for severity
 #'
@@ -35,7 +35,7 @@
 #' Ignore the argument if you want to set the default value.
 #'
 #' *Note*: This argument value will be used to check whether input data set has
-#' Severity records for specified `filter_faobj` event. If it has, those records
+#' Severity records for specified `faobj_values` event. If it has, those records
 #' will be removed and new severity records will be derived from diameters.
 #'
 #' @param test_sev `FATEST` value for severity
@@ -83,7 +83,7 @@
 #' @details
 #' 1. Pass the Input data set in `dataset` with required variables and `AVAL`
 #' should have the diameter values for the events(`FAOBJ`) specified in
-#' `filter_faobj`.
+#' `faobj_values`.
 #' 2. If the SDTM data set has severity record for redness and swelling, User
 #' can skip this function to keep the SDTM level severity records for further
 #'  derivation.
@@ -96,12 +96,12 @@
 #' 4. Pass the values in severity grade arguments(`none`, `mild`, `mod`, `sev`)
 #'  as per the study needs.
 #' 5.User can pass the events which has diameter values to derive their severity
-#'  records by passing the appropriate `filter_diam`, `filter_faobj`and severity
+#'  records by passing the appropriate `diam_code`, `faobj_values`and severity
 #'  grade limits.
 #'
 #' @return
 #' The Input data with the new severity records for Redness and swelling which
-#' is specified in `filter_faobj` and AVAL, AVALC will be derived and fatestcd,
+#' is specified in `faobj_values` and AVAL, AVALC will be derived and fatestcd,
 #'  fatest will be changed as per the values
 #'
 #' @examples
@@ -133,10 +133,10 @@
 #'   "XYZ1002", "SWELLING", 1.4, "1.4", "VACCINATION 2", "Diameter", "DIAMETER"
 #' )
 #'
-#' derive_param_diam_to_sev(
+#' derive_diamtosev_records(
 #'   dataset = input,
-#'   filter_faobj = c("REDENSS", "SWELLING"),
-#'   filter_diam = "DIAMETER",
+#'   faobj_values = c("REDENSS", "SWELLING"),
+#'   diam_code = "DIAMETER",
 #'   testcd_sev = "SEV",
 #'   test_sev = "Severity"
 #' )
@@ -145,53 +145,53 @@
 #' @keywords der_rec
 #' @family der_rec
 #'
-derive_param_diam_to_sev <- function(dataset = NULL,
-                                     filter_diam = "DIAMETER",
-                                     filter_faobj = c("REDNESS", "SWELLING"),
+derive_diamtosev_records <- function(dataset = NULL,
+                                     diam_code = "DIAMETER",
+                                     faobj_values = c("REDNESS", "SWELLING"),
                                      testcd_sev = "SEV",
                                      test_sev = "Severity/Intensity",
-                                     none = c(0, 2),
-                                     mild = c(2, 5),
-                                     mod = c(5, 10),
+                                     none = 0,
+                                     mild = 2,
+                                     mod = 5,
                                      sev = 10) {
   assert_data_frame(dataset,
-    required_vars = exprs(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
+                    required_vars = exprs(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
   )
 
   assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
   assert_character_vector(
-    arg = c(filter_diam, filter_faobj, testcd_sev, test_sev),
+    arg = c(diam_code, faobj_values, testcd_sev, test_sev),
     optional = FALSE
   )
 
   # Checking & Removing the records which has severity records for the FAOBJ
 
-  diam <- dataset %>% filter(FAOBJ %in% filter_faobj)
+  diam <- dataset %>% filter(FAOBJ %in% faobj_values)
   if (testcd_sev %in% diam$FATESTCD) {
-    fil_rec <- dataset %>% filter(!(FAOBJ %in% filter_faobj & FATESTCD == testcd_sev))
+    fil_rec <- dataset %>% filter(!(FAOBJ %in% faobj_values & FATESTCD == testcd_sev))
   } else {
     fil_rec <- dataset
   }
   # Replacing FATESTCD and FATEST for Diameter with Severity
-  ds <- function(filter_diam) {
-    if (c(filter_diam) %in% diam$FATESTCD) {
+  ds <- function(diam_code) {
+    if (c(diam_code) %in% diam$FATESTCD) {
       sev <- fil_rec %>%
-        filter(FAOBJ %in% filter_faobj & FATESTCD %in% filter_diam) %>%
+        filter(FAOBJ %in% faobj_values & FATESTCD %in% diam_code) %>%
         mutate(
           FATESTCD = testcd_sev,
           FATEST = test_sev,
           DTYPE = "DERIVED",
           FASEQ = NA_integer_,
           AVALC = if_else(
-            none[1] <= AVAL & AVAL <= none[2],
+            none <= AVAL & AVAL <= mild,
             "NONE",
             if_else(
-              mild[1] < AVAL & AVAL <= mild[2],
+              mild < AVAL & AVAL <= mod,
               "MILD",
               if_else(
-                mod[1] < AVAL & AVAL <= mod[2],
+                mod < AVAL & AVAL <= sev,
                 "MODERATE",
-                if_else(sev[1] < AVAL, "SEVERE", AVALC)
+                if_else(sev < AVAL, "SEVERE", AVALC)
               )
             )
           ),
@@ -208,11 +208,11 @@ derive_param_diam_to_sev <- function(dataset = NULL,
 
       return(sev)
     } else {
-      warning(filter_diam, " ", "doesn't exist in the filtered record")
+      warning(diam_code, " ", "doesn't exist in the filtered record")
       return(NULL)
     }
   }
-  final <- lapply(filter_diam, ds)
-  df <- do.call("bind_rows", final) %>%
+  final <- lapply(diam_code, ds)
+  do.call("bind_rows", final) %>%
     bind_rows(fil_rec)
 }
