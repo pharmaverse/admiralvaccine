@@ -1,21 +1,12 @@
 #' Creating Severity Records from Diameters
 #'
 #' @description
-#' To derive the severity records from the diameter records per subject per
-#' event per period.
+#' To derive the severity records from the diameter records per subject per event per period.
 #'
 #' @param dataset Input data set
 #'
 #' The variables `USUBJID`, `APTPTREF`, `FAOBJ`, `FASCAT`,`AVAL`, `AVALC`,
-#' `FAOBJ`, `FATESTCD` and `FATEST` are expected for Input data set.(`data set`)
-#'
-#' @param faobj_values Event filter
-#'
-#' *Default: c("REDNESS","SWELLING")*
-#' *Permitted Value*: A character vector or Scalar.
-#'
-#'  Helps to filter the events (Redness and swelling) which has diameter records
-#'  to derive severity records by passing the events from `FAOBJ`.
+#' `FAOBJ`, `FATESTCD` and `FATEST` are expected for Input data set.(`dataset`)
 #'
 #' @param diam_code Diameter record filter
 #'
@@ -25,6 +16,14 @@
 #' Helps to filter the diameter records to derive the severity records by
 #' passing the `FATESTCD` value for diameter  which is corresponding to the
 #' specified events in `faobj_values`.
+#'
+#' @param faobj_values Event filter
+#'
+#' *Default: c("REDNESS","SWELLING")*
+#' *Permitted Value*: A character vector or Scalar.
+#'
+#'  Helps to filter the events (Redness and swelling) which has diameter records
+#'  to derive severity records by passing the events from `FAOBJ`.
 #'
 #' @param testcd_sev `FATESTCD`value for severity
 #'
@@ -46,63 +45,45 @@
 #' Assign the value for `FATEST` variable to indicate the severity records.
 #' Ignore the argument if you want to set the default value.
 #'
-#' *Assign the Severity limits to create Severity grade(AVALC)*
-#' @param none limit for grade `"NONE"`
+#' *Assign the lower limit to derive the Severity Grade (AVALC)*
+#' *For Example: User passing 0 to `none` and 2 to `mild`, 0 will act as lower limit and 2 will act*
+#' *as upper limit*
+#' *Note: Use the limit reference to pass the values in argument*
+#'  *Since the condition was coded like this,*
+#'  *NONE : none < AVAL <= mild*
+#'  *MILD : mild < AVAL <= mod*
+#'  *MODERATE: mod < AVAL <= sev*
+#'  *SEVERE: sev < AVAL*
+#'  *User should pass the values as numeric vectors. Refer the default values.*
 #'
-#' *Default: c(0,2)*
-#' *Permitted value*: A Numeric vector
+#' @param none Pass the lower limit for grade `"NONE"`
+#'
+#' *Default: 0*
+#' *Permitted Value:* A numeric vector
 #'
 #' The `none` and the following arguments(`mild`, `mode` and `sev` ) will be
 #' used for assigning the diameter limits to derive the `AVALC`(severity grade).
 #'
-#'  *Note: Use the limit reference to pass the values in argument*
-#'  *Since the condition was coded like this,*
-#'  *NONE : none < AVAL <= none*
-#'  *MILD : mild < AVAL <= mild*
-#'  *MODERATE: mod < AVAL <= mod*
-#'  *SEVERE: sev > AVAL*
-#'  *User should pass the values as numeric vectors. Refer the default values.*
+#' @param mild Pass the lower limit for grade `"MILD"`
 #'
+#' *Default: 2*
+#' *Permitted Value:* A numeric vector
 #'
-#' @param mild limit for grade `"MILD"`
+#' @param mod Pass the lower limit for grade `"MODERATE"`
 #'
-#'  *Default: c(2,5)*
-#'  *Permitted value*: A Numeric vector
+#' *Default: 5*
+#' *Permitted Value:* A numeric vector
 #'
+#' @param sev Pass the lower limit for grade `"SEVERE"`
 #'
-#' @param mod limit for grade `"MODERATE"`
+#' *Default: 10 (i.e., 10 < AVAL )*
+#' *Permitted Value:* A numeric vector
 #'
-#' *Default: c(5,10)*
-#' *Permitted value*: A Numeric vector
-#'
-#' @param sev limit for grade `"SEVERE"`
-#'
-#' *Default: 10*
-#' *Permitted value*: A Numeric vector
-#'
-#' @details
-#' 1. Pass the Input data set in `dataset` with required variables and `AVAL`
-#' should have the diameter values for the events(`FAOBJ`) specified in
-#' `faobj_values`.
-#' 2. If the SDTM data set has severity record for redness and swelling, User
-#' can skip this function to keep the SDTM level severity records for further
-#'  derivation.
-#' 3. If User want to derive the severity records from the diameter records even
-#'  that data set has severity records for Redness and swelling. This function
-#'  will remove the existing severity records and it will create the new
-#'  severity records as`AVALC` which is derived from diameter. and `AVAL` will
-#'  be derived as numeric severity grade to get the maximum severity records
-#'  which will be derived by `derive_param_maxsev.R`.
-#' 4. Pass the values in severity grade arguments(`none`, `mild`, `mod`, `sev`)
-#'  as per the study needs.
-#' 5.User can pass the events which has diameter values to derive their severity
-#'  records by passing the appropriate `diam_code`, `faobj_values`and severity
-#'  grade limits.
-#'
-#' @return
-#' The Input data with the new severity records for Redness and swelling which
+#' @return The Input data with the new severity records for Redness and swelling which
 #' is specified in `faobj_values` and AVAL, AVALC will be derived and fatestcd,
-#'  fatest will be changed as per the values
+#'  fatest will be changed as per the values.
+#'
+#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -141,7 +122,6 @@
 #'   test_sev = "Severity"
 #' )
 #'
-#' @export
 #' @keywords der_rec
 #' @family der_rec
 #'
