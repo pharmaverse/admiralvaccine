@@ -158,6 +158,5 @@ derive_vars_max_flag <- function(dataset,
       fl = flag2
     )
   }
-
   return(dataset)
 }
