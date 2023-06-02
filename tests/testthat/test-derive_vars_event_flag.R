@@ -53,8 +53,8 @@ testthat::test_that("testcase-1 : checking whether its handling the NA values
 
 # testcase-2
 
-testthat::test_that("test case - 2: Checking whether its creating the user input
-                    varibales name for both flag", {
+testthat::test_that("test case - 2: Checking whether it's creating the user input
+                    varibales name for both flags", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
