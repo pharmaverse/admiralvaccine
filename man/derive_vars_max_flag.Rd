@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_vars_max_flag.R
 \name{derive_vars_max_flag}
 \alias{derive_vars_max_flag}
-\title{Creating Two Maximum Flags}
+\title{Creating ANLxxFL Variables For Flagging the Maximum records}
 \usage{
 derive_vars_max_flag(dataset, flag1 = "ANL01FL", flag2 = "ANL02FL")
 }
