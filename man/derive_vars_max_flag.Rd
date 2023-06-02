@@ -2,30 +2,25 @@
 % Please edit documentation in R/derive_vars_max_flag.R
 \name{derive_vars_max_flag}
 \alias{derive_vars_max_flag}
-\title{Creating Maximum flags}
+\title{Creating Two Maximum Flags}
 \usage{
 derive_vars_max_flag(dataset, flag1 = "ANL01FL", flag2 = "ANL02FL")
 }
 \arguments{
 \item{dataset}{Input dataset}
 
-\item{flag1}{\itemize{
-\item Flags the maximum record per subject per event per
-Vaccination
-\emph{Default: "ANL01FL"}
-\emph{Permitted value: Any variable name or NULL}
-\code{NULL} denotes not to create the flag
-}}
+\item{flag1}{Flags the maximum record per subject per event per
+vaccination.
+\emph{Permitted value: Any variable name as a string or NULL}
+\code{NULL} denotes not to create the flag}
 
-\item{flag2}{\itemize{
-\item Flags the maximum record per subject per event for Overall
-\emph{Default: "ANL02FL"}
-\emph{Permitted value: Any variable name or NULL}
-\code{NULL} denotes not to create the flag
-}}
+\item{flag2}{Flags the maximum record per subject per event for Overall
+
+\emph{Permitted value: Any variable name as a string or NULL}
+\code{NULL} denotes not to create the flag}
 }
 \value{
-The output dataset creates \code{ANLxxFL} flags
+The output dataframe with \code{ANLxxFL} flags
 }
 \description{
 Adds Flags variables for maximum record per subject per event for overall
@@ -42,6 +37,7 @@ library(dplyr)
 library(admiraldev)
 library(admiral)
 library(tibble)
+
 input <- tribble(
   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
@@ -77,7 +73,8 @@ Other der_var:
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()}
+\code{\link{derive_vars_vaxdt}()},
+\code{\link{max_flag}()}
 }
 \author{
 Dhivya Kanagaraj
