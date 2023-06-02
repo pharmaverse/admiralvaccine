@@ -180,7 +180,6 @@ derive_diamtosev_records <- function(dataset = NULL,
       # binding with Input data set
 
       return(sev)
-
     } else {
       warning(diam_code, " ", "doesn't exist in the filtered record")
 
