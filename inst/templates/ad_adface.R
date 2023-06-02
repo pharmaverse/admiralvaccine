@@ -44,6 +44,7 @@ face <- face %>%
   convert_blanks_to_na() %>%
   mutate(FAOBJ = str_to_upper(FAOBJ))
 
+adsl_vars <- exprs(RFSTDTC, RFENDTC)
 # Step2 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
@@ -54,32 +55,20 @@ adface <- derive_vars_merged_vaccine(
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
-)
-
-# Step3 - Merge required adsl variables needed for analysis.
-
-adsl_vars <- exprs(RFSTDTC, RFENDTC)
-
-adface <- derive_vars_merged(
-  adface,
-  dataset_add = adsl,
-  new_vars = adsl_vars,
-  by_vars = exprs(STUDYID, USUBJID)
-)
-
-# Step3 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not
-# present in FACE
-
-adface <- derive_param_fever_occur(
-  dataset = adface,
-  source_data = vs,
-  source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
-  faobj = "FEVER"
-)
-
-# Step4 - Creating ADT, ATM, ADTM, ADY
-
-adface <- adface %>%
+) %>%
+  # Step3 - Merge required adsl variables needed for analysis.
+  derive_vars_merged(
+    dataset_add = adsl,
+    new_vars = adsl_vars,
+    by_vars = exprs(STUDYID, USUBJID)
+  ) %>%
+  # Step3 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not present in FACE
+  derive_param_fever_occur(
+    source_data = vs,
+    source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+    faobj = "FEVER"
+  ) %>%
+  # Step4 - Creating ADT, ATM, ADTM, ADY
   derive_vars_dt(
     new_vars_prefix = "A",
     dtc = FADTC
@@ -88,9 +77,7 @@ adface <- adface %>%
     new_vars_prefix = "A",
     dtc = FADTC,
     highest_imputation = "n"
-  )
-
-adface <- adface %>%
+  ) %>%
   mutate(RFSTDTC = as.Date(RFSTDTC)) %>%
   derive_vars_dy(reference_date = RFSTDTC, source_vars = exprs(ADT))
 
@@ -105,65 +92,48 @@ adface <- derive_vars_joined(
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
   filter_join = ADT >= APERSDT & ADT <= APEREDT
-)
-
-# Step6 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT,
-# AVISITN,ATPT,ATPTN)
-
-adface <- adface %>%
+) %>%
+  # Step6 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN,ATPT,ATPTN)
   mutate(
     AVAL = suppressWarnings(as.numeric(FASTRESN)),
     AVALC = as.character(FASTRESC),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
     ATPTN = FATPTNUM
+  ) %>%
+  # Step7 - Creating severity records from Diameter for Redness,Swelling,etc
+  derive_param_diam_to_sev(
+    filter_diam = "DIAMETER",
+    filter_faobj = c("REDNESS", "SWELLING"),
+    testcd_sev = "SEV",
+    test_sev = "Severity/Intensity",
+    none = c(0, 2),
+    mild = c(2, 5),
+    mod = c(5, 10),
+    sev = c(10)
+  ) %>%
+  # Step8 - Deriving Maximum Severity for Local and Systemic events
+  derive_param_maxsev(
+    exclude_events = NULL,
+    filter_sev = "SEV",
+    test_maxsev = "Maximum Severity",
+    testcd_maxsev = "MAXSEV",
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
+  ) %>%
+  # Step9 - Deriving Maximum Diameter for Administrative site reactions
+  derive_param_maxdiam(
+    filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+    by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
+    test_maxdiam = "Maximum Diameter",
+    testcd_maxdiam = "MAXDIAM"
+  ) %>%
+  # Step10 - Deriving Maximum Temperature
+  derive_param_maxtemp(
+    filter_faobj = "FEVER",
+    test_maxtemp = "Maximum Temperature",
+    testcd_maxtemp = "MAXTEMP",
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
   )
-
-# Step7 - Creating severity records from Diameter for Redness,Swelling,etc
-
-adface <- derive_param_diam_to_sev(
-  dataset = adface,
-  filter_diam = "DIAMETER",
-  filter_faobj = c("REDNESS", "SWELLING"),
-  testcd_sev = "SEV",
-  test_sev = "Severity/Intensity",
-  none = c(0, 2),
-  mild = c(2, 5),
-  mod = c(5, 10),
-  sev = c(10)
-)
-
-
-# Step8 - Deriving Maximum Severity for Local and Systemic events
-
-adface <- derive_param_maxsev(
-  dataset = adface,
-  exclude_events = NULL,
-  filter_sev = "SEV",
-  test_maxsev = "Maximum Severity",
-  testcd_maxsev = "MAXSEV",
-  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
-)
-
-# Step9 - Deriving Maximum Diameter for Administrative site reactions
-
-adface <- derive_param_maxdiam(
-  dataset = adface,
-  filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
-  by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
-  test_maxdiam = "Maximum Diameter",
-  testcd_maxdiam = "MAXDIAM"
-)
-
-# Step10 - Deriving Maximum Temperature
-
-adface <- derive_param_maxtemp(
-  dataset = adface,
-  filter_faobj = "FEVER",
-  test_maxtemp = "Maximum Temperature",
-  testcd_maxtemp = "MAXTEMP",
-  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
-)
 
 # Step 11 - Assigning PARAM, PARAMN, PARAMCD, PARCAT1 and PARCAT2 by Lookup table
 
@@ -180,11 +150,11 @@ lookup_dataset <- tribble(
   "MAXSEV", "MAXSFAT", 9, "Maximum Severity", "FATIGUE",
   "MAXSEV", "MAXSHEA", 10, "Maximum Severity", "HEADACHE",
   "MAXSEV", "MSEVNWJP", 11, "Maximum Severity", "NEW OR WORSENED JOINT PAIN",
-  "MAXSEV", "MSEVNWMP", 12, 'Maximum Severity', "NEW OR WORSENED MUSCLE PAIN",
+  "MAXSEV", "MSEVNWMP", 12, "Maximum Severity", "NEW OR WORSENED MUSCLE PAIN",
   "OCCUR", "OCISR", 13, "Occurrence Indicator", "REDNESS",
   "OCCUR", "OCINS", 14, "Occurrence Indicator", "SWELLING",
   "OCCUR", "OCPIS", 15, "Occurrence Indicator", "PAIN AT INJECTION SITE",
-  "OCCUR", "OCFATIG",16, "Occurrence Indicator", "FATIGUE",
+  "OCCUR", "OCFATIG", 16, "Occurrence Indicator", "FATIGUE",
   "OCCUR", "OCHEAD", 17, "Occurrence Indicator", "HEADACHE",
   "OCCUR", "OCCHILLS", 18, "Occurrence Indicator", "CHILLS",
   "OCCUR", "OCDIAR", 19, "Occurrence Indicator", "DIARRHEA",
@@ -192,7 +162,7 @@ lookup_dataset <- tribble(
   "OCCUR", "OCCNWMP", 21, "Occurrence Indicator", "NEW OR WORSENED MUSCLE PAIN",
   "SEV", "SEVSWEL", 22, "Severity/Intensity", "SWELLING",
   "SEV", "SEVPIS", 23, "Severity/Intensity", "PAIN AT INJECTION SITE",
-  "SEV", "SEVFAT",24, "Severity/Intensity", "FATIGUE",
+  "SEV", "SEVFAT", 24, "Severity/Intensity", "FATIGUE",
   "SEV", "SEVHEAD", 25, "Severity/Intensity", "HEADACHE",
   "SEV", "SEVDIAR", 26, "Severity/Intensity", "DIARRHEA",
   "SEV", "SEVNWJP", 27, "Severity/Intensity", "NEW OR WORSENED JOINT PAIN",
@@ -200,32 +170,26 @@ lookup_dataset <- tribble(
   "MAXDIAM", "MDISW", 29, "Maximum Diameter", "SWELLING",
   "MAXSEV", "MAXSPIS", 30, "Maximum Severity", "PAIN AT INJECTION SITE",
   "OCCUR", "OCCVOM", 31, "Occurrence Indicator", "VOMITING",
-  "DIAMETER", "DIASWEL", 2, "Diameter", "SWELLING",
+  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING",
 )
 
 adface <- derive_vars_params(
   dataset = adface,
   lookup_dataset = lookup_dataset,
-  merge_vars = exprs(PARAMCD)
-)
-
-# Step12 - Maximum flag ANL01FL and ANL02FL
-
-adface <- derive_vars_max_flag(
-  dataset = adface,
-  flag1 = "ANL01FL",
-  flag2 = "ANL02FL"
-)
-
-# Step13 - Creating flag variables for occurred events
-
-adface <- derive_vars_event_flag(
-  dataset = adface,
-  by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
-  aval_cutoff = 2.5,
-  new_var1 = EVENTFL,
-  new_var2 = EVENTDFL
-)
+  merge_vars = exprs(PARAMCD, PARAMN)
+) %>%
+  # Step12 - Maximum flag ANL01FL and ANL02FL
+  derive_vars_max_flag(
+    flag1 = "ANL01FL",
+    flag2 = "ANL02FL"
+  ) %>%
+  # Step13 - Creating flag variables for occurred events
+  derive_vars_event_flag(
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+    aval_cutoff = 2.5,
+    new_var1 = EVENTFL,
+    new_var2 = EVENTDFL
+  )
 
 # Basic filter for ADSL
 adsl <- adsl %>%
@@ -263,4 +227,3 @@ adface <- adface %>% select(
 
 dir <- tempdir()
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
-
