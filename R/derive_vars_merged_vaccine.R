@@ -1,8 +1,8 @@
 #' Add New Variable(s) to the Input dataset Based on Variables from Another dataset
 #'
-#' Add New Variable(s) to the Input dataset Based on Variables from Another dataset.
+#' Add new variables to the input dataset based on variables from another dataset.
 #' The variables to be added to the output dataset will be based on input variables
-#' passed on `ex_vars` argument
+#' passed on `ex_vars` argument.
 #'
 #' @param dataset Input dataset
 #'
@@ -25,11 +25,7 @@
 #'
 #' @param by_vars_sys Grouping variables for systemic events.
 #'
-#' *Default: exprs(USUBJID, FATPTREF)*
-#'
 #' @param by_vars_adms Grouping variables for administration site events.
-#'
-#' *Default: exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR)*
 #'
 #' @param ex_vars Variables to be added to the output dataset from EX dataset
 #'
@@ -37,14 +33,14 @@
 #'
 #' @details
 #'
-#' The input dataset will be merged with Ex dataset for "ADMINISTRATION SITE" and
-#' "SYSTEMIC" categories separately and these datasets will be binded together as
+#' The input dataset will be merged with `EX` dataset for "ADMINISTRATION SITE" and
+#' "SYSTEMIC" categories separately and these datasets will be bound together as
 #' the final output dataset.
 #'
-#' This function is intended to add only `EX` variables to the input dataset, an user
+#' This function is intended to add only `EX` variables to the input dataset and user
 #' is expected to handle if any pre-processing is required.
 #'
-#' Only the variables passed to the `ex_vars` will be present in the output dataset
+#' Only the variables passed to the `ex_vars` will be added in the output dataset
 #'
 #' If the input dataset has multiple vaccination for a subject at same visit
 #' then this function will not merge ex dataset and will return only the input
@@ -87,7 +83,7 @@ derive_vars_merged_vaccine <- function(dataset,
   assert_vars(by_vars_adms)
   assert_vars(ex_vars)
   assert_data_frame(dataset_supp, optional = TRUE)
-  assert_data_frame(dataset_ex, required_vars = NULL)
+  assert_data_frame(dataset_ex, required_vars = ex_vars)
   assert_data_frame(dataset_suppex, optional = TRUE)
 
 
@@ -96,7 +92,7 @@ derive_vars_merged_vaccine <- function(dataset,
     dataset <- combine_supp(dataset, dataset_supp)
   }
 
-  # combine face and suppface dataset
+  # combine face and suppex dataset
   if (!is.null(dataset_suppex)) {
     dataset_ex <- combine_supp(dataset_ex, dataset_suppex)
   }
