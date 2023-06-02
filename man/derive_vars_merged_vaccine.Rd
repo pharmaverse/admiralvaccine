@@ -24,13 +24,9 @@ The variables specified by the \code{by_vars} argument inside the
 
 The variables specified by the \code{ex_vars} argument are expected.}
 
-\item{by_vars_sys}{Grouping variables for systemic events.
+\item{by_vars_sys}{Grouping variables for systemic events.}
 
-\emph{Default: exprs(USUBJID, FATPTREF)}}
-
-\item{by_vars_adms}{Grouping variables for administration site events.
-
-\emph{Default: exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR)}}
+\item{by_vars_adms}{Grouping variables for administration site events.}
 
 \item{dataset_supp}{Supplementary input dataset
 By default \code{dataset_supp} will be NULL,user has to provide
@@ -48,19 +44,19 @@ if they have supplementary dataset in their case.}
 the dataset with variables added from the EX dataset.
 }
 \description{
-Add New Variable(s) to the Input dataset Based on Variables from Another dataset.
+Add new variables to the input dataset based on variables from another dataset.
 The variables to be added to the output dataset will be based on input variables
-passed on \code{ex_vars} argument
+passed on \code{ex_vars} argument.
 }
 \details{
-The input dataset will be merged with Ex dataset for "ADMINISTRATION SITE" and
-"SYSTEMIC" categories separately and these datasets will be binded together as
+The input dataset will be merged with \code{EX} dataset for "ADMINISTRATION SITE" and
+"SYSTEMIC" categories separately and these datasets will be bound together as
 the final output dataset.
 
-This function is intended to add only \code{EX} variables to the input dataset, an user
+This function is intended to add only \code{EX} variables to the input dataset and user
 is expected to handle if any pre-processing is required.
 
-Only the variables passed to the \code{ex_vars} will be present in the output dataset
+Only the variables passed to the \code{ex_vars} will be added in the output dataset
 
 If the input dataset has multiple vaccination for a subject at same visit
 then this function will not merge ex dataset and will return only the input
@@ -81,8 +77,21 @@ derive_vars_merged_vaccine(
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
-)
+) \%>\%
+  select(USUBJID, FATPTREF, FALOC, FALAT, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC) \%>\%
+  head(10)
 
+derive_vars_merged_vaccine(
+  dataset = vx_face,
+  dataset_ex = vx_ex,
+  dataset_supp = vx_suppface,
+  dataset_suppex = vx_suppex,
+  by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
+  by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
+  ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
+) \%>\%
+  filter(CLTYP == "DAIRY") \%>\%
+  select(USUBJID, CLTYP, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
 }
 \seealso{
 Other der_var: 
