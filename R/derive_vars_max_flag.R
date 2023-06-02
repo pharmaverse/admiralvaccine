@@ -65,7 +65,7 @@ max_flag <- function(dataset,
   )
 }
 
-#' Creating Two Maximum Flags
+#' Creating ANLxxFL Variables For Flagging the Maximum records
 #'
 #' Adds Flags variables for maximum record per subject per event for overall
 #' and per vaccination
