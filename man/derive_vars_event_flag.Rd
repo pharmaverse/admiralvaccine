@@ -20,19 +20,15 @@ expected.}
 
 \item{by_vars}{Grouping variables
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{  *Permitted values:* list of variables created by `exprs()`
-}\if{html}{\out{</div>}}
-
 The variables to be considered for grouping for creating a new
 variable \code{new_var1}}
 
 \item{aval_cutoff}{Cutoff value
 
-The cutoff value to decide on whether to consider the event has occurred
-or not for the \code{TESTCD} based on diameter. For example, if the diameter
-value is greater than x only we will consider the event occurred for
-that record otherwise it will be considered has no event happened for
-that record.}
+For \code{TESTCD} code list values based on diameter, if \code{AVAL} is greater than
+\code{aval_cutoff} then the event is considered to have occurred. For example,
+if \code{aval_cutoff} = 2.5 then the subjects with \code{AVAL} value greater than
+2.5 are considered.}
 
 \item{new_var1}{Name of the new flag variable 1
 
@@ -52,11 +48,15 @@ be flagged as Y otherwise N.
 the dataset with the flag variables added to it.
 }
 \description{
-Creates two flag variables for the event occurred,one for the event occurred
+Creates two flag variables for the event occurred, one for the event occurred
 within each by group and one to flag if the event occurred or not
 for each day.
 }
 \details{
+The event is considered to have occurred if \code{AVAL} is greater than the \code{aval_cutoff}
+or \code{AVALC} has values \code{Y}, \code{MILD}, \code{MODERATE}, \code{SEVERE}. In all other cases, the
+event is not considered to have occurred.
+
 The names for the new flag variables created will be sponsor specific.
 
 For the \code{new_var1} it will flag all observations as "Y" within the by group
