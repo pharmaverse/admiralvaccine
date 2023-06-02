@@ -69,8 +69,22 @@
 #'   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
 #'   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
 #'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
-#' )
+#' ) %>%
+#'   select(USUBJID, FATPTREF, FALOC, FALAT, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC) %>%
+#'   head(10)
 #'
+#' derive_vars_merged_vaccine(
+#'   dataset = vx_face,
+#'   dataset_ex = vx_ex,
+#'   dataset_supp = vx_suppface,
+#'   dataset_suppex = vx_suppex,
+#'   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
+#'   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
+#'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
+#' ) %>%
+#'   filter(CLTYP == "DAIRY") %>%
+#'   select(USUBJID, CLTYP, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
+
 derive_vars_merged_vaccine <- function(dataset,
                                        dataset_ex,
                                        by_vars_sys,
@@ -83,9 +97,8 @@ derive_vars_merged_vaccine <- function(dataset,
   assert_vars(by_vars_adms)
   assert_vars(ex_vars)
   assert_data_frame(dataset_supp, optional = TRUE)
-  assert_data_frame(dataset_ex, required_vars = ex_vars)
+  assert_data_frame(dataset_ex)
   assert_data_frame(dataset_suppex, optional = TRUE)
-
 
   # combine face and suppface dataset
   if (!is.null(dataset_supp)) {
