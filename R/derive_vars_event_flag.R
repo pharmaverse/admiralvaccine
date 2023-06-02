@@ -1,6 +1,6 @@
 #' Adds Flag Variables for an Occurred Event .
 #'
-#' Creates two flag variables for the event occurred,one for the event occurred
+#' Creates two flag variables for the event occurred, one for the event occurred
 #' within each by group and one to flag if the event occurred or not
 #' for each day.
 #'
@@ -12,18 +12,16 @@
 #'
 #' @param by_vars Grouping variables
 #'
-#'       *Permitted values:* list of variables created by `exprs()`
-#'
 #'  The variables to be considered for grouping for creating a new
 #'  variable `new_var1`
 #'
 #' @param aval_cutoff Cutoff value
 #'
-#'    The cutoff value to decide on whether to consider the event has occurred
-#'    or not for the `TESTCD` based on diameter. For example, if the diameter
-#'    value is greater than x only we will consider the event occurred for
-#'    that record otherwise it will be considered has no event happened for
-#'    that record.
+#'
+#'    For `TESTCD` code list values based on diameter, if `AVAL` is greater than
+#'    `aval_cutoff` then the event is considered to have occurred. For example,
+#'    if `aval_cutoff` = 2.5 then the subjects with `AVAL` value greater than
+#'    2.5 are considered.
 #'
 #' @param new_var1 Name of the new flag variable 1
 #'
@@ -40,6 +38,10 @@
 #' @return the dataset with the flag variables added to it.
 #'
 #' @details
+#'
+#'  The event is considered to have occurred if `AVAL` is greater than the `aval_cutoff`
+#'  or `AVALC` has values `Y`, `MILD`, `MODERATE`, `SEVERE`. In all other cases, the
+#'  event is not considered to have occurred.
 #'
 #'  The names for the new flag variables created will be sponsor specific.
 #'
@@ -167,4 +169,5 @@ derive_vars_event_flag <- function(dataset,
     }
   }
   data_flag <- convert_blanks_to_na(data_flag)
+  return(data_flag)
 }
