@@ -24,7 +24,6 @@ The variables \code{USUBJID}, \code{APTPTREF}, \code{FAOBJ}, \code{FASCAT},\code
 
 \item{diam_code}{Diameter record filter
 
-\emph{Default: "DIAMETER"}
 \emph{Permitted Value}: A character vector or scalar.
 
 Helps to filter the diameter records to derive the severity records by
@@ -33,7 +32,6 @@ specified events in \code{faobj_values}.}
 
 \item{faobj_values}{Event filter
 
-\emph{Default: c("REDNESS","SWELLING")}
 \emph{Permitted Value}: A character vector or Scalar.
 
 Helps to filter the events (Redness and swelling) which has diameter records
@@ -41,7 +39,6 @@ to derive severity records by passing the events from \code{FAOBJ}.}
 
 \item{testcd_sev}{\code{FATESTCD}value for severity
 
-\emph{Default: "SEV"}
 \emph{Permitted Value}: A Character scalar
 
 Assign the value for \code{FATESTCD} variable to indicate the severity records.
@@ -53,7 +50,6 @@ will be removed and new severity records will be derived from diameters.}
 
 \item{test_sev}{\code{FATEST} value for severity
 
-\emph{Default: "Severity"}
 \emph{Permitted Value}: A Character scalar
 
 Assign the value for \code{FATEST} variable to indicate the severity records.
@@ -72,7 +68,6 @@ Ignore the argument if you want to set the default value.
 
 \item{none}{Pass the lower limit for grade \code{"NONE"}
 
-\emph{Default: 0}
 \emph{Permitted Value:} A numeric vector
 
 The \code{none} and the following arguments(\code{mild}, \code{mode} and \code{sev} ) will be
@@ -80,17 +75,14 @@ used for assigning the diameter limits to derive the \code{AVALC}(severity grade
 
 \item{mild}{Pass the lower limit for grade \code{"MILD"}
 
-\emph{Default: 2}
 \emph{Permitted Value:} A numeric vector}
 
 \item{mod}{Pass the lower limit for grade \code{"MODERATE"}
 
-\emph{Default: 5}
 \emph{Permitted Value:} A numeric vector}
 
 \item{sev}{Pass the lower limit for grade \code{"SEVERE"}
 
-\emph{Default: 10 (i.e., 10 < AVAL )}
 \emph{Permitted Value:} A numeric vector}
 }
 \value{
