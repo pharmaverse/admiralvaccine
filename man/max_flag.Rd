@@ -37,7 +37,7 @@ input <- tribble(
   "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "2015-02-11", "SEVFAT"
 )
 
-max_flag(
+flag(
   dataset = input,
   by_vars = exprs(USUBJID, FAOBJ, FATPTREF, PARAMCD),
   by_join = c("USUBJID", "FAOBJ", "FATPTREF", "PARAMCD", "FADTC"),
@@ -46,6 +46,7 @@ max_flag(
 }
 \seealso{
 Other der_var: 
+\code{\link{derive_var_aval_adis}()},
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
