@@ -96,7 +96,7 @@ derive_vars_params <- function(dataset,
 
   # Checking if permissible variable exists in dataset
   lookup <-
-    c("FASTRESU", "FALOC", "FADIR", "FALAT")
+    c("FALOC", "FADIR", "FALAT")
 
   # Assigning PARCAT1 PARCAT2 & PARAM
   if (!("PARAM" %in% names(adface))) {

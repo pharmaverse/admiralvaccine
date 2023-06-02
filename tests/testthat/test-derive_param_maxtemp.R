@@ -286,3 +286,34 @@ test_that("derive_param_maxtemp Test6:Check if getting the expected error while
     )
   )
 })
+
+## Test6:Check if getting the expected error while passing invalid faobj
+## in filter_faobj argument
+
+test_that("derive_param_maxtemp Test6:Check if getting the expected error while
+           passing invalid faobj in filter_faobj argument ", {
+  input <- tibble::tribble(
+    ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVALC, ~ATPTN, ~FATEST, ~FATESTCD,
+    "XYZ1001", "FEVER", "VACC 1", "Y", 1, "Occurrence Indicator", "OCCUR",
+    "XYZ1001", "FEVER", "VACC 1", "Y", 2, "Occurrence Indicator", "OCCUR",
+    "XYZ1001", "FEVER", "VACC 2", "Y", 1, "Occurrence Indicator", "OCCUR",
+    "XYZ1001", "FEVER", "VACC 2", "Y", 2, "Occurrence Indicator", "OCCUR",
+    "XYZ1002", "FEVER", "VACC 1", "Y", 1, "Occurrence Indicator", "OCCUR",
+    "XYZ1002", "FEVER", "VACC 1", "Y", 2, "Occurrence Indicator", "OCCUR",
+    "XYZ1002", "FEVER", "VACC 2", "N", 1, "Occurrence Indicator", "OCCUR",
+    "XYZ1002", "FEVER", "VACC 2", "N", 2, "Occurrence Indicator", "OCCUR"
+  )
+
+  expect_warning(
+    actual_output <- derive_param_maxtemp(
+      input,
+      filter_faobj = "REDNESS",
+      by_vars = exprs(USUBJID, ATPTREF),
+      test_maxtemp = "Maximum temp",
+      testcd_maxtemp = "MAXTEMPERATURE"
+    ),
+    regexp = paste(
+      "VSSTRESN doesn't exist in the input dataset"
+    )
+  )
+})

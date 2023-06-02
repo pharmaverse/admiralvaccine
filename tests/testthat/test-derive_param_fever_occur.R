@@ -29,8 +29,8 @@ testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset is 
       FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N"),
       DTYPE = "DERIVED"
     ) %>%
-    rename(FATPT = VSTPT) %>%
-    select(-VSCAT)
+    rename(FATPT = VSTPT)
+
 
   expected <- bind_rows(face, expected1)
 

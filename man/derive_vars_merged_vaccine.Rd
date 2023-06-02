@@ -78,14 +78,15 @@ derive_vars_merged_vaccine(
   dataset_ex = vx_ex,
   dataset_supp = NULL,
   dataset_suppex = NULL,
-  by_vars_sys = exprs(USUBJID, FATPTREF),
-  by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
+  by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
+  by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
 )
 
 }
 \seealso{
 Other der_var: 
+\code{\link{derive_var_aval_adis}()},
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},

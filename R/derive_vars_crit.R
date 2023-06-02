@@ -4,6 +4,9 @@
 #' @description                                                                   +
 #' Derive analysis criterion evaluation result variable, paired with character    +
 #' and numeric flags.                                                             +
+#' This function allows also the derivation of a CRIT like variable with a        +
+#' different name (ex: ANL01FL), without plotting additional numeric and          +
+#' character variables.                                                           +
 #' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #'
 #' @param dataset
@@ -14,7 +17,9 @@
 #' The analysis criterion evaluation variable's name (i.e., CRIT1)
 #' This name is also used in order to create both character and numeric
 #' flags variables (i.e., CRIT1FL and CRIT1FN).
-#' Is possible to give a different name, base on needs (i.e., ANL01)
+#' If the name does not contain CRIT wording, it generates a flag variable
+#' (ex: ANL01FL) whose logic is equals to CRIT1 variable, without generate
+#' additional numeric (ex: ANL01FN) and character (ANL01) variables.
 #'
 #' @param label_var
 #' Criterion value
@@ -95,33 +100,47 @@ derive_vars_crit <- function(dataset, new_var, label_var, condition, criterion) 
   var_char <- paste0(new_var, "FL")
   var_num <- paste0(new_var, "FN")
 
-  data <- dataset %>%
-    mutate(
-      `:=`(
-        !!var_char,
-        case_when(
-          !(!!condition) ~ as.character(NA),
-          !!criterion & !!condition ~ "Y",
-          !(!!criterion) & !!condition ~ "N"
-        )
-      ),
-      `:=`(
-        !!var_num,
-        case_when(
-          !(!!condition) ~ as.numeric(NA),
-          !!criterion & !!condition ~ 1,
-          !(!!criterion) & !!condition ~ 0
-        )
-      ),
-      `:=`(
-        !!new_var,
-        case_when(
-          !(!!condition) ~ as.character(NA),
-          !!criterion & !!condition ~ label_var,
-          !(!!criterion) & !!condition ~ label_var
+  if (grepl("CRIT", new_var)) {
+    data <- dataset %>%
+      mutate(
+        `:=`(
+          !!var_char,
+          case_when(
+            !(!!condition) ~ as.character(NA),
+            !!criterion & !!condition ~ "Y",
+            !(!!criterion) & !!condition ~ "N"
+          )
+        ),
+        `:=`(
+          !!var_num,
+          case_when(
+            !(!!condition) ~ as.numeric(NA),
+            !!criterion & !!condition ~ 1,
+            !(!!criterion) & !!condition ~ 0
+          )
+        ),
+        `:=`(
+          !!new_var,
+          case_when(
+            !(!!condition) ~ as.character(NA),
+            !!criterion & !!condition ~ label_var,
+            !(!!criterion) & !!condition ~ label_var
+          )
         )
       )
-    )
+  } else if (!grepl("CRIT", new_var)) {
+    data <- dataset %>%
+      mutate(
+        `:=`(
+          !!var_char,
+          case_when(
+            !(!!condition) ~ as.character(NA),
+            !!criterion & !!condition ~ "Y",
+            !(!!criterion) & !!condition ~ "N"
+          )
+        )
+      )
+  }
 
   return(data)
 }
