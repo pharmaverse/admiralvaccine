@@ -129,12 +129,7 @@ derive_param_maxsev <- function(dataset,
                                 testcd_maxsev = "MAXSEV",
                                 by_vars = exprs(USUBJID, FAOBJ, ATPTREF)) {
   # assertions
-  assert_data_frame(dataset,
-    required_vars = exprs(
-      USUBJID, FASCAT, AVALC, FAOBJ,
-      ATPTREF, FATEST, FATESTCD
-    )
-  )
+  assert_data_frame(dataset, required_vars = by_vars)
   assert_character_scalar(filter_sev, optional = FALSE)
   assert_character_vector(exclude_events, optional = TRUE)
   assert_character_scalar(test_maxsev, optional = FALSE)

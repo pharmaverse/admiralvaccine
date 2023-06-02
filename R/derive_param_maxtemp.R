@@ -46,6 +46,11 @@
 #'
 #' @export
 #'
+#' @details
+#' If we are creating the fever occurrence records from VS, we can use `derive_param_fever_occur`
+#' function. So we will have VSSTRESN variable in your output. Then you can use this function to
+#' derive the maximum temperature. Otherwise user will get the input as the output.
+#'
 #' @family der_rec
 #' @keywords der_rec
 #'
@@ -98,45 +103,47 @@ derive_param_maxtemp <- function(dataset = NULL,
                                  testcd_maxtemp = "MAXTEMP") {
   # assertion
 
-  assert_data_frame(dataset, required_vars = exprs(
-    USUBJID, FAOBJ, VSSTRESN,
-    FATEST, FATESTCD, ATPTREF
-  ))
+  assert_data_frame(dataset, required_vars = by_vars)
   assert_character_scalar(testcd_maxtemp, optional = FALSE)
   assert_character_scalar(test_maxtemp, optional = FALSE)
   assert_character_scalar(filter_faobj, optional = FALSE)
   # retaining variables for summary record
 
-  retain_vars <- c(
-    "USUBJID", "FAOBJ", "ATPTREF", "FALNKGRP", "STUDYID", "SRCDOM",
-    "EXDOSE", "EXDOSU", "EXSTDTC", "EXENDTC", "EXTRT", "AVAL", "AVALC",
-    "FATEST", "FATESTCD", "DTYPE", "AVISIT", "AVISITN", "FASCAT",
-    "FACAT"
-  )
-
-
-  # Deriving maximum temperature
-  if (filter_faobj %in% dataset$FAOBJ) {
-    max_temp <- dataset %>%
-      filter(FAOBJ == filter_faobj & VSSTRESN > 0) %>%
-      group_by(!!!by_vars) %>%
-      filter(VSSTRESN == max(VSSTRESN)) %>%
-      mutate(
-        AVAL = VSSTRESN,
-        AVALC = VSSTRESN,
-        AVALC = as.character(AVALC),
-        DTYPE = "MAXIMUM",
-        FATEST = test_maxtemp,
-        FATESTCD = testcd_maxtemp
-      ) %>%
-      select(any_of(retain_vars)) %>%
-      distinct(USUBJID, AVAL, ATPTREF, .keep_all = TRUE)
-    # binding with input data set
-
-    bind_rows(dataset, max_temp)
-  } else {
-    stop(
-      paste0(filter_faobj, " ", "doesn't exist in the FAOBJ variable.")
+  if ("VSSTRESN" %in% names(dataset)) {
+    retain_vars <- c(
+      "USUBJID", "FAOBJ", "ATPTREF", "FALNKGRP", "STUDYID", "SRCDOM",
+      "EXDOSE", "EXDOSU", "EXSTDTC", "EXENDTC", "EXTRT", "AVAL", "AVALC",
+      "FATEST", "FATESTCD", "DTYPE", "AVISIT", "AVISITN", "FASCAT",
+      "FACAT"
     )
+
+
+    # Deriving maximum temperature
+    if (filter_faobj %in% dataset$FAOBJ) {
+      max_temp <- dataset %>%
+        filter(FAOBJ == filter_faobj & VSSTRESN > 0) %>%
+        group_by(!!!by_vars) %>%
+        filter(VSSTRESN == max(VSSTRESN)) %>%
+        mutate(
+          AVAL = VSSTRESN,
+          AVALC = VSSTRESN,
+          AVALC = as.character(AVALC),
+          DTYPE = "MAXIMUM",
+          FATEST = test_maxtemp,
+          FATESTCD = testcd_maxtemp
+        ) %>%
+        select(any_of(retain_vars)) %>%
+        distinct(USUBJID, AVAL, ATPTREF, .keep_all = TRUE)
+      # binding with input data set
+
+      bind_rows(dataset, max_temp)
+    } else {
+      stop(
+        paste0(filter_faobj, " ", "doesn't exist in the FAOBJ variable.")
+      )
+    }
+  } else {
+    dataset <- dataset
+    warning("VSSTRESN doesn't exist in the input dataset")
   }
 }

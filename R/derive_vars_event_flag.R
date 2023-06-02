@@ -68,7 +68,7 @@
 #'   ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
 #'   "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
 #'   "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-#'   "1", "REDNESS", "VAC1", 1.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
+#'   "1", "REDNESS", "VAC1", 1.5, "1.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
 #'   "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "MAXIMUM",
 #'   "1", "FATIGUE", "VAC1", 1, "MILD", "Severity", "SEV", "SYSTEMIC", "",
 #'   "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "",
@@ -110,39 +110,61 @@ derive_vars_event_flag <- function(dataset,
     data_flag <- dataset %>%
       group_by(!!!by_vars) %>%
       mutate(
-        !!new_var1 := if_else(any(!(is.na(AVAL)) &
-          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N")
+        `:=`(
+          !!new_var1,
+          case_when(
+            any(AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")) ~ "Y",
+            AVAL <= aval_cutoff | AVALC == "N" ~ "N"
+          )
+        )
       )
   } else if (is.null(new_var1) && !is.null(new_var2)) {
     # Derive only `new_var2`
     data_flag <- dataset %>%
       mutate(
-        !!new_var2 := if_else(!(is.na(AVAL)) &
-          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE"), "Y", "N")
+        `:=`(
+          !!new_var2,
+          case_when(
+            AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
+            AVAL <= aval_cutoff | AVALC == "N" ~ "N"
+          )
+        )
       )
   } else if (!is.null(new_var1) && !is.null(new_var2)) {
     # Derive both `new_var1` and `new_var2`
     data_flag <- dataset %>%
       group_by(!!!by_vars) %>%
       mutate(
-        !!new_var1 := ifelse(any(!(is.na(AVAL)) &
-          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")), "Y", "N")
+        `:=`(
+          !!new_var1,
+          case_when(
+            any(AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE")) ~ "Y",
+            AVAL <= aval_cutoff | AVALC == "N" ~ "N"
+          )
+        )
       ) %>%
       ungroup() %>%
       mutate(
-        !!new_var2 := ifelse(!(is.na(AVAL)) &
-          AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE"), "Y", "N")
+        `:=`(
+          !!new_var2,
+          case_when(
+            AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
+            AVAL <= aval_cutoff | AVALC == "N" ~ "N",
+          )
+        )
       )
   } else {
     data_flag <- dataset
   }
 
   # Flag maximum records in `DTYPE` as `NA` for new_var2
-  if ("MAXIMUM" %in% data_flag$DTYPE) {
-    data_flag <- data_flag %>%
-      mutate(
-        !!new_var2 := if_else(DTYPE == "MAXIMUM", NA_character_, !!new_var2)
-      )
+  if ("DTYPE" %in% names(data_flag)) {
+    if ("MAXIMUM" %in% data_flag$DTYPE) {
+      data_flag <- data_flag %>%
+        mutate(
+          !!new_var2 := if_else(DTYPE == "MAXIMUM", NA_character_, !!new_var2)
+        )
+    }
   }
   data_flag <- convert_blanks_to_na(data_flag)
 }

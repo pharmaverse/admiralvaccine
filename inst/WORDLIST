@@ -29,14 +29,12 @@ CRITx
 CUTOFFx
 DIARE
 DM
+DT
 DTYPE
 Dhivya
 EVENTDFL
 EVENTFL
-EXDOSE
-EXENDTC
 EXSTDTC
-EXTRT
 Erythema
 FACAT
 FADIR
@@ -48,8 +46,10 @@ FATEST
 FATESTCD
 FATPTREF
 FN
-ISSTRESC
+ISLLOQ
+ISSLOQ
 ISSTRESN
+ISULOQ
 Kanagaraj
 MAXDIAM
 MAXSEV
@@ -65,9 +65,11 @@ PARAMCD
 PARCAT
 Pre
 REACTOGENICITY
+RFENDTC
 RFSTDTC
 Reactogenicity
 Rubalingam
+SDT
 SDTM
 SEV
 SEVPAIN
@@ -99,6 +101,7 @@ immunogenicity
 metacore
 metatools
 occurence
+optinal
 pharmaverse
 pre
 reactogenecity

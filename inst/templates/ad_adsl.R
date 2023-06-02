@@ -84,8 +84,8 @@ adsl <- dm %>%
   mutate(
     TRT01P = substring(ARM, 1, 9),
     TRT02P = substring(ARM, 11, 100),
-    TRT01A = substring(ARM, 1, 9),
-    TRT02A = substring(ARM, 11, 100)
+    TRT01A = substring(ACTARM, 1, 9),
+    TRT02A = substring(ACTARM, 11, 100)
   ) %>%
   ## derive treatment start date (TRTSDTM) ----
   derive_vars_merged(
@@ -143,7 +143,7 @@ adsl <- derive_vars_vaxdt(
   by_vars = exprs(USUBJID, VISITNUM),
   order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
 )
-class(adsl$VAX01DT)
+
 # Creating period variables (Study Specific)
 if ("VAX02DT" %in% names(adsl)) {
   adsl <- adsl %>%

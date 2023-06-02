@@ -38,6 +38,7 @@ testthat::test_that("testcase-1 : checking whether its handling the NA values
         !is.na(AVAL) & AVAL > 2.0 | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
         TRUE ~ "N"
       ),
+      EVENTDL = ifelse(is.na(AVAL) & is.na(AVALC), NA_character_, EVENTDL),
       EVENTDL = case_when(
         DTYPE == "MAXIMUM" ~ NA_character_,
         TRUE ~ EVENTDL
