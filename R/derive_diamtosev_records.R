@@ -10,7 +10,6 @@
 #'
 #' @param diam_code Diameter record filter
 #'
-#' *Default: "DIAMETER"*
 #' *Permitted Value*: A character vector or scalar.
 #'
 #' Helps to filter the diameter records to derive the severity records by
@@ -19,7 +18,6 @@
 #'
 #' @param faobj_values Event filter
 #'
-#' *Default: c("REDNESS","SWELLING")*
 #' *Permitted Value*: A character vector or Scalar.
 #'
 #'  Helps to filter the events (Redness and swelling) which has diameter records
@@ -27,7 +25,6 @@
 #'
 #' @param testcd_sev `FATESTCD`value for severity
 #'
-#' *Default: "SEV"*
 #' *Permitted Value*: A Character scalar
 #'
 #' Assign the value for `FATESTCD` variable to indicate the severity records.
@@ -39,7 +36,6 @@
 #'
 #' @param test_sev `FATEST` value for severity
 #'
-#' *Default: "Severity"*
 #' *Permitted Value*: A Character scalar
 #'
 #' Assign the value for `FATEST` variable to indicate the severity records.
@@ -58,7 +54,6 @@
 #'
 #' @param none Pass the lower limit for grade `"NONE"`
 #'
-#' *Default: 0*
 #' *Permitted Value:* A numeric vector
 #'
 #' The `none` and the following arguments(`mild`, `mode` and `sev` ) will be
@@ -66,17 +61,14 @@
 #'
 #' @param mild Pass the lower limit for grade `"MILD"`
 #'
-#' *Default: 2*
 #' *Permitted Value:* A numeric vector
 #'
 #' @param mod Pass the lower limit for grade `"MODERATE"`
 #'
-#' *Default: 5*
 #' *Permitted Value:* A numeric vector
 #'
 #' @param sev Pass the lower limit for grade `"SEVERE"`
 #'
-#' *Default: 10 (i.e., 10 < AVAL )*
 #' *Permitted Value:* A numeric vector
 #'
 #' @return The Input data with the new severity records for Redness and swelling which
@@ -139,6 +131,7 @@ derive_diamtosev_records <- function(dataset = NULL,
   )
 
   assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
+
   assert_character_vector(
     arg = c(diam_code, faobj_values, testcd_sev, test_sev),
     optional = FALSE
@@ -187,11 +180,14 @@ derive_diamtosev_records <- function(dataset = NULL,
       # binding with Input data set
 
       return(sev)
+
     } else {
       warning(diam_code, " ", "doesn't exist in the filtered record")
+
       return(NULL)
     }
   }
+
   final <- lapply(diam_code, ds)
   do.call("bind_rows", final) %>%
     bind_rows(fil_rec)
