@@ -12,7 +12,7 @@
 #' @param dataset Input dataset
 #'
 #'
-#' @param new_var Variables to add
+#' @param prefix Variables to add
 #'
 #'   The analysis criterion evaluation variable's name (i.e., 'CRIT1')
 #'   This name is also used in order to create both character and numeric
