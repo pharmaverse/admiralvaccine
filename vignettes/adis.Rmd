@@ -463,8 +463,8 @@ The function returns a relative numeric `CRIT1FN` variable (1 or 0 if the criter
 ```{r eval=TRUE}
 adis <- derive_vars_crit(
   dataset = adis,
-  new_var = "CRIT1",
-  label_var = "Titer >= ISLLOQ",
+  prefix = "CRIT1",
+  crit_label = "Titer >= ISLLOQ",
   condition = !is.na(AVAL) & !is.na(ISLLOQ),
   criterion = AVAL >= ISLLOQ
 )
