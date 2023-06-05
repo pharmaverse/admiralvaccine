@@ -43,9 +43,9 @@
 #'
 #' @examples
 #'
+#' library(admiral)
 #' library(tibble)
 #' library(dplyr)
-#' library(rlang)
 #'
 #' lookup_dataset <- tibble::tribble(
 #'   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
