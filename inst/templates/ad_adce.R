@@ -33,7 +33,7 @@ adsl <- convert_blanks_to_na(adsl)
 
 # Derivations ----
 # Get CE records
-adce <- ce %>%
+adce01 <- ce %>%
   filter(CECAT == "REACTOGENICITY")
 
 # Get list of ADSL vars required for derivations
@@ -50,7 +50,7 @@ adperiods <- create_period_dataset(
 )
 
 # Derive analysis dates/days
-adce <- adce %>%
+adce02 <- adce01 %>%
   # join adsl to ce
   derive_vars_merged(
     dataset_add = adsl,
@@ -79,9 +79,9 @@ adce <- adce %>%
 
 
 
-adce <-
+adce03 <-
   derive_vars_joined(
-    adce,
+    adce02,
     dataset_add = adperiods,
     by_vars = exprs(STUDYID, USUBJID),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT
@@ -93,7 +93,7 @@ adce <-
 
 
 
-adce <- adce %>%
+adce04 <- adce03 %>%
   ## depending on collection of TOXGR or SEV in CE domain ----
   ## Analysis variant of ASEV and ASEVN ----
   mutate(
@@ -115,7 +115,7 @@ adce <- adce %>%
     filter = !is.na(APERIOD) & !is.na(ASEV)
   )
 
-adce <- adce %>%
+adce05 <- adce04 %>%
   ## Derive ASEQ ----
   derive_var_obs_number(
     new_var = ASEQ,
@@ -141,7 +141,7 @@ adsl_list <- adsl %>%
 
 
 # Join ADSL_list with CE
-adce <- adce %>%
+adce <- adce05 %>%
   derive_vars_merged(
     dataset_add = adsl_list,
     by_vars = exprs(STUDYID, USUBJID)
