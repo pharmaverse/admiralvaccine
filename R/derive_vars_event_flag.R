@@ -64,7 +64,6 @@
 #' library(tibble)
 #' library(admiral)
 #' library(dplyr)
-#' library(rlang)
 #'
 #' input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
