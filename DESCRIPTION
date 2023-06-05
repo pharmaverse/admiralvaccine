@@ -46,7 +46,6 @@ Suggests:
     rmarkdown,
     roxygen2,
     spelling,
-    styler,
     tibble,
     usethis,
     covr,
