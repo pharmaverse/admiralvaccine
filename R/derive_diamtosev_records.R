@@ -1,19 +1,19 @@
-#' Creating Severity Records From Diameters
+#' Creating Severity Records From Diameter
 #'
 #' @description
-#' To derive the severity records from the diameter records per subject per event per period.
+#' To derive the severity records from the diameter records.
 #'
 #' @param dataset Input data set
 #'
-#' The variables `USUBJID`, `APTPTREF`, `FAOBJ`, `FASCAT`,`AVAL`, `AVALC`,
-#' `FAOBJ`, `FATESTCD` and `FATEST` are expected for Input data set.(`dataset`)
+#' The variables `USUBJID`,`FAOBJ`,`AVAL`, `AVALC`, `FAOBJ`, `FATESTCD` and `FATEST` are expected
+#' for Input data set.(`dataset`)
 #'
 #' @param diam_code Diameter record filter
 #'
 #' *Permitted Value*: A character vector or scalar.
 #'
 #' Helps to filter the diameter records to derive the severity records by
-#' passing the `FATESTCD` value for diameter  which is corresponding to the
+#' passing the `FATESTCD` value for diameter which is corresponding to the
 #' specified events in `faobj_values`.
 #'
 #' @param faobj_values Event filter
@@ -28,7 +28,7 @@
 #' *Permitted Value*: A Character scalar
 #'
 #' Assign the value for `FATESTCD` variable to indicate the severity records.
-#' Ignore the argument if you want to set the default value.
+#' Ignore the argument if you want to set the default value (`SEV`).
 #'
 #' *Note*: This argument value will be used to check whether input data set has
 #' Severity records for specified `faobj_values` event. If it has, those records
@@ -127,7 +127,7 @@ derive_diamtosev_records <- function(dataset = NULL,
                                      mod = 5,
                                      sev = 10) {
   assert_data_frame(dataset,
-    required_vars = exprs(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
+                    required_vars = exprs(USUBJID, AVAL, AVALC, FAOBJ, FATEST, FATESTCD)
   )
 
   assert_numeric_vector(arg = c(none, mild, mod, sev), optional = FALSE)
