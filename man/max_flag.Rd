@@ -4,16 +4,13 @@
 \alias{max_flag}
 \title{Creating Maximum Flag}
 \usage{
-max_flag(dataset, by_vars, by_join, fl)
+max_flag(dataset, by_vars, fl)
 }
 \arguments{
 \item{dataset}{Input dataset}
 
 \item{by_vars}{By variables which goes to group by, to create the flag. Pass the variables it
 inside the exprs().}
-
-\item{by_join}{By variables to join the flagged records with input dataset.Pass the variables in
-a vector.}
 
 \item{fl}{Flag variable name, Pass it as string.}
 }
@@ -53,9 +50,6 @@ Other der_var:
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
 \code{\link{derive_vars_vaxdt}()}
-}
-\author{
-Dhivya Kanagaraj
 }
 \concept{der_var}
 \keyword{der_var}
