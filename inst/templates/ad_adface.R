@@ -70,10 +70,10 @@ adface <- derive_vars_merged(
 # Step3 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not
 # present in FACE
 
-adface <- derive_param_fever_occur(
+adface <- derive_fever_records(
   dataset = adface,
-  source_data = vs,
-  source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+  dataset_source = vs,
+  filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
   faobj = "FEVER"
 )
 
