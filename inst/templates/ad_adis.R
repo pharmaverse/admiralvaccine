@@ -324,8 +324,8 @@ adis <- restrict_derivation(adis,
 # STEP 9 Derivation of CRITyFL and CRITyFN ----
 adis <- derive_vars_crit(
   dataset = adis,
-  new_var = "CRIT1",
-  label_var = "Titer >= ISLLOQ",
+  prefix = "CRIT1",
+  crit_label = "Titer >= ISLLOQ",
   condition = !is.na(AVAL) & !is.na(ISLLOQ),
   criterion = AVAL >= ISLLOQ
 )
