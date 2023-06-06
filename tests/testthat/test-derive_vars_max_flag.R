@@ -92,7 +92,7 @@ test_that("derive maximum severity flag variable per event", {
 
 # test3
 
-test_that("check if the records with AVAL = NA are not flagged",{
+test_that("check if the records with AVAL = NA are not flagged", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
