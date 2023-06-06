@@ -76,7 +76,7 @@ derive_fever_records <- function(dataset,
   fil_fev <- dataset %>% filter(FAOBJ == faobj)
   row_rec <- nrow(fil_fev)
   # Renaming VS variables as FA variables
-  lookup <-
+  vs_to_fa <-
     c(
       FASEQ = "VSSEQ",
       FAREASND = "VSREASND",
@@ -100,7 +100,7 @@ derive_fever_records <- function(dataset,
 
     # fev_rec <-  dataset_source %>% filter(filter_source) %>%
     fev_rec <- filter_if(dataset_source, filter_source) %>%
-      rename(any_of(lookup)) %>%
+      rename(any_of(vs_to_fa)) %>%
       mutate(
         FATEST = "Occurrence Indicator",
         FATESTCD = "OCCUR",
