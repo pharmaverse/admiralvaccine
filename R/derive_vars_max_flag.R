@@ -1,5 +1,4 @@
 #' Creating Maximum Flag
-#'
 #' @description To Flag the maximum records depends on the grouping varibales in a flag varibale.
 #'
 #' @param dataset Input dataset
@@ -7,15 +6,10 @@
 #' @param by_vars By variables which goes to group by, to create the flag. Pass the variables it
 #'  inside the exprs().
 #'
-#' @param by_join By variables to join the flagged records with input dataset.Pass the variables in
-#' a vector.
-#'
 #' @param fl Flag variable name, Pass it as string.
 #'
 #' @return data frame with flag variable which is flagged for the maximum value records depends on
 #' the variables passed in `by_vars` by user.
-#'
-#' @author Dhivya Kanagaraj
 #'
 #' @examples
 #' input <- tribble(
@@ -42,25 +36,24 @@
 #'
 max_flag <- function(dataset,
                      by_vars,
-                     by_join,
                      fl) {
   assert_vars(by_vars)
   assert_data_frame(dataset,
-    required_vars = exprs(AVAL, FADTC)
+    required_vars = exprs(AVAL, FATPT)
   )
 
   temp <- dataset %>%
     filter(!is.na(AVAL)) %>%
     group_by(!!!by_vars) %>%
-    arrange(desc(AVAL), FADTC, .by_group = TRUE) %>%
-    summarise(FADTC = first(FADTC)) %>%
-    mutate(!!fl := "Y") %>%
-    ungroup()
+    arrange(desc(AVAL), FATPT, .by_group = TRUE) %>%
+    filter(AVAL == max(AVAL)) %>%
+    mutate(
+      !!fl := ifelse(row_number() == 1 & AVAL > 0, "Y", NA_character_)
+    )
 
   left_join(
     x = dataset,
     y = temp,
-    by = by_join,
     keep = FALSE
   )
 }
@@ -137,8 +130,6 @@ derive_vars_max_flag <- function(dataset,
   assert_data_frame(dataset,
     required_vars = exprs(USUBJID, FAOBJ, FATPTREF, PARAMCD)
   )
-  assert_character_scalar(flag1)
-  assert_character_scalar(flag2)
 
   if (is.null(flag1) && is.null(flag2)) {
     stop("Both flag names cannot be NULL")
@@ -147,7 +138,6 @@ derive_vars_max_flag <- function(dataset,
   if (!is.null(flag1)) {
     dataset <- max_flag(dataset,
       by_vars = exprs(USUBJID, FAOBJ, FATPTREF, PARAMCD),
-      by_join = c("USUBJID", "FAOBJ", "FATPTREF", "PARAMCD", "FADTC"),
       fl = flag1
     )
   }
@@ -155,7 +145,6 @@ derive_vars_max_flag <- function(dataset,
   if (!is.null(flag2)) {
     dataset <- max_flag(dataset,
       by_vars = exprs(USUBJID, FAOBJ, PARAMCD),
-      by_join = c("USUBJID", "FAOBJ", "PARAMCD", "FADTC"),
       fl = flag2
     )
   }
