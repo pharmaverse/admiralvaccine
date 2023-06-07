@@ -4,9 +4,10 @@
 #
 # Input: face, suppface, ex, suppex, vs and ADSL
 
-# Loading `admiralvaccine` package
+# Loading required packages
 
 library(admiralvaccine)
+library(admiral)
 
 # Load source datasets
 
