@@ -31,6 +31,6 @@
 #' @importFrom admiral derive_vars_dy derive_vars_merged convert_blanks_to_na convert_na_to_blanks
 #' @importFrom admiraldev assert_logical_scalar assert_character_vector assert_vars
 #'             assert_data_frame assert_character_scalar assert_numeric_vector assert_filter_cond
-#'             assert_symbol assert_order_vars expect_dfs_equal
+#'             assert_symbol assert_expr_list expect_dfs_equal
 #' @importFrom metatools combine_supp
 "_PACKAGE"
