@@ -70,7 +70,6 @@
 #'   "ABC-1002", 30, "R0003MA", "R0003MA Antibody", "228.1", 228.1, 4, 120
 #' )
 #'
-#'
 #' output <- derive_var_aval_adis(
 #'   dataset = input,
 #'   lower_rule = ISLLOQ / 2,
