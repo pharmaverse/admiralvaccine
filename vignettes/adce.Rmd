@@ -104,14 +104,15 @@ adce <- adce %>%
     new_vars = adsl_vars,
     by = exprs(STUDYID, USUBJID)
   ) %>%
-  ## Derive analysis start time ----
-  ## Proposed imputations depending on situation: no needed -> highest imputation = “n”, some missing dates -> highest imputation = “D”
+  ## Derive analysis start time
+  # Proposed imputations depending on situation: no needed -> highest imputation = “n”, some missing
+  # dates -> highest imputation = “D”
   derive_vars_dt(
     dtc = CESTDTC,
     new_vars_prefix = "AST",
     highest_imputation = "n"
   ) %>%
-  ## Derive analysis end time ----
+  ## Derive analysis end time
   derive_vars_dt(
     dtc = CEENDTC,
     new_vars_prefix = "AEN",
@@ -186,7 +187,10 @@ adce <- adce %>%
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adce,
-  display_vars = exprs(USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY, CEDECOD, ASEVN, AOCC01FL, CESEQ)
+  display_vars = exprs(
+    USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY, CEDECOD, ASEVN, AOCC01FL,
+    CESEQ
+  )
 )
 ```
 
@@ -216,7 +220,10 @@ adce <- adce %>%
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adce,
-  display_vars = exprs(USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY, CEDECOD, ASEVN, AOCC01FL, CESEQ, ASEQ)
+  display_vars = exprs(
+    USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY, CEDECOD, ASEVN, AOCC01FL,
+    CESEQ, ASEQ
+  )
 )
 ```
 ## Final Step : get all the remaining variables from ADSL {#jadsl_list}
