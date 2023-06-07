@@ -85,7 +85,7 @@
 #'
 derive_var_aval_adis <-
   function(dataset, lower_rule, middle_rule, upper_rule, round) {
-    if (!missing(lower_rule) & !missing(middle_rule) & !missing(upper_rule)) {
+    if (!missing(lower_rule) && !missing(middle_rule) && !missing(upper_rule)) {
       data <- dataset %>%
         mutate(
           AVAL = (
@@ -101,7 +101,7 @@ derive_var_aval_adis <-
         )
     }
 
-    if (!missing(lower_rule) & !missing(middle_rule) & missing(upper_rule)) {
+    if (!missing(lower_rule) && !missing(middle_rule) && missing(upper_rule)) {
       data <- dataset %>%
         mutate(
           AVAL = (
