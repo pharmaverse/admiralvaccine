@@ -9,6 +9,15 @@ derive_vars_crit(dataset, prefix, crit_label, condition, criterion)
 \arguments{
 \item{dataset}{Input dataset}
 
+\item{prefix}{Variables to add
+
+The analysis criterion evaluation variable's name (i.e., 'CRIT1')
+This name is also used in order to create both character and numeric
+flags variables (i.e., 'CRIT1FL' and 'CRIT1FN').
+If the name does not contain CRIT wording, it generates a flag variable
+(ex: 'ANL01FL') whose logic is equals to 'CRIT1' variable, without generate
+additional numeric (ex: 'ANL01FN') and character ('ANL01') variables.}
+
 \item{crit_label}{Criterion value
 
 A text description defining the condition necessary to satisfy the presence
@@ -25,15 +34,6 @@ The criterion that each selected row satisfies or not.
 Returns Y or N for character variable and 1 or 0 for numeric variable
 if the criterion is met or not, respectively.
 Returns NA for not selected rows (not taken into account from condition)}
-
-\item{new_var}{Variables to add
-
-The analysis criterion evaluation variable's name (i.e., 'CRIT1')
-This name is also used in order to create both character and numeric
-flags variables (i.e., 'CRIT1FL' and 'CRIT1FN').
-If the name does not contain CRIT wording, it generates a flag variable
-(ex: 'ANL01FL') whose logic is equals to 'CRIT1' variable, without generate
-additional numeric (ex: 'ANL01FN') and character ('ANL01') variables.}
 }
 \value{
 dataset with criterion variables
