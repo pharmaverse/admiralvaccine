@@ -2,39 +2,35 @@
 #
 # Label: Reactogenicity Analysis Dataset
 #
-# Input: face, ex, vs
+# Input: face, suppface, ex, suppex, vs and ADSL
 
-# Loading required packages and admiral vaccine utilities
+# Loading `admiralvaccine` package
 
-library(tibble)
-library(dplyr)
-library(metatools)
-library(readxl)
-library(stringr)
-library(admiraldev)
-library(admiral)
 library(admiralvaccine)
 
-# Load source datasets ----
+# Load source datasets
 
 # Use e.g. haven::read_sas to read in .sas7bdat, or other suitable functions
 # as needed and assign to the variables below.
-# For illustration purposes read in admiral vaccine mock sdtm data and adsl vaccine data
+# For illustration purposes read in admiral vaccine mock SDTM data and ADSL vaccine data
 
 data("vx_ex")
 data("vx_vs")
 data("vx_face")
 data("vx_adsl")
-data("vx_suppdm")
 data("vx_suppex")
 data("vx_suppface")
 
-ex <- vx_ex
-vs <- vx_vs
-face <- vx_face
-adsl <- vx_adsl
-suppface <- vx_suppface
-suppex <- vx_suppex
+# Missing character values from SAS appear as "" characters in R, instead of appearing
+# as NA values. Further details can be obtained via the following link:
+# https://pharmaverse.github.io/admiral/cran-release/articles/admiral.html#handling-of-missing-values # nolint
+
+ex <- convert_blanks_to_na(vx_ex)
+vs <- convert_blanks_to_na(vx_vs)
+face <- convert_blanks_to_na(vx_face)
+adsl <- convert_blanks_to_na(vx_adsl)
+suppface <- convert_blanks_to_na(vx_suppface)
+suppex <- convert_blanks_to_na(vx_suppex)
 
 
 # Step1 - Basic Filter and Pre-processing for FACE
@@ -193,7 +189,6 @@ adface <- derive_vars_params(
 
 # Basic filter for ADSL
 adsl <- adsl %>%
-  convert_blanks_to_na() %>%
   filter(!is.na(USUBJID))
 
 # Merging ADFACE with ADSL
@@ -223,7 +218,7 @@ adface <- adface %>% select(
   starts_with("EVE"), starts_with("ANL")
 )
 
-# Save output ----
+# Save output
 
 dir <- tempdir()
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
