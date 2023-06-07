@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_diamtosev_records.R
 \name{derive_diamtosev_records}
 \alias{derive_diamtosev_records}
-\title{Creating Severity Records From Diameters}
+\title{Creating Severity Records From Diameter}
 \usage{
 derive_diamtosev_records(
   dataset = NULL,
@@ -19,15 +19,15 @@ derive_diamtosev_records(
 \arguments{
 \item{dataset}{Input data set
 
-The variables \code{USUBJID}, \code{APTPTREF}, \code{FAOBJ}, \code{FASCAT},\code{AVAL}, \code{AVALC},
-\code{FAOBJ}, \code{FATESTCD} and \code{FATEST} are expected for Input data set.(\code{dataset})}
+The variables \code{USUBJID},\code{FAOBJ},\code{AVAL}, \code{AVALC}, \code{FAOBJ}, \code{FATESTCD} and \code{FATEST} are expected
+for Input data set.(\code{dataset})}
 
 \item{diam_code}{Diameter record filter
 
 \emph{Permitted Value}: A character vector or scalar.
 
 Helps to filter the diameter records to derive the severity records by
-passing the \code{FATESTCD} value for diameter  which is corresponding to the
+passing the \code{FATESTCD} value for diameter which is corresponding to the
 specified events in \code{faobj_values}.}
 
 \item{faobj_values}{Event filter
@@ -42,7 +42,7 @@ to derive severity records by passing the events from \code{FAOBJ}.}
 \emph{Permitted Value}: A Character scalar
 
 Assign the value for \code{FATESTCD} variable to indicate the severity records.
-Ignore the argument if you want to set the default value.
+Ignore the argument if you want to set the default value (\code{SEV}).
 
 \emph{Note}: This argument value will be used to check whether input data set has
 Severity records for specified \code{faobj_values} event. If it has, those records
@@ -91,7 +91,7 @@ is specified in \code{faobj_values} and AVAL, AVALC will be derived and fatestcd
 fatest will be changed as per the values.
 }
 \description{
-To derive the severity records from the diameter records per subject per event per period.
+To derive the severity records from the diameter records.
 }
 \examples{
 library(dplyr)
