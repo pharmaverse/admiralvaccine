@@ -8,7 +8,6 @@
 #' different name (ex: 'ANL01FL'), without generating additional numeric (ex: 'ANL01FN')
 #' and character label (ex: 'ANL01') variables.
 #'
-#'
 #' @param dataset Input dataset
 #'
 #'
