@@ -115,7 +115,7 @@ derive_vars_params <- function(dataset,
   if (!("PARAMN" %in% names(adface))) {
     paramn <- adface %>%
       distinct(PARAM, .keep_all = FALSE) %>%
-      mutate(PARAMN = 1:n())
+      mutate(PARAMN = seq_len(n()))
 
     adface <- merge(
       x = adface,
