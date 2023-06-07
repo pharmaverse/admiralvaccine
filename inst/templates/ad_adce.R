@@ -2,7 +2,7 @@
 #
 # Label: Clinical Event Analysis Dataset
 #
-# Input: ce, adsl, vs
+# Input: CE, ADSL, VS
 library(admiral)
 library(dplyr)
 library(lubridate)
@@ -39,7 +39,7 @@ adce01 <- ce %>%
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT)
 
-# Create period dataset - for joining period information onto ce records
+# Create period dataset - for joining period information onto CE records
 # Need to remove datetime variables as otherwise causes duplicate issues
 adsl2 <- adsl %>%
   select(-c(starts_with("AP") & ends_with("DTM")))
@@ -51,7 +51,7 @@ adperiods <- create_period_dataset(
 
 # Derive analysis dates/days
 adce02 <- adce01 %>%
-  # join adsl to ce
+  # join ADSL to CE
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
