@@ -82,6 +82,7 @@ In this template, `SDTM.IS`, `SDTM.SUPPIS` and `ADAM.ADSL` has been used.
 library(dplyr)
 library(lubridate)
 library(admiralvaccine)
+library(metatools)
 
 # Load source datasets ----
 data("vx_is")

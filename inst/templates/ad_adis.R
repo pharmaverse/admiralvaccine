@@ -7,6 +7,7 @@ library(admiral)
 library(dplyr)
 library(lubridate)
 library(admiralvaccine)
+library(metatools)
 
 
 # Load source datasets ----
