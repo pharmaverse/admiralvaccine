@@ -159,7 +159,7 @@ In current example, `SEV` is collected, so the code is using this as an example.
 In addition, derivation of Extreme Flags: in current example: flag the first occurrence of the most severe grade within a Period (`AOCC01FL`).
 
 ```{r eval=TRUE}
-adce <- adce %>%`
+adce <- adce %>%
   ## depending on collection of TOXGR or SEV in CE domain ----
   ## Analysis variant of ASEV and ASEVN ----
   mutate(
@@ -240,3 +240,10 @@ dataset_vignette(
   display_vars = exprs(USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY, CEDECOD, ASEVN, AOCC01FL, CESEQ, ASEQ, AGE, SEX)
 )
 ```
+
+## Example Script 
+
+ADaM | Sample Code
+---- | --------------
+ADCE | [ad_adce.R](https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adce.R){target="_blank"} 
+ 
