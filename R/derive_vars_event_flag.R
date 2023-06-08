@@ -157,16 +157,6 @@ derive_vars_event_flag <- function(dataset,
   } else {
     data_flag <- dataset
   }
-
-  # Flag maximum records in `DTYPE` as `NA` for new_var2
-  if ("DTYPE" %in% names(data_flag)) {
-    if ("MAXIMUM" %in% data_flag$DTYPE) {
-      data_flag <- data_flag %>%
-        mutate(
-          !!new_var2 := if_else(DTYPE == "MAXIMUM", NA_character_, !!new_var2)
-        )
-    }
-  }
   data_flag <- convert_blanks_to_na(data_flag)
   return(data_flag)
 }
