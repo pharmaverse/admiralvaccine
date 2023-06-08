@@ -1,4 +1,4 @@
-#' Adds Vaccination Date Variables to the Output Dataset.
+#' Add Vaccination Date Variables to the Output Dataset
 #'
 #' Creates vaccination date variables from `EX` domain. A date variable will be
 #' created for each vaccination taking values from the variable `EXSTDTC`.
