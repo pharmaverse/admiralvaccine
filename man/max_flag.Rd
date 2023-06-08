@@ -22,6 +22,8 @@ the variables passed in \code{by_vars} by user.
 To Flag the maximum records depends on the grouping variables in a flag variable.
 }
 \examples{
+
+library(tibble)
 input <- tribble(
   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
