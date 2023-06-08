@@ -30,6 +30,8 @@ With temperature values from VSSTRESN we decide if FEVER has occurred or not(\co
 Since records are derived, these FEVER records are considered \code{DTYPE = "DERIVED"}
 if \code{FAOBJ = FEVER} record is present, then input dataset will be made as output with no further
 analysis.
+
+The temperature value greater or equal 38° C will be considered as FEVER records.
 }
 \examples{
 library(tibble)
@@ -59,7 +61,7 @@ vs <- tribble(
 derive_fever_records(
   dataset = input,
   dataset_source = vs,
-  source_filter = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
+  filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
   faobj = "FEVER"
 )
 
