@@ -33,6 +33,17 @@ adsl <- convert_blanks_to_na(vx_adsl)
 suppface <- convert_blanks_to_na(vx_suppface)
 suppex <- convert_blanks_to_na(vx_suppex)
 
+#creating a user defined function for deriving AVAL from AVALC
+
+sev_to_numeric <- function(x, y) {
+  case_when(
+    x == "NONE" ~ 0,
+    x == "MILD" ~ 1,
+    x == "MODERATE" ~ 2,
+    x == "xERE" ~ 3
+    ,TRUE ~ y
+  )
+}
 
 # Step1 - Basic Filter and Pre-processing for FACE
 
@@ -92,8 +103,9 @@ adface <- derive_vars_joined(
 ) %>%
   # Step6 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN,ATPT,ATPTN)
   mutate(
-    AVAL = suppressWarnings(as.numeric(FASTRESN)),
     AVALC = as.character(FASTRESC),
+    AVAL = suppressWarnings(as.numeric(FASTRESN)),
+    AVAL = sev_to_numeric(AVALC,AVAL),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
     ATPTN = FATPTNUM
@@ -110,28 +122,39 @@ adface <- derive_vars_joined(
     sev = c(10)
   ) %>%
   # Step8 - Deriving Maximum Severity for Local and Systemic events
-  derive_param_maxsev(
-    exclude_events = NULL,
-    filter_sev = "SEV",
-    test_maxsev = "Maximum Severity",
-    testcd_maxsev = "MAXSEV",
-    by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
+  derive_extreme_records(
+    filter = FATESTCD == "SEV",
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+    order = exprs(AVAL),
+    mode = "last",
+    set_values_to = exprs(
+
+      FATEST= "Maximum Severity",
+      FATESTCD = "MAXSEV"
+    )
   ) %>%
   # Step9 - Deriving Maximum Diameter for Administrative site reactions
-  derive_param_maxdiam(
+  derive_extreme_records(
     filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
     by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
-    test_maxdiam = "Maximum Diameter",
-    testcd_maxdiam = "MAXDIAM"
+    order = exprs(AVAL),
+    mode = "last",
+    set_values_to = exprs(
+      FATEST= "Maximum Diameter",
+      FATESTCD = "MAXDIAM"
+    )
   ) %>%
   # Step10 - Deriving Maximum Temperature
-  derive_param_maxtemp(
-    filter_faobj = "FEVER",
-    test_maxtemp = "Maximum Temperature",
-    testcd_maxtemp = "MAXTEMP",
-    by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
+  derive_extreme_records(
+    filter = FAOBJ == 'FEVER',
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+    order = exprs(VSSTRESN),
+    mode = "last",
+    set_values_to = exprs(
+      FATEST= "Maximum Temperature",
+      FATESTCD = "MAXTEMP"
+    )
   )
-
 # Step 11 - Assigning PARAM, PARAMN, PARAMCD, PARCAT1 and PARCAT2 by Lookup table
 
 lookup_dataset <- tribble(
