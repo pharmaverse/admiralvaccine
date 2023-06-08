@@ -17,6 +17,7 @@
 #' @examples
 #'
 #' library(tibble)
+#' library(admiral)
 #' input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
 #'   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
