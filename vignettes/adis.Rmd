@@ -193,7 +193,7 @@ adis_ady <- adis_adt %>%
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_ady,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, ISDTC, RFSTDTC, ADT, ADY, PPROTFL)
 )
 ```
@@ -270,7 +270,7 @@ adis_param_paramn <- derive_vars_merged_lookup(
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_param_paramn,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, PARAMCD, PARAM, PARAMN)
 )
 ```
@@ -292,7 +292,7 @@ adis_parcat1_cutoff <- adis_param_paramn %>%
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_parcat1_cutoff,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, PARCAT1, CUTOFF02, CUTOFF03)
 )
 ```
@@ -419,7 +419,7 @@ if (any(names(adis_sercat1n) == "ISULOQ") == FALSE) {
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_dtype,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, AVAL, AVALU, DTYPE, SERCAT1, SERCAT1N)
 )
 ```
@@ -476,7 +476,7 @@ adis_basecat <- adis_ablfl %>%
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_basecat,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, ABLFL, BASE, BASETYPE, BASECAT)
 )
 ```
@@ -508,7 +508,7 @@ adis_r2b <- restrict_derivation(
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_r2b,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, CHG, R2BASE)
 )
 ```
@@ -533,7 +533,7 @@ adis_crit <- derive_vars_crit(
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_crit,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, CRIT1, CRIT1FL, CRIT1FN)
 )
 ```
@@ -556,7 +556,7 @@ adis_trt <- derive_vars_joined(
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_trt,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, TRTP, TRTA)
 )
 ```
@@ -573,7 +573,7 @@ adis_ppsrfl <- adis_trt %>%
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis_ppsrfl,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, TRTP, TRTA)
 )
 ```
@@ -596,7 +596,7 @@ adis <- derive_vars_merged(
 
 ```{r, echo=FALSE}
 dataset_vignette(
-  adis_atpt,
+  adis,
   display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, AGE, COUNTRY, ARM, ACTARM)
 )
 ```
