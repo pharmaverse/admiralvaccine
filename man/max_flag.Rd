@@ -36,7 +36,7 @@ input <- tribble(
   "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "DAY 2", "SEVFAT"
 )
 
-flag(
+max_flag(
   dataset = input,
   by_vars = exprs(USUBJID, FAOBJ, FATPTREF, PARAMCD),
   fl = "ANL01FL"
