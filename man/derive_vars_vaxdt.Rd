@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_vars_vaxdt.R
 \name{derive_vars_vaxdt}
 \alias{derive_vars_vaxdt}
-\title{Adds Vaccination Date Variables to the Output Dataset.}
+\title{Add Vaccination Date Variables to the Output Dataset}
 \usage{
 derive_vars_vaxdt(dataset, dataset_adsl, by_vars, order)
 }
