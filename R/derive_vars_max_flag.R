@@ -12,6 +12,8 @@
 #' @return data frame with flag variable which is flagged for the maximum value records depends on
 #' the variables passed in `by_vars` by user.
 #'
+#' @export
+#'
 #' @examples
 #'
 #' library(tibble)
