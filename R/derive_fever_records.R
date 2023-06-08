@@ -21,6 +21,8 @@
 #' if `FAOBJ = FEVER` record is present, then input dataset will be made as output with no further
 #' analysis.
 #'
+#' The temperature value greater or equal 38° C will be considered as FEVER records.
+#'
 #' @author Dhivya Kanagaraj
 #'
 #' @family der_rec
@@ -55,7 +57,7 @@
 #' derive_fever_records(
 #'   dataset = input,
 #'   dataset_source = vs,
-#'   source_filter = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
+#'   filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
 #'   faobj = "FEVER"
 #' )
 #'
@@ -98,8 +100,8 @@ derive_fever_records <- function(dataset,
   if (row_rec == 0) {
     # Filter Reacto records from VS
 
-    # fev_rec <-  dataset_source %>% filter(filter_source) %>%
-    fev_rec <- filter_if(dataset_source, filter_source) %>%
+    fev_rec <- dataset_source %>%
+      filter(!!filter_source) %>%
       rename(any_of(vs_to_fa)) %>%
       mutate(
         FATEST = "Occurrence Indicator",
