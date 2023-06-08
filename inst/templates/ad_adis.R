@@ -91,7 +91,8 @@ adis_ady <- adis_adt %>%
   derive_vars_dy(
     reference_date = RFSTDT,
     source_vars = exprs(ADT)
-  )
+  ) %>%
+  select(-RFSTDT)
 
 
 # STEP 4: PARAMCD, PARAM and PARAMN derivation
@@ -166,6 +167,7 @@ adis_param_paramn <- derive_vars_merged_lookup(
   new_vars = exprs(PARAM, PARAMN),
   by_vars = exprs(PARAMCD)
 )
+
 
 # STEP 5: PARCAT1 and CUTOFF0x derivations.
 adis_parcat1_cutoff <- adis_param_paramn %>%
@@ -270,10 +272,26 @@ if (any(names(adis_sercat1n) == "ISULOQ") == FALSE) {
 }
 
 
-# STEP 7: ABLFL and BASE variables derivation
+# STEP 7: BASE variables and ABLFL derivation
+# BASETYPE derivation
+adis_basetype <- derive_var_basetype(
+  adis_dtype,
+  basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
+)
+
+# BASE derivation
+adis_base <- derive_var_base(
+  adis_basetype,
+  by_vars = exprs(STUDYID, USUBJID, PARAMN),
+  source_var = AVAL,
+  new_var = BASE,
+  filter = VISITNUM == 10
+)
+
+
 # ABLFL derivation
 adis_ablfl <- restrict_derivation(
-  adis_sercat1n,
+  adis_base,
   derivation = derive_var_extreme_flag,
   args = params(
     by_vars = exprs(STUDYID, USUBJID, PARAMN),
@@ -281,28 +299,13 @@ adis_ablfl <- restrict_derivation(
     new_var = ABLFL,
     mode = "first"
   ),
-  filter = VISITNUM == 10
-)
-
-# BASE derivation
-adis_base <- derive_var_base(
-  adis_ablfl,
-  by_vars = exprs(STUDYID, USUBJID, PARAMN),
-  source_var = AVAL,
-  new_var = BASE,
-  filter = ABLFL == "Y"
-)
-
-# BASETYPE derivation
-adis_basetype <- derive_var_basetype(
-  adis_base,
-  basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
+  filter = VISITNUM == 10 & !is.na(BASE)
 ) %>%
-  arrange(STUDYID, USUBJID, !is.na(DERIVED), ISSEQ)
+  arrange(STUDYID, USUBJID, !is.na(DERIVED), VISITNUM, PARAMN)
 
 
 # BASECAT derivation
-adis_basecat <- adis_basetype %>%
+adis_basecat <- adis_ablfl %>%
   mutate(
     BASECAT1 = case_when(
       !grepl("L", PARAMCD) & BASE < 10 ~ "Titer value < 1:10",
@@ -359,7 +362,7 @@ adis_trt <- derive_vars_joined(
 
 # STEP 11 Derivation of PPSRFL ----
 adis_ppsrfl <- adis_trt %>%
-  mutate(PPSRFL = if_else(VISITNUM %in% c(10,30) & PPROTFL == "Y", "Y", NA_character_))
+  mutate(PPSRFL = if_else(VISITNUM %in% c(10, 30) & PPROTFL == "Y", "Y", NA_character_))
 
 
 # STEP 12  Merge with ADSL ----

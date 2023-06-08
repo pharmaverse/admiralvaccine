@@ -138,6 +138,13 @@ adis_atpt <- adis_avisit %>%
   )
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, AVISIT, AVISITN, ATPT, ATPTN, ATPTREF)
+)
+```
+
 
 ## Derive ADT and ADY variables {#adt}
 For `ADT` derivation, please follow your imputation rules.
@@ -179,9 +186,16 @@ adis_ady <- adis_adt %>%
   derive_vars_dy(
     reference_date = RFSTDT,
     source_vars = exprs(ADT)
-  )
+  )  %>%
+  select(-RFSTDT)
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, ISDTC, RFSTDTC, ADT, ADY, PPROTFL)
+)
+```
 
 ## Parameters derivation {#param}
 In this template, duplicated records for `PARAMCD` have been created.
@@ -253,6 +267,13 @@ adis_param_paramn <- derive_vars_merged_lookup(
 )
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, PARAMCD, PARAM, PARAMN)
+)
+```
+
 
 ## Derive PARCAT1 and CUTOFFx variables {#parcat}
 Derive `PARCAT1` and `CUTOFF`x variables.
@@ -266,6 +287,13 @@ adis_parcat1_cutoff <- adis_param_paramn %>%
     CUTOFF02 = 4,
     CUTOFF03 = 8
   )
+```
+
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, PARCAT1, CUTOFF02, CUTOFF03)
+)
 ```
 
 
@@ -388,6 +416,13 @@ if (any(names(adis_sercat1n) == "ISULOQ") == F) {
 }
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, AVAL, AVALU, DTYPE, SERCAT1, SERCAT1N)
+)
+```
+
 
 ## Derive BASE variables {#base}
 Derive Baseline values for each Subject/Visit and relative flag, `ABLFL.
@@ -395,9 +430,25 @@ Derive Baseline values for each Subject/Visit and relative flag, `ABLFL.
 In a later stage, derive `BASECAT` variable, which represents the base category.
 Update accordingly.
 ```{r eval=TRUE}
+# BASETYPE derivation
+adis_basetype <- derive_var_basetype(
+  adis_dtype,
+  basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
+)
+
+# BASE derivation
+adis_base <- derive_var_base(
+  adis_basetype,
+  by_vars = exprs(STUDYID, USUBJID, PARAMN),
+  source_var = AVAL,
+  new_var = BASE,
+  filter = VISITNUM == 10
+)
+
+
 # ABLFL derivation
 adis_ablfl <- restrict_derivation(
-  adis_sercat1n,
+  adis_base,
   derivation = derive_var_extreme_flag,
   args = params(
     by_vars = exprs(STUDYID, USUBJID, PARAMN),
@@ -405,28 +456,13 @@ adis_ablfl <- restrict_derivation(
     new_var = ABLFL,
     mode = "first"
   ),
-  filter = VISITNUM == 10
-)
-
-# BASE derivation
-adis_base <- derive_var_base(
-  adis_ablfl,
-  by_vars = exprs(STUDYID, USUBJID, PARAMN),
-  source_var = AVAL,
-  new_var = BASE,
-  filter = ABLFL == "Y"
-)
-
-# BASETYPE derivation
-adis_basetype <- derive_var_basetype(
-  adis_base,
-  basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
+  filter = VISITNUM == 10 & !is.na(BASE)
 ) %>%
-  arrange(STUDYID, USUBJID, !is.na(DERIVED), ISSEQ)
+  arrange(STUDYID, USUBJID, !is.na(DERIVED), VISITNUM, PARAMN)
 
 
 # BASECAT derivation
-adis_basecat <- adis_basetype %>%
+adis_basecat <- adis_ablfl %>%
   mutate(
     BASECAT1 = case_when(
       !grepl("L", PARAMCD) & BASE < 10 ~ "Titer value < 1:10",
@@ -435,6 +471,13 @@ adis_basecat <- adis_basetype %>%
       grepl("L", PARAMCD) & BASE >= 10 ~ "Titer value >= 1:10"
     )
   )
+```
+
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, ABLFL, BASE, BASETYPE, BASECAT)
+)
 ```
 
 
@@ -462,6 +505,12 @@ adis_r2b <- restrict_derivation(
   select(-DERIVED)
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, CHG, R2BASE)
+)
+```
 
 
 ## Derive CRITx variables {#crit}
@@ -481,6 +530,13 @@ adis_crit <- derive_vars_crit(
 )
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, CRIT1, CRIT1FL, CRIT1FN)
+)
+```
+
 
 ## Derive TRTP/A variables {#trtp}
 ```{r eval=TRUE}
@@ -497,6 +553,12 @@ adis_trt <- derive_vars_joined(
 )
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, TRTP, TRTA)
+)
+```
 
 
 ## Derive PPS record level flag variable {#pps}
@@ -506,6 +568,13 @@ This step could change according to your study needs.
 ```{r eval=TRUE}
 adis_ppsrfl <- adis_trt %>%
   mutate(PPSRFL = if_else(VISITNUM %in% c(10,30) & PPROTFL == "Y", "Y", NA_character_))
+```
+
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, TRTP, TRTA)
+)
 ```
 
 
@@ -521,6 +590,13 @@ adis <- derive_vars_merged(
   dataset = adis_ppsrfl,
   dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
   by_vars = exprs(STUDYID, USUBJID)
+)
+```
+
+```{r, echo=FALSE}
+dataset_vignette(
+  adis_atpt,
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, AGE, COUNTRY, ARM, ACTARM)
 )
 ```
 
