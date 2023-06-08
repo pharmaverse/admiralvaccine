@@ -477,7 +477,7 @@ adis_basecat <- adis_ablfl %>%
 ```{r, echo=FALSE}
 dataset_vignette(
   adis_basecat,
-  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, ABLFL, BASE, BASETYPE, BASECAT)
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, ABLFL, BASE, BASETYPE, BASECAT1)
 )
 ```
 
