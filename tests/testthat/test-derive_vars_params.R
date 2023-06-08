@@ -43,7 +43,7 @@ testthat::test_that("test-1:checking", {
     )
   expout2 <- expout1 %>%
     distinct(PARAM, .keep_all = FALSE) %>%
-    mutate(PARAMN = 1:n())
+    mutate(PARAMN = seq_len(n()))
 
   expected_output <- merge(expout1, expout2, by = "PARAM", all.x = TRUE) %>%
     convert_blanks_to_na()
@@ -119,7 +119,7 @@ testthat::test_that("test-2:checking whether PARAM  getting concatenated with
 
   expout2 <- expout1 %>%
     distinct(PARAM, .keep_all = FALSE) %>%
-    mutate(PARAMN = 1:n())
+    mutate(PARAMN = seq_len(n()))
 
   expected_output <- merge(expout1, expout2, by = "PARAM", all.x = TRUE)
 
