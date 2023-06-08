@@ -19,27 +19,27 @@ data frame with flag variable which is flagged for the maximum value records dep
 the variables passed in \code{by_vars} by user.
 }
 \description{
-To Flag the maximum records depends on the grouping varibales in a flag varibale.
+To Flag the maximum records depends on the grouping variables in a flag variable.
 }
 \examples{
 input <- tribble(
-  ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
-  "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
-  "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
-  "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "2015-02-10", "DIARE",
-  "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "2015-02-11", "DIARE",
-  "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-10", "SEVFAT",
-  "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-11", "SEVFAT",
-  "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "2015-02-10", "SEVFAT",
-  "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "2015-02-11", "SEVFAT"
+  ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
+  "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
+  "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "DAY 2", "DIARE",
+  "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "DAY 1", "DIARE",
+  "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "DAY 2", "DIARE",
+  "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 1", "SEVFAT",
+  "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 2", "SEVFAT",
+  "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "DAY 1", "SEVFAT",
+  "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "DAY 2", "SEVFAT"
 )
 
 flag(
   dataset = input,
   by_vars = exprs(USUBJID, FAOBJ, FATPTREF, PARAMCD),
-  by_join = c("USUBJID", "FAOBJ", "FATPTREF", "PARAMCD", "FADTC"),
   fl = "ANL01FL"
 )
+
 }
 \seealso{
 Other der_var: 
