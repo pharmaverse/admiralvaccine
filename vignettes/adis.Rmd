@@ -186,7 +186,7 @@ adis_ady <- adis_adt %>%
   derive_vars_dy(
     reference_date = RFSTDT,
     source_vars = exprs(ADT)
-  )  %>%
+  ) %>%
   select(-RFSTDT)
 ```
 
@@ -567,7 +567,7 @@ This is a record level flag which identifies which rows are included/excluded fo
 This step could change according to your study needs.
 ```{r eval=TRUE}
 adis_ppsrfl <- adis_trt %>%
-  mutate(PPSRFL = if_else(VISITNUM %in% c(10,30) & PPROTFL == "Y", "Y", NA_character_))
+  mutate(PPSRFL = if_else(VISITNUM %in% c(10, 30) & PPROTFL == "Y", "Y", NA_character_))
 ```
 
 ```{r, echo=FALSE}
