@@ -121,7 +121,7 @@ adface <- adface %>%
 
 # Step7 - Creating severity records from Diameter for Redness,Swelling,etc
 
-adface <- derive_diamtosev_records(
+adface <- derive_diam_to_sev_records(
   dataset = adface,
   diam_code = "DIAMETER",
   faobj_values = c("REDNESS", "SWELLING"),
