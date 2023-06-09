@@ -8,7 +8,7 @@ derive_fever_records(dataset, dataset_source, filter_source, faobj)
 }
 \arguments{
 \item{dataset}{Input Dataset
-Input dataset is expected to have variables \code{USUBJID}, \code{FAOBJ}, \code{FACAT}, \code{FATESTCD} and \code{FATEST}.}
+Input dataset is expected to have variables \code{USUBJID}, \code{FAOBJ}, \code{FATESTCD} and \code{FATEST}.}
 
 \item{dataset_source}{Source Dataset - SDTM Vital Sign (VS)
 Source Dataset (VS) is expected to have temperature records.}
@@ -21,7 +21,7 @@ Source Dataset (VS) is expected to have temperature records.}
 The output dataset contains records with \code{FATESTCD = "OCCUR"}for \code{FAOBJ = FEVER} records.
 }
 \description{
-Creating Fever Records
+Creating Fever records from the VS SDTM dataset.
 }
 \details{
 Check if \code{FAOBJ = FEVER} record is present in input dataset,
