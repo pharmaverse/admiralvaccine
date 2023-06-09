@@ -19,7 +19,7 @@ derive_diam_to_sev_records(
 \arguments{
 \item{dataset}{Input data set
 
-The variables \code{USUBJID},\code{FAOBJ},\code{AVAL}, \code{AVALC}, \code{FAOBJ}, \code{FATESTCD} and \code{FATEST} are expected
+The variables \code{USUBJID},\code{FAOBJ},\code{AVAL}, \code{AVALC}, \code{FATESTCD} and \code{FATEST} are expected
 for Input data set.(\code{dataset})}
 
 \item{diam_code}{Diameter record filter
