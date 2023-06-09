@@ -24,7 +24,6 @@ test_that("derive_diam_to_sev_records Test 1: derive `FATEST`,`FATESTCD` indicat
       FATEST = "Severity/Intensity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -84,7 +83,6 @@ test_that("derive_diam_to_sev_records Test 2: derive `FATEST`,`FATESTCD` indicat
       FATEST = "Severity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -144,7 +142,6 @@ test_that("derive_diam_to_sev_records Test 3: Check if the arguments `none`,
       FATEST = "Severity/Intensity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -211,7 +208,6 @@ test_that("derive_diam_to_sev_records Test 4: Check if the input dataset has
       FATEST = "Severity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -271,7 +267,6 @@ test_that("derive_diam_to_sev_records Test 5: Check if the arguments `test_sev`,
       FATEST = "Severity/Intensity/Sev",
       FATESTCD = "SEVERITY/SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -361,7 +356,6 @@ test_that("derive_diam_to_sev_records Test 7: Check if the arguments `diam_code`
       FATEST = "Severity/Intensity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
