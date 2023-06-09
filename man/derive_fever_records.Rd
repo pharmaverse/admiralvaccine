@@ -8,7 +8,7 @@ derive_fever_records(dataset, dataset_source, filter_source, faobj)
 }
 \arguments{
 \item{dataset}{Input Dataset
-Input dataset is expected to have variables \code{USUBJID}, \code{FAOBJ}, \code{FATESTCD} and \code{FATEST}.}
+Input dataset is expected to have variables \code{USUBJID} and \code{FAOBJ}.}
 
 \item{dataset_source}{Source Dataset - SDTM Vital Sign (VS)
 Source Dataset (VS) is expected to have temperature records.}
