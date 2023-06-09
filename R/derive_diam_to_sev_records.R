@@ -5,7 +5,7 @@
 #'
 #' @param dataset Input data set
 #'
-#' The variables `USUBJID`,`FAOBJ`,`AVAL`, `AVALC`, `FAOBJ`, `FATESTCD` and `FATEST` are expected
+#' The variables `USUBJID`,`FAOBJ`,`AVAL`, `AVALC`, `FATESTCD` and `FATEST` are expected
 #' for Input data set.(`dataset`)
 #'
 #' @param diam_code Diameter record filter
@@ -153,7 +153,6 @@ derive_diam_to_sev_records <- function(dataset = NULL,
         mutate(
           FATESTCD = testcd_sev,
           FATEST = test_sev,
-          DTYPE = "DERIVED",
           FASEQ = NA_integer_,
           AVALC = if_else(
             none <= AVAL & AVAL <= mild,
