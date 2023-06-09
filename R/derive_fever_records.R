@@ -3,7 +3,7 @@
 #' Creating Fever records from the VS SDTM dataset.
 #'
 #' @param dataset Input Dataset
-#' Input dataset is expected to have variables `USUBJID`, `FAOBJ`, `FATESTCD` and `FATEST`.
+#' Input dataset is expected to have variables `USUBJID` and `FAOBJ`.
 #'
 #' @param dataset_source Source Dataset - SDTM Vital Sign (VS)
 #' Source Dataset (VS) is expected to have temperature records.
@@ -69,7 +69,7 @@ derive_fever_records <- function(dataset,
                                  faobj) {
   # Checking if there are fever records in face
   assert_data_frame(dataset,
-    required_vars = exprs(USUBJID, FAOBJ, FATEST, FATESTCD)
+    required_vars = exprs(USUBJID, FAOBJ)
   )
   assert_data_frame(dataset_source,
     required_vars = exprs(USUBJID, VSTESTCD, VSSTRESN, VSSTRESU)
