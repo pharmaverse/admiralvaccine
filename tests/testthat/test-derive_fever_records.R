@@ -26,8 +26,7 @@ testthat::test_that('derive_fever_records Test 1: how the actual dataset is gene
       FAOBJ = "FEVER", FATESTCD = "OCCUR", FACAT = "REACTOGENICITY",
       FASCAT = "SYSTEMIC", FATEST = "Occurrence Indicator",
       FAORRES = ifelse(VSSTRESN >= 38, "Y", "N"),
-      FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N"),
-      DTYPE = "DERIVED"
+      FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N")
     ) %>%
     rename(FATPT = VSTPT)
 
