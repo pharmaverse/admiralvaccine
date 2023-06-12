@@ -244,7 +244,10 @@ adce <- adce %>%
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adce,
-  display_vars = exprs(USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY, CEDECOD, ASEVN, AOCC01FL, CESEQ, ASEQ, AGE, SEX)
+  display_vars = exprs(
+    USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY,
+    CEDECOD, ASEVN, AOCC01FL, CESEQ, ASEQ, AGE, SEX
+  )
 )
 ```
 
