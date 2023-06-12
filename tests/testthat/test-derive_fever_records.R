@@ -1,6 +1,6 @@
 # Test case 1
 
-testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset is generated
+testthat::test_that('derive_fever_records Test 1: how the actual dataset is generated
                     if FAOBJ="FEVER", if the FEVER records are not in FACE', {
   face <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FACAT, ~FASCAT, ~FATPT,
@@ -26,18 +26,17 @@ testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset is 
       FAOBJ = "FEVER", FATESTCD = "OCCUR", FACAT = "REACTOGENICITY",
       FASCAT = "SYSTEMIC", FATEST = "Occurrence Indicator",
       FAORRES = ifelse(VSSTRESN >= 38, "Y", "N"),
-      FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N"),
-      DTYPE = "DERIVED"
+      FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N")
     ) %>%
     rename(FATPT = VSTPT)
 
 
   expected <- bind_rows(face, expected1)
 
-  actual <- derive_param_fever_occur(
+  actual <- derive_fever_records(
     dataset = face,
-    source_data = vs,
-    source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+    dataset_source = vs,
+    filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
     faobj = "FEVER"
   )
 
@@ -53,7 +52,7 @@ testthat::test_that('derive_param_fever_occur Test 1: how the actual dataset is 
 
 # Test Case 2
 
-testthat::test_that('derive_param_fever_occur Test 2: how the actual dataset is generated
+testthat::test_that('derive_fever_records Test 2: how the actual dataset is generated
   if FAOBJ="FEVER", if the FEVER records are  in FACE', {
   face <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FACAT, ~FASCAT, ~FATPT, ~FAORRES, ~FASTRESC,
@@ -78,10 +77,10 @@ testthat::test_that('derive_param_fever_occur Test 2: how the actual dataset is 
 
   expected <- face
 
-  actual <- derive_param_fever_occur(
+  actual <- derive_fever_records(
     dataset = face,
-    source_data = vs,
-    source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+    dataset_source = vs,
+    filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
     faobj = "FEVER"
   )
   testthat::expect_equal(actual, expected)
