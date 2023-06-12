@@ -285,21 +285,21 @@ dataset_vignette(
 
 ## Derive severity records for Administration Site events{#sev}
 
-The function `derive_param_diam_to_sev` is used to derive the severity records from the diameter records for an event.
+The function `derive_diam_to_sev_records` is used to derive the severity records from the diameter records for an event.
 
 The severity records created will be useful for calculating the maximum severity.
 
 ```{r, echo=FALSE}
-adface <- derive_param_diam_to_sev(
+adface <- derive_diam_to_sev_records(
   dataset = adface,
-  filter_diam = "DIAMETER",
-  filter_faobj = c("Redness", "Swelling"),
+  diam_code = "DIAMETER",
+  faobj_values = c("Redness", "Swelling"),
   testcd_sev = "SEV",
   test_sev = "Severity/Intensity",
-  none = c(0, 2),
-  mild = c(2, 5),
-  mod = c(5, 10),
-  sev = c(10)
+  none = 0,
+  mild = 2,
+  mod = 5,
+  sev = 10
 )
 ```
 
