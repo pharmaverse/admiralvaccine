@@ -306,8 +306,8 @@ adface <- derive_diam_to_sev_records(
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC, DTYPE),
-  filter = DTYPE == "DERIVED"
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC),
+  filter = FATESTCD == "SEV"
 )
 ```
 
