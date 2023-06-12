@@ -1,6 +1,6 @@
-# testcase-1
+## Test 1: checking whether its handling the NA values and cutoff value is working fine
 
-testthat::test_that("testcase-1 : checking whether its handling the NA values
+test_that("derive_vars_event_flag Test 1: checking whether its handling the NA values
                     and cutoff value is working fine", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
@@ -38,11 +38,7 @@ testthat::test_that("testcase-1 : checking whether its handling the NA values
         !is.na(AVAL) & AVAL > 2.0 | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
         TRUE ~ "N"
       ),
-      EVENTDL = ifelse(is.na(AVAL) & is.na(AVALC), NA_character_, EVENTDL),
-      EVENTDL = case_when(
-        DTYPE == "MAXIMUM" ~ NA_character_,
-        TRUE ~ EVENTDL
-      )
+      EVENTDL = ifelse(is.na(AVAL) & is.na(AVALC), NA_character_, EVENTDL)
     )
   expect_dfs_equal(
     expected_output,
@@ -51,10 +47,10 @@ testthat::test_that("testcase-1 : checking whether its handling the NA values
   )
 })
 
-# testcase-2
+## Test 2: Checking whether it's creating the user input variables name for both flags
 
-testthat::test_that("test case - 2: Checking whether its creating the user input
-                    varibales name for both flag", {
+test_that("derive_vars_event_flag Test 2: Checking whether it's creating the user input
+                    variables name for both flags", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
@@ -81,10 +77,6 @@ testthat::test_that("test case - 2: Checking whether its creating the user input
       flag2 = case_when(
         !is.na(AVAL) & AVAL > 2.0 | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
         TRUE ~ "N"
-      ),
-      flag2 = case_when(
-        DTYPE == "MAXIMUM" ~ NA_character_,
-        TRUE ~ flag2
       )
     ) %>%
     rename(EFL = flag1, EDFL = flag2)
@@ -105,9 +97,9 @@ testthat::test_that("test case - 2: Checking whether its creating the user input
   )
 })
 
-# testcase - 3
+## Test 3: Checking whether its creating only first flag
 
-testthat::test_that("test case - 3: Checking whether its creating only first flag", {
+test_that("derive_vars_event_flag Test 3: Checking whether its creating only first flag", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
@@ -128,7 +120,7 @@ testthat::test_that("test case - 3: Checking whether its creating only first fla
     group_by(USUBJID, FAOBJ, ATPTREF) %>%
     mutate(
       flag2 = case_when(
-        DTYPE != "MAXIMUM" & !is.na(AVAL) & AVAL > 2.0 |
+        !is.na(AVAL) & AVAL > 2.0 |
           AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
         TRUE ~ "N"
       )
@@ -151,9 +143,9 @@ testthat::test_that("test case - 3: Checking whether its creating only first fla
   )
 })
 
-## test case - 4
+## Test 4: Checking whether its creating only second flag
 
-testthat::test_that("test case - 4: Checking whether its creating only second flag", {
+test_that("derive_vars_event_flag Test 4: Checking whether its creating only second flag", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
@@ -196,9 +188,9 @@ testthat::test_that("test case - 4: Checking whether its creating only second fl
   )
 })
 
-## test case - 5
+## Test 5: Checking whether return the input dataset when user pass null in both flags
 
-testthat::test_that("test case - 5: Checking whether return the input dataset
+test_that("derive_vars_event_flag Test 5: Checking whether return the input dataset
                     when user pass null in both flags", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,

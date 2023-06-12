@@ -245,7 +245,7 @@ adis <- derive_vars_merged_lookup(
 # DTYPE derivation.
 # Please update code when <,<=,>,>= are present in your lab results (in ISSTRESC)
 
-if (any(names(adis) == "ISULOQ") == T) {
+if (any(names(adis) == "ISULOQ") == TRUE) {
   adis <- adis %>%
     mutate(DTYPE = case_when(
       DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &
@@ -256,7 +256,7 @@ if (any(names(adis) == "ISULOQ") == T) {
     ))
 }
 
-if (any(names(adis) == "ISULOQ") == F) {
+if (any(names(adis) == "ISULOQ") == FALSE) {
   adis <- adis %>%
     mutate(DTYPE = case_when(
       DERIVED %in% c("ORIG", "LOG10") & !is.na(ISLLOQ) &

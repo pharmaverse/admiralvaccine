@@ -173,13 +173,13 @@ This call would return the input dataset with columns RFSTDTC,RFENDTC added.
 
 In this step, we will merge fever records from the `VS` domain with the input dataset if the fever records does not present in the input dataset.
 
-The function `derive_param_fever_occur` is used to merge fever records. These records will also be used in maximum temperature calculation.
+The function `derive_fever_records` is used to merge fever records. These records will also be used in maximum temperature calculation.
 
 ```{r eval=TRUE}
-adface <- derive_param_fever_occur(
+adface <- derive_fever_records(
   dataset = adface,
-  source_data = vs,
-  source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+  dataset_source = vs,
+  filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
   faobj = "FEVER"
 )
 ```
@@ -188,7 +188,7 @@ adface <- derive_param_fever_occur(
 dataset_vignette(
   adface,
   display_vars = exprs(USUBJID, FAOBJ, FATESTCD, FAORRES, VSSTRESN, VSSTRESU),
-  filter = FAOBJ == "Fever"
+  filter = FAOBJ == "FEVER"
 )
 ``` 
 
@@ -285,29 +285,29 @@ dataset_vignette(
 
 ## Derive severity records for Administration Site events{#sev}
 
-The function `derive_param_diam_to_sev` is used to derive the severity records from the diameter records for an event.
+The function `derive_diam_to_sev_records` is used to derive the severity records from the diameter records for an event.
 
 The severity records created will be useful for calculating the maximum severity.
 
 ```{r, echo=FALSE}
-adface <- derive_param_diam_to_sev(
+adface <- derive_diam_to_sev_records(
   dataset = adface,
-  filter_diam = "DIAMETER",
-  filter_faobj = c("Redness", "Swelling"),
+  diam_code = "DIAMETER",
+  faobj_values = c("Redness", "Swelling"),
   testcd_sev = "SEV",
   test_sev = "Severity/Intensity",
-  none = c(0, 2),
-  mild = c(2, 5),
-  mod = c(5, 10),
-  sev = c(10)
+  none = 0,
+  mild = 2,
+  mod = 5,
+  sev = 10
 )
 ```
 
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC, DTYPE),
-  filter = DTYPE == "DERIVED"
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC),
+  filter = FATESTCD == "SEV"
 )
 ```
 
