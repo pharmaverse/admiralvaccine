@@ -109,5 +109,6 @@ globalVariables(c(
   "FASCAT",
   "VISITNUM",
   "VISIT",
-  "FATPT"
+  "FATPT",
+  "VSSTRESU"
 ))
