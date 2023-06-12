@@ -133,7 +133,7 @@ derive_diam_to_sev_records(
 }
 \seealso{
 Other der_rec: 
-\code{\link{derive_param_fever_occur}()},
+\code{\link{derive_fever_records}()},
 \code{\link{derive_param_maxdiam}()},
 \code{\link{derive_param_maxsev}()},
 \code{\link{derive_param_maxtemp}()}
