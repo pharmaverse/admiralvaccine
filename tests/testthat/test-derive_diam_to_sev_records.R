@@ -1,6 +1,6 @@
 ## Test 1: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS`
 
-test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicating
+test_that("derive_diam_to_sev_records Test 1: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS`", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -24,7 +24,6 @@ test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicatin
       FATEST = "Severity/Intensity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -39,15 +38,15 @@ test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicatin
   expected_output <- bind_rows(input, expected1 %>%
     mutate(AVAL = format_aval(AVALC)))
 
-  actual_output <- derive_param_diam_to_sev(
+  actual_output <- derive_diam_to_sev_records(
     dataset = input,
-    filter_diam = "DIAMETER",
-    filter_faobj = c("REDNESS"),
+    diam_code = "DIAMETER",
+    faobj_values = c("REDNESS"),
     testcd_sev = "SEV",
     test_sev = "Severity/Intensity",
-    none = c(0, 2),
-    mild = c(2, 5),
-    mod = c(5, 10),
+    none = 0,
+    mild = 2,
+    mod = 5,
     sev = 10
   )
 
@@ -60,7 +59,7 @@ test_that("derive_param_diam_to_sev Test 1: derive `FATEST`,`FATESTCD` indicatin
 
 ## Test 2: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS` & `SWELLING`
 
-test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicating
+test_that("derive_diam_to_sev_records Test 2: derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS` & `SWELLING`", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -84,7 +83,6 @@ test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicatin
       FATEST = "Severity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -99,15 +97,15 @@ test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicatin
   expected_output <- bind_rows(input, expected1 %>%
     mutate(AVAL = format_aval(AVALC)))
 
-  actual_output <- derive_param_diam_to_sev(
+  actual_output <- derive_diam_to_sev_records(
     dataset = input,
-    filter_diam = "DIAMETER",
-    filter_faobj = c("REDNESS", "SWELLING"),
+    diam_code = "DIAMETER",
+    faobj_values = c("REDNESS", "SWELLING"),
     testcd_sev = "SEV",
     test_sev = "Severity",
-    none = c(0, 2),
-    mild = c(2, 5),
-    mod = c(5, 10),
+    none = 0,
+    mild = 2,
+    mod = 5,
     sev = 10
   )
 
@@ -120,7 +118,7 @@ test_that("derive_param_diam_to_sev Test 2: derive `FATEST`,`FATESTCD` indicatin
 
 ## Test 3: Check if the arguments `none`,`mild`,`moderate`,`sev` works correctly"
 
-test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
+test_that("derive_diam_to_sev_records Test 3: Check if the arguments `none`,
           `mild`,`moderate`,`sev` works correctly", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -144,7 +142,6 @@ test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
       FATEST = "Severity/Intensity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -159,15 +156,15 @@ test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
   expected_output <- bind_rows(input, expected1 %>%
     mutate(AVAL = format_aval(AVALC)))
 
-  actual_output <- derive_param_diam_to_sev(
+  actual_output <- derive_diam_to_sev_records(
     dataset = input,
-    filter_diam = "DIAMETER",
-    filter_faobj = c("REDNESS"),
+    diam_code = "DIAMETER",
+    faobj_values = c("REDNESS"),
     testcd_sev = "SEV",
     test_sev = "Severity/Intensity",
-    none = c(0, 3),
-    mild = c(3, 6),
-    mod = c(6, 9),
+    none = 0,
+    mild = 3,
+    mod = 6,
     sev = 9
   )
 
@@ -180,7 +177,7 @@ test_that("derive_param_diam_to_sev Test 3: Check if the arguments `none`,
 
 ## Test 4: Check if the input dataset has severity records and remove those records correctly
 
-test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
+test_that("derive_diam_to_sev_records Test 4: Check if the input dataset has
           severity records and remove those records correctly", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -211,7 +208,6 @@ test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
       FATEST = "Severity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -226,15 +222,15 @@ test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
   expected_output <- bind_rows(input, expected1 %>%
     mutate(AVAL = format_aval(AVALC)))
 
-  actual_output <- derive_param_diam_to_sev(
+  actual_output <- derive_diam_to_sev_records(
     dataset = input,
-    filter_diam = "DIAMETER",
-    filter_faobj = c("REDNESS", "SWELLING"),
+    diam_code = "DIAMETER",
+    faobj_values = c("REDNESS", "SWELLING"),
     testcd_sev = "SEV",
     test_sev = "Severity",
-    none = c(0, 2),
-    mild = c(2, 5),
-    mod = c(5, 10),
+    none = 0,
+    mild = 2,
+    mod = 5,
     sev = 10
   )
 
@@ -247,7 +243,7 @@ test_that("derive_param_diam_to_sev Test 4: Check if the input dataset has
 
 ## Test 5: Check if the arguments `test_sev`,`testcd_sev` works correctly
 
-test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
+test_that("derive_diam_to_sev_records Test 5: Check if the arguments `test_sev`,
           `testcd_sev` works correctly", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -271,7 +267,6 @@ test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
       FATEST = "Severity/Intensity/Sev",
       FATESTCD = "SEVERITY/SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -286,15 +281,15 @@ test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
   expected_output <- bind_rows(input, expected1 %>%
     mutate(AVAL = format_aval(AVALC)))
 
-  actual_output <- derive_param_diam_to_sev(
+  actual_output <- derive_diam_to_sev_records(
     dataset = input,
-    filter_diam = "DIAMETER",
-    filter_faobj = c("REDNESS"),
+    diam_code = "DIAMETER",
+    faobj_values = c("REDNESS"),
     testcd_sev = "SEVERITY/SEV",
     test_sev = "Severity/Intensity/Sev",
-    none = c(0, 2),
-    mild = c(2, 5),
-    mod = c(5, 10),
+    none = 0,
+    mild = 2,
+    mod = 5,
     sev = 10
   )
 
@@ -305,9 +300,9 @@ test_that("derive_param_diam_to_sev Test 5: Check if the arguments `test_sev`,
   )
 })
 
-## Test 6: error is issued if the `filter_diam` to be filtered is not in the input dataset
+## Test 6: error is issued if the `diam_code` to be filtered is not in the input dataset
 
-test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
+test_that("derive_diam_to_sev_records Test 6: error is issued if the `diam_code`
           to be filtered is not in the input dataset", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -318,15 +313,15 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
   )
 
   expect_warning(
-    derive_param_diam_to_sev(
+    derive_diam_to_sev_records(
       dataset = input,
-      filter_diam = "DIAM",
-      filter_faobj = c("REDNESS"),
+      diam_code = "DIAM",
+      faobj_values = c("REDNESS"),
       testcd_sev = "SEVERITY/SEV",
       test_sev = "Severity/Intensity/Sev",
-      none = c(0, 2),
-      mild = c(2, 5),
-      mod = c(5, 10),
+      none = 0,
+      mild = 2,
+      mod = 5,
       sev = 10
     ),
     regexp = paste(
@@ -335,9 +330,9 @@ test_that("derive_param_diam_to_sev Test 6: error is issued if the `filter_diam`
   )
 })
 
-## Test7: Check if the arguments `filter_diam` works correctly if we pass multiple values
+## Test7: Check if the arguments `diam_code` works correctly if we pass multiple values
 
-test_that("derive_param_diam_to_sev Test 7: Check if the arguments `filter_diam` works correctly
+test_that("derive_diam_to_sev_records Test 7: Check if the arguments `diam_code` works correctly
           if we pass multiple values", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -361,7 +356,6 @@ test_that("derive_param_diam_to_sev Test 7: Check if the arguments `filter_diam`
       FATEST = "Severity/Intensity",
       FATESTCD = "SEV",
       AVALC = format_avalc(AVAL),
-      DTYPE = "DERIVED",
       FASEQ = NA_integer_
     )
 
@@ -376,15 +370,15 @@ test_that("derive_param_diam_to_sev Test 7: Check if the arguments `filter_diam`
   expected_output <- bind_rows(input, expected1 %>%
     mutate(AVAL = format_aval(AVALC)))
 
-  actual_output <- derive_param_diam_to_sev(
+  actual_output <- derive_diam_to_sev_records(
     dataset = input,
-    filter_diam = c("DIAMETER", "DIAM"),
-    filter_faobj = c("REDNESS"),
+    diam_code = c("DIAMETER", "DIAM"),
+    faobj_values = c("REDNESS"),
     testcd_sev = "SEV",
     test_sev = "Severity/Intensity",
-    none = c(0, 3),
-    mild = c(3, 6),
-    mod = c(6, 9),
+    none = 0,
+    mild = 3,
+    mod = 6,
     sev = 9
   )
 
