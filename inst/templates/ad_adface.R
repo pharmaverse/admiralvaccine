@@ -70,10 +70,10 @@ adface <- derive_vars_merged(
 # Step3 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not
 # present in FACE
 
-adface <- derive_param_fever_occur(
+adface <- derive_fever_records(
   dataset = adface,
-  source_data = vs,
-  source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+  dataset_source = vs,
+  filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
   faobj = "FEVER"
 )
 
@@ -121,16 +121,16 @@ adface <- adface %>%
 
 # Step7 - Creating severity records from Diameter for Redness,Swelling,etc
 
-adface <- derive_param_diam_to_sev(
+adface <- derive_diam_to_sev_records(
   dataset = adface,
-  filter_diam = "DIAMETER",
-  filter_faobj = c("REDNESS", "SWELLING"),
+  diam_code = "DIAMETER",
+  faobj_values = c("REDNESS", "SWELLING"),
   testcd_sev = "SEV",
   test_sev = "Severity/Intensity",
-  none = c(0, 2),
-  mild = c(2, 5),
-  mod = c(5, 10),
-  sev = c(10)
+  none = 0,
+  mild = 2,
+  mod = 5,
+  sev = 10
 )
 
 
