@@ -100,9 +100,9 @@ derive_param_maxdiam(
 )
 }
 \seealso{
-Other der_rec:
+Other der_rec: 
+\code{\link{derive_diam_to_sev_records}()},
 \code{\link{derive_fever_records}()},
-\code{\link{derive_param_diam_to_sev}()},
 \code{\link{derive_param_maxsev}()},
 \code{\link{derive_param_maxtemp}()}
 }
