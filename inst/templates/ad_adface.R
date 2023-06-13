@@ -9,6 +9,7 @@
 library(admiralvaccine)
 library(admiral)
 library(tibble)
+library(dplyr)
 
 # Load source datasets
 
