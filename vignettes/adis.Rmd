@@ -84,7 +84,7 @@ library(lubridate)
 library(admiralvaccine)
 library(metatools)
 
-# Load source datasets ----
+# Load source datasets
 data("vx_is")
 data("vx_suppis")
 data("vx_adsl")
@@ -606,3 +606,9 @@ NOTE: All these packages are in the experimental phase, but the vision is to
 have them associated with an End to End pipeline under the umbrella of the
 [pharmaverse](https://github.com/pharmaverse). An example of applying metadata 
 and perform associated checks can be found at the [pharmaverse E2E example](https://examples.pharmaverse.org/data/adsl/).
+
+# Example Script 
+
+ADaM | Sample Code
+---- | --------------
+ADIS | [ad_adis.R](https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adis.R){target="_blank"}
