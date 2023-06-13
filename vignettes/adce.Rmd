@@ -250,7 +250,7 @@ dataset_vignette(
 )
 ```
 
-## Example Script 
+# Example Script 
 
 ADaM | Sample Code
 ---- | --------------
