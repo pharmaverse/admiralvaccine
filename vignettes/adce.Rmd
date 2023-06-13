@@ -13,29 +13,27 @@ vignette: >
 ```{r setup, include = FALSE}
 # Other variables
 admiral_homepage <- "https://pharmaverse.github.io/admiral"
-library(admiraldev)
 ```
 
 # Introduction
 
-This article describes creating an `ADCE` ADaM for the analysis of Vaccine Reactogenicity Data collected in SDTM `CE` domain. The current  
-presented example is tested using `CE`  SDTM domains and `ADSL` ADaM domain. However, other domains could be used if needed (eg temperature data collected in `VS`).
+This article describes creating an `ADCE` ADaM for the analysis of Vaccine Reactogenicity Data collected in SDTM `CE` domain. The current presented example is tested using `CE`  SDTM domains and `ADSL` ADaM domain. However, other domains could be used if needed (eg temperature data collected in `VS`).
 
 **Note:** *All examples assume CDISC SDTM and/or ADaM format as input unless 
 otherwise specified.*
 
 # Programming Flow
 * [Read in Data](#readdata)
-* [Restrict CE to Reactogenicity records](#cefilter)
+* [Restrict `CE` to Reactogenicity records](#cefilter)
 * [Creation of Periods Reference dataset](#adperiods)
 * [Derivation of Analysis Dates](#adates)
 * [Join with the Periods Reference dataset](#mergeperiods)
 * [Creation of analysis version for GRADING Variable](#agrade)
 * [Creation of Analysis Sequence Number](#aseq)
-* [Final Step : get all the remaining variables from ADSL](#jadsl)
+* [Final Step : Get all the remaining variables from `ADSL`](#jadsl)
 
 ## Read in Data {#readdata}
-Assumption: The CE domain has already been merged with the SUPPCE dataset. If this is not yet the case, join SUPPCE onto parent CE domain using metatools::combine_supp(`CE`, `SUPPCE`).
+Assumption: The `CE` domain has already been merged with the `SUPPCE` dataset. If this is not yet the case, join `SUPPCE` onto parent `CE` domain using metatools::combine_supp(`CE`, `SUPPCE`).
 
 ```{r, eval=TRUE, message=FALSE, warning=FALSE}
 library(admiraldev)
@@ -62,7 +60,7 @@ dataset_vignette(
 )
 ```
 
-## Restrict CE domain to the relevant records for Reactogenicity Analysis {#cefilter}
+## Restrict `CE` domain to the relevant records for Reactogenicity Analysis {#cefilter}
 ```{r eval=TRUE}
 # Get CE records
 adce <- ce %>%
@@ -71,7 +69,7 @@ adce <- ce %>%
 
 ## Create Reference Dataset for Periods {#adperiods}
 ```{r eval=TRUE}
-# Create period dataset - for joining period information onto ce records
+# Create period dataset - for joining period information onto `CE` records
 # Need to remove datetime variables as otherwise causes duplicate issues
 adsl2 <- adsl %>%
   select(-c(starts_with("AP") & ends_with("DTM")))
@@ -89,16 +87,16 @@ dataset_vignette(
 )
 ```
 
-## Select predecessor variables from ADSL, and derive analysis dates (ASTDT, ASTDY, AENDT, AENDY) {#adates}
+## Select predecessor variables from `ADSL`, and derive analysis dates (`ASTDT`, `ASTDY`, `AENDT`, `AENDY`) {#adates}
 
-At this step, it may be useful to join ADSL to your CE domain. Only the ADSL variables used for derivations are selected at this step. The rest of the relevant ADSL variables would be added later.
+At this step, it may be useful to join `ADSL` to your `CE` domain. Only the `ADSL` variables used for derivations are selected at this step. The rest of the relevant `ADSL` variables would be added later.
 
 ```{r eval=TRUE}
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT)
 # Derive analysis dates/days
 adce <- adce %>%
-  # join adsl to ce
+  # join ADSL to CE
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
@@ -133,7 +131,7 @@ dataset_vignette(
 ```
 
 ## Join with the periods reference dataset and derive Relative Day in Period {#mergeperiods}
-Also add analysis version of CEREL(AREL).
+Also add analysis version of `CEREL`(`AREL`).
 ```{r eval=TRUE}
 adce <-
   derive_vars_joined(
@@ -155,10 +153,10 @@ dataset_vignette(
 )
 ```
 
-##  Creation of analysis version for GRADING Variable (either TOXGR or SEV) {#agrade}
-Depending on which variable is collected for the Grading (TOXGR or SEV) in CE domain, derive the associated analysis version.
-In current example, SEV is collected, so the code is using this as an example.
-In addition, derivation of Extreme Flags: in current example: flag the first occurence of the most severe grade within a Period (AOCC01FL).
+##  Creation of analysis version for GRADING Variable (either `TOXGR` or `SEV`) {#agrade}
+Depending on which variable is collected for the Grading (`TOXGR` or `SEV`) in `CE` domain, derive the associated analysis version.
+In current example, `SEV` is collected, so the code is using this as an example.
+In addition, derivation of Extreme Flags: in current example: flag the first occurrence of the most severe grade within a Period (`AOCC01FL`).
 
 ```{r eval=TRUE}
 adce <- adce %>%
@@ -226,8 +224,8 @@ dataset_vignette(
   )
 )
 ```
-## Final Step : get all the remaining variables from ADSL {#jadsl_list}
-## Get list of ADSL vars as per trial specific which needs to be adjusted when using the template
+## Final Step : Get all the remaining variables from `ADSL` {#jadsl_list}
+## Get list of `ADSL` vars as per trial specific which needs to be adjusted when using the template
 ```{r eval=TRUE}
 # Get list of ADSL vars, list is trial specific and needs to be adjusted when using the template
 adsl_list <- adsl %>%
@@ -241,3 +239,20 @@ adce <- adce %>%
     by_vars = exprs(STUDYID, USUBJID)
   )
 ```
+
+```{r, eval=TRUE, echo=FALSE}
+dataset_vignette(
+  adce,
+  display_vars = exprs(
+    USUBJID, TRTSDT, ASTDT, APERIOD, APERSDT, APERSTDY,
+    CEDECOD, ASEVN, AOCC01FL, CESEQ, ASEQ, AGE, SEX
+  )
+)
+```
+
+## Example Script 
+
+ADaM | Sample Code
+---- | --------------
+ADCE | [ad_adce.R](https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adce.R){target="_blank"} 
+ 

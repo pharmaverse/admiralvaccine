@@ -2,7 +2,7 @@
 #
 # Label: Clinical Event Analysis Dataset
 #
-# Input: ce, adsl, vs
+# Input: CE, ADSL, VS
 library(admiral)
 library(dplyr)
 library(lubridate)
@@ -33,13 +33,13 @@ adsl <- convert_blanks_to_na(adsl)
 
 # Derivations ----
 # Get CE records
-adce <- ce %>%
+adce01 <- ce %>%
   filter(CECAT == "REACTOGENICITY")
 
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT)
 
-# Create period dataset - for joining period information onto ce records
+# Create period dataset - for joining period information onto CE records
 # Need to remove datetime variables as otherwise causes duplicate issues
 adsl2 <- adsl %>%
   select(-c(starts_with("AP") & ends_with("DTM")))
@@ -50,8 +50,8 @@ adperiods <- create_period_dataset(
 )
 
 # Derive analysis dates/days
-adce <- adce %>%
-  # join adsl to ce
+adce02 <- adce01 %>%
+  # join ADSL to CE
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
@@ -79,9 +79,9 @@ adce <- adce %>%
 
 
 
-adce <-
+adce03 <-
   derive_vars_joined(
-    adce,
+    adce02,
     dataset_add = adperiods,
     by_vars = exprs(STUDYID, USUBJID),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT
@@ -93,7 +93,7 @@ adce <-
 
 
 
-adce <- adce %>%
+adce04 <- adce03 %>%
   ## depending on collection of TOXGR or SEV in CE domain ----
   ## Analysis variant of ASEV and ASEVN ----
   mutate(
@@ -115,7 +115,7 @@ adce <- adce %>%
     filter = !is.na(APERIOD) & !is.na(ASEV)
   )
 
-adce <- adce %>%
+adce05 <- adce04 %>%
   ## Derive ASEQ ----
   derive_var_obs_number(
     new_var = ASEQ,
@@ -141,7 +141,7 @@ adsl_list <- adsl %>%
 
 
 # Join ADSL_list with CE
-adce <- adce %>%
+adce <- adce05 %>%
   derive_vars_merged(
     dataset_add = adsl_list,
     by_vars = exprs(STUDYID, USUBJID)
