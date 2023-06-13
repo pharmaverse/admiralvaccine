@@ -44,9 +44,10 @@ to derive severity records by passing the events from \code{FAOBJ}.}
 Assign the value for \code{FATESTCD} variable to indicate the severity records.
 Ignore the argument if you want to set the default value (\code{SEV}).
 
-\emph{Note}: This argument value will be used to check whether input data set has
-Severity records for specified \code{faobj_values} event. If it has, those records
-will be removed and new severity records will be derived from diameters.}
+\emph{Note}: Basically, This function will derive and create the severity records from the
+diameter record for the particular events specified in the \code{faobj_values} that user wants.
+If you want to derive the Severity from diameter, even though you have the severity in SDTM data.
+This function will re-derive the severity and remove the derived SDTM severity records.}
 
 \item{test_sev}{\code{FATEST} value for severity
 
