@@ -73,7 +73,7 @@ derive_vars_vaxdt <- function(dataset,
                               order) {
   # Assertion checks
   assert_vars(by_vars)
-  assert_order_vars(order, optional = TRUE)
+  assert_expr_list(order, optional = TRUE)
   assert_data_frame(dataset, required_vars = by_vars)
   assert_data_frame(dataset_adsl, required_vars = exprs(USUBJID))
 
