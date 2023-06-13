@@ -1,35 +1,32 @@
 #' Derive AVAL variable for ADIS ADaM domain
 #'
-#' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#' @description                                                                   +
-#' Derive AVAL variable for Laboratory Immunology Data ADaM domain.               +
-#' A common rule has been decided for its derivation, based on ISLLOQ and ISULOQ  +
-#' and/or only ISLLOQ presence. Please, refers to arguments description for       +
-#' additional details.                                                            +
-#' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#' @description
+#' Derive "AVAL" variable for Laboratory Immunology Data ADaM domain.
+#' A common rule has been decided for its derivation, based on "ISLLOQ", "ISULOQ" and "ISORRES"
+#' when both "ISLLOQ" and "ISULOQ" are present.
+#' If "ISULOQ" is not present, the variables used are "ISLLOQ" and "ISORRES."
+#' Please, refers to arguments description for additional details.
 #'
-#' @param dataset
-#' Input dataset.
+#' @param dataset Input dataset.
 #'
-#' @param lower_rule
-#' Derivation rule when ISSTRESN value is below ISLLOQ
+#' @param lower_rule Derivation rule when "ISSTRESN" value is below "ISLLOQ."
+#'   When ISSTRESN is missing, the inequality in "ISORRES." is checked for the derivation.
 #'
-#' @param middle_rule
-#' Derivation rule when ISSTRESN value is greater than ISLLOQ and
-#' lower than ISULOQ.
-#' If ISULOQ is not present, derivation rule when ISSTRESN is
-#' greater than ISLLOQ
+#' @param middle_rule Derivation rule when "ISSTRESN" value is greater than "ISLLOQ" and
+#'   lower than "ISULOQ."
+#'   If "ISULOQ" is not present, derivation rule when "ISSTRESN" is greater than "ISLLOQ".
+#'   When "ISSTRESN" is missing, the inequality in "ISORRES." is checked for the derivation.
 #'
-#' @param upper_rule
-#' Derivation rule when ISSTRESN value is greater than ISULOQ.
-#' This is an optional argument since ISULOQ may not be present.
+#' @param upper_rule Derivation rule when "ISSTRESN" value is greater than "ISULOQ."
+#'   This is an optional argument since "ISULOQ" may not be present.
+#'   When "ISSTRESN" is missing, the inequality in ISORRES. is checked for the derivation.
+#'   Default value is NULL.
 #'
-#' @param round
-#' Rounding for AVAL variable. An integer argument which specifies
-#' the number of decimals displayed.
+#' @param round Rounding for "AVAL" variable. An integer argument which specifies
+#'   the number of decimals displayed.
+#'   Default value is NULL.
 #'
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#' @return dataset with AVAL variable derived.
+#' @return dataset with "AVAL" variable derived.
 #'
 #' @export
 #'
@@ -73,7 +70,6 @@
 #'   "ABC-1002", 30, "R0003MA", "R0003MA Antibody", "228.1", 228.1, 4, 120
 #' )
 #'
-#'
 #' output <- derive_var_aval_adis(
 #'   dataset = input,
 #'   lower_rule = ISLLOQ / 2,
@@ -81,21 +77,19 @@
 #'   upper_rule = ISULOQ,
 #'   round = 2
 #' )
-#################################################################################
 #'
 derive_var_aval_adis <-
-  function(dataset, lower_rule, middle_rule, upper_rule, round) {
+  function(dataset, lower_rule, middle_rule, upper_rule = NULL, round = NULL) {
     if (!missing(lower_rule) && !missing(middle_rule) && !missing(upper_rule)) {
       data <- dataset %>%
         mutate(
           AVAL = (
             case_when(
-              !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
-              !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ ~
-                {{ middle_rule }},
-              !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ {{ upper_rule }},
-              grepl("<", ISORRES) & !is.na(ISORRES) ~ {{ lower_rule }},
-              grepl(">", ISORRES) & !is.na(ISORRES) ~ {{ upper_rule }}
+              ISSTRESN < ISLLOQ ~ {{ lower_rule }},
+              ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ ~ {{ middle_rule }},
+              ISSTRESN >= ISULOQ ~ {{ upper_rule }},
+              grepl("<", ISORRES) ~ {{ lower_rule }},
+              grepl(">", ISORRES) ~ {{ upper_rule }}
             )
           )
         )
@@ -106,11 +100,10 @@ derive_var_aval_adis <-
         mutate(
           AVAL = (
             case_when(
-              !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ {{ lower_rule }},
-              !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ {{ middle_rule }},
-              grepl("<", ISORRES) & !is.na(ISORRES) ~ {{ lower_rule }},
-              grepl(">", ISORRES) & !is.na(ISORRES) ~
-                as.numeric(gsub("^.*?>", "", ISORRES))
+              ISSTRESN < ISLLOQ ~ {{ lower_rule }},
+              ISSTRESN >= ISLLOQ ~ {{ middle_rule }},
+              grepl("<", ISORRES) ~ {{ lower_rule }},
+              grepl(">", ISORRES) ~ as.numeric(gsub("^.*?>", "", ISORRES))
             )
           )
         )

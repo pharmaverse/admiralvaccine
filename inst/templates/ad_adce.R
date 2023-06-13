@@ -9,7 +9,7 @@ library(lubridate)
 library(admiralvaccine)
 
 
-# Load source datasets ----
+# Load source datasets
 
 # Use e.g. haven::read_sas to read in .sas7bdat, or other suitable functions
 # as needed and assign to the variables below.
@@ -31,7 +31,7 @@ ce <- vx_ce
 ce <- convert_blanks_to_na(ce)
 adsl <- convert_blanks_to_na(adsl)
 
-# Derivations ----
+# Derivations
 # Get CE records
 adce01 <- ce %>%
   filter(CECAT == "REACTOGENICITY")
@@ -57,7 +57,7 @@ adce02 <- adce01 %>%
     new_vars = adsl_vars,
     by = exprs(STUDYID, USUBJID)
   ) %>%
-  ## Derive analysis start time ----
+  ## Derive analysis start time
   ## Proposed imputations depending on situation: no needed -> highest imputation = “n”
   ## some missing dates: highest imputation = “D”
   derive_vars_dt(
@@ -65,13 +65,13 @@ adce02 <- adce01 %>%
     new_vars_prefix = "AST",
     highest_imputation = "n"
   ) %>%
-  ## Derive analysis end time ----
+  ## Derive analysis end time
   derive_vars_dt(
     dtc = CEENDTC,
     new_vars_prefix = "AEN",
     highest_imputation = "n"
   ) %>%
-  ## Derive analysis start relative day and  analysis end relative day ----
+  ## Derive analysis start relative day and  analysis end relative day
   derive_vars_dy(
     reference_date = TRTSDT,
     source_vars = exprs(ASTDT, AENDT)
@@ -94,16 +94,16 @@ adce03 <-
 
 
 adce04 <- adce03 %>%
-  ## depending on collection of TOXGR or SEV in CE domain ----
-  ## Analysis variant of ASEV and ASEVN ----
+  ## depending on collection of TOXGR or SEV in CE domain
+  ## Analysis variant of ASEV and ASEVN
   mutate(
     ASEV = CESEV,
     ASEVN = as.integer(factor(ASEV,
       levels = c("MILD", "MODERATE", "SEVERE", "DEATH THREATENING")
     ))
   ) %>%
-  ## Derive occurrence flags: first occurrence of most severe solicited AE ----
-  ## - Company specific ----
+  ## Derive occurrence flags: first occurrence of most severe solicited AE
+  ## - Company specific
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -116,14 +116,14 @@ adce04 <- adce03 %>%
   )
 
 adce05 <- adce04 %>%
-  ## Derive ASEQ ----
+  ## Derive ASEQ
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = exprs(STUDYID, USUBJID),
     order = exprs(CEDECOD, CELAT, CETPTREF, APERIOD),
     check_type = "error"
   ) %>%
-  ## Derive analysis duration (value and unit) ----
+  ## Derive analysis duration (value and unit)
   derive_vars_duration(
     new_var = ADURN,
     new_var_unit = ADURU,
@@ -148,7 +148,7 @@ adce <- adce05 %>%
   )
 
 
-# Save output ----
+# Save output
 
 dir <- tempdir() # Change to whichever directory you want to save the dataset in
 saveRDS(adce, file = file.path(dir, "adce.rds"), compress = "bzip2")
