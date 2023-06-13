@@ -50,7 +50,6 @@ sev_to_numeric <- function(x, y) {
 
 face <- face %>%
   filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
-  convert_blanks_to_na() %>%
   mutate(FAOBJ = str_to_upper(FAOBJ))
 
 adsl_vars <- exprs(RFSTDTC, RFENDTC)
