@@ -9,7 +9,6 @@
 library(admiralvaccine)
 library(admiral)
 library(tibble)
-library(magrittr)
 
 # Load source datasets
 
