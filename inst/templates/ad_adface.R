@@ -9,6 +9,7 @@
 library(admiralvaccine)
 library(admiral)
 library(tibble)
+library(magrittr)
 
 # Load source datasets
 
@@ -41,7 +42,7 @@ sev_to_numeric <- function(x, y) {
     x == "NONE" ~ 0,
     x == "MILD" ~ 1,
     x == "MODERATE" ~ 2,
-    x == "xERE" ~ 3,
+    x == "SEVERE" ~ 3,
     TRUE ~ y
   )
 }
