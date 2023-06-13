@@ -314,7 +314,7 @@ By default, we will populate `SEV` and `Severity/Intensity` as the `FATESTCD` an
 
 ## Derive Maximum Records{#max}
 
-In this step, we will derive maximum records for severity, diameter, temperature  events using the function `derive_extreme_records()`.
+In this step, we will derive maximum records for severity, diameter, temperature  using the function `derive_extreme_records()`.
 
 ```{r eval=TRUE}
 adface <- derive_extreme_records(
@@ -354,13 +354,23 @@ adface <- derive_extreme_records(
 )
 ```
 
-This call returns the input dataset with maximum records added for the respective events.
+```{r, echo=FALSE}
+dataset_vignette(
+  adface,
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC),
+  filter = FATESTCD %in% c("MAXSEV", "MAXDIAM", "MAXTEMP")
+)
+```
+
+This call returns the input dataset with maximum records added for the severity, diameter, temperature.
 
 ## Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1` {#paramcd}
 
 To assign parameter level values such as `PARAMCD`, `PARAM`, `PARAMN`,
 etc., a lookup needs to be created to join to the source data.
 PARCAT1,PARCAT2 variables are assigned from FACAT,FASCAT variables.
+
+
 
 For example, when creating `ADFACE` dataset, a lookup based on the SDTM `--TESTCD` value can be created:
 
@@ -432,6 +442,8 @@ dataset_vignette(
 )
 ```
 
+`PARAMCD` will be always derived from lookup dataset whereas `PARAMN`, `PARAM`, `PARCAT1`, `PARCAT2` can be either derived from lookup dataset if mentioned in `merge_vars` argument or derived in the function.
+
 ## Derive Maximum Severity Flag {#maxflag}
 
 The function `derive_vars_max_flag()` is used to derive flag variable for the maximum values of an event.
@@ -463,8 +475,6 @@ The function `derive_vars_event_flag()` is used to derive flag variable for the 
 
 `new_var1` - Flags the record if at least one of the event occurred within the observation period. 
 `new_var2` - Flags the record if the event is occurred.
-
-For derived records with `DTYPE` equals "MAXIMUM" , the `new_var2` will be set to NA.
 
 ```{r eval=TRUE}
 adface <- derive_vars_event_flag(
