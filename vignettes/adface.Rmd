@@ -354,7 +354,7 @@ adface <- derive_extreme_records(
 )
 ```
 
-This call returns the input dataset with maximum records added for an event `FEVER`.
+This call returns the input dataset with maximum records added for the respective events.
 
 ## Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1` {#paramcd}
 
