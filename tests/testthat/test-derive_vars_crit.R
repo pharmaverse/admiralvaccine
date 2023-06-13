@@ -38,8 +38,8 @@ testthat::test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
   # actual dataset
   actual <- derive_vars_crit(
     dataset = input,
-    new_var = "CRIT1",
-    label_var = "Titer >= ISLLOQ",
+    prefix = "CRIT1",
+    crit_label = "Titer >= ISLLOQ",
     condition = !is.na(AVAL) & !is.na(ISLLOQ),
     criterion = AVAL >= ISLLOQ
   )
@@ -97,8 +97,8 @@ testthat::test_that("derive_vars_crit Test 2: Derive CRIT1 variables
   # actual dataset
   actual <- derive_vars_crit(
     dataset = input,
-    new_var = "CRIT1",
-    label_var = "Titer >= ISLLOQ",
+    prefix = "CRIT1",
+    crit_label = "Titer >= ISLLOQ",
     condition = !is.na(AVAL) & !is.na(ISLLOQ),
     criterion = AVAL >= ISLLOQ
   )
@@ -154,8 +154,8 @@ testthat::test_that("derive_vars_crit Test 3: Try to apply different vars name a
   # actual dataset
   actual <- derive_vars_crit(
     dataset = input,
-    new_var = "ANL01",
-    label_var = "Titer >= ISLLOQ",
+    prefix = "ANL01",
+    crit_label = "Titer >= ISLLOQ",
     condition = !is.na(AVAL) & !is.na(ISLLOQ),
     criterion = AVAL >= ISLLOQ
   )
@@ -210,8 +210,8 @@ testthat::test_that("derive_vars_crit Test 4: Complicated selections and missing
   # actual dataset
   actual <- derive_vars_crit(
     dataset = input,
-    new_var = "CRIT1",
-    label_var = "Titer >= ISLLOQ and Titer >= 2*BASE",
+    prefix = "CRIT1",
+    crit_label = "Titer >= ISLLOQ and Titer >= 2*BASE",
     condition = !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE),
     criterion = AVAL >= ISLLOQ & AVAL >= 2 * BASE
   )
