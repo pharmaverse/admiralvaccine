@@ -109,7 +109,7 @@ further analysis. In this step, we will filter records that has only reactogenic
 ```{r eval=TRUE}
 face <- face %>%
   filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
-  mutate(FAOBJ = str_to_sentence(FAOBJ))
+  mutate(FAOBJ = str_to_upper(FAOBJ))
 ```
 
 ```{r, echo=FALSE}
