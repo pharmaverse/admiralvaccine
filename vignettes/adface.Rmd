@@ -323,8 +323,10 @@ adface <- derive_extreme_records(
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   order = exprs(AVAL),
   mode = "last",
-  set_values_to = exprs(FATEST = "Maximum Severity",
-                        FATESTCD = "MAXSEV")
+  set_values_to = exprs(
+    FATEST = "Maximum Severity",
+    FATESTCD = "MAXSEV"
+  )
 )
 
 adface <- derive_extreme_records(
@@ -333,18 +335,22 @@ adface <- derive_extreme_records(
   by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
   order = exprs(AVAL),
   mode = "last",
-  set_values_to = exprs(FATEST = "Maximum Diameter",
-                        FATESTCD = "MAXDIAM")
+  set_values_to = exprs(
+    FATEST = "Maximum Diameter",
+    FATESTCD = "MAXDIAM"
+  )
 )
 
-adface <-   derive_extreme_records(
+adface <- derive_extreme_records(
   dataset = adface,
-  filter = FAOBJ == 'FEVER',
+  filter = FAOBJ == "FEVER",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   order = exprs(VSSTRESN),
   mode = "last",
-  set_values_to = exprs(FATEST = "Maximum Temperature",
-                        FATESTCD = "MAXTEMP")
+  set_values_to = exprs(
+    FATEST = "Maximum Temperature",
+    FATESTCD = "MAXTEMP"
+  )
 )
 ```
 
@@ -473,7 +479,7 @@ adface <- derive_vars_event_flag(
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, AVAL, AVALC, EVENTFL, EVENTDFL, DTYPE)
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, AVAL, AVALC, EVENTFL, EVENTDFL)
 )
 ```
 
