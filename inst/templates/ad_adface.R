@@ -2,49 +2,62 @@
 #
 # Label: Reactogenicity Analysis Dataset
 #
-# Input: face, ex, vs
+# Input: face, suppface, ex, suppex, vs and ADSL
 
-# Loading required packages and admiral vaccine utilities
+# Loading required packages
 
 library(tibble)
 library(dplyr)
-library(metatools)
-library(readxl)
 library(stringr)
 library(admiraldev)
 library(admiral)
 library(admiralvaccine)
 
-# Load source datasets ----
+
+# Load source datasets
 
 # Use e.g. haven::read_sas to read in .sas7bdat, or other suitable functions
 # as needed and assign to the variables below.
-# For illustration purposes read in admiral vaccine mock sdtm data and adsl vaccine data
+# For illustration purposes read in admiral vaccine mock SDTM data and ADSL vaccine data
 
 data("vx_ex")
 data("vx_vs")
 data("vx_face")
 data("vx_adsl")
-data("vx_suppdm")
 data("vx_suppex")
 data("vx_suppface")
 
-ex <- vx_ex
-vs <- vx_vs
-face <- vx_face
-adsl <- vx_adsl
-suppface <- vx_suppface
-suppex <- vx_suppex
+# Missing character values from SAS appear as "" characters in R, instead of appearing
+# as NA values. Further details can be obtained via the following link:
+# https://pharmaverse.github.io/admiral/cran-release/articles/admiral.html#handling-of-missing-values # nolint
 
+ex <- convert_blanks_to_na(vx_ex)
+vs <- convert_blanks_to_na(vx_vs)
+face <- convert_blanks_to_na(vx_face)
+adsl <- convert_blanks_to_na(vx_adsl)
+suppface <- convert_blanks_to_na(vx_suppface)
+suppex <- convert_blanks_to_na(vx_suppex)
 
-# Step1 - Basic Filter and Pre-processing for FACE
+# creating a user defined function for deriving AVAL from AVALC
+
+sev_to_numeric <- function(x, y) {
+  case_when(
+    x == "NONE" ~ 0,
+    x == "MILD" ~ 1,
+    x == "MODERATE" ~ 2,
+    x == "SEVERE" ~ 3,
+    TRUE ~ y
+  )
+}
+
+# Step 1 - Basic Filter and Pre-processing for FACE
 
 face <- face %>%
   filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
-  convert_blanks_to_na() %>%
   mutate(FAOBJ = str_to_upper(FAOBJ))
 
-# Step2 - Merging supplementary datasets and FACE with EX
+adsl_vars <- exprs(RFSTDTC, RFENDTC)
+# Step 2 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
   dataset = face,
@@ -54,32 +67,20 @@ adface <- derive_vars_merged_vaccine(
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
-)
-
-# Step3 - Merge required adsl variables needed for analysis.
-
-adsl_vars <- exprs(RFSTDTC, RFENDTC)
-
-adface <- derive_vars_merged(
-  adface,
-  dataset_add = adsl,
-  new_vars = adsl_vars,
-  by_vars = exprs(STUDYID, USUBJID)
-)
-
-# Step3 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not
-# present in FACE
-
-adface <- derive_fever_records(
-  dataset = adface,
-  dataset_source = vs,
-  filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
-  faobj = "FEVER"
-)
-
-# Step4 - Creating ADT, ATM, ADTM, ADY
-
-adface <- adface %>%
+) %>%
+  # Step 3 - Merge required ADSL variables needed for analysis.
+  derive_vars_merged(
+    dataset_add = adsl,
+    new_vars = adsl_vars,
+    by_vars = exprs(STUDYID, USUBJID)
+  ) %>%
+  # Step 4 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not present in FACE
+  derive_fever_records(
+    dataset_source = vs,
+    filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
+    faobj = "FEVER"
+  ) %>%
+  # Step 5 - Creating ADT, ATM, ADTM, ADY
   derive_vars_dt(
     new_vars_prefix = "A",
     dtc = FADTC
@@ -88,13 +89,11 @@ adface <- adface %>%
     new_vars_prefix = "A",
     dtc = FADTC,
     highest_imputation = "n"
-  )
-
-adface <- adface %>%
+  ) %>%
   mutate(RFSTDTC = as.Date(RFSTDTC)) %>%
   derive_vars_dy(reference_date = RFSTDTC, source_vars = exprs(ADT))
 
-# Step5 - Creating APERIOD variables
+# Step 6 - Creating APERIOD variables
 period_ref <- create_period_dataset(
   dataset = adsl,
   new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA, TRTP = TRTxxP)
@@ -105,110 +104,123 @@ adface <- derive_vars_joined(
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
   filter_join = ADT >= APERSDT & ADT <= APEREDT
-)
-
-# Step6 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT,
-# AVISITN,ATPT,ATPTN)
-
-adface <- adface %>%
+) %>%
+  # Step 7 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN, ATPT,
+  # ATPTN)
   mutate(
-    AVAL = suppressWarnings(as.numeric(FASTRESN)),
     AVALC = as.character(FASTRESC),
+    AVAL = suppressWarnings(as.numeric(FASTRESN)),
+    AVAL = sev_to_numeric(AVALC, AVAL),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
     ATPTN = FATPTNUM
+  ) %>%
+  # Step 8 - Creating severity records from Diameter for Redness, Swelling,etc
+  # Note: Basically, this function will derive and create the severity records from the
+  # diameter record for the particular events that user wants. If you want to derive the Severity
+  # from diameter, even though you have the severity in SDTM level, this function will re-derive the
+  # severity and remove the derived SDTM severity records.
+  derive_diam_to_sev_records(
+    diam_code = "DIAMETER",
+    faobj_values = c("REDNESS", "SWELLING"),
+    testcd_sev = "SEV",
+    test_sev = "Severity/Intensity",
+    none = 0,
+    mild = 2,
+    mod = 5,
+    sev = 10
+  ) %>%
+  # Step 9 - Deriving Maximum Severity for Local and Systemic events
+  derive_extreme_records(
+    filter = FATESTCD == "SEV",
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+    order = exprs(AVAL),
+    mode = "last",
+    set_values_to = exprs(
+      FATEST = "Maximum Severity",
+      FATESTCD = "MAXSEV"
+    )
+  ) %>%
+  # Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
+  derive_extreme_records(
+    filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+    by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
+    order = exprs(AVAL),
+    mode = "last",
+    set_values_to = exprs(
+      FATEST = "Maximum Diameter",
+      FATESTCD = "MAXDIAM"
+    )
+  ) %>%
+  # Step 11 - Deriving Maximum Temperature
+  derive_extreme_records(
+    filter = FAOBJ == "FEVER",
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+    order = exprs(VSSTRESN),
+    mode = "last",
+    set_values_to = exprs(
+      FATEST = "Maximum Temperature",
+      FATESTCD = "MAXTEMP"
+    )
   )
-
-# Step7 - Creating severity records from Diameter for Redness,Swelling,etc
-
-adface <- derive_diam_to_sev_records(
-  dataset = adface,
-  diam_code = "DIAMETER",
-  faobj_values = c("REDNESS", "SWELLING"),
-  testcd_sev = "SEV",
-  test_sev = "Severity/Intensity",
-  none = 0,
-  mild = 2,
-  mod = 5,
-  sev = 10
-)
-
-
-# Step8 - Deriving Maximum Severity for Local and Systemic events
-
-adface <- derive_param_maxsev(
-  dataset = adface,
-  exclude_events = NULL,
-  filter_sev = "SEV",
-  test_maxsev = "Maximum Severity",
-  testcd_maxsev = "MAXSEV",
-  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
-)
-
-# Step9 - Deriving Maximum Diameter for Administrative site reactions
-
-adface <- derive_param_maxdiam(
-  dataset = adface,
-  filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
-  by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
-  test_maxdiam = "Maximum Diameter",
-  testcd_maxdiam = "MAXDIAM"
-)
-
-# Step10 - Deriving Maximum Temperature
-
-adface <- derive_param_maxtemp(
-  dataset = adface,
-  filter_faobj = "FEVER",
-  test_maxtemp = "Maximum Temperature",
-  testcd_maxtemp = "MAXTEMP",
-  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
-)
-
-# Step 11 - Assigning PARAM, PARAMN, PARAMCD, PARCAT1 and PARCAT2 by Lookup table
+# Step 12 - Assigning PARAM, PARAMN, PARAMCD, PARCAT1 and PARCAT2 by Lookup table
 
 lookup_dataset <- tribble(
   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
-  "SEV", "SEVREDN", 1, "Severity", "REDNESS",
+  "SEV", "SEVREDN", 1, "Severity/Intensity", "REDNESS",
   "DIAMETER", "DIARE", 2, "Diameter", "REDNESS",
-  "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "REDNESS",
+  "MAXDIAM", "MDIRE", 3, "Maximum Diameter", "REDNESS",
   "MAXTEMP", "MAXTEMP", 4, "Maximum Temperature", "FEVER",
   "OCCUR", "OCFEVER", 5, "Occurrence Indicator", "FEVER",
   "OCCUR", "OCERYTH", 6, "Occurrence Indicator", "ERYTHEMA",
-  "SEV", "SEVPAIN", 7, "Severity", "PAIN AT INJECTION SITE",
-  "OCCUR", "OCPAIN", 8, "Occurrence Indicator", "PAIN AT INJECTION SITE",
-  "OCCUR", "OCSWEL", 9, "Occurrence Indicator", "SWELLING",
-  "MAXSEV", "MAXSWEL", 10, "Maximum Severity", "SWELLING",
-  "MAXSEV", "MAXREDN", 11, "Maximum Severity", "REDNESS"
+  "MAXSEV", "MAXSWEL", 7, "Maximum Severity", "SWELLING",
+  "MAXSEV", "MAXREDN", 8, "Maximum Severity", "REDNESS",
+  "MAXSEV", "MAXSFAT", 9, "Maximum Severity", "FATIGUE",
+  "MAXSEV", "MAXSHEA", 10, "Maximum Severity", "HEADACHE",
+  "MAXSEV", "MSEVNWJP", 11, "Maximum Severity", "NEW OR WORSENED JOINT PAIN",
+  "MAXSEV", "MSEVNWMP", 12, "Maximum Severity", "NEW OR WORSENED MUSCLE PAIN",
+  "OCCUR", "OCISR", 13, "Occurrence Indicator", "REDNESS",
+  "OCCUR", "OCINS", 14, "Occurrence Indicator", "SWELLING",
+  "OCCUR", "OCPIS", 15, "Occurrence Indicator", "PAIN AT INJECTION SITE",
+  "OCCUR", "OCFATIG", 16, "Occurrence Indicator", "FATIGUE",
+  "OCCUR", "OCHEAD", 17, "Occurrence Indicator", "HEADACHE",
+  "OCCUR", "OCCHILLS", 18, "Occurrence Indicator", "CHILLS",
+  "OCCUR", "OCDIAR", 19, "Occurrence Indicator", "DIARRHEA",
+  "OCCUR", "OCCNWJP", 20, "Occurrence Indicator", "NEW OR WORSENED JOINT PAIN",
+  "OCCUR", "OCCNWMP", 21, "Occurrence Indicator", "NEW OR WORSENED MUSCLE PAIN",
+  "SEV", "SEVSWEL", 22, "Severity/Intensity", "SWELLING",
+  "SEV", "SEVPIS", 23, "Severity/Intensity", "PAIN AT INJECTION SITE",
+  "SEV", "SEVFAT", 24, "Severity/Intensity", "FATIGUE",
+  "SEV", "SEVHEAD", 25, "Severity/Intensity", "HEADACHE",
+  "SEV", "SEVDIAR", 26, "Severity/Intensity", "DIARRHEA",
+  "SEV", "SEVNWJP", 27, "Severity/Intensity", "NEW OR WORSENED JOINT PAIN",
+  "SEV", "SEVNWMP", 28, "Severity/Intensity", "NEW OR WORSENED MUSCLE PAIN",
+  "MAXDIAM", "MDISW", 29, "Maximum Diameter", "SWELLING",
+  "MAXSEV", "MAXSPIS", 30, "Maximum Severity", "PAIN AT INJECTION SITE",
+  "OCCUR", "OCCVOM", 31, "Occurrence Indicator", "VOMITING",
+  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING",
 )
 
 adface <- derive_vars_params(
   dataset = adface,
   lookup_dataset = lookup_dataset,
   merge_vars = exprs(PARAMCD, PARAMN)
-)
+) %>%
+  # Step 13 - Maximum flag ANL01FL and ANL02FL
+  derive_vars_max_flag(
+    flag1 = "ANL01FL",
+    flag2 = "ANL02FL"
+  ) %>%
+  # Step 14 - Creating flag variables for occurred events
+  derive_vars_event_flag(
+    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+    aval_cutoff = 2.5,
+    new_var1 = EVENTFL,
+    new_var2 = EVENTDFL
+  )
 
-# Step12 - Maximum flag ANL01FL and ANL02FL
-
-adface <- derive_vars_max_flag(
-  dataset = adface,
-  flag1 = "ANL01FL",
-  flag2 = "ANL02FL"
-)
-
-# Step13 - Creating flag variables for occurred events
-
-adface <- derive_vars_event_flag(
-  dataset = adface,
-  by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
-  aval_cutoff = 2.5,
-  new_var1 = EVENTFL,
-  new_var2 = EVENTDFL
-)
-
-# Basic filter for ADSL
+# Step 15 - Basic filter for ADSL
 adsl <- adsl %>%
-  convert_blanks_to_na() %>%
   filter(!is.na(USUBJID))
 
 # Merging ADFACE with ADSL
@@ -218,19 +230,19 @@ adface <- derive_vars_merged(
   by_vars = exprs(STUDYID, USUBJID)
 )
 
+# Step 16 retaining the required variables.
 keep_vars <- c(
-  "STUDYID", "USUBJID", "SUBJID", "SITEID", "AGE", "AGEU", "SEX", "SEXN", "RACE", "RACEN", "ARACE",
-  "ARACEN", "SAFFL", "COMPLFL", "ARM", "ARMCD", "ACTARM", "ACTARMCD", "ARMNRS",
-  "ACTARMUD", "DARM", "DARMCD", "DACTARM", "DACTARCD", "TRTSDT", "TRTSDTM",
-  "TRTSTM", "TRTEDT", "TRTEDTM", "TRTETM", "SRCDOM", "SRCSEQ", "FATEST",
-  "FAGRPID", "FALNKID", "FALNKGRP", "FATESTCD", "PARAMCD", "PARAM", "PARAMN", "FAOBJ",
-  "FALLT", "FAPTCD", "FADECOD", "FABODSYS", "FABDSYCD", "PARCAT1", "PARCAT2", "AVALC",
-  "AVAL", "AVALCAT1", "AVALCA1N", "FASTAT", "FAREASND", "FAEVAL", "AVISITN", "AVISIT",
-  "EPOCH", "ADT", "ADTM", "FAEVINTX", "DTYPE", "FASTINT", "FAENINT", "ADY", "ATPT", "ATPTN",
-  "ATPTREF", "ATPTREFN", "EXDOSE", "EXTRT", "EXDOSU", "EXSTDTC", "EXENDTC",
-  "TRTA", "TRTAN", "TRTP", "TRTPN", "APERIOD", "APERIODC",
-  "APERSDT", "APERSTM", "APERSDTM", "APEREDT", "APERETM", "APEREDTM", "APERDY",
-  "FAORRES"
+  "STUDYID", "USUBJID", "SUBJID", "SITEID", "AGE", "AGEU", "SEX", "SEXN", "RACE",
+  "RACEN", "ARACE", "ARACEN", "SAFFL", "COMPLFL", "ARM", "ARMCD", "ACTARM", "ACTARMCD",
+  "ARMNRS", "ACTARMUD", "DARM", "DARMCD", "DACTARM", "DACTARCD", "TRTSDT", "TRTSDTM",
+  "TRTSTM", "TRTEDT", "TRTEDTM", "TRTETM", "SRCDOM", "SRCSEQ", "FATEST", "FAGRPID",
+  "FALNKID", "FALNKGRP", "FATESTCD", "PARAMCD", "PARAM", "PARAMN", "FAOBJ", "FALLT",
+  "FAPTCD", "FADECOD", "FABODSYS", "FABDSYCD", "PARCAT1", "PARCAT2", "AVALC", "AVAL",
+  "AVALCAT1", "AVALCA1N", "FASTAT", "FAREASND", "FAEVAL", "AVISITN", "AVISIT", "EPOCH",
+  "ADT", "ADTM", "FAEVINTX", "DTYPE", "FASTINT", "FAENINT", "ADY", "ATPT", "ATPTN",
+  "ATPTREF", "ATPTREFN", "EXDOSE", "EXTRT", "EXDOSU", "EXSTDTC", "EXENDTC", "TRTA",
+  "TRTAN", "TRTP", "TRTPN", "APERIOD", "APERIODC", "APERSDT", "APERSTM", "APERSDTM",
+  "APEREDT", "APERETM", "APEREDTM", "APERDY", "FAORRES"
 )
 
 adface <- adface %>% select(
@@ -238,7 +250,7 @@ adface <- adface %>% select(
   starts_with("EVE"), starts_with("ANL")
 )
 
-# Save output ----
+# Save output
 
 dir <- tempdir()
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")

@@ -1,6 +1,6 @@
-#' Adds vaccination date variables to the output dataset.
+#' Add Vaccination Date Variables to the Output Dataset
 #'
-#' Creates vaccination date variables from ex domain.A date variable will be
+#' Creates vaccination date variables from `EX` domain. A date variable will be
 #' created for each vaccination taking values from the variable `EXSTDTC`.
 #'
 #' @param dataset Input dataset
@@ -13,19 +13,15 @@
 #'
 #' @param by_vars Grouping variables.
 #'
-#' *Default: exprs(USUBJID, VISITNUM)*
-#'
 #' The variables to be grouped to filter the first observation within each
 #' by group.
 #'
 #' @param order Sorting variables.
 #'
-#' *Default: exprs(USUBJID,VISITNUM,VISIT,EXSTDTC)*
-#'
 #'  The variables order to be specified either in ascending or descending order.
 #'  By default ascending order will be applicable.
 #'
-#' @return the adsl dataset with vaccination date variables added to it.
+#' @return The adsl dataset with vaccination date variables added to it.
 #'
 #' @author Vikram S
 #'
@@ -49,7 +45,6 @@
 #' library(tibble)
 #' library(admiral)
 #' library(dplyr)
-#' library(rlang)
 #'
 #' input <- tribble(
 #'   ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXLNKGRP, ~VISIT,
@@ -76,9 +71,9 @@ derive_vars_vaxdt <- function(dataset,
                               dataset_adsl,
                               by_vars,
                               order) {
-  # assertion checks
+  # Assertion checks
   assert_vars(by_vars)
-  assert_order_vars(order, optional = TRUE)
+  assert_expr_list(order, optional = TRUE)
   assert_data_frame(dataset, required_vars = by_vars)
   assert_data_frame(dataset_adsl, required_vars = exprs(USUBJID))
 
@@ -92,7 +87,7 @@ derive_vars_vaxdt <- function(dataset,
     warning("Subjects have multiple vaccinations at same visit")
   }
 
-  # derive vaccination date variables
+  # Derive vaccination date variables.
   dt_var <- dataset %>%
     group_by(!!!by_vars) %>%
     arrange(!!!order) %>%
@@ -103,23 +98,25 @@ derive_vars_vaxdt <- function(dataset,
     ) %>%
     ungroup()
 
-  # select only vaccination date variables
+  # Select only vaccination date variables.
   s_name <- dt_var %>% select(starts_with("vaxdt"))
 
-  # rename the derived vaccination date variables
+  # Rename the derived vaccination date variables.
   for (i in seq_along(s_name)) {
     names(s_name)[i] <- paste0("VAX0", i, "DT")
     s_name[[i]] <- as.Date(s_name[[i]])
   }
 
-  # Keep only `USUBJID` and vaccination date variables in the output dataset
+  # Keep only `USUBJID` and vaccination date variables.
   vaxdt_vars <- dt_var %>%
     select(USUBJID) %>%
     bind_cols(s_name)
 
+  # Add vaccination date variables to the `ADSL` dataset.
   adsl <- derive_vars_merged(
     dataset_adsl,
     dataset_add = vaxdt_vars,
     by_vars = exprs(USUBJID)
   )
+  return(adsl)
 }
