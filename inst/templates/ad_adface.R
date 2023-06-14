@@ -50,14 +50,14 @@ sev_to_numeric <- function(x, y) {
   )
 }
 
-# Step1 - Basic Filter and Pre-processing for FACE
+# Step 1 - Basic Filter and Pre-processing for FACE
 
 face <- face %>%
   filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
   mutate(FAOBJ = str_to_upper(FAOBJ))
 
 adsl_vars <- exprs(RFSTDTC, RFENDTC)
-# Step2 - Merging supplementary datasets and FACE with EX
+# Step 2 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
   dataset = face,
@@ -68,19 +68,19 @@ adface <- derive_vars_merged_vaccine(
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 ) %>%
-  # Step3 - Merge required adsl variables needed for analysis.
+  # Step 3 - Merge required ADSL variables needed for analysis.
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
     by_vars = exprs(STUDYID, USUBJID)
   ) %>%
-  # Step4 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not present in FACE
+  # Step 4 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not present in FACE
   derive_fever_records(
     dataset_source = vs,
     filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
     faobj = "FEVER"
   ) %>%
-  # Step5 - Creating ADT, ATM, ADTM, ADY
+  # Step 5 - Creating ADT, ATM, ADTM, ADY
   derive_vars_dt(
     new_vars_prefix = "A",
     dtc = FADTC
@@ -93,7 +93,7 @@ adface <- derive_vars_merged_vaccine(
   mutate(RFSTDTC = as.Date(RFSTDTC)) %>%
   derive_vars_dy(reference_date = RFSTDTC, source_vars = exprs(ADT))
 
-# Step6 - Creating APERIOD variables
+# Step 6 - Creating APERIOD variables
 period_ref <- create_period_dataset(
   dataset = adsl,
   new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA, TRTP = TRTxxP)
@@ -105,7 +105,7 @@ adface <- derive_vars_joined(
   by_vars = exprs(STUDYID, USUBJID),
   filter_join = ADT >= APERSDT & ADT <= APEREDT
 ) %>%
-  # Step7 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN,ATPT,ATPTN)
+  # Step 7 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN, ATPT, ATPTN)
   mutate(
     AVALC = as.character(FASTRESC),
     AVAL = suppressWarnings(as.numeric(FASTRESN)),
@@ -114,10 +114,10 @@ adface <- derive_vars_joined(
     ATPT = FATPT,
     ATPTN = FATPTNUM
   ) %>%
-  # Step8 - Creating severity records from Diameter for Redness,Swelling,etc
-  # Note: Basically, This function will derive and create the severity records from the
+  # Step 8 - Creating severity records from Diameter for Redness, Swelling,etc
+  # Note: Basically, this function will derive and create the severity records from the
   # diameter record for the particular events that user wants. If you want to derive the Severity
-  # from diameter, even though you have the severity in SDTM level. This function will re-derive The
+  # from diameter, even though you have the severity in SDTM level, this function will re-derive the
   # severity and remove the derived SDTM severity records.
   derive_diam_to_sev_records(
     diam_code = "DIAMETER",
@@ -129,7 +129,7 @@ adface <- derive_vars_joined(
     mod = 5,
     sev = 10
   ) %>%
-  # Step9 - Deriving Maximum Severity for Local and Systemic events
+  # Step 9 - Deriving Maximum Severity for Local and Systemic events
   derive_extreme_records(
     filter = FATESTCD == "SEV",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
@@ -140,7 +140,7 @@ adface <- derive_vars_joined(
       FATESTCD = "MAXSEV"
     )
   ) %>%
-  # Step10 - Deriving Maximum Diameter for Administrative site reactions
+  # Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
   derive_extreme_records(
     filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
     by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
@@ -151,7 +151,7 @@ adface <- derive_vars_joined(
       FATESTCD = "MAXDIAM"
     )
   ) %>%
-  # Step11 - Deriving Maximum Temperature
+  # Step 11 - Deriving Maximum Temperature
   derive_extreme_records(
     filter = FAOBJ == "FEVER",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
@@ -205,12 +205,12 @@ adface <- derive_vars_params(
   lookup_dataset = lookup_dataset,
   merge_vars = exprs(PARAMCD, PARAMN)
 ) %>%
-  # Step13 - Maximum flag ANL01FL and ANL02FL
+  # Step 13 - Maximum flag ANL01FL and ANL02FL
   derive_vars_max_flag(
     flag1 = "ANL01FL",
     flag2 = "ANL02FL"
   ) %>%
-  # Step14 - Creating flag variables for occurred events
+  # Step 14 - Creating flag variables for occurred events
   derive_vars_event_flag(
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     aval_cutoff = 2.5,
@@ -229,7 +229,7 @@ adface <- derive_vars_merged(
   by_vars = exprs(STUDYID, USUBJID)
 )
 
-# Step16 retaining the required variables.
+# Step 16 retaining the required variables.
 keep_vars <- c(
   "STUDYID", "USUBJID", "SUBJID", "SITEID", "AGE", "AGEU", "SEX", "SEXN", "RACE",
   "RACEN", "ARACE", "ARACEN", "SAFFL", "COMPLFL", "ARM", "ARMCD", "ACTARM", "ACTARMCD",
