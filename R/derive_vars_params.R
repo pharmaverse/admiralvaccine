@@ -1,38 +1,38 @@
-#' Assigning Parameter variables
+#' Assigning Parameter Variables
 #'
-#' Creating `PARAMCD` from lookup file and assigning `PARAM`,`PARAMN`,`PARCAT1`,
+#' Creating `PARAMCD` from lookup dataset and assigning `PARAM`,`PARAMN`,`PARCAT1`,
 #' `PARCAT2` variables
 #'
-#' @param dataset - Input dataset
+#' @param dataset Input dataset
 #'        Input dataset is expected to have variables `USUBJID`,`FAOBJ`,
 #'        `FACAT`, `FATESTCD` and `FATEST`
 #'
-#' @param lookup_dataset - lookup file containing `PARAMCD` values for every
+#' @param lookup_dataset lookup dataset containing `PARAMCD` values for every
 #'        unique `FATESTCD` and `FAOBJ`
-#'        lookup file is expected to have variables `FATEST`, `PARAMCD`,
+#'        lookup dataset is expected to have variables `FATEST`, `PARAMCD`,
 #'        `FATESTCD`, `FAOBJ` and one entry for every unique
 #'        `FATESTCD` and `FAOBJ`
 #'
-#' @param merge_vars - List of Variables need to be merged from lookup file
+#' @param merge_vars List of Variables need to be merged from lookup dataset
 #'
 #' @return The output dataset contains all observations and variables of the
 #'   input dataset along with `PARAM`,`PARAMCD`,`PARCAT1`,`PARCAT2`,`PARAMN`
 #'
 #' @author Dhivya Kanagaraj
 #'
-#' @details A lookup file is required with PARAMCD values for every combination
+#' @details A lookup dataset is required with `PARAMCD` values for every combination
 #'      of `FATEST` & `FAOBJ`.
 #'      `PARAMCD` `PARAMN` `PARAMN` `PARCAT1` `PARCAT2` values can be assigned
-#'      from lookup file.
+#'      from lookup dataset.
 #'
-#'      if `PARAMN` not assigned in lookup file then
+#'      if `PARAMN` not assigned in lookup dataset then
 #'      `PARAMN` is assigned with a unique number for every unique PARAM value.
-#'      if `PARAM` value not assigned in lookup file then
+#'      if `PARAM` value not assigned in lookup dataset then
 #'      `PARAM` value is a combination of `FAOBJ` `FATEST` `FASTRESU` `FALOC`
 #'      `FADIR` `FALAT`
-#'      if `PARCAT1` value not assigned in lookup file then
+#'      if `PARCAT1` value not assigned in lookup dataset then
 #'      `PARCAT1` is assigned as FACAT
-#'      if `PARCAT2` value not assigned in lookup file then
+#'      if `PARCAT2` value not assigned in lookup dataset then
 #'      `PARCAT2` is assigned as FASCAT
 #'
 #' @export
@@ -43,9 +43,9 @@
 #'
 #' @examples
 #'
+#' library(admiral)
 #' library(tibble)
 #' library(dplyr)
-#' library(rlang)
 #'
 #' lookup_dataset <- tibble::tribble(
 #'   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
@@ -83,9 +83,9 @@ derive_vars_params <- function(dataset,
                                lookup_dataset,
                                merge_vars) {
   assert_data_frame(dataset,
-    required_vars = exprs(USUBJID, FAOBJ)
+    required_vars = exprs(USUBJID, FAOBJ, FATEST, FATESTCD)
   )
-  # Merging lookup file to get PARAMCD values
+  # Merging lookup dataset to get PARAMCD values
   adface <- derive_vars_merged(
     dataset,
     dataset_add = lookup_dataset,
@@ -96,7 +96,7 @@ derive_vars_params <- function(dataset,
 
   # Checking if permissible variable exists in dataset
   lookup <-
-    c("FASTRESU", "FALOC", "FADIR", "FALAT")
+    c("FALOC", "FADIR", "FALAT")
 
   # Assigning PARCAT1 PARCAT2 & PARAM
   if (!("PARAM" %in% names(adface))) {
@@ -115,7 +115,7 @@ derive_vars_params <- function(dataset,
   if (!("PARAMN" %in% names(adface))) {
     paramn <- adface %>%
       distinct(PARAM, .keep_all = FALSE) %>%
-      mutate(PARAMN = 1:n())
+      mutate(PARAMN = seq_len(n()))
 
     adface <- merge(
       x = adface,

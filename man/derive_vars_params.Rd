@@ -2,59 +2,53 @@
 % Please edit documentation in R/derive_vars_params.R
 \name{derive_vars_params}
 \alias{derive_vars_params}
-\title{Assigning Parameter variables}
+\title{Assigning Parameter Variables}
 \usage{
 derive_vars_params(dataset, lookup_dataset, merge_vars)
 }
 \arguments{
-\item{dataset}{\itemize{
-\item Input dataset
+\item{dataset}{Input dataset
 Input dataset is expected to have variables \code{USUBJID},\code{FAOBJ},
-\code{FACAT}, \code{FATESTCD} and \code{FATEST}
-}}
+\code{FACAT}, \code{FATESTCD} and \code{FATEST}}
 
-\item{lookup_dataset}{\itemize{
-\item lookup file containing \code{PARAMCD} values for every
+\item{lookup_dataset}{lookup dataset containing \code{PARAMCD} values for every
 unique \code{FATESTCD} and \code{FAOBJ}
-lookup file is expected to have variables \code{FATEST}, \code{PARAMCD},
+lookup dataset is expected to have variables \code{FATEST}, \code{PARAMCD},
 \code{FATESTCD}, \code{FAOBJ} and one entry for every unique
-\code{FATESTCD} and \code{FAOBJ}
-}}
+\code{FATESTCD} and \code{FAOBJ}}
 
-\item{merge_vars}{\itemize{
-\item List of Variables need to be merged from lookup file
-}}
+\item{merge_vars}{List of Variables need to be merged from lookup dataset}
 }
 \value{
 The output dataset contains all observations and variables of the
 input dataset along with \code{PARAM},\code{PARAMCD},\code{PARCAT1},\code{PARCAT2},\code{PARAMN}
 }
 \description{
-Creating \code{PARAMCD} from lookup file and assigning \code{PARAM},\code{PARAMN},\code{PARCAT1},
+Creating \code{PARAMCD} from lookup dataset and assigning \code{PARAM},\code{PARAMN},\code{PARCAT1},
 \code{PARCAT2} variables
 }
 \details{
-A lookup file is required with PARAMCD values for every combination
+A lookup dataset is required with \code{PARAMCD} values for every combination
 of \code{FATEST} & \code{FAOBJ}.
 \code{PARAMCD} \code{PARAMN} \code{PARAMN} \code{PARCAT1} \code{PARCAT2} values can be assigned
-from lookup file.
+from lookup dataset.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ if `PARAMN` not assigned in lookup file then
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ if `PARAMN` not assigned in lookup dataset then
  `PARAMN` is assigned with a unique number for every unique PARAM value.
- if `PARAM` value not assigned in lookup file then
+ if `PARAM` value not assigned in lookup dataset then
  `PARAM` value is a combination of `FAOBJ` `FATEST` `FASTRESU` `FALOC`
  `FADIR` `FALAT`
- if `PARCAT1` value not assigned in lookup file then
+ if `PARCAT1` value not assigned in lookup dataset then
  `PARCAT1` is assigned as FACAT
- if `PARCAT2` value not assigned in lookup file then
+ if `PARCAT2` value not assigned in lookup dataset then
  `PARCAT2` is assigned as FASCAT
 }\if{html}{\out{</div>}}
 }
 \examples{
 
+library(admiral)
 library(tibble)
 library(dplyr)
-library(rlang)
 
 lookup_dataset <- tibble::tribble(
   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
@@ -91,11 +85,13 @@ derive_vars_params(
 }
 \seealso{
 Other der_var: 
+\code{\link{derive_var_aval_adis}()},
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_vaxdt}()}
+\code{\link{derive_vars_vaxdt}()},
+\code{\link{max_flag}()}
 }
 \author{
 Dhivya Kanagaraj

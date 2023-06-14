@@ -13,34 +13,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-library(admiral)
-link <- function(text, url) {
-  return(
-    paste0(
-      "[", text, "]",
-      "(", url, ")"
-    )
-  )
-}
-dyn_link <- function(text,
-                     base_url,
-                     relative_url = "",
-                     # Change to TRUE when admiral adopts multiversion docs
-                     is_multiversion = FALSE,
-                     multiversion_default_ref = "main") {
-  url <- paste(base_url, relative_url, sep = "/")
-  if (is_multiversion) {
-    url <- paste(
-      base_url,
-      Sys.getenv("BRANCH_NAME", multiversion_default_ref),
-      relative_url,
-      sep = "/"
-    )
-  }
-  return(link(text, url))
-}
-# Other variables
-admiral_homepage <- "https://pharmaverse.github.io/admiral"
+
 library(admiraldev)
 ```
 
@@ -48,6 +21,12 @@ library(admiraldev)
 
 This article describes about creating `ADFACE` ADaM dataset which is
 part of Vaccine - Reactogenicity based on CBER guidelines.
+
+See the below links for more information:
+
+[CBER Guidelines](https://www.fda.gov/media/112581/download)
+
+[Vaccine TAUG](https://www.cdisc.org/standards/therapeutic-areas/vaccines/vaccines-therapeutic-area-user-guide-v11/html)
 
 Examples are currently tested using `ADSL` (ADaM) and
 `face`, `vs`, `ex` (SDTM) inputs.
@@ -58,19 +37,19 @@ unless otherwise specified.*
 # Programming Workflow
 
 -   [Read in Data](#readdata)
--   [Pre-processing of Input dataset](#input)
--   [Merge face with ex](#merge)
--   [Derive fever records from VS domain](#fever)
+-   [Pre-processing of Input Dataset](#input)
+-   [Merge `FACE` with `EX`](#merge)
+-   [Merge Required `ADSL` Variables Needed for Analysis](#adsl)
+-   [Derive Fever Records from `VS` Domain](#fever)
 -   [Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADY`, `ADTF`, `ATMF`)](#datetime)
--   [Derive direct mapping variables](#mapping)
--   [Derive severity records for Administration Site events](#sev)
--   [Derive maximum severity records](#maxsev)
--   [Derive maximum diameter records](#maxdiam)
--   [Derive maximum temperature records](#maxtemp)
+-   [Derive Period Variables (e.g. `APxxSDT`, `APxxEDT`, ...)](#period)
+-   [Derive Direct Mapping Variables](#mapping)
+-   [Derive Severity Records for Administration Site Events](#sev)
+-   [Derive Maximum Records](#max)
 -   [Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`](#paramcd)
--   [Derive maximum severity flag](#maxflag)
--   [Derive event occurrence flag](#eventflag)
--   [Add ADSL variables](#adsl_vars)
+-   [Derive Maximum Severity Flag](#maxflag)
+-   [Derive Event Occurrence Flag](#eventflag)
+-   [Add ADSL Variables](#adsl_vars)
 
 ## Read in Data {#readdata}
 
@@ -82,30 +61,33 @@ library(admiral)
 library(admiralvaccine)
 library(dplyr, warn.conflicts = FALSE)
 library(lubridate)
-library(rlang)
 library(stringr)
 library(tidyr)
 library(tibble)
 data("vx_face")
+data("vx_suppface")
 data("vx_ex")
+data("vx_suppex")
 data("vx_vs")
+data("vx_adsl")
 
 face <- convert_blanks_to_na(vx_face)
 ex <- convert_blanks_to_na(vx_ex)
 vs <- convert_blanks_to_na(vx_vs)
 suppface <- convert_blanks_to_na(vx_suppface)
 suppex <- convert_blanks_to_na(vx_suppex)
+adsl <- convert_blanks_to_na(vx_adsl)
 ```
 
-## Pre-processing of Input dataset {#input}
+## Pre-processing of Input Dataset {#input}
 
 This step involves company-specific pre-processing of required input dataset for
 further analysis. In this step, we will filter records that has only reactogenicity events.
 
-```{r echo=FALSE}
+```{r eval=TRUE}
 face <- face %>%
   filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
-  mutate(FAOBJ = str_to_sentence(FAOBJ))
+  mutate(FAOBJ = str_to_upper(FAOBJ))
 ```
 
 ```{r, echo=FALSE}
@@ -115,11 +97,11 @@ dataset_vignette(
 )
 ```
 
-## Merge face with ex {#merge}
+## Merge `FACE` with `EX` {#merge}
 
 In this step, we will merge `face` with `ex` domain and add required variables from `ex` domain to the input dataset. If subjects have multiple vaccination at same visit then this function will not merge input dataset with `ex` dataset and throws a warning.
 
-The function `derive_vars_merged_vaccine` is used to merge `face` with `ex` domain.
+The function `derive_vars_merged_vaccine()` is used to merge `face` with `ex` domain.
 
 ```{r eval=TRUE}
 adface <- derive_vars_merged_vaccine(
@@ -127,8 +109,8 @@ adface <- derive_vars_merged_vaccine(
   dataset_ex = ex,
   dataset_supp = suppface,
   dataset_suppex = suppex,
-  by_vars_sys = exprs(USUBJID, FATPTREF),
-  by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
+  by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
+  by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
 )
 ```
@@ -140,23 +122,47 @@ dataset_vignette(
 )
 ```  
 
-This call would return the input dataset with columns EXTRT, EXDOSE, EXSTDTC, EXENDTC, VISIT, VISITNUM added if the subjects does not have multiple vaccination at same visit.
-
-If subjects have multiple vaccination at same visit then this call would return the same input dataset with some pre-processing steps added to it.
+This call would return the input dataset with columns from `ex_vars` added if the subjects does not have multiple vaccination at same visit.
 
 Though the function will throw warning if subjects have multiple vaccination at same visit, this call would return the input dataset merging it with supplementary dataset.
 
-## Derive fever records from VS domain {#fever}
+## Merge Required `ADSL` Variables Needed for Analysis {#adsl}
 
-In this step, we will merge fever records from the `VS` domain with the input dataset  if the fever records does not present in the input dataset.
-
-The function `derive_param_fever_occur` is used to merge fever records. These records will also be used in maximum temperature calculation.
+At this step, it may be useful to join `ADSL` to your `face` domain. Only the 
+`ADSL` variables used for derivations are selected at this step. The rest of the
+relevant `ADSL` variables would be added later.
 
 ```{r eval=TRUE}
-adface <- derive_param_fever_occur(
+adsl_vars <- exprs(RFSTDTC, RFENDTC)
+
+adface <- derive_vars_merged(
+  face,
+  dataset_add = adsl,
+  new_vars = adsl_vars,
+  by_vars = exprs(STUDYID, USUBJID)
+)
+```
+
+```{r, echo=FALSE}
+dataset_vignette(
+  adface,
+  display_vars = exprs(USUBJID, RFSTDTC, RFENDTC)
+)
+```  
+
+This call would return the input dataset with columns RFSTDTC,RFENDTC added.
+
+## Derive Fever Records from `VS` Domain {#fever}
+
+In this step, we will merge fever records from the `VS` domain with the input dataset if the fever records does not present in the input dataset.
+
+The function `derive_param_fever_occur()` is used to merge fever records. These records will also be used in maximum temperature calculation.
+
+```{r eval=TRUE}
+adface <- derive_fever_records(
   dataset = adface,
-  source_data = vs,
-  source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+  dataset_source = vs,
+  filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
   faobj = "FEVER"
 )
 ```
@@ -165,14 +171,14 @@ adface <- derive_param_fever_occur(
 dataset_vignette(
   adface,
   display_vars = exprs(USUBJID, FAOBJ, FATESTCD, FAORRES, VSSTRESN, VSSTRESU),
-  filter = FAOBJ == "Fever"
+  filter = FAOBJ == "FEVER"
 )
 ``` 
 
 This call returns the input dataset with `FEVER` records added if the input dataset does not have `FEVER` records. If the input dataset has `FEVER` records, the output dataset will be same as the input dataset.
 
 
-## Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADY`, `ADTF`, `ATMF`) {#datetime}
+## Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADTF`, `ATMF`, `ADY`) {#datetime}
 
 The function `derive_vars_dt()` can be used to derive `ADT`. This function allows 
 the user to impute the date as well.
@@ -195,23 +201,84 @@ adface <- adface %>%
   )
 ```
 
+Once `ADT` is derived, the function `derive_vars_dy()` can be used to derive `ADY`.
+This example assumes both `ADT` and `RFSTDTC` exist on the data frame.
+
+```{r eval=TRUE}
+adface <- adface %>%
+  mutate(RFSTDTC = as.Date(RFSTDTC)) %>%
+  derive_vars_dy(reference_date = RFSTDTC, source_vars = exprs(ADT))
+```
+
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FATPTREF, FAOBJ, ADT, ADTM)
+  display_vars = exprs(USUBJID, FATPTREF, FAOBJ, ADT, ADTM, ADY)
 )
 ```
 
-## Derive direct mapping variables {#mapping}
+## Derive Period Variables (e.g. `APxxSDT`, `APxxEDT`, ...) {#periodvars}
+
+The `{admiral}` core package has separate functions to handle period variables since these variables are study specific.
+
+See the ["Visit and Period Variables"
+vignette](visits_periods.html#periods_adsl) for more information.
+
+If the variables are not derived based on a period reference dataset, they may
+be derived at a later point of the flow. For example, phases like "Treatment
+Phase" and "Follow up" could be derived based on treatment start and end date.
+
+```{r eval=TRUE}
+period_ref <- create_period_dataset(
+  dataset = adsl,
+  new_vars = exprs(
+    APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA,
+    TRTP = TRTxxP
+  )
+)
+
+adface <- derive_vars_joined(
+  adface,
+  dataset_add = period_ref,
+  by_vars = exprs(STUDYID, USUBJID),
+  filter_join = ADT >= APERSDT & ADT <= APEREDT
+)
+```
+
+```{r, echo=FALSE}
+dataset_vignette(
+  adface,
+  display_vars = exprs(USUBJID, APERSDT, APEREDT, TRTA, TRTP)
+)
+```
+
+## Derive Direct Mapping Variables {#mapping}
+
+In this step,we will create the user defined function to assign `AVAL` values from `AVALC` which will be user in further steps. 
+
+The user defined functions would look like the following:
+
+```{r eval=TRUE}
+sev_to_numeric <- function(x, y) {
+  case_when(
+    x == "NONE" ~ 0,
+    x == "MILD" ~ 1,
+    x == "MODERATE" ~ 2,
+    x == "SEVERE" ~ 3,
+    TRUE ~ y
+  )
+}
+```
 
 The mapping of these variables is left to the User. An 
 example mapping may be:
 
-```{r, echo=FALSE}
+```{r eval=TRUE}
 adface <- adface %>%
   mutate(
-    AVAL = suppressWarnings(as.numeric(FAORRES)),
-    AVALC = as.character(FAORRES),
+    AVALC = as.character(FASTRESC),
+    AVAL = suppressWarnings(as.numeric(FASTRESN)),
+    AVAL = sev_to_numeric(AVALC, AVAL),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
     ATPTN = FATPTNUM
@@ -225,115 +292,89 @@ dataset_vignette(
 )
 ```
 
+## Derive Severity Records for Administration Site Events {#sev}
 
-## Derive severity records for Administration Site events{#sev}
-
-The function `derive_param_diam_to_sev` is used to derive the severity records from the diameter records for an event.
+The function `derive_param_diam_to_sev()` is used to derive the severity records from the diameter records for an event.
 
 The severity records created will be useful for calculating the maximum severity.
 
-```{r, echo=FALSE}
-adface <- derive_param_diam_to_sev(
+```{r eval=TRUE}
+adface <- derive_diam_to_sev_records(
   dataset = adface,
-  filter_diam = c("DIAMETER", "LDIAM"),
-  filter_faobj = c("Redness", "Swelling", "Erythema"),
+  diam_code = "DIAMETER",
+  faobj_values = c("REDNESS", "SWELLING"),
   testcd_sev = "SEV",
   test_sev = "Severity/Intensity",
-  none = c(0, 2),
-  mild = c(2, 5),
-  mod = c(5, 10),
-  sev = c(10)
+  none = 0,
+  mild = 2,
+  mod = 5,
+  sev = 10
 )
 ```
 
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC, DTYPE),
-  filter = DTYPE == "DERIVED"
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC),
+  filter = FATESTCD == "SEV"
 )
 ```
 
-This call returns the input dataset with severity records added from the diameter records for an event.
+This call returns the input dataset with severity records derived from the diameter records for an event.
 
 By default, we will populate `SEV` and `Severity/Intensity` as the `FATESTCD` and `FATEST` for the newly added records. The function allows the user to change the `FATESTCD` and `FATEST` as well.
 
-## Derive maximum severity records{#maxsev}
+## Derive Maximum Records{#max}
 
-The function `derive_param_maxsev` is used to derive the maximum severity records for administration site and systemic events.
+In this step, we will derive maximum records for severity, diameter, temperature  using the function `derive_extreme_records()`.
 
-```{r, echo=FALSE}
-adface <- derive_param_maxsev(
+```{r eval=TRUE}
+adface <- derive_extreme_records(
   dataset = adface,
-  exclude_events = NULL,
-  filter_sev = "SEV",
-  test_maxsev = "Maximum Severity",
-  testcd_maxsev = "MAXSEV",
-  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
+  filter = FATESTCD == "SEV",
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+  order = exprs(AVAL),
+  mode = "last",
+  set_values_to = exprs(
+    FATEST = "Maximum Severity",
+    FATESTCD = "MAXSEV"
+  )
 )
-```
 
-```{r, echo=FALSE}
-dataset_vignette(
-  adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC, DTYPE),
-  filter = FATESTCD == "MAXSEV"
-)
-```
-
-This call returns the input dataset with maximum severity records added for administration site and systemic events.
-
-## Derive maximum diameter records{#maxdiam}
-
-The function `derive_param_maxdiam` is used to derive the maximum diameter records for administration site events.
-
-The user is expected to filter `FATESTCD` variable based on events that has diameter.
-
-```{r, echo=FALSE}
-adface <- derive_param_maxdiam(
+adface <- derive_extreme_records(
   dataset = adface,
-  filter = FAOBJ %in% c("Redness", "Erythema") & FATESTCD %in% c("DIAMETER", "LDIAM"),
+  filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
   by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
-  test_maxdiam = "Maximum Diameter",
-  testcd_maxdiam = "MAXDIAM"
+  order = exprs(AVAL),
+  mode = "last",
+  set_values_to = exprs(
+    FATEST = "Maximum Diameter",
+    FATESTCD = "MAXDIAM"
+  )
 )
-```
 
-```{r, echo=FALSE}
-dataset_vignette(
-  adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC, DTYPE),
-  filter = FATESTCD == "MAXDIAM"
-)
-```
-
-This call returns the input dataset with maximum diameter records added for administration site events.
-
-## Derive maximum temperature records{#maxtemp}
-
-The function `derive_param_maxtemp` is used to derive the maximum temperature records per subject per period.
-
-The values passed to the `filter_faobj` argument should indicate fever records.
-
-```{r, echo=FALSE}
-adface <- derive_param_maxtemp(
+adface <- derive_extreme_records(
   dataset = adface,
-  filter_faobj = "FEVER",
-  test_maxtemp = "Maximum Temperature",
-  testcd_maxtemp = "MAXTEMP",
-  by_vars = exprs(USUBJID, FAOBJ, ATPTREF)
+  filter = FAOBJ == "FEVER",
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+  order = exprs(VSSTRESN),
+  mode = "last",
+  set_values_to = exprs(
+    FATEST = "Maximum Temperature",
+    FATESTCD = "MAXTEMP"
+  )
 )
 ```
 
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC, DTYPE),
-  filter = FATESTCD == "MAXTEMP"
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, AVALC),
+  filter = FATESTCD %in% c("MAXSEV", "MAXDIAM", "MAXTEMP")
 )
 ```
 
-This call returns the input dataset with maximum temperature records added for an event `FEVER`.
+This call returns the input dataset with maximum records added for the severity, diameter, temperature.
 
 ## Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1` {#paramcd}
 
@@ -341,8 +382,9 @@ To assign parameter level values such as `PARAMCD`, `PARAM`, `PARAMN`,
 etc., a lookup needs to be created to join to the source data.
 PARCAT1,PARCAT2 variables are assigned from FACAT,FASCAT variables.
 
-For example, when creating `ADFACE` dataset, a lookup based on the SDTM `--TESTCD` value 
-can be created:
+
+
+For example, when creating `ADFACE` dataset, a lookup based on the SDTM `--TESTCD` value can be created:
 
 `FATESTCD` | `PARAMCD` | `PARAMN` |`FATEST` | `FAOBJ`
 --------- | --------- | -------- | ------- 
@@ -362,20 +404,42 @@ This lookup can now be joined to the source data:
 ```{r eval=TRUE, include=FALSE}
 lookup_dataset <- tribble(
   ~FATESTCD, ~PARAMCD, ~PARAMN, ~FATEST, ~FAOBJ,
-  "SEV", "SEVREDN", 1, "Severity", "Redness",
-  "DIAMETER", "DIARE", 2, "Diameter", "Redness",
-  "MAXDIAM", "MDIRE", 3, "Maximum Diameter cm", "Redness",
-  "MAXTEMP", "MAXFEV", 4, "Maximum Temperature", "Fever",
-  "MAXSEV", "MAXSWEL", 5, "Maximum Severity", "Swelling",
-  "OCCUR", "OCFEVER", 6, "Occurrence Indicator", "Fever",
-  "OCCUR", "OCERYTH", 7, "Occurrence Indicator", "Erythema",
-  "SEV", "SEVPAIN", 8, "Severity", "Pain at Injection site",
-  "OCCUR", "OCPAIN", 9, "Occurrence Indicator", "Pain at Injection site",
-  "OCCUR", "OCSWEL", 10, "Occurrence Indicator", "Swelling"
+  "SEV", "SEVREDN", 1, "Severity/Intensity", "REDNESS",
+  "DIAMETER", "DIARE", 2, "Diameter", "REDNESS",
+  "MAXDIAM", "MDIRE", 3, "Maximum Diameter", "REDNESS",
+  "MAXTEMP", "MAXTEMP", 4, "Maximum Temperature", "FEVER",
+  "OCCUR", "OCFEVER", 5, "Occurrence Indicator", "FEVER",
+  "OCCUR", "OCERYTH", 6, "Occurrence Indicator", "ERYTHEMA",
+  "MAXSEV", "MAXSWEL", 7, "Maximum Severity", "SWELLING",
+  "MAXSEV", "MAXREDN", 8, "Maximum Severity", "REDNESS",
+  "MAXSEV", "MAXSFAT", 9, "Maximum Severity", "FATIGUE",
+  "MAXSEV", "MAXSHEA", 10, "Maximum Severity", "HEADACHE",
+  "MAXSEV", "MSEVNWJP", 11, "Maximum Severity", "NEW OR WORSENED JOINT PAIN",
+  "MAXSEV", "MSEVNWMP", 12, "Maximum Severity", "NEW OR WORSENED MUSCLE PAIN",
+  "OCCUR", "OCISR", 13, "Occurrence Indicator", "REDNESS",
+  "OCCUR", "OCINS", 14, "Occurrence Indicator", "SWELLING",
+  "OCCUR", "OCPIS", 15, "Occurrence Indicator", "PAIN AT INJECTION SITE",
+  "OCCUR", "OCFATIG", 16, "Occurrence Indicator", "FATIGUE",
+  "OCCUR", "OCHEAD", 17, "Occurrence Indicator", "HEADACHE",
+  "OCCUR", "OCCHILLS", 18, "Occurrence Indicator", "CHILLS",
+  "OCCUR", "OCDIAR", 19, "Occurrence Indicator", "DIARRHEA",
+  "OCCUR", "OCCNWJP", 20, "Occurrence Indicator", "NEW OR WORSENED JOINT PAIN",
+  "OCCUR", "OCCNWMP", 21, "Occurrence Indicator", "NEW OR WORSENED MUSCLE PAIN",
+  "SEV", "SEVSWEL", 22, "Severity/Intensity", "SWELLING",
+  "SEV", "SEVPIS", 23, "Severity/Intensity", "PAIN AT INJECTION SITE",
+  "SEV", "SEVFAT", 24, "Severity/Intensity", "FATIGUE",
+  "SEV", "SEVHEAD", 25, "Severity/Intensity", "HEADACHE",
+  "SEV", "SEVDIAR", 26, "Severity/Intensity", "DIARRHEA",
+  "SEV", "SEVNWJP", 27, "Severity/Intensity", "NEW OR WORSENED JOINT PAIN",
+  "SEV", "SEVNWMP", 28, "Severity/Intensity", "NEW OR WORSENED MUSCLE PAIN",
+  "MAXDIAM", "MDISW", 29, "Maximum Diameter", "SWELLING",
+  "MAXSEV", "MAXSPIS", 30, "Maximum Severity", "PAIN AT INJECTION SITE",
+  "OCCUR", "OCCVOM", 31, "Occurrence Indicator", "VOMITING",
+  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING",
 )
 ```
 
-```{r, echo=FALSE}
+```{r eval=TRUE}
 adface <- derive_vars_params(
   dataset = adface,
   lookup_dataset = lookup_dataset,
@@ -390,14 +454,16 @@ dataset_vignette(
 )
 ```
 
-## Derive maximum severity flag{#maxflag}
+`PARAMCD` will be always derived from lookup dataset whereas `PARAMN`, `PARAM`, `PARCAT1`, `PARCAT2` can be either derived from lookup dataset if mentioned in `merge_vars` argument or derived in the function.
 
-The function `derive_vars_max_flag` is used to derive flag variable for the maximum values of an event.
+## Derive Maximum Severity Flag {#maxflag}
+
+The function `derive_vars_max_flag()` is used to derive flag variable for the maximum values of an event.
 
 `flag1` - Flags the maximum value per subject per event per Vaccination.
 `flag2` - Flags the maximum value per subject per event for Overall.
 
-```{r, echo=FALSE}
+```{r eval=TRUE}
 adface <- derive_vars_max_flag(
   dataset = adface,
   flag1 = "ANL01FL",
@@ -412,19 +478,17 @@ dataset_vignette(
 )
 ```
 
-This call would return the input dataset with columns ANL01FL, ANL02FL added by default. 
+This call would return the input dataset with columns `ANL01FL`, `ANL02FL` added by default. 
 This function allows the user to change the name of the new variables created.
 
-## Derive event occurrence flag{#eventflag}
+## Derive Event Occurrence Flag {#eventflag}
 
-The function `derive_vars_event_flag` is used to derive flag variable for the events that occurred.
+The function `derive_vars_event_flag()` is used to derive flag variable for the events that occurred.
 
-`new_var1` - Flags the record if at least one of the event occurred within the observation                period. 
+`new_var1` - Flags the record if at least one of the event occurred within the observation period. 
 `new_var2` - Flags the record if the event is occurred.
 
-For derived records with `DTYPE` equals "MAXIMUM" , the `new_var2` will be set to NA.
-
-```{r, echo=FALSE}
+```{r eval=TRUE}
 adface <- derive_vars_event_flag(
   dataset = adface,
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
@@ -437,9 +501,39 @@ adface <- derive_vars_event_flag(
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, AVAL, AVALC, EVENTFL, EVENTDFL, DTYPE)
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, AVAL, AVALC, EVENTFL, EVENTDFL)
 )
 ```
 
-This call would return the input dataset with columns EVENTFL, EVENTDFL added by default. 
-This function allows the user to change the name of the new variables created.
+This call would return the input dataset with columns `EVENTFL`, `EVENTDFL` added by default. 
+This function allows the user to change the name of the new variables created as well.
+
+## Add ADSL variables {#adsl_vars}
+
+If needed, the other `ADSL` variables can now be added.
+List of ADSL variables already merged held in vector `adsl_vars`
+
+```{r eval=TRUE}
+adsl <- adsl %>%
+  convert_blanks_to_na() %>%
+  filter(!is.na(USUBJID))
+
+adface <- derive_vars_merged(
+  dataset = adface,
+  dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
+  by_vars = exprs(STUDYID, USUBJID)
+)
+```
+
+```{r, echo=FALSE}
+dataset_vignette(
+  adface,
+  display_vars = exprs(USUBJID, TRTSDT, TRTEDT, AGE, SEX)
+)
+```
+
+# Example Script 
+
+ADaM | Sample Code
+---- | --------------
+ADFACE | [ad_adface.R](https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adface.R){target="_blank"} 

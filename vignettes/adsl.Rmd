@@ -35,7 +35,8 @@ otherwise specified.*
 * [Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDT`, `TRTEDT`, `TRTDURD`)](#trtdatetime)
 * [Population Flags (e.g. `SAFFL`)](#popflag)
 * [Derive vaccination date Variables](#vax_date)
-* [Derive Other Variables](#other)
+* [Derive vaccination date Variables](#vax_date)
+* [Create period variables (Study Specific)](#period)
 * [Add Labels and Attributes](#attributes)
 
 
@@ -89,7 +90,12 @@ example mapping for a study without periods may be:
 
 ```{r eval=TRUE}
 adsl <- dm %>%
-  mutate(TRT01P = ARM, TRT01A = ACTARM)
+  mutate(
+    TRT01P = substring(ARM, 1, 9),
+    TRT02P = substring(ARM, 11, 100),
+    TRT01A = substring(ACTARM, 1, 9),
+    TRT02A = substring(ACTARM, 11, 100)
+  )
 ```
 
 For studies with periods see the ["Visit and Period Variables"
@@ -114,16 +120,16 @@ ex_ext <- ex %>%
   ) %>%
   derive_vars_dtm(
     dtc = EXENDTC,
-    new_vars_prefix = "EXEN",
-    time_imputation = "last"
+    new_vars_prefix = "EXEN"
   )
 adsl <- adsl %>%
   derive_vars_merged(
     dataset_add = ex_ext,
     filter_add = (EXDOSE > 0 |
       (EXDOSE == 0 &
-        str_detect(EXTRT, "PLACEBO"))) & !is.na(EXSTDTM),
-    new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
+        str_detect(EXTRT, "VACCINE"))) &
+      !is.na(EXSTDTM),
+    new_vars = exprs(TRTSDTM = EXSTDTM),
     order = exprs(EXSTDTM, EXSEQ),
     mode = "first",
     by_vars = exprs(STUDYID, USUBJID)
@@ -132,8 +138,8 @@ adsl <- adsl %>%
     dataset_add = ex_ext,
     filter_add = (EXDOSE > 0 |
       (EXDOSE == 0 &
-        str_detect(EXTRT, "PLACEBO"))) & !is.na(EXENDTM),
-    new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
+        str_detect(EXTRT, "VACCINE"))) & !is.na(EXENDTM),
+    new_vars = exprs(TRTEDTM = EXENDTM),
     order = exprs(EXENDTM, EXSEQ),
     mode = "last",
     by_vars = exprs(STUDYID, USUBJID)
@@ -177,19 +183,22 @@ provided, but in most cases they can easily be derived using `derive_var_merged_
 An example of an implementation could be:
 
 ```{r eval=TRUE}
-adsl <- adsl %>%
-  derive_var_merged_exist_flag(
-    dataset_add = ex,
-    by_vars = exprs(STUDYID, USUBJID),
-    new_var = SAFFL,
-    condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "PLACEBO")))
+adsl <- derive_var_merged_exist_flag(
+  dataset = adsl,
+  dataset_add = ex,
+  by_vars = exprs(STUDYID, USUBJID),
+  new_var = SAFFL,
+  condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "VACCINE")))
+) %>%
+  mutate(
+    PPROTFL = "Y"
   )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
 dataset_vignette(
   adsl,
-  display_vars = exprs(USUBJID, TRTSDT, ARM, ACTARM, SAFFL)
+  display_vars = exprs(USUBJID, TRTSDT, ARM, ACTARM, SAFFL, PPROTFL)
 )
 ```
 
@@ -217,6 +226,31 @@ dataset_vignette(
   display_vars = exprs(USUBJID, VAX01DT, VAX02DT)
 )
 ```
+
+This call would return the input dataset with columns VAX01DT, VAX02DT added.
+
+## Create period variables (Study Specific)  {#period}
+
+In this step this we will create period variables which will be study specific, User can change the logic as per their study requirement.
+
+```{r eval=TRUE}
+adsl <- adsl %>%
+  mutate(
+    AP01SDT = VAX01DT,
+    AP01EDT = if_else(!is.na(VAX02DT), VAX02DT - 1, as.Date(RFPENDTC)),
+    AP02SDT = if_else(!is.na(VAX02DT), VAX02DT, NA_Date_),
+    AP02EDT = if_else(!is.na(AP02SDT), as.Date(RFPENDTC), NA_Date_)
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE}
+dataset_vignette(
+  adsl,
+  display_vars = exprs(USUBJID, AP01SDT, AP01EDT, AP02SDT, AP02EDT)
+)
+```
+
+This call would return the input dataset with columns AP01SDT, AP01EDT, AP02SDT, AP02EDT added.
 
 ## Derive Other Variables  {#other}
 The users can add specific code to cover their need for the analysis.
@@ -257,4 +291,4 @@ and perform associated checks can be found at the [pharmaverse E2E example](http
 
 ADaM | Sample Code
 ---- | --------------
-ADSL | [ad_adsl.R](https://github.com/pharmaverse/admiral/blob/main/inst/templates/ad_adsl.R){target="_blank"} 
+ADSL | [ad_adsl.R](https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adsl.R){target="_blank"} 

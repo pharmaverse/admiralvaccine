@@ -2,30 +2,36 @@
 % Please edit documentation in R/derive_vars_crit.R
 \name{derive_vars_crit}
 \alias{derive_vars_crit}
-\title{Derive Analysis Criterion Evaluation variables}
+\title{Derive Analysis Criterion Evaluation Variables}
 \usage{
-derive_vars_crit(dataset, new_var, label_var, condition, criterion)
+derive_vars_crit(dataset, prefix, crit_label, condition, criterion)
 }
 \arguments{
 \item{dataset}{Input dataset}
 
-\item{new_var}{Variables to add
-The analysis criterion evaluation variable's name (i.e., CRIT1)
-This name is also used in order to create both character and numeric
-flags variables (i.e., CRIT1FL and CRIT1FN).
-Is possible to give a different name, base on needs (i.e., ANL01)}
+\item{prefix}{Variables to add
 
-\item{label_var}{Criterion value
+The analysis criterion evaluation variable's name (i.e., 'CRIT1')
+This name is also used in order to create both character and numeric
+flags variables (i.e., 'CRIT1FL' and 'CRIT1FN').
+If the name does not contain CRIT wording, it generates a flag variable
+(ex: 'ANL01FL') whose logic is equals to 'CRIT1' variable, without generate
+additional numeric (ex: 'ANL01FN') and character ('ANL01') variables.}
+
+\item{crit_label}{Criterion value
+
 A text description defining the condition necessary to satisfy the presence
 of the criterion}
 
 \item{condition}{Condition for selecting a subset
+
 The condition specified in order to select a subset from the input dataset
 in which the rule is applied.}
 
 \item{criterion}{Criterion rule
+
 The criterion that each selected row satisfies or not.
-Returns Y or N for character variable and 1 or 0 fro numeric variable
+Returns Y or N for character variable and 1 or 0 for numeric variable
 if the criterion is met or not, respectively.
 Returns NA for not selected rows (not taken into account from condition)}
 }
@@ -33,22 +39,17 @@ Returns NA for not selected rows (not taken into account from condition)}
 dataset with criterion variables
 }
 \description{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{                                                              +
-}\if{html}{\out{</div>}}
-
-Derive analysis criterion evaluation result variable, paired with character    +
-and numeric flags.                                                             +
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-}
-\details{
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Derive analysis criterion evaluation result variable, paired with character
+and numeric flags.
+This function allows also the derivation of a CRIT like variable with a
+different name (ex: 'ANL01FL'), without generating additional numeric (ex: 'ANL01FN')
+and character label (ex: 'ANL01') variables.
 }
 \examples{
 library(tibble)
 library(admiral)
 library(admiraldev)
 library(dplyr)
-library(rlang)
 
 input <- tribble(
   ~USUBJID, ~AVISITN, ~ISCAT, ~PARAMCD, ~AVAL, ~ISLLOQ,
@@ -79,10 +80,10 @@ input <- tribble(
 )
 
 
-output <- derive_vars_crit(
+derive_vars_crit(
   dataset = input,
-  new_var = "CRIT1",
-  label_var = "Titer >= ISLLOQ",
+  prefix = "CRIT1",
+  crit_label = "Titer >= ISLLOQ",
   condition = !is.na(AVAL) & !is.na(ISLLOQ),
   criterion = AVAL >= ISLLOQ
 )
@@ -90,11 +91,13 @@ output <- derive_vars_crit(
 }
 \seealso{
 Other der_var: 
+\code{\link{derive_var_aval_adis}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()}
+\code{\link{derive_vars_vaxdt}()},
+\code{\link{max_flag}()}
 }
 \author{
 Federico Baratin
