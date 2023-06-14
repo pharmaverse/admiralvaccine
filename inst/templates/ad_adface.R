@@ -105,7 +105,8 @@ adface <- derive_vars_joined(
   by_vars = exprs(STUDYID, USUBJID),
   filter_join = ADT >= APERSDT & ADT <= APEREDT
 ) %>%
-  # Step 7 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN, ATPT, ATPTN)
+  # Step 7 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN, ATPT,
+  # ATPTN)
   mutate(
     AVALC = as.character(FASTRESC),
     AVAL = suppressWarnings(as.numeric(FASTRESN)),
