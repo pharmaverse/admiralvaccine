@@ -30,9 +30,10 @@
 #' Assign the value for `FATESTCD` variable to indicate the severity records.
 #' Ignore the argument if you want to set the default value (`SEV`).
 #'
-#' *Note*: This argument value will be used to check whether input data set has
-#' Severity records for specified `faobj_values` event. If it has, those records
-#' will be removed and new severity records will be derived from diameters.
+#' *Note*: Basically, This function will derive and create the severity records from the
+#' diameter record for the particular events specified in the `faobj_values` that user wants.
+#' If you want to derive the Severity from diameter, even though you have the severity in SDTM data.
+#' This function will re-derive the severity and remove the derived SDTM severity records.
 #'
 #' @param test_sev `FATEST` value for severity
 #'

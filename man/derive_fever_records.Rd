@@ -68,10 +68,7 @@ derive_fever_records(
 }
 \seealso{
 Other der_rec: 
-\code{\link{derive_diam_to_sev_records}()},
-\code{\link{derive_param_maxdiam}()},
-\code{\link{derive_param_maxsev}()},
-\code{\link{derive_param_maxtemp}()}
+\code{\link{derive_diam_to_sev_records}()}
 }
 \author{
 Dhivya Kanagaraj
