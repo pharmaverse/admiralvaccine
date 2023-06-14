@@ -506,7 +506,7 @@ dataset_vignette(
 )
 ```
 
-This call would return the input dataset with columns ANL01FL, ANL02FL added by default. 
+This call would return the input dataset with columns `ANL01FL`, `ANL02FL` added by default. 
 This function allows the user to change the name of the new variables created.
 
 ## Derive Event Occurrence Flag {#eventflag}
@@ -533,7 +533,7 @@ dataset_vignette(
 )
 ```
 
-This call would return the input dataset with columns EVENTFL, EVENTDFL added by default. 
+This call would return the input dataset with columns `EVENTFL`, `EVENTDFL` added by default. 
 This function allows the user to change the name of the new variables created as well.
 
 ## Add ADSL variables {#adsl_vars}
@@ -559,3 +559,9 @@ dataset_vignette(
   display_vars = exprs(USUBJID, TRTSDT, TRTEDT, AGE, SEX)
 )
 ```
+
+# Example Script 
+
+ADaM | Sample Code
+---- | --------------
+ADFACE | [ad_adface.R](https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adface.R){target="_blank"} 

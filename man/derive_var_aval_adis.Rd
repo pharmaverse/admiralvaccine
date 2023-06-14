@@ -4,39 +4,43 @@
 \alias{derive_var_aval_adis}
 \title{Derive AVAL variable for ADIS ADaM domain}
 \usage{
-derive_var_aval_adis(dataset, lower_rule, middle_rule, upper_rule, round)
+derive_var_aval_adis(
+  dataset,
+  lower_rule,
+  middle_rule,
+  upper_rule = NULL,
+  round = NULL
+)
 }
 \arguments{
 \item{dataset}{Input dataset.}
 
-\item{lower_rule}{Derivation rule when ISSTRESN value is below ISLLOQ}
+\item{lower_rule}{Derivation rule when "ISSTRESN" value is below "ISLLOQ."
+When ISSTRESN is missing, the inequality in "ISORRES." is checked for the derivation.}
 
-\item{middle_rule}{Derivation rule when ISSTRESN value is greater than ISLLOQ and
-lower than ISULOQ.
-If ISULOQ is not present, derivation rule when ISSTRESN is
-greater than ISLLOQ}
+\item{middle_rule}{Derivation rule when "ISSTRESN" value is greater than "ISLLOQ" and
+lower than "ISULOQ."
+If "ISULOQ" is not present, derivation rule when "ISSTRESN" is greater than "ISLLOQ".
+When "ISSTRESN" is missing, the inequality in "ISORRES." is checked for the derivation.}
 
-\item{upper_rule}{Derivation rule when ISSTRESN value is greater than ISULOQ.
-This is an optional argument since ISULOQ may not be present.}
+\item{upper_rule}{Derivation rule when "ISSTRESN" value is greater than "ISULOQ."
+This is an optional argument since "ISULOQ" may not be present.
+When "ISSTRESN" is missing, the inequality in ISORRES. is checked for the derivation.
+Default value is NULL.}
 
-\item{round}{Rounding for AVAL variable. An integer argument which specifies
-the number of decimals displayed.}
+\item{round}{Rounding for "AVAL" variable. An integer argument which specifies
+the number of decimals displayed.
+Default value is NULL.}
 }
 \value{
-dataset with AVAL variable derived.
+dataset with "AVAL" variable derived.
 }
 \description{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{                                                              +
-}\if{html}{\out{</div>}}
-
-Derive AVAL variable for Laboratory Immunology Data ADaM domain.               +
-A common rule has been decided for its derivation, based on ISLLOQ and ISULOQ  +
-and/or only ISLLOQ presence. Please, refers to arguments description for       +
-additional details.                                                            +
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-}
-\details{
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Derive "AVAL" variable for Laboratory Immunology Data ADaM domain.
+A common rule has been decided for its derivation, based on "ISLLOQ", "ISULOQ" and "ISORRES"
+when both "ISLLOQ" and "ISULOQ" are present.
+If "ISULOQ" is not present, the variables used are "ISLLOQ" and "ISORRES."
+Please, refers to arguments description for additional details.
 }
 \examples{
 library(tibble)
@@ -72,7 +76,6 @@ input <- tribble(
   "ABC-1002", 30, "M0019LN", "M0019LN Antibody", "5", 5.0, 8, 150,
   "ABC-1002", 30, "R0003MA", "R0003MA Antibody", "228.1", 228.1, 4, 120
 )
-
 
 output <- derive_var_aval_adis(
   dataset = input,
