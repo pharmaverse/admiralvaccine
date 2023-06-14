@@ -49,6 +49,12 @@ library(admiraldev)
 This article describes about creating `ADFACE` ADaM dataset which is
 part of Vaccine - Reactogenicity based on CBER guidelines.
 
+See the below links for more information:
+
+[CBER Guidelines](https://www.fda.gov/media/112581/download)
+
+[Vaccine TAUG](https://www.cdisc.org/standards/therapeutic-areas/vaccines/vaccines-therapeutic-area-user-guide-v11/html)
+
 Examples are currently tested using `ADSL` (ADaM) and
 `face`, `vs`, `ex` (SDTM) inputs.
 
@@ -165,6 +171,13 @@ adface <- derive_vars_merged(
 )
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adface,
+  display_vars = exprs(USUBJID, RFSTDTC, RFENDTC)
+)
+```  
+
 This call would return the input dataset with columns RFSTDTC,RFENDTC added.
 
 ## Derive Fever Records from `VS` Domain {#fever}
@@ -186,7 +199,7 @@ adface <- derive_fever_records(
 dataset_vignette(
   adface,
   display_vars = exprs(USUBJID, FAOBJ, FATESTCD, FAORRES, VSSTRESN, VSSTRESU),
-  filter = FAOBJ == "Fever"
+  filter = FAOBJ == "FEVER"
 )
 ``` 
 
@@ -246,7 +259,10 @@ Phase" and "Follow up" could be derived based on treatment start and end date.
 ```{r eval=TRUE}
 period_ref <- create_period_dataset(
   dataset = adsl,
-  new_vars = exprs(APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA)
+  new_vars = exprs(
+    APERSDT = APxxSDT, APEREDT = APxxEDT, TRTA = TRTxxA,
+    TRTP = TRTxxP
+  )
 )
 
 adface <- derive_vars_joined(
@@ -257,7 +273,30 @@ adface <- derive_vars_joined(
 )
 ```
 
+```{r, echo=FALSE}
+dataset_vignette(
+  adface,
+  display_vars = exprs(USUBJID, APERSDT, APEREDT, TRTA, TRTP)
+)
+```
+
 ## Derive Direct Mapping Variables {#mapping}
+
+In this step,we will create the user defined function to assign `AVAL` values from `AVALC` which will be user in further steps. 
+
+The user defined functions would look like the following:
+
+```{r eval=TRUE}
+sev_to_numeric <- function(x, y) {
+  case_when(
+    x == "NONE" ~ 0,
+    x == "MILD" ~ 1,
+    x == "MODERATE" ~ 2,
+    x == "SEVERE" ~ 3,
+    TRUE ~ y
+  )
+}
+```
 
 The mapping of these variables is left to the User. An 
 example mapping may be:
@@ -265,8 +304,9 @@ example mapping may be:
 ```{r eval=TRUE}
 adface <- adface %>%
   mutate(
-    AVAL = suppressWarnings(as.numeric(FASTRESN)),
     AVALC = as.character(FASTRESC),
+    AVAL = suppressWarnings(as.numeric(FASTRESN)),
+    AVAL = sev_to_numeric(AVALC, AVAL),
     ATPTREF = FATPTREF,
     ATPT = FATPT,
     ATPTN = FATPTNUM
