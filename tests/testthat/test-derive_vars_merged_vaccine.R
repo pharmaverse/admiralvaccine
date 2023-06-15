@@ -1,6 +1,6 @@
-# Test 1: Merging EXTRT variable from EX to FACE
+## Test 1: Merging EXTRT variable from EX to FACE
 
-test_that("derive_vars_merged_vaccine test 1 - Merging EXTRT variable from EX to FACE", {
+test_that("derive_vars_merged_vaccine Test 1: Merging EXTRT variable from EX to FACE", {
   face <- tibble::tribble(
     ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT, ~FATPTREF,
     "ABC101", "REACTO", "ADMINISTRATION SITE", "SEV", "Redness", "Severity", "ARM",
@@ -55,9 +55,9 @@ test_that("derive_vars_merged_vaccine test 1 - Merging EXTRT variable from EX to
   ))
 })
 
-# Test 2: Check if supp datasets merged properly if they exist
+## Test 2: Check if supp datasets merged properly if they exist
 
-test_that("derive_vars_merged_vaccine test 2 - Check if supp datasets merged
+test_that("derive_vars_merged_vaccine Test 2: Check if supp datasets merged
           properly if they exist", {
   face <- tibble::tribble(
     ~STUDYID, ~DOMAIN, ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT,
@@ -169,10 +169,9 @@ test_that("derive_vars_merged_vaccine test 2 - Check if supp datasets merged
 })
 
 
-# Test 3: Check if warning is raised when there are multiple vaccination in same
-# visit
+## Test 3: Check if warning is raised when there are multiple vaccination in same visit
 
-test_that("derive_vars_merged_vaccine test 3 - Check if warning is raised when
+test_that("derive_vars_merged_vaccine Test 3: Check if warning is raised when
           there are multiple vaccination in same ", {
   face <- tibble::tribble(
     ~STUDYID, ~DOMAIN, ~USUBJID, ~FACAT, ~FASCAT, ~FATESTCD, ~FAOBJ, ~FATEST, ~FALOC, ~FALAT,
