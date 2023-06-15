@@ -170,7 +170,7 @@ adface <- derive_fever_records(
 ```{r, echo=FALSE}
 dataset_vignette(
   adface,
-  display_vars = exprs(USUBJID, FAOBJ, FATESTCD, FAORRES, VSSTRESN, VSSTRESU),
+  display_vars = exprs(USUBJID, FAOBJ, FATESTCD, FAORRES, VSSTRESN),
   filter = FAOBJ == "FEVER"
 )
 ``` 

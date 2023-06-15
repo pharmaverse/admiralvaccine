@@ -29,7 +29,8 @@ test_that('derive_fever_records Test 1: How the actual dataset is generated
       FAORRES = ifelse(VSSTRESN >= 38, "Y", "N"),
       FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N")
     ) %>%
-    rename(FATPT = VSTPT)
+    rename(FATPT = VSTPT) %>%
+    select(-(starts_with("VS")), VSSTRESN)
 
 
   expected <- bind_rows(face, expected1)
@@ -40,8 +41,6 @@ test_that('derive_fever_records Test 1: How the actual dataset is generated
     filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
     faobj = "FEVER"
   )
-
-
 
   expect_dfs_equal(actual,
     expected,

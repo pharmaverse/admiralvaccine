@@ -57,6 +57,7 @@ face <- face %>%
   mutate(FAOBJ = str_to_upper(FAOBJ))
 
 adsl_vars <- exprs(RFSTDTC, RFENDTC)
+
 # Step 2 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
