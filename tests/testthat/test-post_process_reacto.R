@@ -1,6 +1,8 @@
-# test 1
-test_that("remove the records from the FA varibales where we have modified SDTM records", {
-  input <- tribble(
+## Test 1: Remove the records from the FA varibales where we have modified SDTM records
+
+test_that("post_process_reacto Test 1: Remove the records from the FA varibales where we
+          have modified SDTM records", {
+  input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FALAT, ~FACAT, ~FASCAT, ~FATPT, ~FATESTCD, ~PARAMCD, ~AVAL,
     "ABC-1002", "FEVER", NA, "REACTO", "SYS", "DAY 1", "MAXTEMP", "MAXTEMP", 39.4,
     "ABC-1002", "VOMITING", NA, "REACTO", "SYS", "DAY 4", "MAXSEV", "MAXVOMIT", 3,

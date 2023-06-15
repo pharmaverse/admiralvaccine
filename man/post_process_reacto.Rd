@@ -25,6 +25,10 @@ This is used to do post processing for ADaM reactogenicity dataset, where we der
 the SDTM level records, the corresponding values in FA variables will be \code{NA}.
 }
 \examples{
+library(dplyr)
+library(admiral)
+library(tibble)
+
 input <- tribble(
   ~USUBJID, ~FAOBJ, ~FALAT, ~FACAT, ~FASCAT, ~FATPT, ~FATESTCD, ~PARAMCD, ~AVAL,
   "ABC-1001", "FEVER", NA, "REACTO", "SYS", "DAY 1", "MAXTEMP", "MAXTEMP", 39.4,

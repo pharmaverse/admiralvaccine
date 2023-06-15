@@ -12,6 +12,10 @@
 #' @export
 #'
 #' @examples
+#' library(dplyr)
+#' library(admiral)
+#' library(tibble)
+#'
 #' input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~FALAT, ~FACAT, ~FASCAT, ~FATPT, ~FATESTCD, ~PARAMCD, ~AVAL,
 #'   "ABC-1001", "FEVER", NA, "REACTO", "SYS", "DAY 1", "MAXTEMP", "MAXTEMP", 39.4,
