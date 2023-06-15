@@ -50,7 +50,7 @@
 #'  is not at all occurred during the observation period then all the
 #'  observations within by group will be flagged as "N".
 #'
-#'  For derived records with `DTYPE` equals "MAXIMUM" , the `new_var2` will be
+#'  For derived maximum records in `FATESTCD` , the `new_var2` will be
 #'  set to NA.
 #'
 #'
@@ -66,23 +66,23 @@
 #' library(dplyr)
 #'
 #' input <- tribble(
-#'   ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
-#'   "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-#'   "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-#'   "1", "REDNESS", "VAC1", 1.5, "1.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-#'   "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "MAXIMUM",
-#'   "1", "FATIGUE", "VAC1", 1, "MILD", "Severity", "SEV", "SYSTEMIC", "",
-#'   "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "",
-#'   "1", "FATIGUE", "VAC1", 0, "NONE", "Severity", "SEV", "SYSTEMIC", "",
-#'   "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "MAXIMUM",
-#'   "1", "REDNESS", "VAC2", 6.5, "6.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-#'   "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-#'   "1", "REDNESS", "VAC2", 2.5, "2.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-#'   "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE", "MAXIMUM",
-#'   "1", "FATIGUE", "VAC2", 1, "MILD", "Severity", "SEV", "SYSTEMIC", "",
-#'   "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "",
-#'   "1", "FATIGUE", "VAC2", 0, "NONE", "Severity", "SEV", "SYSTEMIC", "",
-#'   "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "MAXIMUM",
+#'   ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT,
+#'   "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+#'   "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+#'   "1", "REDNESS", "VAC1", 1.5, "1.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+#'   "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+#'   "1", "FATIGUE", "VAC1", 1, "MILD", "Severity", "SEV", "SYSTEMIC",
+#'   "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+#'   "1", "FATIGUE", "VAC1", 0, "NONE", "Severity", "SEV", "SYSTEMIC",
+#'   "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+#'   "1", "REDNESS", "VAC2", 6.5, "6.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+#'   "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+#'   "1", "REDNESS", "VAC2", 2.5, "2.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+#'   "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+#'   "1", "FATIGUE", "VAC2", 1, "MILD", "Severity", "SEV", "SYSTEMIC",
+#'   "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+#'   "1", "FATIGUE", "VAC2", 0, "NONE", "Severity", "SEV", "SYSTEMIC",
+#'   "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
 #' )
 #'
 #' derive_vars_event_flag(
@@ -150,12 +150,19 @@ derive_vars_event_flag <- function(dataset,
           !!new_var2,
           case_when(
             AVAL > aval_cutoff | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
-            AVAL <= aval_cutoff | AVALC == "N" ~ "N",
+            AVAL <= aval_cutoff | AVALC == "N" ~ "N"
           )
         )
       )
   } else {
     data_flag <- dataset
+  }
+  # Flag derived maximum records in `FATESTCD` as `NA` for `new_var2`
+  if (!is.null(new_var2)) {
+    data_flag <- data_flag %>%
+      mutate(
+        !!new_var2 := if_else(grepl("MAX", FATESTCD), NA_character_, !!new_var2)
+      )
   }
   data_flag <- convert_blanks_to_na(data_flag)
   return(data_flag)
