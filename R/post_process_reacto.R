@@ -42,5 +42,3 @@ post_process_reacto <- function(
     function(x) ifelse(!!filter_dataset, NA, x)
   ))
 }
-
-post_process_reacto(adface)

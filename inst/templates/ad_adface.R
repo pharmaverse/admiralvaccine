@@ -230,12 +230,11 @@ adface <- derive_vars_merged(
   dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
   by_vars = exprs(STUDYID, USUBJID)
 ) %>%
-
-# Step 16 post processing
-post_process_reacto(
-  filter_dataset = FATESTCD %in% c("MAXDIAM", "MAXSEV", "MAXTEMP") |
-    (FATESTCD %in% c("OCCUR", "SEV")& FAOBJ %in% c("FEVER", "REDNESS", "SWELLING"))
-)
+  # Step 16 post processing
+  post_process_reacto(
+    filter_dataset = FATESTCD %in% c("MAXDIAM", "MAXSEV", "MAXTEMP") |
+      (FATESTCD %in% c("OCCUR", "SEV") & FAOBJ %in% c("FEVER", "REDNESS", "SWELLING"))
+  )
 
 
 # Step 17 retaining the required variables.
