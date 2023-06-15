@@ -1,7 +1,7 @@
-## Test 1: how the actual dataset is generated if FAOBJ="FEVER", if the FEVER records
+## Test 1: How the actual dataset is generated if FAOBJ="FEVER", if the FEVER records
 ## are not in FACE
 
-test_that('derive_fever_records Test 1: how the actual dataset is generated
+test_that('derive_fever_records Test 1: How the actual dataset is generated
                     if FAOBJ="FEVER", if the FEVER records are not in FACE', {
   face <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FACAT, ~FASCAT, ~FATPT,
@@ -50,9 +50,9 @@ test_that('derive_fever_records Test 1: how the actual dataset is generated
 
 
 
-## Test 2: how the actual dataset is generated if FAOBJ="FEVER", if the FEVER records are  in FACE
+## Test 2: How the actual dataset is generated if FAOBJ="FEVER", if the FEVER records are  in FACE
 
-test_that('derive_fever_records Test 2: how the actual dataset is generated
+test_that('derive_fever_records Test 2: How the actual dataset is generated
   if FAOBJ="FEVER", if the FEVER records are  in FACE', {
   face <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FACAT, ~FASCAT, ~FATPT, ~FAORRES, ~FASTRESC,

@@ -60,9 +60,9 @@ test_that("derive_vars_params Test 1: Check if the variables in the lookup datas
   )
 })
 
-## Test 2: checking whether PARAM  getting concatenated with only the existed variables
+## Test 2: Checking whether PARAM  getting concatenated with only the existed variables
 
-test_that("derive_vars_params Test 2: checking whether PARAM  getting concatenated with
+test_that("derive_vars_params Test 2: Checking whether PARAM  getting concatenated with
                     only the existed variables", {
   lookup_dataset <- tibble::tribble(
     ~FATESTCD,    ~PARAMCD,   ~FAOBJ,
@@ -136,10 +136,10 @@ test_that("derive_vars_params Test 2: checking whether PARAM  getting concatenat
 })
 
 
-## Test 3:checking whether PARAM, PARCAT1 and PARCAT2 getting concatenated with
+## Test 3: Checking whether PARAM, PARCAT1 and PARCAT2 getting concatenated with
 ## only the existed variables
 
-test_that("derive_vars_params Test 3:checking whether PARAM, PARCAT1 and PARCAT2 getting
+test_that("derive_vars_params Test 3: Checking whether PARAM, PARCAT1 and PARCAT2 getting
            concatenated with only the existed variables", {
   lookup_dataset <- tibble::tribble(
     ~FATESTCD, ~PARAMCD, ~FAOBJ, ~PARAMN,
