@@ -1,6 +1,7 @@
-## Test 1: checking
+## Test 1: Check if the variables in the lookup dataset getting merged properly
 
-test_that("derive_vars_params Test 1: checking", {
+test_that("derive_vars_params Test 1: Check if the variables in the lookup dataset getting merged
+           properly", {
   lookup_dataset <- tibble::tribble(
     ~FATESTCD,    ~PARAMCD,   ~FAOBJ,
     "SEV",        "SEVREDN",  "Redness",
@@ -25,8 +26,6 @@ test_that("derive_vars_params Test 1: checking", {
     "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Swelling", "Severity",
     "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Swelling", "Occurrence"
   )
-
-
 
   expout1 <- input %>%
     left_join(lookup_dataset,
