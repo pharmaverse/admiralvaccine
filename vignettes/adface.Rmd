@@ -49,6 +49,7 @@ unless otherwise specified.*
 -   [Assign `PARAMCD`, `PARAM`, `PARAMN`, `PARCAT1`](#paramcd)
 -   [Derive Maximum Severity Flag](#maxflag)
 -   [Derive Event Occurrence Flag](#eventflag)
+-   [Post-processing of the Dataset](#post)
 -   [Add ADSL Variables](#adsl_vars)
 
 ## Read in Data {#readdata}
@@ -507,6 +508,18 @@ dataset_vignette(
 
 This call would return the input dataset with columns `EVENTFL`, `EVENTDFL` added by default. 
 This function allows the user to change the name of the new variables created as well.
+
+## Post-processing of the Dataset {#post}
+
+In this step, we will remove values for all the derived records in SDTM variables.
+
+```{r eval=TRUE}
+adface <- post_process_reacto(
+  dataset = adface,
+  filter_dataset = FATESTCD %in% c("MAXDIAM", "MAXSEV", "MAXTEMP") |
+    (FATESTCD %in% c("OCCUR", "SEV") & FAOBJ %in% c("FEVER", "REDNESS", "SWELLING"))
+)
+```
 
 ## Add ADSL variables {#adsl_vars}
 
