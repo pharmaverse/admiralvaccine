@@ -1,6 +1,6 @@
-# test1
+## Test 1: derive maximum severity flag variables
 
-test_that("derive maximum severity flag varibles", {
+test_that("derive_vars_max_flag Test 1: derive maximum severity flag variables", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
@@ -49,9 +49,9 @@ test_that("derive maximum severity flag varibles", {
   )
 })
 
-# test2
+## Test 2:derive maximum severity flag variable per event
 
-test_that("derive maximum severity flag variable per event", {
+test_that("derive_vars_max_flag Test 2:derive maximum severity flag variable per event", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
@@ -90,9 +90,9 @@ test_that("derive maximum severity flag variable per event", {
   )
 })
 
-# test3
+## Test 3: check if the records with AVAL = NA are not flagged
 
-test_that("check if the records with AVAL = NA are not flagged", {
+test_that("derive_vars_max_flag Test 3: check if the records with AVAL = NA are not flagged", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
@@ -137,9 +137,9 @@ test_that("check if the records with AVAL = NA are not flagged", {
   )
 })
 
-# test4
+## Test 4: Check for error if both flags are NULL
 
-testthat::test_that("derive maximum severity flag varibles", {
+test_that("derive_vars_max_flag Test 4: Check for error if both flags are NULL", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
     "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
