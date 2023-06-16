@@ -32,6 +32,7 @@ Description: Programming vaccine specific Clinical Data Interchange Standards Co
     (CDISC Analysis Data Model Team (2021), <https://www.cdisc.org/standards/foundational/adam/adamig-v1-3-release-package>).
     The package is an extension package of the 'admiral' package.
 License: Apache License (>= 2)
+BugReports: https://github.com/pharmaverse/admiralvaccine/issues
 URL: https://pharmaverse.github.io/admiralvaccine, https://github.com/pharmaverse/admiralvaccine
 Encoding: UTF-8
 Language: en-US
