@@ -275,7 +275,7 @@ if (any(names(adis_sercat1n) == "ISULOQ") == FALSE) {
 
 # STEP 7: BASE variables and ABLFL derivation
 # BASETYPE derivation
-adis_basetype <- derive_var_basetype(
+adis_basetype <- derive_basetype_records(
   adis_dtype,
   basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
 )

@@ -332,7 +332,7 @@ In this step, we will derive maximum records for severity, diameter, temperature
 ```{r eval=TRUE}
 adface <- derive_extreme_records(
   dataset = adface,
-  filter = FATESTCD == "SEV",
+  filter_add = FATESTCD == "SEV",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   order = exprs(AVAL),
   mode = "last",
@@ -344,7 +344,7 @@ adface <- derive_extreme_records(
 
 adface <- derive_extreme_records(
   dataset = adface,
-  filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+  filter_add = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
   by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
   order = exprs(AVAL),
   mode = "last",
@@ -356,7 +356,7 @@ adface <- derive_extreme_records(
 
 adface <- derive_extreme_records(
   dataset = adface,
-  filter = FAOBJ == "FEVER",
+  filter_add = FAOBJ == "FEVER",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   order = exprs(VSSTRESN),
   mode = "last",
