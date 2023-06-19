@@ -1,6 +1,6 @@
-# test case 1 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_var_aval_adis Test 1: Derive AVAL variable
+## Test 1: Derive AVAL variable with original and LOG10 values. No rounding applied
+
+test_that("derive_var_aval_adis Test 1: Derive AVAL variable
                     with original and LOG10 values. No rounding applied", {
   # input data
   input <- tibble::tribble(
@@ -76,9 +76,9 @@ testthat::test_that("derive_var_aval_adis Test 1: Derive AVAL variable
 
 
 
-# test case 2 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
+## Test 2: Derive AVAL variable by applying different rules per PARAMETER. No rounding applied
+
+test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
                     applying different rules per PARAMETER. No rounding applied", {
   # input data
   input <- tibble::tribble(
@@ -147,9 +147,9 @@ testthat::test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
 
 
 
-# test case 3 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_var_aval_adis Test 3: Derive AVAL variable without ISULOQ", {
+## Test 3: Derive AVAL variable without ISULOQ
+
+test_that("derive_var_aval_adis Test 3: Derive AVAL variable without ISULOQ", {
   # input data
   input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~PARAM, ~ISORRES, ~ISSTRESN, ~ISLLOQ,
@@ -221,9 +221,9 @@ testthat::test_that("derive_var_aval_adis Test 3: Derive AVAL variable without I
 
 
 
-# test case 4 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_var_aval_adis Test 4: Derive AVAL variable
+## Test 4: Derive AVAL variable by applying rounding
+
+test_that("derive_var_aval_adis Test 4: Derive AVAL variable
                     by applying rounding", {
   # input data
   input <- tibble::tribble(
@@ -302,9 +302,9 @@ testthat::test_that("derive_var_aval_adis Test 4: Derive AVAL variable
 
 
 
-# test case 5 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_var_aval_adis Test 5: Derive AVAL variable
+## Test 5: Derive AVAL variable by applying rounding without ISULOQ
+
+test_that("derive_var_aval_adis Test 5: Derive AVAL variable
                     by applying rounding without ISULOQ", {
   # input data
   input <- tibble::tribble(

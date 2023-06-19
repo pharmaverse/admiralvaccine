@@ -432,7 +432,7 @@ In a later stage, derive `BASECAT` variable, which represents the base category.
 Update accordingly.
 ```{r eval=TRUE}
 # BASETYPE derivation
-adis_basetype <- derive_var_basetype(
+adis_basetype <- derive_basetype_records(
   adis_dtype,
   basetypes = exprs("VISIT 1" = AVISITN %in% c(10, 30))
 )

@@ -1,6 +1,7 @@
-# Test case 1
+## Test 1: How the actual dataset is generated if FAOBJ="FEVER", if the FEVER records
+## are not in FACE
 
-testthat::test_that('derive_fever_records Test 1: how the actual dataset is generated
+test_that('derive_fever_records Test 1: How the actual dataset is generated
                     if FAOBJ="FEVER", if the FEVER records are not in FACE', {
   face <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FACAT, ~FASCAT, ~FATPT,
@@ -28,7 +29,8 @@ testthat::test_that('derive_fever_records Test 1: how the actual dataset is gene
       FAORRES = ifelse(VSSTRESN >= 38, "Y", "N"),
       FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N")
     ) %>%
-    rename(FATPT = VSTPT)
+    rename(FATPT = VSTPT) %>%
+    select(-(starts_with("VS")), VSSTRESN)
 
 
   expected <- bind_rows(face, expected1)
@@ -40,8 +42,6 @@ testthat::test_that('derive_fever_records Test 1: how the actual dataset is gene
     faobj = "FEVER"
   )
 
-
-
   expect_dfs_equal(actual,
     expected,
     keys = c("USUBJID", "FAOBJ", "FATESTCD", "FATEST", "FATPT")
@@ -50,9 +50,9 @@ testthat::test_that('derive_fever_records Test 1: how the actual dataset is gene
 
 
 
-# Test Case 2
+## Test 2: How the actual dataset is generated if FAOBJ="FEVER", if the FEVER records are  in FACE
 
-testthat::test_that('derive_fever_records Test 2: how the actual dataset is generated
+test_that('derive_fever_records Test 2: How the actual dataset is generated
   if FAOBJ="FEVER", if the FEVER records are  in FACE', {
   face <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~FATESTCD, ~FACAT, ~FASCAT, ~FATPT, ~FAORRES, ~FASTRESC,
