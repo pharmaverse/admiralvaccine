@@ -38,6 +38,8 @@ Authors:
 Other contributors:
 \itemize{
   \item Neetu Sangari [contributor]
+  \item Abdul Khayat [contributor]
+  \item Ankur Jindal [contributor]
   \item Jayashree V [contributor]
   \item Jagadish Katam [contributor]
   \item Andrea Pammolli [contributor]
@@ -46,6 +48,9 @@ Other contributors:
   \item Marleen Nijs [contributor]
   \item Mandy Peng [contributor]
   \item Tina Zhai [contributor]
+  \item Ross Farrugia [contributor]
+  \item Stefan Bundfuss [contributor]
+  \item Edoardo Mancini [contributor]
 }
 
 }
