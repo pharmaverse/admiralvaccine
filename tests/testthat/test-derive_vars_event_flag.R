@@ -1,6 +1,6 @@
-## Test 1: checking whether its handling the NA values and cutoff value is working fine
+## Test 1: Checking whether its handling the NA values and cutoff value is working fine
 
-test_that("derive_vars_event_flag Test 1: checking whether its handling the NA values
+test_that("derive_vars_event_flag Test 1: Checking whether its handling the NA values
                     and cutoff value is working fine", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
@@ -143,9 +143,9 @@ test_that("derive_vars_event_flag Test 3: Checking whether its creating only fir
   )
 })
 
-## Test 4: Checking whether its creating only second flag
+## Test 4: Checking whether only second flag is created
 
-test_that("derive_vars_event_flag Test 4: Checking whether its creating only second flag", {
+test_that("derive_vars_event_flag Test 4: Checking whether only second flag is created", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
     "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "DERIVED",
@@ -188,9 +188,9 @@ test_that("derive_vars_event_flag Test 4: Checking whether its creating only sec
   )
 })
 
-## Test 5: Checking whether return the input dataset when user pass null in both flags
+## Test 5: Checking whether the input dataset is returned when user pass null in both flags
 
-test_that("derive_vars_event_flag Test 5: Checking whether return the input dataset
+test_that("derive_vars_event_flag Test 5: Checking whether the input dataset is returned
                     when user pass null in both flags", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,

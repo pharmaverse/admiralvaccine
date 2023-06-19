@@ -1,6 +1,7 @@
-# testcase-1
+## Test 1: Check if the variables in the lookup dataset getting merged properly
 
-testthat::test_that("test-1:checking", {
+test_that("derive_vars_params Test 1: Check if the variables in the lookup dataset getting merged
+           properly", {
   lookup_dataset <- tibble::tribble(
     ~FATESTCD,    ~PARAMCD,   ~FAOBJ,
     "SEV",        "SEVREDN",  "Redness",
@@ -25,8 +26,6 @@ testthat::test_that("test-1:checking", {
     "ABC101", "REACTOGENICITY", "ADMIN-SITE", "SEV", "Swelling", "Severity",
     "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Swelling", "Occurrence"
   )
-
-
 
   expout1 <- input %>%
     left_join(lookup_dataset,
@@ -61,9 +60,9 @@ testthat::test_that("test-1:checking", {
   )
 })
 
-# testcase -2
+## Test 2: Checking whether PARAM  getting concatenated with only the existed variables
 
-testthat::test_that("test-2:checking whether PARAM  getting concatenated with
+test_that("derive_vars_params Test 2: Checking whether PARAM  getting concatenated with
                     only the existed variables", {
   lookup_dataset <- tibble::tribble(
     ~FATESTCD,    ~PARAMCD,   ~FAOBJ,
@@ -137,9 +136,11 @@ testthat::test_that("test-2:checking whether PARAM  getting concatenated with
 })
 
 
-# testcase - 3
-testthat::test_that("test-3:checking whether PARAM, PARCAT1 and PARCAT2 getting concatenated with
-                    only the existed variables", {
+## Test 3: Checking whether PARAM, PARCAT1 and PARCAT2 getting concatenated with
+## only the existed variables
+
+test_that("derive_vars_params Test 3: Checking whether PARAM, PARCAT1 and PARCAT2 getting
+           concatenated with only the existed variables", {
   lookup_dataset <- tibble::tribble(
     ~FATESTCD, ~PARAMCD, ~FAOBJ, ~PARAMN,
     "SEV", "SEVREDN", "Redness", 1,
@@ -172,8 +173,6 @@ testthat::test_that("test-3:checking whether PARAM, PARCAT1 and PARCAT2 getting 
     "ABC101", "REACTOGENICITY", "ADMIN-SITE", "OCCUR", "Swelling", "Occurrence",
     NA, "RIGHT", NA
   )
-
-
 
   expected_output <- input %>%
     left_join(lookup_dataset,
