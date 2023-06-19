@@ -40,14 +40,6 @@ for each day."><meta property="og:image" content="https://pharmaverse.github.io/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -110,23 +102,23 @@ if <code>aval_cutoff</code> = 2.5 then the subjects with <code>AVAL</code> value
 
 <dt>new_var1</dt>
 <dd><p>Name of the new flag variable 1</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>A new flag variable will be created with values <span class="st">"Y"</span> or <span class="st">"N"</span>.</span>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>A new flag variable will be created with values <span class="st">`</span><span class="at">Y</span><span class="st">`</span> or <span class="st">`</span><span class="at">N</span><span class="st">`</span>.</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>If the event is occurred at least once during a observation period <span class="cf">for</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>a subject then the new variable will be flagged as Y otherwise N.</span></code></pre><p></p></div></dd>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>a subject then the new variable will be flagged as <span class="st">`</span><span class="at">Y</span><span class="st">`</span> otherwise <span class="st">`</span><span class="at">N</span><span class="st">`</span>.</span></code></pre><p></p></div></dd>
 
 
 <dt>new_var2</dt>
 <dd><p>Name of the new flag variable 2.</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>A new flag variable will be created with values <span class="st">"Y"</span> or <span class="st">"N"</span>.</span>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>A new flag variable will be created with values <span class="st">`</span><span class="at">Y</span><span class="st">`</span> or <span class="st">`</span><span class="at">N</span><span class="st">`</span>.</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>If the event is occurred on the particular day then the new variable will</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>be flagged as Y otherwise N.</span></code></pre><p></p></div></dd>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>be flagged as <span class="st">`</span><span class="at">Y</span><span class="st">`</span> otherwise <span class="st">`</span><span class="at">N</span><span class="st">`</span>.</span></code></pre><p></p></div></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>the dataset with the flag variables added to it.</p>
+<p>The dataset with the flag variables added to it.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -138,8 +130,8 @@ event is not considered to have occurred.</p>
 if the event occurred at least once during observation period. If the event
 is not at all occurred during the observation period then all the
 observations within by group will be flagged as "N".</p>
-<p>For derived records with <code>DTYPE</code> equals "MAXIMUM" , the <code>new_var2</code> will be
-set to NA.</p>
+<p>For derived maximum records in <code>FATESTCD</code> , the <code>new_var2</code> will be
+set to <code>NA</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -149,8 +141,7 @@ set to NA.</p>
 <code><a href="derive_vars_max_flag.html">derive_vars_max_flag</a>()</code>,
 <code><a href="derive_vars_merged_vaccine.html">derive_vars_merged_vaccine</a>()</code>,
 <code><a href="derive_vars_params.html">derive_vars_params</a>()</code>,
-<code><a href="derive_vars_vaxdt.html">derive_vars_vaxdt</a>()</code>,
-<code><a href="max_flag.html">max_flag</a>()</code></p></div>
+<code><a href="derive_vars_vaxdt.html">derive_vars_vaxdt</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -160,23 +151,23 @@ set to NA.</p>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="op">~</span><span class="va">USUBJID</span>, <span class="op">~</span><span class="va">FAOBJ</span>, <span class="op">~</span><span class="va">ATPTREF</span>, <span class="op">~</span><span class="va">AVAL</span>, <span class="op">~</span><span class="va">AVALC</span>, <span class="op">~</span><span class="va">FATEST</span>, <span class="op">~</span><span class="va">FATESTCD</span>, <span class="op">~</span><span class="va">FASCAT</span>, <span class="op">~</span><span class="va">DTYPE</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC1"</span>, <span class="fl">3.5</span>, <span class="st">"3.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC1"</span>, <span class="fl">4.5</span>, <span class="st">"4.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC1"</span>, <span class="fl">1.5</span>, <span class="st">"1.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC1"</span>, <span class="fl">4.5</span>, <span class="st">"4.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>, <span class="st">"MAXIMUM"</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC1"</span>, <span class="fl">1</span>, <span class="st">"MILD"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC1"</span>, <span class="fl">2</span>, <span class="st">"MODERATE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC1"</span>, <span class="fl">0</span>, <span class="st">"NONE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC1"</span>, <span class="fl">2</span>, <span class="st">"MODERATE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>, <span class="st">"MAXIMUM"</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC2"</span>, <span class="fl">6.5</span>, <span class="st">"6.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC2"</span>, <span class="fl">7.5</span>, <span class="st">"7.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC2"</span>, <span class="fl">2.5</span>, <span class="st">"2.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC2"</span>, <span class="fl">7.5</span>, <span class="st">"7.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>, <span class="st">"MAXIMUM"</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC2"</span>, <span class="fl">1</span>, <span class="st">"MILD"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC2"</span>, <span class="fl">2</span>, <span class="st">"MODERATE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC2"</span>, <span class="fl">0</span>, <span class="st">"NONE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>, <span class="st">""</span>,</span>
-<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC2"</span>, <span class="fl">2</span>, <span class="st">"MODERATE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>, <span class="st">"MAXIMUM"</span>,</span>
+<span class="r-in">  <span class="op">~</span><span class="va">USUBJID</span>, <span class="op">~</span><span class="va">FAOBJ</span>, <span class="op">~</span><span class="va">ATPTREF</span>, <span class="op">~</span><span class="va">AVAL</span>, <span class="op">~</span><span class="va">AVALC</span>, <span class="op">~</span><span class="va">FATEST</span>, <span class="op">~</span><span class="va">FATESTCD</span>, <span class="op">~</span><span class="va">FASCAT</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC1"</span>, <span class="fl">3.5</span>, <span class="st">"3.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC1"</span>, <span class="fl">4.5</span>, <span class="st">"4.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC1"</span>, <span class="fl">1.5</span>, <span class="st">"1.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC1"</span>, <span class="fl">4.5</span>, <span class="st">"4.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC1"</span>, <span class="fl">1</span>, <span class="st">"MILD"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC1"</span>, <span class="fl">2</span>, <span class="st">"MODERATE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC1"</span>, <span class="fl">0</span>, <span class="st">"NONE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC1"</span>, <span class="fl">2</span>, <span class="st">"MODERATE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC2"</span>, <span class="fl">6.5</span>, <span class="st">"6.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC2"</span>, <span class="fl">7.5</span>, <span class="st">"7.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC2"</span>, <span class="fl">2.5</span>, <span class="st">"2.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"REDNESS"</span>, <span class="st">"VAC2"</span>, <span class="fl">7.5</span>, <span class="st">"7.5"</span>, <span class="st">"Diameter"</span>, <span class="st">"DIAMETER"</span>, <span class="st">"ADMIN-SITE"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC2"</span>, <span class="fl">1</span>, <span class="st">"MILD"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC2"</span>, <span class="fl">2</span>, <span class="st">"MODERATE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC2"</span>, <span class="fl">0</span>, <span class="st">"NONE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>,</span>
+<span class="r-in">  <span class="st">"1"</span>, <span class="st">"FATIGUE"</span>, <span class="st">"VAC2"</span>, <span class="fl">2</span>, <span class="st">"MODERATE"</span>, <span class="st">"Severity"</span>, <span class="st">"SEV"</span>, <span class="st">"SYSTEMIC"</span>,</span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">derive_vars_event_flag</span><span class="op">(</span></span>
@@ -186,25 +177,25 @@ set to NA.</p>
 <span class="r-in">  new_var1 <span class="op">=</span> <span class="va">EVENTL</span>,</span>
 <span class="r-in">  new_var2 <span class="op">=</span> <span class="va">EVENTDL</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID FAOBJ ATPTREF  AVAL AVALC FATEST FATESTCD FASCAT DTYPE EVENTL EVENTDL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       REDN… VAC1      3.5 3.5   Diame… DIAMETER ADMIN… <span style="color: #BB0000;">NA</span>    Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       REDN… VAC1      4.5 4.5   Diame… DIAMETER ADMIN… <span style="color: #BB0000;">NA</span>    Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       REDN… VAC1      1.5 1.5   Diame… DIAMETER ADMIN… <span style="color: #BB0000;">NA</span>    Y      N      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1       REDN… VAC1      4.5 4.5   Diame… DIAMETER ADMIN… MAXI… Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1       FATI… VAC1      1   MILD  Sever… SEV      SYSTE… <span style="color: #BB0000;">NA</span>    Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1       FATI… VAC1      2   MODE… Sever… SEV      SYSTE… <span style="color: #BB0000;">NA</span>    Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1       FATI… VAC1      0   NONE  Sever… SEV      SYSTE… <span style="color: #BB0000;">NA</span>    Y      N      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1       FATI… VAC1      2   MODE… Sever… SEV      SYSTE… MAXI… Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 1       REDN… VAC2      6.5 6.5   Diame… DIAMETER ADMIN… <span style="color: #BB0000;">NA</span>    Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 1       REDN… VAC2      7.5 7.5   Diame… DIAMETER ADMIN… <span style="color: #BB0000;">NA</span>    Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 1       REDN… VAC2      2.5 2.5   Diame… DIAMETER ADMIN… <span style="color: #BB0000;">NA</span>    Y      N      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 1       REDN… VAC2      7.5 7.5   Diame… DIAMETER ADMIN… MAXI… Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 1       FATI… VAC2      1   MILD  Sever… SEV      SYSTE… <span style="color: #BB0000;">NA</span>    Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 1       FATI… VAC2      2   MODE… Sever… SEV      SYSTE… <span style="color: #BB0000;">NA</span>    Y      Y      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 1       FATI… VAC2      0   NONE  Sever… SEV      SYSTE… <span style="color: #BB0000;">NA</span>    Y      N      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> 1       FATI… VAC2      2   MODE… Sever… SEV      SYSTE… MAXI… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID FAOBJ   ATPTREF  AVAL AVALC    FATEST  FATESTCD FASCAT EVENTL EVENTDL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       REDNESS VAC1      3.5 3.5      Diamet… DIAMETER ADMIN… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       REDNESS VAC1      4.5 4.5      Diamet… DIAMETER ADMIN… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       REDNESS VAC1      1.5 1.5      Diamet… DIAMETER ADMIN… Y      N      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1       REDNESS VAC1      4.5 4.5      Diamet… DIAMETER ADMIN… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1       FATIGUE VAC1      1   MILD     Severi… SEV      SYSTE… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1       FATIGUE VAC1      2   MODERATE Severi… SEV      SYSTE… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1       FATIGUE VAC1      0   NONE     Severi… SEV      SYSTE… Y      N      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1       FATIGUE VAC1      2   MODERATE Severi… SEV      SYSTE… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 1       REDNESS VAC2      6.5 6.5      Diamet… DIAMETER ADMIN… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 1       REDNESS VAC2      7.5 7.5      Diamet… DIAMETER ADMIN… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 1       REDNESS VAC2      2.5 2.5      Diamet… DIAMETER ADMIN… Y      N      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 1       REDNESS VAC2      7.5 7.5      Diamet… DIAMETER ADMIN… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 1       FATIGUE VAC2      1   MILD     Severi… SEV      SYSTE… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 1       FATIGUE VAC2      2   MODERATE Severi… SEV      SYSTE… Y      Y      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 1       FATIGUE VAC2      0   NONE     Severi… SEV      SYSTE… Y      N      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> 1       FATIGUE VAC2      2   MODERATE Severi… SEV      SYSTE… Y      Y      </span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -213,7 +204,7 @@ set to NA.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Open Source.</p>
+  <p></p><p>Developed by Sukalpo Saha, Vikram S, Ben Straub, Arjun Rubalingam, Dhivya Kanagaraj, Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla, Hilde Delanghe.</p>
 </div>
 
 <div class="pkgdown-footer-right">

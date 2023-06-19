@@ -38,14 +38,6 @@ PARCAT2 variables"><meta property="og:image" content="https://pharmaverse.github
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -118,9 +110,9 @@ from lookup dataset.</p>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARAM</span><span class="st">`</span> value is a combination of <span class="st">`</span><span class="at">FAOBJ</span><span class="st">`</span> <span class="st">`</span><span class="at">FATEST</span><span class="st">`</span> <span class="st">`</span><span class="at">FASTRESU</span><span class="st">`</span> <span class="st">`</span><span class="at">FALOC</span><span class="st">`</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">FADIR</span><span class="st">`</span> <span class="st">`</span><span class="at">FALAT</span><span class="st">`</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="st">`</span><span class="at">PARCAT1</span><span class="st">`</span> value not assigned <span class="cf">in</span> lookup dataset then</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARCAT1</span><span class="st">`</span> is assigned as FACAT</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARCAT1</span><span class="st">`</span> is assigned as <span class="st">`</span><span class="at">FACAT</span><span class="st">`</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="st">`</span><span class="at">PARCAT2</span><span class="st">`</span> value not assigned <span class="cf">in</span> lookup dataset then</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARCAT2</span><span class="st">`</span> is assigned as FASCAT</span></code></pre><p></p></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a> <span class="st">`</span><span class="at">PARCAT2</span><span class="st">`</span> is assigned as <span class="st">`</span><span class="at">FASCAT</span><span class="st">`</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -130,8 +122,7 @@ from lookup dataset.</p>
 <code><a href="derive_vars_event_flag.html">derive_vars_event_flag</a>()</code>,
 <code><a href="derive_vars_max_flag.html">derive_vars_max_flag</a>()</code>,
 <code><a href="derive_vars_merged_vaccine.html">derive_vars_merged_vaccine</a>()</code>,
-<code><a href="derive_vars_vaxdt.html">derive_vars_vaxdt</a>()</code>,
-<code><a href="max_flag.html">max_flag</a>()</code></p></div>
+<code><a href="derive_vars_vaxdt.html">derive_vars_vaxdt</a>()</code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -184,7 +175,7 @@ from lookup dataset.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Open Source.</p>
+  <p></p><p>Developed by Sukalpo Saha, Vikram S, Ben Straub, Arjun Rubalingam, Dhivya Kanagaraj, Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla, Hilde Delanghe.</p>
 </div>
 
 <div class="pkgdown-footer-right">

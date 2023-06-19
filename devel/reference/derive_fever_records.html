@@ -36,14 +36,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -66,7 +58,7 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>Creating Fever records from the VS SDTM dataset.</p>
+    <p>Creating Fever records from the <code>VS</code> SDTM dataset.</p>
     </div>
 
     <div class="section level2">
@@ -82,7 +74,7 @@ Input dataset is expected to have variables <code>USUBJID</code> and <code>FAOBJ
 
 
 <dt>dataset_source</dt>
-<dd><p>Source Dataset - SDTM Vital Sign (VS)
+<dd><p>Source Dataset - SDTM Vital Sign (<code>VS</code>)
 Source Dataset (VS) is expected to have temperature records.</p></dd>
 
 
@@ -98,13 +90,15 @@ Source Dataset (VS) is expected to have temperature records.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The output dataset contains records with <code>FATESTCD = "OCCUR"</code>for <code>FAOBJ = FEVER</code> records.</p>
+<p>The output dataset contains records with <code>FATESTCD = "OCCUR"</code> for
+<code>FAOBJ = FEVER</code> records.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Check if <code>FAOBJ = FEVER</code> record is present in input dataset,
 if not then use <code>SDTM.VS</code> to get FEVER records.
-With temperature values from VSSTRESN we decide if FEVER has occurred or not(<code>FAORRES = "Y"/"N"</code>)
+With temperature values from <code>VSSTRESN</code> we decide if FEVER has
+occurred or not (<code>FAORRES = "Y"/"N"</code>).
 Since records are derived, these FEVER records are considered <code>DTYPE = "DERIVED"</code>
 if <code>FAOBJ = FEVER</code> record is present, then input dataset will be made as output with no further
 analysis.</p>
@@ -157,21 +151,20 @@ analysis.</p>
 <span class="r-in">  filter_source <span class="op">=</span> <span class="va">VSCAT</span> <span class="op">==</span> <span class="st">"REACTOGENICITY"</span> <span class="op">&amp;</span> <span class="va">VSTESTCD</span> <span class="op">==</span> <span class="st">"TEMP"</span>,</span>
 <span class="r-in">  faobj <span class="op">=</span> <span class="st">"FEVER"</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 11 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID FAOBJ    FATESTCD FACAT FASCAT FATPT VSTESTCD VSCAT VSSTRESN VSSTRESU</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ABC101  REDNESS  SEV      REAC… ADMIN… DAY 1 <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ABC101  REDNESS  DIAM     REAC… ADMIN… DAY 2 <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ABC101  VOMITTI… SEV      REAC… SYSTE… DAY 1 <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ABC101  FATIQUE  OCCUR    REAC… SYSTE… DAY 3 <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 1 TEMP     REAC…     38.3 C       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 2 TEMP     REAC…     38   C       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 3 TEMP     REAC…     36   C       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 4 TEMP     REAC…     37   C       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 5 TEMP     REAC…     39   C       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 6 TEMP     REAC…     39   C       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 7 TEMP     REAC…     38   C       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: FATEST &lt;chr&gt;, FAORRES &lt;chr&gt;, FASTRESC &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 11 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID FAOBJ    FATESTCD FACAT FASCAT FATPT FATEST FAORRES FASTRESC VSSTRESN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ABC101  REDNESS  SEV      REAC… ADMIN… DAY 1 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ABC101  REDNESS  DIAM     REAC… ADMIN… DAY 2 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ABC101  VOMITTI… SEV      REAC… SYSTE… DAY 1 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ABC101  FATIQUE  OCCUR    REAC… SYSTE… DAY 3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 1 Occur… Y       Y            38.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 2 Occur… Y       Y            38  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 3 Occur… N       N            36  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 4 Occur… N       N            37  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 5 Occur… Y       Y            39  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 6 Occur… Y       Y            39  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> ABC101  FEVER    OCCUR    REAC… SYSTE… DAY 7 Occur… Y       Y            38  </span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -180,7 +173,7 @@ analysis.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Open Source.</p>
+  <p></p><p>Developed by Sukalpo Saha, Vikram S, Ben Straub, Arjun Rubalingam, Dhivya Kanagaraj, Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla, Hilde Delanghe.</p>
 </div>
 
 <div class="pkgdown-footer-right">
