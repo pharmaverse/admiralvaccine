@@ -25,17 +25,17 @@
 #'
 #' @param new_var1 Name of the new flag variable 1
 #'
-#'     A new flag variable will be created with values "Y" or "N".
+#'     A new flag variable will be created with values `Y` or `N`.
 #'     If the event is occurred at least once during a observation period for
-#'     a subject then the new variable will be flagged as Y otherwise N.
+#'     a subject then the new variable will be flagged as `Y` otherwise `N`.
 #'
 #' @param new_var2 Name of the new flag variable 2.
 #'
-#'     A new flag variable will be created with values "Y" or "N".
+#'     A new flag variable will be created with values `Y` or `N`.
 #'     If the event is occurred on the particular day then the new variable will
-#'     be flagged as Y otherwise N.
+#'     be flagged as `Y` otherwise `N`.
 #'
-#' @return the dataset with the flag variables added to it.
+#' @return The dataset with the flag variables added to it.
 #'
 #' @details
 #'
@@ -51,7 +51,7 @@
 #'  observations within by group will be flagged as "N".
 #'
 #'  For derived maximum records in `FATESTCD` , the `new_var2` will be
-#'  set to NA.
+#'  set to `NA`.
 #'
 #'
 #' @export

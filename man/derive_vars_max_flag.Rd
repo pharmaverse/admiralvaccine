@@ -29,7 +29,7 @@ and per vaccination
 \details{
 This utility flags the maximum record per subject per event
 per vaccination/Overall
-If both parameters \code{flag1} & \code{flag2} are passed as NULL then
+If both parameters \code{flag1} & \code{flag2} are passed as \code{NULL} then
 utility will throw error and flags will not be created.
 }
 \examples{
@@ -74,8 +74,7 @@ Other der_var:
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{max_flag}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Dhivya Kanagaraj

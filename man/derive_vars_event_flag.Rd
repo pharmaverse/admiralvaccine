@@ -32,20 +32,20 @@ if \code{aval_cutoff} = 2.5 then the subjects with \code{AVAL} value greater tha
 
 \item{new_var1}{Name of the new flag variable 1
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{A new flag variable will be created with values "Y" or "N".
+\if{html}{\out{<div class="sourceCode">}}\preformatted{A new flag variable will be created with values `Y` or `N`.
 If the event is occurred at least once during a observation period for
-a subject then the new variable will be flagged as Y otherwise N.
+a subject then the new variable will be flagged as `Y` otherwise `N`.
 }\if{html}{\out{</div>}}}
 
 \item{new_var2}{Name of the new flag variable 2.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{A new flag variable will be created with values "Y" or "N".
+\if{html}{\out{<div class="sourceCode">}}\preformatted{A new flag variable will be created with values `Y` or `N`.
 If the event is occurred on the particular day then the new variable will
-be flagged as Y otherwise N.
+be flagged as `Y` otherwise `N`.
 }\if{html}{\out{</div>}}}
 }
 \value{
-the dataset with the flag variables added to it.
+The dataset with the flag variables added to it.
 }
 \description{
 Creates two flag variables for the event occurred, one for the event occurred
@@ -65,7 +65,7 @@ is not at all occurred during the observation period then all the
 observations within by group will be flagged as "N".
 
 For derived maximum records in \code{FATESTCD} , the \code{new_var2} will be
-set to NA.
+set to \code{NA}.
 }
 \examples{
 library(tibble)
@@ -108,8 +108,7 @@ Other der_var:
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{max_flag}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \concept{der_var}
 \keyword{der_var}

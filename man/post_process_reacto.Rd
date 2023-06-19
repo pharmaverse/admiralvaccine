@@ -21,8 +21,8 @@ The input dataframe with \code{NA} values in FA variables where the SDTM records
 ADaM derivation purpose.
 }
 \description{
-This is used to do post processing for ADaM reactogenicity dataset, where we derived
-the SDTM level records, the corresponding values in FA variables will be \code{NA}.
+This is used to do post processing for ADaM reactogenicity dataset, for the derived
+SDTM level records, the corresponding values in FA variables will be \code{NA}.
 }
 \examples{
 library(dplyr)
@@ -45,3 +45,8 @@ post_process_reacto(
 )
 
 }
+\author{
+Arjun Rubalingam
+}
+\concept{other_advanced}
+\keyword{other_advanced}

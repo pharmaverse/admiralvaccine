@@ -1,24 +1,26 @@
 #' Creating Fever Records
 #'
-#' Creating Fever records from the VS SDTM dataset.
+#' Creating Fever records from the `VS` SDTM dataset.
 #'
 #' @param dataset Input Dataset
 #' Input dataset is expected to have variables `USUBJID` and `FAOBJ`.
 #'
-#' @param dataset_source Source Dataset - SDTM Vital Sign (VS)
+#' @param dataset_source Source Dataset - SDTM Vital Sign (`VS`)
 #' Source Dataset (VS) is expected to have temperature records.
 #'
 #' @param filter_source Filter condition for Source dataset.
 #'
 #' @param faobj FAOBJ Value for fever records in output dataset.
 #'
-#' @return The output dataset contains records with `FATESTCD = "OCCUR"`for `FAOBJ = FEVER` records.
+#' @return The output dataset contains records with `FATESTCD = "OCCUR"` for
+#' `FAOBJ = FEVER` records.
 #'
 #' @export
 #'
 #' @details Check if `FAOBJ = FEVER` record is present in input dataset,
 #' if not then use `SDTM.VS` to get FEVER records.
-#' With temperature values from VSSTRESN we decide if FEVER has occurred or not(`FAORRES = "Y"/"N"`)
+#' With temperature values from `VSSTRESN` we decide if FEVER has
+#' occurred or not (`FAORRES = "Y"/"N"`).
 #' Since records are derived, these FEVER records are considered `DTYPE = "DERIVED"`
 #' if `FAOBJ = FEVER` record is present, then input dataset will be made as output with no further
 #' analysis.
@@ -123,6 +125,7 @@ derive_fever_records <- function(dataset,
         FASTRESC = FAORRES
       ) %>%
       select(-(starts_with("VS")), VSSTRESN)
+
     bind_rows(dataset, fev_rec)
   } else if (row_rec > 0) {
     return(dataset)

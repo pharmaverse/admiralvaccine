@@ -5,20 +5,20 @@
 #' Derive analysis criterion evaluation result variable, paired with character
 #' and numeric flags.
 #' This function allows also the derivation of a CRIT like variable with a
-#' different name (ex: 'ANL01FL'), without generating additional numeric (ex: 'ANL01FN')
-#' and character label (ex: 'ANL01') variables.
+#' different name (ex: `ANL01FL`), without generating additional numeric (ex: `ANL01FN`)
+#' and character label (ex: `ANL01`) variables.
 #'
 #' @param dataset Input dataset
 #'
 #'
 #' @param prefix Variables to add
 #'
-#'   The analysis criterion evaluation variable's name (i.e., 'CRIT1')
+#'   The analysis criterion evaluation variable's name (i.e., `CRIT1`)
 #'   This name is also used in order to create both character and numeric
-#'   flags variables (i.e., 'CRIT1FL' and 'CRIT1FN').
+#'   flags variables (i.e., `CRIT1FL` and `CRIT1FN`).
 #'   If the name does not contain CRIT wording, it generates a flag variable
-#'   (ex: 'ANL01FL') whose logic is equals to 'CRIT1' variable, without generate
-#'   additional numeric (ex: 'ANL01FN') and character ('ANL01') variables.
+#'   (ex: `ANL01FL`) whose logic is equals to `CRIT1` variable, without generating
+#'   additional numeric (ex: `ANL01FN`) and character (`ANL01`) variables.
 #'
 #'
 #' @param crit_label Criterion value
@@ -36,7 +36,7 @@
 #' @param criterion Criterion rule
 #'
 #'   The criterion that each selected row satisfies or not.
-#'   Returns Y or N for character variable and 1 or 0 for numeric variable
+#'   Returns `Y` or `N` for character variable and `1` or `0` for numeric variable
 #'   if the criterion is met or not, respectively.
 #'   Returns NA for not selected rows (not taken into account from condition)
 #'

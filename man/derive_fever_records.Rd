@@ -10,7 +10,7 @@ derive_fever_records(dataset, dataset_source, filter_source, faobj)
 \item{dataset}{Input Dataset
 Input dataset is expected to have variables \code{USUBJID} and \code{FAOBJ}.}
 
-\item{dataset_source}{Source Dataset - SDTM Vital Sign (VS)
+\item{dataset_source}{Source Dataset - SDTM Vital Sign (\code{VS})
 Source Dataset (VS) is expected to have temperature records.}
 
 \item{filter_source}{Filter condition for Source dataset.}
@@ -18,15 +18,17 @@ Source Dataset (VS) is expected to have temperature records.}
 \item{faobj}{FAOBJ Value for fever records in output dataset.}
 }
 \value{
-The output dataset contains records with \code{FATESTCD = "OCCUR"}for \code{FAOBJ = FEVER} records.
+The output dataset contains records with \code{FATESTCD = "OCCUR"} for
+\code{FAOBJ = FEVER} records.
 }
 \description{
-Creating Fever records from the VS SDTM dataset.
+Creating Fever records from the \code{VS} SDTM dataset.
 }
 \details{
 Check if \code{FAOBJ = FEVER} record is present in input dataset,
 if not then use \code{SDTM.VS} to get FEVER records.
-With temperature values from VSSTRESN we decide if FEVER has occurred or not(\code{FAORRES = "Y"/"N"})
+With temperature values from \code{VSSTRESN} we decide if FEVER has
+occurred or not (\code{FAORRES = "Y"/"N"}).
 Since records are derived, these FEVER records are considered \code{DTYPE = "DERIVED"}
 if \code{FAOBJ = FEVER} record is present, then input dataset will be made as output with no further
 analysis.

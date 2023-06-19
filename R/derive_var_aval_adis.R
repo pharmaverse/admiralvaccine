@@ -1,32 +1,32 @@
 #' Derive AVAL variable for ADIS ADaM domain
 #'
 #' @description
-#' Derive "AVAL" variable for Laboratory Immunology Data ADaM domain.
-#' A common rule has been decided for its derivation, based on "ISLLOQ", "ISULOQ" and "ISORRES"
-#' when both "ISLLOQ" and "ISULOQ" are present.
-#' If "ISULOQ" is not present, the variables used are "ISLLOQ" and "ISORRES."
+#' Derive `AVAL` variable for Laboratory Immunology Data ADaM domain.
+#' A common rule has been decided for its derivation, based on `ISLLOQ`, `ISULOQ` and `ISORRES`
+#' when both `ISLLOQ` and `ISULOQ` are present.
+#' If `ISULOQ` is not present, the variables used are `ISLLOQ` and `ISORRES`.
 #' Please, refers to arguments description for additional details.
 #'
 #' @param dataset Input dataset.
 #'
-#' @param lower_rule Derivation rule when "ISSTRESN" value is below "ISLLOQ."
-#'   When ISSTRESN is missing, the inequality in "ISORRES." is checked for the derivation.
+#' @param lower_rule Derivation rule when `ISSTRESN` value is below `ISLLOQ`.
+#'   When `ISSTRESN` is missing, the inequality in `ISORRES` is checked for the derivation.
 #'
-#' @param middle_rule Derivation rule when "ISSTRESN" value is greater than "ISLLOQ" and
-#'   lower than "ISULOQ."
-#'   If "ISULOQ" is not present, derivation rule when "ISSTRESN" is greater than "ISLLOQ".
-#'   When "ISSTRESN" is missing, the inequality in "ISORRES." is checked for the derivation.
+#' @param middle_rule Derivation rule when `ISSTRESN` value is greater than `ISLLOQ` and
+#'   lower than `ISULOQ`.
+#'   If `ISULOQ` is not present, derivation rule when `ISSTRESN` is greater than `ISLLOQ`.
+#'   When `ISSTRESN` is missing, the inequality in `ISORRES` is checked for the derivation.
 #'
-#' @param upper_rule Derivation rule when "ISSTRESN" value is greater than "ISULOQ."
-#'   This is an optional argument since "ISULOQ" may not be present.
-#'   When "ISSTRESN" is missing, the inequality in ISORRES. is checked for the derivation.
-#'   Default value is NULL.
+#' @param upper_rule Derivation rule when `ISSTRESN` value is greater than `ISULOQ`.
+#'   This is an optional argument since `ISULOQ` may not be present.
+#'   When `ISSTRESN` is missing, the inequality in `ISORRES`. is checked for the derivation.
+#'   Default value is `NULL`.
 #'
-#' @param round Rounding for "AVAL" variable. An integer argument which specifies
+#' @param round Rounding for `AVAL` variable. An integer argument which specifies
 #'   the number of decimals displayed.
-#'   Default value is NULL.
+#'   Default value is `NULL`.
 #'
-#' @return dataset with "AVAL" variable derived.
+#' @return Dataset with `AVAL` variable derived.
 #'
 #' @export
 #'

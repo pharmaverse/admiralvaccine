@@ -1,7 +1,7 @@
 #' Post processing function for ADFACE dataset
 #'
-#' @description This is used to do post processing for ADaM reactogenicity dataset, where we derived
-#' the SDTM level records, the corresponding values in FA variables will be `NA`.
+#' @description This is used to do post processing for ADaM reactogenicity dataset, for the derived
+#' SDTM level records, the corresponding values in FA variables will be `NA`.
 #'
 #' @param dataset Input dataset
 #' @param filter_dataset Filter condition
@@ -10,6 +10,8 @@
 #' @return The input dataframe with `NA` values in FA variables where the SDTM records modified for
 #' ADaM derivation purpose.
 #' @export
+#'
+#' @author Arjun Rubalingam
 #'
 #' @examples
 #' library(dplyr)
@@ -31,10 +33,12 @@
 #'     (FATESTCD == "OCCUR" & FAOBJ == "FEVER")
 #' )
 #'
-post_process_reacto <- function(
-    dataset,
-    filter_dataset = FATESTCD %in% c("MAXDIAM", "MAXSEV", "MAXTEMP") |
-      (FATESTCD == "OCCUR" & FAOBJ == "FEVER")) {
+#' @keywords other_advanced
+#' @family other_advanced
+#'
+post_process_reacto <- function(dataset,
+                                filter_dataset = FATESTCD %in% c("MAXDIAM", "MAXSEV", "MAXTEMP") |
+                                  (FATESTCD == "OCCUR" & FAOBJ == "FEVER")) {
   assert_data_frame(dataset, required_vars = exprs(USUBJID, FATESTCD, FAOBJ))
   filter_dataset <- assert_filter_cond(enexpr(filter_dataset))
 

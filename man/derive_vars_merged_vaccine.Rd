@@ -29,13 +29,13 @@ The variables specified by the \code{ex_vars} argument are expected.}
 \item{by_vars_adms}{Grouping variables for administration site events.}
 
 \item{dataset_supp}{Supplementary input dataset
-By default \code{dataset_supp} will be NULL, user has to provide
+By default \code{dataset_supp} will be \code{NULL}, user has to provide
 supplementary dataset to merge it back with original input dataset
 if they have supplementary dataset in their case.}
 
 \item{dataset_suppex}{Supplementary EX dataset
-By default \code{dataset_suppex} will be NULL, user has to provide
-supplementary dataset to merge it back with original EX dataset
+By default \code{dataset_suppex} will be \code{NULL}, user has to provide
+supplementary dataset to merge it back with original \code{EX} dataset
 if they have supplementary dataset in their case.}
 
 \item{ex_vars}{Variables to be added to the output dataset from EX dataset}
@@ -99,8 +99,7 @@ Other der_var:
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{max_flag}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Vikram S

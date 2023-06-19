@@ -39,9 +39,9 @@ from lookup dataset.
  `PARAM` value is a combination of `FAOBJ` `FATEST` `FASTRESU` `FALOC`
  `FADIR` `FALAT`
  if `PARCAT1` value not assigned in lookup dataset then
- `PARCAT1` is assigned as FACAT
+ `PARCAT1` is assigned as `FACAT`
  if `PARCAT2` value not assigned in lookup dataset then
- `PARCAT2` is assigned as FASCAT
+ `PARCAT2` is assigned as `FASCAT`
 }\if{html}{\out{</div>}}
 }
 \examples{
@@ -90,8 +90,7 @@ Other der_var:
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{max_flag}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Dhivya Kanagaraj

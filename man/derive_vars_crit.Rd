@@ -11,12 +11,12 @@ derive_vars_crit(dataset, prefix, crit_label, condition, criterion)
 
 \item{prefix}{Variables to add
 
-The analysis criterion evaluation variable's name (i.e., 'CRIT1')
+The analysis criterion evaluation variable's name (i.e., \code{CRIT1})
 This name is also used in order to create both character and numeric
-flags variables (i.e., 'CRIT1FL' and 'CRIT1FN').
+flags variables (i.e., \code{CRIT1FL} and \code{CRIT1FN}).
 If the name does not contain CRIT wording, it generates a flag variable
-(ex: 'ANL01FL') whose logic is equals to 'CRIT1' variable, without generate
-additional numeric (ex: 'ANL01FN') and character ('ANL01') variables.}
+(ex: \code{ANL01FL}) whose logic is equals to \code{CRIT1} variable, without generating
+additional numeric (ex: \code{ANL01FN}) and character (\code{ANL01}) variables.}
 
 \item{crit_label}{Criterion value
 
@@ -31,7 +31,7 @@ in which the rule is applied.}
 \item{criterion}{Criterion rule
 
 The criterion that each selected row satisfies or not.
-Returns Y or N for character variable and 1 or 0 for numeric variable
+Returns \code{Y} or \code{N} for character variable and \code{1} or \code{0} for numeric variable
 if the criterion is met or not, respectively.
 Returns NA for not selected rows (not taken into account from condition)}
 }
@@ -42,8 +42,8 @@ dataset with criterion variables
 Derive analysis criterion evaluation result variable, paired with character
 and numeric flags.
 This function allows also the derivation of a CRIT like variable with a
-different name (ex: 'ANL01FL'), without generating additional numeric (ex: 'ANL01FN')
-and character label (ex: 'ANL01') variables.
+different name (ex: \code{ANL01FL}), without generating additional numeric (ex: \code{ANL01FN})
+and character label (ex: \code{ANL01}) variables.
 }
 \examples{
 library(tibble)
@@ -96,8 +96,7 @@ Other der_var:
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{max_flag}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Federico Baratin
