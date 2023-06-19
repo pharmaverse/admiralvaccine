@@ -4,8 +4,8 @@
 #' the SDTM level records, the corresponding values in FA variables will be `NA`.
 #'
 #' @param dataset Input dataset
-#' @param filter_dataset filter condition
-#' convert the FA variables records to NA depends on this condition.
+#' @param filter_dataset Filter condition
+#' Conversion of records in FA variables to NA depends on this condition.
 #'
 #' @return The input dataframe with `NA` values in FA variables where the SDTM records modified for
 #' ADaM derivation purpose.
