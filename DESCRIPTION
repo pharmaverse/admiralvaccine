@@ -14,6 +14,8 @@ Authors@R: c(
     person("Kalyani", "Bodicherla", role = "aut"),
     person("Hilde", "Delanghe", role = "aut"),
     person("Neetu", "Sangari", role = "ctb"),
+    person("Abdul", "Khayat", role = "ctb"),
+    person("Ankur", "Jindal", role = "ctb"),
     person("Jayashree", "V", role = "ctb"),
     person("Jagadish", "Katam", role = "ctb"),
     person("Andrea", "Pammolli", role = "ctb"),
@@ -21,7 +23,10 @@ Authors@R: c(
     person("Ranya", "Ben Hsain", role = "ctb"),
     person("Marleen", "Nijs", role = "ctb"),
     person("Mandy", "Peng", role = "ctb"),
-    person("Tina", "Zhai", role = "ctb")
+    person("Tina", "Zhai", role = "ctb"),
+    person("Ross", "Farrugia", role = "ctb"),
+    person("Stefan", "Bundfuss", role = "ctb"),
+    person("Edoardo", "Mancini", role = "ctb")
     )
 Description: Programming vaccine specific Clinical Data Interchange Standards Consortium
     (CDISC) compliant Analysis Data Model (ADaM) datasets in 'R'. Flat model is followed as per 
