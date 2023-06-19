@@ -96,9 +96,9 @@ developer community:
 
 -   Project Lead & Contributor: Neetu Sangari
 
--   Maintainer - Sukalpo Saha
+-   Maintainer: Sukalpo Saha
 
--   Developers - Vikram S, Arjun Rubalingam, Dhivya Kanagaraj, Federico
+-   Developers: Vikram S, Arjun Rubalingam, Dhivya Kanagaraj, Federico
     Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla
 
 -   Support lead & Reviewer: Ben Straub

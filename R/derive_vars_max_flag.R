@@ -9,7 +9,7 @@
 #'
 #' @param fl Flag variable name, Pass it as string.
 #'
-#' @return data frame with flag variable which is flagged for the maximum value records depends on
+#' @return Data frame with flag variable which is flagged for the maximum value records depending on
 #' the variables passed in `by_vars` by user.
 #'
 #' @author Dhivya Kanagaraj
@@ -19,6 +19,7 @@
 #'
 #' library(tibble)
 #' library(admiral)
+#'
 #' input <- tribble(
 #'   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
 #'   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
@@ -88,7 +89,7 @@ max_flag <- function(dataset,
 #'
 #' @details This utility flags the maximum record per subject per event
 #'          per vaccination/Overall
-#'          If both parameters `flag1` & `flag2` are passed as NULL then
+#'          If both parameters `flag1` & `flag2` are passed as `NULL` then
 #'          utility will throw error and flags will not be created.
 #'
 #' @export

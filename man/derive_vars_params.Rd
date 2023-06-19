@@ -39,9 +39,9 @@ from lookup dataset.
  `PARAM` value is a combination of `FAOBJ` `FATEST` `FASTRESU` `FALOC`
  `FADIR` `FALAT`
  if `PARCAT1` value not assigned in lookup dataset then
- `PARCAT1` is assigned as FACAT
+ `PARCAT1` is assigned as `FACAT`
  if `PARCAT2` value not assigned in lookup dataset then
- `PARCAT2` is assigned as FASCAT
+ `PARCAT2` is assigned as `FASCAT`
 }\if{html}{\out{</div>}}
 }
 \examples{

@@ -24,8 +24,8 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Ben Straub \email{ben.x.straub@gsk.com}
   \item Vikram S \email{vikram.s@pfizer.com}
+  \item Ben Straub \email{ben.x.straub@gsk.com}
   \item Arjun Rubalingam
   \item Dhivya Kanagaraj
   \item Federico Baratin

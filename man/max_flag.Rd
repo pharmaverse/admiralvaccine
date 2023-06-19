@@ -15,7 +15,7 @@ inside the exprs().}
 \item{fl}{Flag variable name, Pass it as string.}
 }
 \value{
-data frame with flag variable which is flagged for the maximum value records depends on
+Data frame with flag variable which is flagged for the maximum value records depending on
 the variables passed in \code{by_vars} by user.
 }
 \description{
@@ -25,6 +25,7 @@ To Flag the maximum records depends on the grouping variables in a flag variable
 
 library(tibble)
 library(admiral)
+
 input <- tribble(
   ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
   "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",

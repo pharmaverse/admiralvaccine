@@ -1,7 +1,7 @@
 #' Post processing function for ADFACE dataset
 #'
-#' @description This is used to do post processing for ADaM reactogenicity dataset, where we derived
-#' the SDTM level records, the corresponding values in FA variables will be `NA`.
+#' @description This is used to do post processing for ADaM reactogenicity dataset, for the derived
+#' SDTM level records, the corresponding values in FA variables will be `NA`.
 #'
 #' @param dataset Input dataset
 #' @param filter_dataset Filter condition

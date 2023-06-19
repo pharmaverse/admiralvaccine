@@ -29,7 +29,7 @@ and per vaccination
 \details{
 This utility flags the maximum record per subject per event
 per vaccination/Overall
-If both parameters \code{flag1} & \code{flag2} are passed as NULL then
+If both parameters \code{flag1} & \code{flag2} are passed as \code{NULL} then
 utility will throw error and flags will not be created.
 }
 \examples{

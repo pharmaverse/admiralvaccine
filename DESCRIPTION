@@ -1,11 +1,11 @@
-Package: admiralvaccine
 Type: Package
+Package: admiralvaccine
 Title: Vaccine Extension Package for ADaM in 'R' Asset Library
 Version: 0.0.1
 Authors@R: c(
-    person("Ben", "Straub", email = "ben.x.straub@gsk.com", role = "aut"),
     person("Sukalpo", "Saha", email = "sukalpo.saha@pfizer.com", role = c("aut", "cre")),
     person("Vikram", "S", email = "vikram.s@pfizer.com", role = "aut"),
+    person("Ben", "Straub", email = "ben.x.straub@gsk.com", role = "aut"),
     person("Arjun", "Rubalingam", role = "aut"),
     person("Dhivya", "Kanagaraj", role = "aut"),
     person("Federico", "Baratin", role = "aut"),
@@ -27,24 +27,23 @@ Authors@R: c(
     person("Ross", "Farrugia", role = "ctb"),
     person("Stefan", "Bundfuss", role = "ctb"),
     person("Edoardo", "Mancini", role = "ctb")
-    )
-Description: Programming vaccine specific Clinical Data Interchange Standards Consortium
-    (CDISC) compliant Analysis Data Model (ADaM) datasets in 'R'. Flat model is followed as per 
-    CBER guidelines for creating vaccine specific domains. ADaM datasets are a
-    mandatory part of any New Drug or Biologics License Application submitted to the
-    United States Food and Drug Administration (FDA). Analysis derivations are
-    implemented in accordance with the "Analysis Data Model Implementation Guide"
-    (CDISC Analysis Data Model Team (2021), <https://www.cdisc.org/standards/foundational/adam/adamig-v1-3-release-package>).
+  )
+Description: Programming vaccine specific Clinical Data Interchange
+    Standards Consortium (CDISC) compliant Analysis Data Model (ADaM)
+    datasets in 'R'. Flat model is followed as per CBER guidelines for
+    creating vaccine specific domains. ADaM datasets are a mandatory part
+    of any New Drug or Biologics License Application submitted to the
+    United States Food and Drug Administration (FDA). Analysis derivations
+    are implemented in accordance with the "Analysis Data Model
+    Implementation Guide" (CDISC Analysis Data Model Team (2021),
+    <https://www.cdisc.org/standards/foundational/adam/adamig-v1-3-release-package>).
     The package is an extension package of the 'admiral' package.
 License: Apache License (>= 2)
+URL: https://pharmaverse.github.io/admiralvaccine,
+    https://github.com/pharmaverse/admiralvaccine
 BugReports: https://github.com/pharmaverse/admiralvaccine/issues
-URL: https://pharmaverse.github.io/admiralvaccine, https://github.com/pharmaverse/admiralvaccine
-Encoding: UTF-8
-Language: en-US
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-Depends: R (>= 3.5)
+Depends: 
+    R (>= 3.5)
 Imports:
     admiral,
     admiraldev,
@@ -54,28 +53,34 @@ Imports:
     lifecycle (>= 0.1.0),
     lubridate (>= 1.7.4),
     magrittr (>= 1.5),
+    metatools,
     purrr (>= 0.3.3),
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
     tidyr (>= 1.0.2),
-    tidyselect (>= 1.0.0),
-    metatools
+    tidyselect (>= 1.0.0)
 Suggests:
     admiral.test,
+    covr,
     devtools,
     diffdf,
-    lintr,
-    pkgdown,
-    testthat,
+    DT,
     knitr,
+    lintr,
     methods,
     miniUI,
+    pkgdown,
     rmarkdown,
     roxygen2,
     spelling,
     styler,
+    testthat,
     tibble,
-    usethis,
-    covr,
-    DT
-VignetteBuilder: knitr
+    usethis
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

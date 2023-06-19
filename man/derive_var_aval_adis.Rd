@@ -15,31 +15,31 @@ derive_var_aval_adis(
 \arguments{
 \item{dataset}{Input dataset.}
 
-\item{lower_rule}{Derivation rule when "ISSTRESN" value is below "ISLLOQ."
-When ISSTRESN is missing, the inequality in "ISORRES." is checked for the derivation.}
+\item{lower_rule}{Derivation rule when \code{ISSTRESN} value is below \code{ISLLOQ}.
+When \code{ISSTRESN} is missing, the inequality in \code{ISORRES} is checked for the derivation.}
 
-\item{middle_rule}{Derivation rule when "ISSTRESN" value is greater than "ISLLOQ" and
-lower than "ISULOQ."
-If "ISULOQ" is not present, derivation rule when "ISSTRESN" is greater than "ISLLOQ".
-When "ISSTRESN" is missing, the inequality in "ISORRES." is checked for the derivation.}
+\item{middle_rule}{Derivation rule when \code{ISSTRESN} value is greater than \code{ISLLOQ} and
+lower than \code{ISULOQ}.
+If \code{ISULOQ} is not present, derivation rule when \code{ISSTRESN} is greater than \code{ISLLOQ}.
+When \code{ISSTRESN} is missing, the inequality in \code{ISORRES} is checked for the derivation.}
 
-\item{upper_rule}{Derivation rule when "ISSTRESN" value is greater than "ISULOQ."
-This is an optional argument since "ISULOQ" may not be present.
-When "ISSTRESN" is missing, the inequality in ISORRES. is checked for the derivation.
-Default value is NULL.}
+\item{upper_rule}{Derivation rule when \code{ISSTRESN} value is greater than \code{ISULOQ}.
+This is an optional argument since \code{ISULOQ} may not be present.
+When \code{ISSTRESN} is missing, the inequality in \code{ISORRES}. is checked for the derivation.
+Default value is \code{NULL}.}
 
-\item{round}{Rounding for "AVAL" variable. An integer argument which specifies
+\item{round}{Rounding for \code{AVAL} variable. An integer argument which specifies
 the number of decimals displayed.
-Default value is NULL.}
+Default value is \code{NULL}.}
 }
 \value{
-dataset with "AVAL" variable derived.
+Dataset with \code{AVAL} variable derived.
 }
 \description{
-Derive "AVAL" variable for Laboratory Immunology Data ADaM domain.
-A common rule has been decided for its derivation, based on "ISLLOQ", "ISULOQ" and "ISORRES"
-when both "ISLLOQ" and "ISULOQ" are present.
-If "ISULOQ" is not present, the variables used are "ISLLOQ" and "ISORRES."
+Derive \code{AVAL} variable for Laboratory Immunology Data ADaM domain.
+A common rule has been decided for its derivation, based on \code{ISLLOQ}, \code{ISULOQ} and \code{ISORRES}
+when both \code{ISLLOQ} and \code{ISULOQ} are present.
+If \code{ISULOQ} is not present, the variables used are \code{ISLLOQ} and \code{ISORRES}.
 Please, refers to arguments description for additional details.
 }
 \examples{
