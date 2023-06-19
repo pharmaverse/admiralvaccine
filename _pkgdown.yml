@@ -26,6 +26,16 @@ reference:
  - contents:
    - has_keyword("der_var")
 
+ - title: Helper Utilities
+ - subtitle: Utilities used within Derivation functions
+ - contents:
+   - has_keyword("utils_help")
+
+ - title: Other Advanced Functions
+ - subtitle: ADFACE-specific
+ - contents:
+   - has_keyword("other_advanced")
+
  - title: Example Datasets
    desc: You can run `admiral::use_ad_template()` to produce additional datasets
  - contents:

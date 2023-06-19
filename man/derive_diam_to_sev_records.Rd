@@ -136,5 +136,8 @@ derive_diam_to_sev_records(
 Other der_rec: 
 \code{\link{derive_fever_records}()}
 }
+\author{
+Arjun Rubalingam
+}
 \concept{der_rec}
 \keyword{der_rec}

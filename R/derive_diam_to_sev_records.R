@@ -76,6 +76,7 @@
 #' is specified in `faobj_values` and AVAL, AVALC will be derived and `FATESTCD`,
 #'  `FATEST` will be changed as per the values.
 #'
+#' @author Arjun Rubalingam
 #' @export
 #'
 #' @examples

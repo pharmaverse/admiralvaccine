@@ -12,6 +12,7 @@
 #' @return data frame with flag variable which is flagged for the maximum value records depends on
 #' the variables passed in `by_vars` by user.
 #'
+#' @author Dhivya Kanagaraj
 #' @export
 #'
 #' @examples
@@ -36,9 +37,9 @@
 #'   fl = "ANL01FL"
 #' )
 #'
-#' @family der_var
+#' @family utils_help
 #'
-#' @keywords der_var
+#' @keywords utils_help
 #'
 max_flag <- function(dataset,
                      by_vars,

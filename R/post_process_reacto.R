@@ -11,6 +11,8 @@
 #' ADaM derivation purpose.
 #' @export
 #'
+#' @author Arjun Rubalingam
+#'
 #' @examples
 #' library(dplyr)
 #' library(admiral)
@@ -31,10 +33,12 @@
 #'     (FATESTCD == "OCCUR" & FAOBJ == "FEVER")
 #' )
 #'
-post_process_reacto <- function(
-    dataset,
-    filter_dataset = FATESTCD %in% c("MAXDIAM", "MAXSEV", "MAXTEMP") |
-      (FATESTCD == "OCCUR" & FAOBJ == "FEVER")) {
+#' @keywords other_advanced
+#' @family other_advanced
+#'
+post_process_reacto <- function(dataset,
+                                filter_dataset = FATESTCD %in% c("MAXDIAM", "MAXSEV", "MAXTEMP") |
+                                  (FATESTCD == "OCCUR" & FAOBJ == "FEVER")) {
   assert_data_frame(dataset, required_vars = exprs(USUBJID, FATESTCD, FAOBJ))
   filter_dataset <- assert_filter_cond(enexpr(filter_dataset))
 

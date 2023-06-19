@@ -99,8 +99,7 @@ Other der_var:
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()},
-\code{\link{max_flag}()}
+\code{\link{derive_vars_vaxdt}()}
 }
 \author{
 Vikram S
