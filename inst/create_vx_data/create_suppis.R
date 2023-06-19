@@ -47,9 +47,3 @@ var_label(suppis$QORIG) <- "Origin"
 var_label(suppis$QEVAL) <- "Evaluator"
 
 vx_suppis <- suppis
-
-# Save RDA file
-getwd()
-setwd("C:/ADMIRALPROJECT/admiralvaccine/data")
-str(suppis)
-save("vx_suppis", file = "vx_suppis.rda")

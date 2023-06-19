@@ -1,6 +1,6 @@
-# test case 1 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
+## Test 1: Derive CRIT1 variables
+
+test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
   # input data
   input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ,
@@ -56,9 +56,9 @@ testthat::test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
 
 
 
-# test case 2 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_vars_crit Test 2: Derive CRIT1 variables
+## Test 2: Derive CRIT1 variables when AVAL is missing
+
+test_that("derive_vars_crit Test 2: Derive CRIT1 variables
                     when AVAL is missing", {
   # input data
   input <- tibble::tribble(
@@ -115,9 +115,9 @@ testthat::test_that("derive_vars_crit Test 2: Derive CRIT1 variables
 
 
 
-# test case 3 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_vars_crit Test 3: Try to apply different vars name and
+## Test 3: Try to apply different vars name and missing ISLLOQ or AVAL
+
+test_that("derive_vars_crit Test 3: Try to apply different vars name and
                     missing ISLLOQ or AVAL", {
   # input data
   input <- tibble::tribble(
@@ -166,12 +166,9 @@ testthat::test_that("derive_vars_crit Test 3: Try to apply different vars name a
   )
 })
 
+## Test 4: Complicated selections and missing values for AVAL and ISLLOQ
 
-
-
-# test case 4 -------------------------------------------------------------
-# testthat
-testthat::test_that("derive_vars_crit Test 4: Complicated selections and missing values
+test_that("derive_vars_crit Test 4: Complicated selections and missing values
                     for AVAL and ISLLOQ", {
   # input data
   input <- tibble::tribble(

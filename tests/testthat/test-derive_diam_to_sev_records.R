@@ -1,6 +1,6 @@
-## Test 1: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS`
+## Test 1: Derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS`
 
-test_that("derive_diam_to_sev_records Test 1: derive `FATEST`,`FATESTCD` indicating
+test_that("derive_diam_to_sev_records Test 1: Derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS`", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -57,9 +57,9 @@ test_that("derive_diam_to_sev_records Test 1: derive `FATEST`,`FATESTCD` indicat
   )
 })
 
-## Test 2: derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS` & `SWELLING`
+## Test 2: Derive `FATEST`,`FATESTCD` indicating severity for the event `REDNESS` & `SWELLING`
 
-test_that("derive_diam_to_sev_records Test 2: derive `FATEST`,`FATESTCD` indicating
+test_that("derive_diam_to_sev_records Test 2: Derive `FATEST`,`FATESTCD` indicating
           severity for the event `REDNESS` & `SWELLING`", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
@@ -302,7 +302,7 @@ test_that("derive_diam_to_sev_records Test 5: Check if the arguments `test_sev`,
 
 ## Test 6: error is issued if the `diam_code` to be filtered is not in the input dataset
 
-test_that("derive_diam_to_sev_records Test 6: error is issued if the `diam_code`
+test_that("derive_diam_to_sev_records Test 6: Error is issued if the `diam_code`
           to be filtered is not in the input dataset", {
   input <- tibble::tribble(
     ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,

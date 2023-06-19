@@ -57,6 +57,7 @@ face <- face %>%
   mutate(FAOBJ = str_to_upper(FAOBJ))
 
 adsl_vars <- exprs(RFSTDTC, RFENDTC)
+
 # Step 2 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
@@ -132,7 +133,7 @@ adface <- derive_vars_joined(
   ) %>%
   # Step 9 - Deriving Maximum Severity for Local and Systemic events
   derive_extreme_records(
-    filter = FATESTCD == "SEV",
+    filter_add = FATESTCD == "SEV",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(AVAL),
     mode = "last",
@@ -143,7 +144,7 @@ adface <- derive_vars_joined(
   ) %>%
   # Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
   derive_extreme_records(
-    filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+    filter_add = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
     by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
     order = exprs(AVAL),
     mode = "last",
@@ -154,7 +155,7 @@ adface <- derive_vars_joined(
   ) %>%
   # Step 11 - Deriving Maximum Temperature
   derive_extreme_records(
-    filter = FAOBJ == "FEVER",
+    filter_add = FAOBJ == "FEVER",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(VSSTRESN),
     mode = "last",
@@ -228,9 +229,15 @@ adface <- derive_vars_merged(
   dataset = adface,
   dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
   by_vars = exprs(STUDYID, USUBJID)
-)
+) %>%
+  # Step 16 post processing
+  post_process_reacto(
+    filter_dataset = FATESTCD %in% c("MAXDIAM", "MAXSEV", "MAXTEMP") |
+      (FATESTCD %in% c("OCCUR", "SEV") & FAOBJ %in% c("FEVER", "REDNESS", "SWELLING"))
+  )
 
-# Step 16 retaining the required variables.
+
+# Step 17 retaining the required variables.
 keep_vars <- c(
   "STUDYID", "USUBJID", "SUBJID", "SITEID", "AGE", "AGEU", "SEX", "SEXN", "RACE",
   "RACEN", "ARACE", "ARACEN", "SAFFL", "COMPLFL", "ARM", "ARMCD", "ACTARM", "ACTARMCD",

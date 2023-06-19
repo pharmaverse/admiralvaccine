@@ -188,13 +188,5 @@ var_label(is$LOD) <- "Limit of Detection"
 var_label(is$ISULOQ) <- "Upper Limit of Quantitation"
 
 
-
 vx_is <- is %>%
   select(-c(ISGRPID, ISREFID, ISSPID, ISLNKID, LOD))
-
-
-# Save RDA file
-getwd()
-setwd("C:/ADMIRALPROJECT/admiralvaccine/data")
-str(vx_is)
-save("vx_is", file = "vx_is.rda")
