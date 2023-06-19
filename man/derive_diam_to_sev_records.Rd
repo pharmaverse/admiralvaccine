@@ -34,10 +34,10 @@ specified events in \code{faobj_values}.}
 
 \emph{Permitted Value}: A character vector or Scalar.
 
-Helps to filter the events (Redness and swelling) which has diameter records
+Helps to filter the events (\code{Redness} and \code{Swelling}) which has diameter records
 to derive severity records by passing the events from \code{FAOBJ}.}
 
-\item{testcd_sev}{\code{FATESTCD}value for severity
+\item{testcd_sev}{\code{FATESTCD} value for severity
 
 \emph{Permitted Value}: A Character scalar
 
@@ -49,7 +49,7 @@ diameter record for the particular events specified in the \code{faobj_values} t
 If you want to derive the Severity from diameter, even though you have the severity in SDTM data.
 This function will re-derive the severity and remove the derived SDTM severity records.}
 
-\item{test_sev}{\code{FATEST} value for severity
+\item{test_sev}{\code{FATEST} Value for severity
 
 \emph{Permitted Value}: A Character scalar
 
@@ -71,8 +71,8 @@ Ignore the argument if you want to set the default value.
 
 \emph{Permitted Value:} A numeric vector
 
-The \code{none} and the following arguments(\code{mild}, \code{mode} and \code{sev} ) will be
-used for assigning the diameter limits to derive the \code{AVALC}(severity grade).}
+The \code{none} and the following arguments (\code{mild}, \code{mode} and \code{sev}) will be
+used for assigning the diameter limits to derive the \code{AVALC} (severity grade).}
 
 \item{mild}{Pass the lower limit for grade \code{"MILD"}
 
