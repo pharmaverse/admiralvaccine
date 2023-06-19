@@ -20,10 +20,10 @@
 #'
 #' *Permitted Value*: A character vector or Scalar.
 #'
-#'  Helps to filter the events (Redness and swelling) which has diameter records
+#'  Helps to filter the events (`Redness` and `Swelling`) which has diameter records
 #'  to derive severity records by passing the events from `FAOBJ`.
 #'
-#' @param testcd_sev `FATESTCD`value for severity
+#' @param testcd_sev `FATESTCD` value for severity
 #'
 #' *Permitted Value*: A Character scalar
 #'
@@ -35,7 +35,7 @@
 #' If you want to derive the Severity from diameter, even though you have the severity in SDTM data.
 #' This function will re-derive the severity and remove the derived SDTM severity records.
 #'
-#' @param test_sev `FATEST` value for severity
+#' @param test_sev `FATEST` Value for severity
 #'
 #' *Permitted Value*: A Character scalar
 #'
@@ -57,8 +57,8 @@
 #'
 #' *Permitted Value:* A numeric vector
 #'
-#' The `none` and the following arguments(`mild`, `mode` and `sev` ) will be
-#' used for assigning the diameter limits to derive the `AVALC`(severity grade).
+#' The `none` and the following arguments (`mild`, `mode` and `sev`) will be
+#' used for assigning the diameter limits to derive the `AVALC` (severity grade).
 #'
 #' @param mild Pass the lower limit for grade `"MILD"`
 #'

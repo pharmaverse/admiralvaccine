@@ -13,8 +13,8 @@ post_process_reacto(
 \arguments{
 \item{dataset}{Input dataset}
 
-\item{filter_dataset}{filter condition
-convert the FA variables records to NA depends on this condition.}
+\item{filter_dataset}{Filter condition
+Conversion of records in FA variables to NA depends on this condition.}
 }
 \value{
 The input dataframe with \code{NA} values in FA variables where the SDTM records modified for
