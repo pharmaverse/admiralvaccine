@@ -56,7 +56,7 @@ Examples are currently presented and tested using `ADSL` (ADaM) and
 **Note**: *All examples assume CDISC SDTM and/or ADaM format as input
 unless otherwise specified.*
 
-  # Programming Workflow
+# Programming Workflow
 
   - [Read in Data](#readdata)
   - [Combine IS with SUPPIS](#combine_supp)
