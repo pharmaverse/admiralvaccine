@@ -42,7 +42,7 @@ unless otherwise specified.*
 -   [Merge Required `ADSL` Variables Needed for Analysis](#adsl)
 -   [Derive Fever Records from `VS` Domain](#fever)
 -   [Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADY`, `ADTF`, `ATMF`)](#datetime)
--   [Derive Period Variables (e.g. `APxxSDT`, `APxxEDT`, ...)](#period)
+-   [Derive Period Variables (e.g. `APxxSDT`, `APxxEDT`, ...)](#periodvars)
 -   [Derive Direct Mapping Variables](#mapping)
 -   [Derive Severity Records for Administration Site Events](#sev)
 -   [Derive Maximum Records](#max)

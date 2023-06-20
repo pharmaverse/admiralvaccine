@@ -35,7 +35,6 @@ otherwise specified.*
 * [Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDT`, `TRTEDT`, `TRTDURD`)](#trtdatetime)
 * [Population Flags (e.g. `SAFFL`)](#popflag)
 * [Derive vaccination date Variables](#vax_date)
-* [Derive vaccination date Variables](#vax_date)
 * [Create period variables (Study Specific)](#period)
 * [Add Labels and Attributes](#attributes)
 

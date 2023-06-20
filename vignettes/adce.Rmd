@@ -30,7 +30,7 @@ otherwise specified.*
 * [Join with the Periods Reference dataset](#mergeperiods)
 * [Creation of analysis version for GRADING Variable](#agrade)
 * [Creation of Analysis Sequence Number](#aseq)
-* [Final Step : Get all the remaining variables from `ADSL`](#jadsl)
+* [Final Step : Get all the remaining variables from `ADSL`](#jadsl_list)
 
 ## Read in Data {#readdata}
 Assumption: The `CE` domain has already been merged with the `SUPPCE` dataset. If this is not yet the case, join `SUPPCE` onto parent `CE` domain using `metatools::combine_supp(CE, SUPPCE)`.
@@ -225,7 +225,8 @@ dataset_vignette(
 )
 ```
 ## Final Step : Get all the remaining variables from `ADSL` {#jadsl_list}
-## Get list of `ADSL` vars as per trial specific which needs to be adjusted when using the template
+
+Get list of `ADSL` vars as per trial specific which needs to be adjusted when using the template
 ```{r eval=TRUE}
 # Get list of ADSL vars, list is trial specific and needs to be adjusted when using the template
 adsl_list <- adsl %>%
