@@ -57,8 +57,8 @@ input <- tribble(
 
 adsl <- tribble(
   ~USUBJID, ~SEX, ~AGE,
-  "ABC001", "MALE", 23,
-  "ABC002", "FEMALE", 26,
+  "A001", "MALE", 23,
+  "A002", "FEMALE", 26,
 )
 
 derive_vars_vaxdt(

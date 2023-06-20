@@ -57,8 +57,8 @@
 #'
 #' adsl <- tribble(
 #'   ~USUBJID, ~SEX, ~AGE,
-#'   "ABC001", "MALE", 23,
-#'   "ABC002", "FEMALE", 26,
+#'   "A001", "MALE", 23,
+#'   "A002", "FEMALE", 26,
 #' )
 #'
 #' derive_vars_vaxdt(
@@ -86,7 +86,6 @@ derive_vars_vaxdt <- function(dataset,
   if (nrow(dataset) != nrow(ex_distinct)) {
     warning("Subjects have multiple vaccinations at same visit")
   }
-
   # Derive vaccination date variables.
   dt_var <- dataset %>%
     group_by(!!!by_vars) %>%
