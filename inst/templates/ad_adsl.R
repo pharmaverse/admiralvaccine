@@ -86,13 +86,13 @@ adsl <- dm %>%
     TRT02P = substring(ARM, 11, 100)
   ) %>%
   derive_vars_merged(
-    dataset_add = ex_ext,
+    dataset_add = ex,
     filter_add = EXLNKGRP == "VACCINATION 1",
     new_vars = exprs(TRT01A = EXTRT),
     by_vars = exprs(STUDYID, USUBJID)
   ) %>%
   derive_vars_merged(
-    dataset_add = ex_ext,
+    dataset_add = ex,
     filter_add = EXLNKGRP == "VACCINATION 2",
     new_vars = exprs(TRT02A = EXTRT),
     by_vars = exprs(STUDYID, USUBJID)
