@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralvaccine
 Title: Vaccine Extension Package for ADaM in 'R' Asset Library
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: c(
     person("Sukalpo", "Saha", email = "sukalpo.saha@pfizer.com", role = c("aut", "cre")),
     person("Vikram", "S", email = "vikram.s@pfizer.com", role = "aut"),
