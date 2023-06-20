@@ -42,7 +42,7 @@ unless otherwise specified.*
 -   [Merge Required `ADSL` Variables Needed for Analysis](#adsl)
 -   [Derive Fever Records from `VS` Domain](#fever)
 -   [Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADY`, `ADTF`, `ATMF`)](#datetime)
--   [Derive Period Variables (e.g. `APxxSDT`, `APxxEDT`, ...)](#period)
+-   [Derive Period Variables (e.g. `APxxSDT`, `APxxEDT`, ...)](#periodvars)
 -   [Derive Direct Mapping Variables](#mapping)
 -   [Derive Severity Records for Administration Site Events](#sev)
 -   [Derive Maximum Records](#max)
@@ -151,7 +151,7 @@ dataset_vignette(
 )
 ```  
 
-This call would return the input dataset with columns RFSTDTC,RFENDTC added.
+This call would return the input dataset with columns `RFSTDTC`, `RFENDTC` added.
 
 ## Derive Fever Records from `VS` Domain {#fever}
 
@@ -381,7 +381,7 @@ This call returns the input dataset with maximum records added for the severity,
 
 To assign parameter level values such as `PARAMCD`, `PARAM`, `PARAMN`,
 etc., a lookup needs to be created to join to the source data.
-PARCAT1,PARCAT2 variables are assigned from FACAT,FASCAT variables.
+`PARCAT1`, `PARCAT2` variables are assigned from `FACAT`, `FASCAT` variables.
 
 
 

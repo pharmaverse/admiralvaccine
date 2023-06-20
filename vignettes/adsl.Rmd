@@ -34,9 +34,9 @@ otherwise specified.*
 * [Derive Treatment Variables (`TRT0xP`, `TRT0xA`)](#treatmentvar)
 * [Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDT`, `TRTEDT`, `TRTDURD`)](#trtdatetime)
 * [Population Flags (e.g. `SAFFL`)](#popflag)
-* [Derive vaccination date Variables](#vax_date)
-* [Derive vaccination date Variables](#vax_date)
-* [Create period variables (Study Specific)](#period)
+* [Derive Vaccination Date Variables](#vax_date)
+* [Create Period Variables (Study Specific)](#period)
+* [Derive Other Variables)](#other)
 * [Add Labels and Attributes](#attributes)
 
 
@@ -92,9 +92,19 @@ example mapping for a study without periods may be:
 adsl <- dm %>%
   mutate(
     TRT01P = substring(ARM, 1, 9),
-    TRT02P = substring(ARM, 11, 100),
-    TRT01A = substring(ACTARM, 1, 9),
-    TRT02A = substring(ACTARM, 11, 100)
+    TRT02P = substring(ARM, 11, 100)
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex,
+    filter_add = EXLNKGRP == "VACCINATION 1",
+    new_vars = exprs(TRT01A = EXTRT),
+    by_vars = exprs(STUDYID, USUBJID)
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex,
+    filter_add = EXLNKGRP == "VACCINATION 2",
+    new_vars = exprs(TRT02A = EXTRT),
+    by_vars = exprs(STUDYID, USUBJID)
   )
 ```
 
@@ -202,7 +212,7 @@ dataset_vignette(
 )
 ```
 
-## Derive vaccination date Variables  {#vax_date}
+## Derive Vaccination Date Variables  {#vax_date}
 
 In this step, we will create a vaccination date variables from `EX` domain. The function `derive_vars_vaxdt` returns the variables `VAX01DT`,`VAX02DT`... added to the `adsl` dataset based on number of vaccinations.
 
@@ -229,7 +239,7 @@ dataset_vignette(
 
 This call would return the input dataset with columns VAX01DT, VAX02DT added.
 
-## Create period variables (Study Specific)  {#period}
+## Create Period Variables (Study Specific)  {#period}
 
 In this step this we will create period variables which will be study specific, User can change the logic as per their study requirement.
 

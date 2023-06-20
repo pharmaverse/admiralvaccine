@@ -4,8 +4,8 @@
 #'
 #' @param dataset Input dataset
 #'
-#' @param by_vars By variables which goes to group by, to create the flag. Pass the variables it
-#'  inside the exprs().
+#' @param by_vars By variables which goes to group by, to create the flag. Pass the variables
+#' inside the exprs().
 #'
 #' @param fl Flag variable name, Pass it as string.
 #'
