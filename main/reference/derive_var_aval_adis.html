@@ -44,14 +44,6 @@ Please, refers to arguments description for additional details."><meta property=
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -185,13 +177,27 @@ Default value is <code>NULL</code>.</p></dd>
 <span class="r-in">  <span class="st">"ABC-1002"</span>, <span class="fl">30</span>, <span class="st">"R0003MA"</span>, <span class="st">"R0003MA Antibody"</span>, <span class="st">"228.1"</span>, <span class="fl">228.1</span>, <span class="fl">4</span>, <span class="fl">120</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">derive_var_aval_adis</span><span class="op">(</span></span>
+<span class="r-in"><span class="fu">derive_var_aval_adis</span><span class="op">(</span></span>
 <span class="r-in">  dataset <span class="op">=</span> <span class="va">input</span>,</span>
 <span class="r-in">  lower_rule <span class="op">=</span> <span class="va">ISLLOQ</span> <span class="op">/</span> <span class="fl">2</span>,</span>
 <span class="r-in">  middle_rule <span class="op">=</span> <span class="va">ISSTRESN</span>,</span>
 <span class="r-in">  upper_rule <span class="op">=</span> <span class="va">ISULOQ</span>,</span>
 <span class="r-in">  round <span class="op">=</span> <span class="fl">2</span></span>
 <span class="r-in"><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    USUBJID  AVISITN PARAMCD  PARAM          ISORRES ISSTRESN ISLLOQ ISULOQ  AVAL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ABC-1001      10 J0033VN  J0033VN Antib… <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>        2    100  <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ABC-1001      10 I0019NT  I0019NT Antib… 3            3        4    200   2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ABC-1001      10 M0019LN  M0019LN Antib… &gt;150        <span style="color: #BB0000;">NA</span>        8    150 150  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ABC-1001      10 R0003MA  R0003MA Antib… 140.5      140.       4    120 120  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ABC-1001      30 J0033VN  J0033VN Antib… 2            2        2    100   2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ABC-1001      30 I0019NT  I0019NT Antib… <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>        4    200  <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ABC-1001      30 M0019LN  M0019LN Antib… <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>        8    150  <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ABC-1001      30 R0003MA  R0003MA Antib… 98.2        98.2      4    120  98.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ABC-1001      10 J0033VNL LOG10 (J0033V… <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>        2    100  <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ABC-1001      10 I0019NTL LOG10 (I0019N… 3            3        4    200   2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
