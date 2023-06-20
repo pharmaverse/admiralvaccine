@@ -26,7 +26,10 @@ Authors@R: c(
     person("Tina", "Zhai", role = "ctb"),
     person("Ross", "Farrugia", role = "ctb"),
     person("Stefan", "Bundfuss", role = "ctb"),
-    person("Edoardo", "Mancini", role = "ctb")
+    person("Edoardo", "Mancini", role = "ctb"),
+    person("Pfizer Inc.", role = c("cph", "fnd")),
+    person("GlaxoSmithKline LLC", role = c("cph", "fnd")),
+    person("Johnson & Johnson", role = c("cph", "fnd"))
   )
 Description: Programming vaccine specific Clinical Data Interchange
     Standards Consortium (CDISC) compliant Analysis Data Model (ADaM)
