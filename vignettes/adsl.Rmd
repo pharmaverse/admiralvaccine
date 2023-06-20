@@ -36,6 +36,7 @@ otherwise specified.*
 * [Population Flags (e.g. `SAFFL`)](#popflag)
 * [Derive Vaccination Date Variables](#vax_date)
 * [Create Period Variables (Study Specific)](#period)
+* [Derive Other Variables)](#other)
 * [Add Labels and Attributes](#attributes)
 
 
