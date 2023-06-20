@@ -157,7 +157,7 @@ In the example below:
 
 - If input date is missing then no imputation is done;
 
-For `ADY` derivation RFSTDTC has been used in this template.
+For `ADY` derivation `RFSTDTC` has been used in this template.
 
 If your derivation is different, please adapt.
 ```{r eval=TRUE}
@@ -279,7 +279,7 @@ dataset_vignette(
 ## Derive PARCAT1 and CUTOFFx variables {#parcat}
 Derive `PARCAT1` and `CUTOFF`x variables.
 
-Fake values has been put for CUTOFF values. Please, adapt base on your objectives.
+Fake values has been put for `CUTOFF` values. Please, adapt base on your objectives.
 ```{r eval=TRUE}
 adis_parcat1_cutoff <- adis_param_paramn %>%
   mutate(
@@ -303,16 +303,20 @@ This is the core of ADIS template.
 
 For ORIGINAL (and relative log10 values) the following rule has been followed for `AVAL` derivation:
 
-- when the lab result (ISSTRESN) is below the Lower Limit Of Quantitation, then set ISSTRESN/2;
+- When the lab result (`ISSTRESN`) is below the Lower Limit Of Quantitation, then set `ISSTRESN/2`;
 
-- when the lab result (ISSTRESN) falls in the Lower Limit Of Quantitation and Upper Limit Of Quantitation range, then set ISSTRESN. If Upper Limit Of Quantitation is not
-present (not mapped into SDTM), then AVAL is equals to ISSTRESN when it is greater
+- When the lab result (`ISSTRESN`) falls in the Lower Limit Of Quantitation and Upper 
+Limit Of Quantitation range, then set `ISSTRESN`. If Upper Limit Of Quantitation is not
+present (not mapped into SDTM), then AVAL is equals to `ISSTRESN` when it is greater
 than Lower Limit Of Quantitation;
 
-- when the lab result (ISSTRESN) is greater then the Upper Limit Of Quantitation, then set ISSTRESN. upper_rule is an optinal argument. If Upper Limit Of Quantitation is
+- When the lab result (`ISSTRESN`) is greater then the Upper Limit Of Quantitation, 
+then set to `ISSTRESN`. Upper_rule is an optional argument. If Upper Limit Of Quantitation is
 not present, you can remove it;
 
-For 4fold (and relative log10 values) the rule is pretty the same, except when the LAB result (ISSTRESN) is lower than the Lower Limit Of Quantitation. In that case put ISSTRESN instead of ISSTRESN/2.
+For 4fold (and relative log10 values) the rule is pretty the same, except when the 
+LAB result (`ISSTRESN`) is lower than the Lower Limit Of Quantitation. 
+In that case put `ISSTRESN` instead of `ISSTRESN/2`.
 
 With log10 transformations, simply follow the before rules and apply log10 function.
 
@@ -322,8 +326,8 @@ Please, update this algorithm according to your Protocol/SAP.
 
 Later you can find `SERCAT1/N` and `DTYPE` derivations.
 
-DTYPE is filled only for those records who exceed or are below the ISULOQ and
-ISSLOQ, respectively. If ISULOQ is not present, DTYPE is filled only when lab
+`DTYPE` is filled only for those records who exceed or are below the `ISULOQ` and
+`ISSLOQ`, respectively. If `ISULOQ` is not present, `DTYPE` is filled only when lab
 result is below Lower Limit of Quantitation.
 
 ```{r eval=TRUE}
@@ -426,7 +430,7 @@ dataset_vignette(
 
 
 ## Derive BASE variables {#base}
-Derive Baseline values for each Subject/Visit and relative flag, `ABLFL.
+Derive Baseline values for each Subject/Visit and relative flag, `ABLFL`.
 
 In a later stage, derive `BASECAT` variable, which represents the base category.
 Update accordingly.
@@ -517,10 +521,13 @@ dataset_vignette(
 ## Derive CRITx variables {#crit}
 Derive Criteria Evaluation Analysis Flags.
 
-The function selects a subset of rows from the input dataset and apply to them a
-criterion. If this criterion is met then `CRIT1FL` (or the name you specified in the first argument) is equal to "Y". "N" otherwise.
+The function selects a subset of rows from the input dataset and apply a criterion to them. 
+If this criterion is met then `CRIT1FL` (or the name you specified in the first argument) 
+is equal to `Y`; `N` otherwise.
 
-The function returns a relative numeric `CRIT1FN` variable (1 or 0 if the criterion is met, respectively) and a label `CRIT1` variable (with the text specified in label_var argument).
+The function returns a relative numeric `CRIT1FN` variable (`1` or `0` if the 
+criterion is met, respectively) and a label `CRIT1` variable
+(with the text specified in label_var argument).
 ```{r eval=TRUE}
 adis_crit <- derive_vars_crit(
   dataset = adis_r2b,
@@ -563,7 +570,8 @@ dataset_vignette(
 
 
 ## Derive PPS record level flag variable {#pps}
-This is a record level flag which identifies which rows are included/excluded for the PPS related objectives.
+This is a record level flag which identifies which rows are included/excluded for the 
+PPS related objectives.
 
 This step could change according to your study needs.
 ```{r eval=TRUE}

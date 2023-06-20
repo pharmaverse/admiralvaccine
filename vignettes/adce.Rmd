@@ -33,7 +33,7 @@ otherwise specified.*
 * [Final Step : Get all the remaining variables from `ADSL`](#jadsl)
 
 ## Read in Data {#readdata}
-Assumption: The `CE` domain has already been merged with the `SUPPCE` dataset. If this is not yet the case, join `SUPPCE` onto parent `CE` domain using metatools::combine_supp(`CE`, `SUPPCE`).
+Assumption: The `CE` domain has already been merged with the `SUPPCE` dataset. If this is not yet the case, join `SUPPCE` onto parent `CE` domain using `metatools::combine_supp(CE, SUPPCE)`.
 
 ```{r, eval=TRUE, message=FALSE, warning=FALSE}
 library(admiraldev)

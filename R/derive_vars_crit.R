@@ -41,7 +41,7 @@
 #'   Returns NA for not selected rows (not taken into account from condition)
 #'
 #'
-#' @return dataset with criterion variables
+#' @return Dataset with criterion variables
 #'
 #' @export
 #'
