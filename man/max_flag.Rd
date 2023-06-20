@@ -9,7 +9,7 @@ max_flag(dataset, by_vars, fl)
 \arguments{
 \item{dataset}{Input dataset}
 
-\item{by_vars}{By variables which goes to group by, to create the flag. Pass the variables it
+\item{by_vars}{By variables which goes to group by, to create the flag. Pass the variables
 inside the exprs().}
 
 \item{fl}{Flag variable name, Pass it as string.}

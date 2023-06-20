@@ -83,9 +83,19 @@ adsl <- dm %>%
   # (https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html#treatment_adsl)
   mutate(
     TRT01P = substring(ARM, 1, 9),
-    TRT02P = substring(ARM, 11, 100),
-    TRT01A = substring(ACTARM, 1, 9),
-    TRT02A = substring(ACTARM, 11, 100)
+    TRT02P = substring(ARM, 11, 100)
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex,
+    filter_add = EXLNKGRP == "VACCINATION 1",
+    new_vars = exprs(TRT01A = EXTRT),
+    by_vars = exprs(STUDYID, USUBJID)
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex,
+    filter_add = EXLNKGRP == "VACCINATION 2",
+    new_vars = exprs(TRT02A = EXTRT),
+    by_vars = exprs(STUDYID, USUBJID)
   ) %>%
   ## derive treatment start date (TRTSDTM) ----
   derive_vars_merged(
@@ -111,10 +121,7 @@ adsl <- dm %>%
     by_vars = exprs(STUDYID, USUBJID)
   ) %>%
   ## Derive treatment end/start date TRTSDT/TRTEDT ----
-  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
-  ## derive treatment duration (TRTDURD) ----
-  derive_var_trtdurd()
-
+  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM))
 
 adsl <- derive_var_merged_exist_flag(
   dataset = adsl,

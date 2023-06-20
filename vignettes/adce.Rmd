@@ -24,16 +24,16 @@ otherwise specified.*
 
 # Programming Flow
 * [Read in Data](#readdata)
-* [Restrict `CE` to Reactogenicity records](#cefilter)
-* [Creation of Periods Reference dataset](#adperiods)
+* [Pre-processing of Input Dataset](#cefilter)
+* [Create Reference Dataset for Periods](#adperiods)
 * [Derivation of Analysis Dates](#adates)
-* [Join with the Periods Reference dataset](#mergeperiods)
-* [Creation of analysis version for GRADING Variable](#agrade)
+* [Join with the Periods Reference Dataset and Derive Relative Day in Period](#mergeperiods)
+* [Creation of Analysis Version for GRADING Variable (Either `TOXGR` or `SEV`)](#agrade)
 * [Creation of Analysis Sequence Number](#aseq)
-* [Final Step : Get all the remaining variables from `ADSL`](#jadsl)
+* [Final Step : Get All the Remaining Variables from `ADSL`](#jadsl_list)
 
 ## Read in Data {#readdata}
-Assumption: The `CE` domain has already been merged with the `SUPPCE` dataset. If this is not yet the case, join `SUPPCE` onto parent `CE` domain using metatools::combine_supp(`CE`, `SUPPCE`).
+Assumption: The `CE` domain has already been merged with the `SUPPCE` dataset. If this is not yet the case, join `SUPPCE` onto parent `CE` domain using `metatools::combine_supp(CE, SUPPCE)`.
 
 ```{r, eval=TRUE, message=FALSE, warning=FALSE}
 library(admiraldev)
@@ -60,17 +60,22 @@ dataset_vignette(
 )
 ```
 
-## Restrict `CE` domain to the relevant records for Reactogenicity Analysis {#cefilter}
+## Pre-processing of Input Dataset {#cefilter}
+
+This step involves company-specific pre-processing of required input dataset for
+further analysis. In this step, we will filter records that has only reactogenicity events.
+
 ```{r eval=TRUE}
-# Get CE records
 adce <- ce %>%
   filter(CECAT == "REACTOGENICITY")
 ```
 
 ## Create Reference Dataset for Periods {#adperiods}
+
+Create period dataset - for joining period information onto `CE` records.
+Need to remove datetime variables as otherwise causes duplicate issues.
+
 ```{r eval=TRUE}
-# Create period dataset - for joining period information onto `CE` records
-# Need to remove datetime variables as otherwise causes duplicate issues
 adsl2 <- adsl %>%
   select(-c(starts_with("AP") & ends_with("DTM")))
 
@@ -87,14 +92,13 @@ dataset_vignette(
 )
 ```
 
-## Select predecessor variables from `ADSL`, and derive analysis dates (`ASTDT`, `ASTDY`, `AENDT`, `AENDY`) {#adates}
+## Derivation of Analysis Dates {#adates}
 
 At this step, it may be useful to join `ADSL` to your `CE` domain. Only the `ADSL` variables used for derivations are selected at this step. The rest of the relevant `ADSL` variables would be added later.
 
 ```{r eval=TRUE}
-# Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT)
-# Derive analysis dates/days
+
 adce <- adce %>%
   # join ADSL to CE
   derive_vars_merged(
@@ -102,21 +106,16 @@ adce <- adce %>%
     new_vars = adsl_vars,
     by = exprs(STUDYID, USUBJID)
   ) %>%
-  ## Derive analysis start time
-  ## Proposed imputations depending on situation: no needed -> highest imputation = “n”,
-  ## some missing dates -> highest imputation = “D”
   derive_vars_dt(
     dtc = CESTDTC,
     new_vars_prefix = "AST",
     highest_imputation = "n"
   ) %>%
-  ## Derive analysis end time
   derive_vars_dt(
     dtc = CEENDTC,
     new_vars_prefix = "AEN",
     highest_imputation = "n"
   ) %>%
-  ## Derive analysis start relative day and  analysis end relative day
   derive_vars_dy(
     reference_date = TRTSDT,
     source_vars = exprs(ASTDT, AENDT)
@@ -130,7 +129,7 @@ dataset_vignette(
 )
 ```
 
-## Join with the periods reference dataset and derive Relative Day in Period {#mergeperiods}
+## Join with the Periods Reference Dataset and Derive Relative Day in Period {#mergeperiods}
 Also add analysis version of `CEREL`(`AREL`).
 ```{r eval=TRUE}
 adce <-
@@ -153,23 +152,19 @@ dataset_vignette(
 )
 ```
 
-##  Creation of analysis version for GRADING Variable (either `TOXGR` or `SEV`) {#agrade}
+##  Creation of Analysis Version for GRADING Variable (Either `TOXGR` or `SEV`) {#agrade}
 Depending on which variable is collected for the Grading (`TOXGR` or `SEV`) in `CE` domain, derive the associated analysis version.
 In current example, `SEV` is collected, so the code is using this as an example.
 In addition, derivation of Extreme Flags: in current example: flag the first occurrence of the most severe grade within a Period (`AOCC01FL`).
 
 ```{r eval=TRUE}
 adce <- adce %>%
-  ## depending on collection of TOXGR or SEV in CE domain
-  ## Analysis variant of ASEV and ASEVN
   mutate(
     ASEV = CESEV,
     ASEVN = as.integer(factor(ASEV,
       levels = c("MILD", "MODERATE", "SEVERE", "DEATH THREATENING")
     ))
   ) %>%
-  ## Derive occurrence flags: first occurrence of most severe solicited AE
-  ## - Company specific
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -195,14 +190,12 @@ dataset_vignette(
 ## Creation of Analysis Sequence Number {#aseq}
 ```{r eval=TRUE}
 adce <- adce %>%
-  ## Derive ASEQ
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = exprs(STUDYID, USUBJID),
     order = exprs(CEDECOD, CELAT, CETPTREF, APERIOD),
     check_type = "error"
   ) %>%
-  ## Derive analysis duration (value and unit)
   derive_vars_duration(
     new_var = ADURN,
     new_var_unit = ADURU,
@@ -224,15 +217,13 @@ dataset_vignette(
   )
 )
 ```
-## Final Step : Get all the remaining variables from `ADSL` {#jadsl_list}
-## Get list of `ADSL` vars as per trial specific which needs to be adjusted when using the template
+## Final Step : Get All the Remaining Variables from `ADSL` {#jadsl_list}
+
+Get list of `ADSL` vars as per trial specific which needs to be adjusted when using the template
 ```{r eval=TRUE}
-# Get list of ADSL vars, list is trial specific and needs to be adjusted when using the template
 adsl_list <- adsl %>%
   select(STUDYID, USUBJID, TRT01A, TRT01P, AGE, AGEU, SEX, RACE, COUNTRY, ETHNIC, SITEID, SUBJID)
 
-
-# Join ADSL_list with CE
 adce <- adce %>%
   derive_vars_merged(
     dataset_add = adsl_list,

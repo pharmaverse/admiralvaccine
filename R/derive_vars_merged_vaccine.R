@@ -29,7 +29,7 @@
 #'
 #' @param ex_vars Variables to be added to the output dataset from EX dataset
 #'
-#' @return the dataset with variables added from the EX dataset.
+#' @return The dataset with variables added from the EX dataset.
 #'
 #' @details
 #'

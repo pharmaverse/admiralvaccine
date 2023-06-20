@@ -51,6 +51,9 @@ Other contributors:
   \item Ross Farrugia [contributor]
   \item Stefan Bundfuss [contributor]
   \item Edoardo Mancini [contributor]
+  \item Pfizer Inc. [copyright holder, funder]
+  \item GlaxoSmithKline LLC [copyright holder, funder]
+  \item Johnson & Johnson [copyright holder, funder]
 }
 
 }

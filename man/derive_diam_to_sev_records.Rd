@@ -20,7 +20,7 @@ derive_diam_to_sev_records(
 \item{dataset}{Input data set
 
 The variables \code{USUBJID},\code{FAOBJ},\code{AVAL}, \code{AVALC}, \code{FATESTCD} and \code{FATEST} are expected
-for Input data set.(\code{dataset})}
+for Input data set.}
 
 \item{diam_code}{Diameter record filter
 
@@ -37,42 +37,38 @@ specified events in \code{faobj_values}.}
 Helps to filter the events (\code{Redness} and \code{Swelling}) which has diameter records
 to derive severity records by passing the events from \code{FAOBJ}.}
 
-\item{testcd_sev}{\code{FATESTCD} value for severity
+\item{testcd_sev}{To assign \code{FATESTCD} value for severity
 
-\emph{Permitted Value}: A Character scalar
+\emph{Permitted Value}: A character scalar
 
 Assign the value for \code{FATESTCD} variable to indicate the severity records.
-Ignore the argument if you want to set the default value (\code{SEV}).
-
-\emph{Note}: Basically, This function will derive and create the severity records from the
-diameter record for the particular events specified in the \code{faobj_values} that user wants.
-If you want to derive the Severity from diameter, even though you have the severity in SDTM data.
-This function will re-derive the severity and remove the derived SDTM severity records.}
+Ignore the argument if you want to set the default value (\code{SEV}).}
 
 \item{test_sev}{\code{FATEST} Value for severity
 
 \emph{Permitted Value}: A Character scalar
 
 Assign the value for \code{FATEST} variable to indicate the severity records.
-Ignore the argument if you want to set the default value.
-
-\emph{Assign the lower limit to derive the Severity Grade (AVALC)}
-\emph{For Example: User passing 0 to \code{none} and 2 to \code{mild}, 0 will act as lower limit and 2 will act}
-\emph{as upper limit}
-\emph{Note: Use the limit reference to pass the values in argument}
-\emph{Since the condition was coded like this,}
-\emph{NONE : none < AVAL <= mild}
-\emph{MILD : mild < AVAL <= mod}
-\emph{MODERATE: mod < AVAL <= sev}
-\emph{SEVERE: sev < AVAL}
-\emph{User should pass the values as numeric vectors. Refer the default values.}}
+Ignore the argument if you want to set the default value.}
 
 \item{none}{Pass the lower limit for grade \code{"NONE"}
 
 \emph{Permitted Value:} A numeric vector
 
 The \code{none} and the following arguments (\code{mild}, \code{mode} and \code{sev}) will be
-used for assigning the diameter limits to derive the \code{AVALC} (severity grade).}
+used for assigning the diameter limit to derive the \code{AVALC} (severity grade).
+
+\emph{Assign the lower limit to derive the Severity Grade (\code{AVALC}).}\cr
+\emph{For Example: User passing 0 to \code{none} and 2 to \code{mild}, 0 will act as lower limit and 2 will act}
+\emph{as upper limit.}\cr
+
+\emph{Note: Use the limit reference to pass the values to these arguments}\cr
+\emph{Since the condition was coded like this,}\cr
+\emph{NONE : \code{none} < AVAL <= \code{mild}}\cr
+\emph{MILD : \code{mild} < AVAL <= \code{mod}}\cr
+\emph{MODERATE : \code{mod} < AVAL <= \code{sev}}\cr
+\emph{SEVERE : \code{sev} < AVAL}\cr
+\emph{User should pass the values as numeric scalar. Refer the default values.}}
 
 \item{mild}{Pass the lower limit for grade \code{"MILD"}
 
@@ -93,6 +89,12 @@ is specified in \code{faobj_values} and AVAL, AVALC will be derived and \code{FA
 }
 \description{
 To derive the severity records from the diameter records.
+}
+\note{
+Basically, This function will derive and create the severity records from the
+diameter record for the particular events specified in the \code{faobj_values} that user wants.
+If you want to derive the Severity from diameter, even though you have the severity in SDTM data.
+This function will re-derive the severity and remove the derived SDTM severity records.
 }
 \examples{
 library(dplyr)
