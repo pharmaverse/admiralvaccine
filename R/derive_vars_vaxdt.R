@@ -85,38 +85,37 @@ derive_vars_vaxdt <- function(dataset,
 
   if (nrow(dataset) != nrow(ex_distinct)) {
     warning("Subjects have multiple vaccinations at same visit")
-  } else {
-    # Derive vaccination date variables.
-    dt_var <- dataset %>%
-      group_by(!!!by_vars) %>%
-      arrange(!!!order) %>%
-      filter(row_number() == 1) %>%
-      pivot_wider(
-        names_from = VISITNUM, values_from = EXSTDTC, names_prefix = "vaxdt",
-        id_cols = USUBJID
-      ) %>%
-      ungroup()
-
-    # Select only vaccination date variables.
-    s_name <- dt_var %>% select(starts_with("vaxdt"))
-
-    # Rename the derived vaccination date variables.
-    for (i in seq_along(s_name)) {
-      names(s_name)[i] <- paste0("VAX0", i, "DT")
-      s_name[[i]] <- as.Date(s_name[[i]])
-    }
-
-    # Keep only `USUBJID` and vaccination date variables.
-    vaxdt_vars <- dt_var %>%
-      select(USUBJID) %>%
-      bind_cols(s_name)
-
-    # Add vaccination date variables to the `ADSL` dataset.
-    adsl <- derive_vars_merged(
-      dataset = dataset_adsl,
-      dataset_add = vaxdt_vars,
-      by_vars = exprs(USUBJID)
-    )
   }
+  # Derive vaccination date variables.
+  dt_var <- dataset %>%
+    group_by(!!!by_vars) %>%
+    arrange(!!!order) %>%
+    filter(row_number() == 1) %>%
+    pivot_wider(
+      names_from = VISITNUM, values_from = EXSTDTC, names_prefix = "vaxdt",
+      id_cols = USUBJID
+    ) %>%
+    ungroup()
+
+  # Select only vaccination date variables.
+  s_name <- dt_var %>% select(starts_with("vaxdt"))
+
+  # Rename the derived vaccination date variables.
+  for (i in seq_along(s_name)) {
+    names(s_name)[i] <- paste0("VAX0", i, "DT")
+    s_name[[i]] <- as.Date(s_name[[i]])
+  }
+
+  # Keep only `USUBJID` and vaccination date variables.
+  vaxdt_vars <- dt_var %>%
+    select(USUBJID) %>%
+    bind_cols(s_name)
+
+  # Add vaccination date variables to the `ADSL` dataset.
+  adsl <- derive_vars_merged(
+    dataset_adsl,
+    dataset_add = vaxdt_vars,
+    by_vars = exprs(USUBJID)
+  )
   return(adsl)
 }
