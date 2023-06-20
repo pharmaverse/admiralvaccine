@@ -40,19 +40,13 @@
     <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/admiralvaccine-package.html</loc>
   </url>
   <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_param_diam_to_sev.html</loc>
+    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_diam_to_sev_records.html</loc>
   </url>
   <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_param_fever_occur.html</loc>
+    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_fever_records.html</loc>
   </url>
   <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_param_maxdiam.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_param_maxsev.html</loc>
-  </url>
-  <url>
-    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_param_maxtemp.html</loc>
+    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_var_aval_adis.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/derive_vars_crit.html</loc>
@@ -74,6 +68,12 @@
   </url>
   <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/max_flag.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/post_process_reacto.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/admiralvaccine/main/reference/vx_adsl.html</loc>
