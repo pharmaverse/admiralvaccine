@@ -2,7 +2,7 @@
 % Please edit documentation in R/derive_vars_vaxdt.R
 \name{derive_vars_vaxdt}
 \alias{derive_vars_vaxdt}
-\title{Adds vaccination date variables to the output dataset.}
+\title{Add Vaccination Date Variables to the Output Dataset}
 \usage{
 derive_vars_vaxdt(dataset, dataset_adsl, by_vars, order)
 }
@@ -17,23 +17,19 @@ The vaccination date variables created will be merged with this adsl dataset.}
 
 \item{by_vars}{Grouping variables.
 
-\emph{Default: exprs(USUBJID, VISITNUM)}
-
 The variables to be grouped to filter the first observation within each
 by group.}
 
 \item{order}{Sorting variables.
 
-\emph{Default: exprs(USUBJID,VISITNUM,VISIT,EXSTDTC)}
-
 The variables order to be specified either in ascending or descending order.
 By default ascending order will be applicable.}
 }
 \value{
-the adsl dataset with vaccination date variables added to it.
+The adsl dataset with vaccination date variables added to it.
 }
 \description{
-Creates vaccination date variables from ex domain.A date variable will be
+Creates vaccination date variables from \code{EX} domain. A date variable will be
 created for each vaccination taking values from the variable \code{EXSTDTC}.
 }
 \details{
@@ -49,7 +45,6 @@ per subject per visit.
 library(tibble)
 library(admiral)
 library(dplyr)
-library(rlang)
 
 input <- tribble(
   ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXLNKGRP, ~VISIT,
@@ -75,6 +70,7 @@ derive_vars_vaxdt(
 }
 \seealso{
 Other der_var: 
+\code{\link{derive_var_aval_adis}()},
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_max_flag}()},

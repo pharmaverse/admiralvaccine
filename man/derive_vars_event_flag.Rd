@@ -20,43 +20,43 @@ expected.}
 
 \item{by_vars}{Grouping variables
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{  *Permitted values:* list of variables created by `exprs()`
-}\if{html}{\out{</div>}}
-
 The variables to be considered for grouping for creating a new
 variable \code{new_var1}}
 
 \item{aval_cutoff}{Cutoff value
 
-The cutoff value to decide on whether to consider the event has occurred
-or not for the \code{TESTCD} based on diameter. For example, if the diameter
-value is greater than x only we will consider the event occurred for
-that record otherwise it will be considered has no event happened for
-that record.}
+For \code{TESTCD} code list values based on diameter, if \code{AVAL} is greater than
+\code{aval_cutoff} then the event is considered to have occurred. For example,
+if \code{aval_cutoff} = 2.5 then the subjects with \code{AVAL} value greater than
+2.5 are considered.}
 
 \item{new_var1}{Name of the new flag variable 1
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{A new flag variable will be created with values "Y" or "N".
+\if{html}{\out{<div class="sourceCode">}}\preformatted{A new flag variable will be created with values `Y` or `N`.
 If the event is occurred at least once during a observation period for
-a subject then the new variable will be flagged as Y otherwise N.
+a subject then the new variable will be flagged as `Y` otherwise `N`.
 }\if{html}{\out{</div>}}}
 
 \item{new_var2}{Name of the new flag variable 2.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{A new flag variable will be created with values "Y" or "N".
+\if{html}{\out{<div class="sourceCode">}}\preformatted{A new flag variable will be created with values `Y` or `N`.
 If the event is occurred on the particular day then the new variable will
-be flagged as Y otherwise N.
+be flagged as `Y` otherwise `N`.
 }\if{html}{\out{</div>}}}
 }
 \value{
-the dataset with the flag variables added to it.
+The dataset with the flag variables added to it.
 }
 \description{
-Creates two flag variables for the event occurred,one for the event occurred
+Creates two flag variables for the event occurred, one for the event occurred
 within each by group and one to flag if the event occurred or not
 for each day.
 }
 \details{
+The event is considered to have occurred if \code{AVAL} is greater than the \code{aval_cutoff}
+or \code{AVALC} has values \code{Y}, \code{MILD}, \code{MODERATE}, \code{SEVERE}. In all other cases, the
+event is not considered to have occurred.
+
 The names for the new flag variables created will be sponsor specific.
 
 For the \code{new_var1} it will flag all observations as "Y" within the by group
@@ -64,33 +64,32 @@ if the event occurred at least once during observation period. If the event
 is not at all occurred during the observation period then all the
 observations within by group will be flagged as "N".
 
-For derived records with \code{DTYPE} equals "MAXIMUM" , the \code{new_var2} will be
-set to NA.
+For derived maximum records in \code{FATESTCD} , the \code{new_var2} will be
+set to \code{NA}.
 }
 \examples{
 library(tibble)
 library(admiral)
 library(dplyr)
-library(rlang)
 
 input <- tribble(
-  ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT, ~DTYPE,
-  "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-  "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-  "1", "REDNESS", "VAC1", 1.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-  "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE", "MAXIMUM",
-  "1", "FATIGUE", "VAC1", 1, "MILD", "Severity", "SEV", "SYSTEMIC", "",
-  "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "",
-  "1", "FATIGUE", "VAC1", 0, "NONE", "Severity", "SEV", "SYSTEMIC", "",
-  "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "MAXIMUM",
-  "1", "REDNESS", "VAC2", 6.5, "6.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-  "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-  "1", "REDNESS", "VAC2", 2.5, "2.5", "Diameter", "DIAMETER", "ADMIN-SITE", "",
-  "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE", "MAXIMUM",
-  "1", "FATIGUE", "VAC2", 1, "MILD", "Severity", "SEV", "SYSTEMIC", "",
-  "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "",
-  "1", "FATIGUE", "VAC2", 0, "NONE", "Severity", "SEV", "SYSTEMIC", "",
-  "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC", "MAXIMUM",
+  ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT,
+  "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC1", 1.5, "1.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "FATIGUE", "VAC1", 1, "MILD", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC1", 0, "NONE", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+  "1", "REDNESS", "VAC2", 6.5, "6.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC2", 2.5, "2.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "FATIGUE", "VAC2", 1, "MILD", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC2", 0, "NONE", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
 )
 
 derive_vars_event_flag(
@@ -104,6 +103,7 @@ derive_vars_event_flag(
 }
 \seealso{
 Other der_var: 
+\code{\link{derive_var_aval_adis}()},
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_max_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},

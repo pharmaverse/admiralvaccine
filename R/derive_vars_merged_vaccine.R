@@ -1,8 +1,8 @@
 #' Add New Variable(s) to the Input dataset Based on Variables from Another dataset
 #'
-#' Add New Variable(s) to the Input dataset Based on Variables from Another dataset.
+#' Add new variables to the input dataset based on variables from another dataset.
 #' The variables to be added to the output dataset will be based on input variables
-#' passed on `ex_vars` argument
+#' passed on `ex_vars` argument.
 #'
 #' @param dataset Input dataset
 #'
@@ -14,22 +14,18 @@
 #'   The variables specified by the `ex_vars` argument are expected.
 #'
 #' @param dataset_supp Supplementary input dataset
-#'               By default `dataset_supp` will be NULL,user has to provide
+#'               By default `dataset_supp` will be `NULL`, user has to provide
 #'               supplementary dataset to merge it back with original input dataset
 #'               if they have supplementary dataset in their case.
 #'
 #' @param dataset_suppex Supplementary EX dataset
-#'               By default `dataset_suppex` will be NULL,user has to provide
-#'               supplementary dataset to merge it back with original EX dataset
+#'               By default `dataset_suppex` will be `NULL`, user has to provide
+#'               supplementary dataset to merge it back with original `EX` dataset
 #'               if they have supplementary dataset in their case.
 #'
 #' @param by_vars_sys Grouping variables for systemic events.
 #'
-#' *Default: exprs(USUBJID, FATPTREF)*
-#'
 #' @param by_vars_adms Grouping variables for administration site events.
-#'
-#' *Default: exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR)*
 #'
 #' @param ex_vars Variables to be added to the output dataset from EX dataset
 #'
@@ -37,14 +33,14 @@
 #'
 #' @details
 #'
-#' The input dataset will be merged with Ex dataset for "ADMINISTRATION SITE" and
-#' "SYSTEMIC" categories separately and these datasets will be binded together as
+#' The input dataset will be merged with `EX` dataset for "ADMINISTRATION SITE" and
+#' "SYSTEMIC" categories separately and these datasets will be bound together as
 #' the final output dataset.
 #'
-#' This function is intended to add only `EX` variables to the input dataset, an user
+#' This function is intended to add only `EX` variables to the input dataset and user
 #' is expected to handle if any pre-processing is required.
 #'
-#' Only the variables passed to the `ex_vars` will be present in the output dataset
+#' Only the variables passed to the `ex_vars` will be added in the output dataset
 #'
 #' If the input dataset has multiple vaccination for a subject at same visit
 #' then this function will not merge ex dataset and will return only the input
@@ -63,18 +59,30 @@
 #' library(tibble)
 #' library(admiral)
 #' library(dplyr)
-#' library(rlang)
 #'
 #' derive_vars_merged_vaccine(
 #'   dataset = vx_face,
 #'   dataset_ex = vx_ex,
 #'   dataset_supp = NULL,
 #'   dataset_suppex = NULL,
-#'   by_vars_sys = exprs(USUBJID, FATPTREF),
-#'   by_vars_adms = exprs(USUBJID, FATPTREF, FALOC, FALAT, FADIR),
+#'   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
+#'   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
 #'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
-#' )
+#' ) %>%
+#'   select(USUBJID, FATPTREF, FALOC, FALAT, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC) %>%
+#'   head(10)
 #'
+#' derive_vars_merged_vaccine(
+#'   dataset = vx_face,
+#'   dataset_ex = vx_ex,
+#'   dataset_supp = vx_suppface,
+#'   dataset_suppex = vx_suppex,
+#'   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
+#'   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
+#'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
+#' ) %>%
+#'   filter(CLTYP == "DAIRY") %>%
+#'   select(USUBJID, FATPTREF, CLTYP, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
 derive_vars_merged_vaccine <- function(dataset,
                                        dataset_ex,
                                        by_vars_sys,
@@ -87,77 +95,17 @@ derive_vars_merged_vaccine <- function(dataset,
   assert_vars(by_vars_adms)
   assert_vars(ex_vars)
   assert_data_frame(dataset_supp, optional = TRUE)
-  assert_data_frame(dataset_ex, required_vars = NULL)
+  assert_data_frame(dataset_ex)
   assert_data_frame(dataset_suppex, optional = TRUE)
-
 
   # combine face and suppface dataset
   if (!is.null(dataset_supp)) {
     dataset <- combine_supp(dataset, dataset_supp)
   }
 
-  # combine face and suppface dataset
+  # combine face and suppex dataset
   if (!is.null(dataset_suppex)) {
     dataset_ex <- combine_supp(dataset_ex, dataset_suppex)
-  }
-
-  # Variables check for FACE
-
-  if (!("FATPTREF" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FATPTREF = "VACCINATION 1")
-  }
-
-  if (!("FALAT" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FALAT = "")
-  }
-
-  if (!("FADIR" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FADIR = "")
-  }
-
-  if (!("FALOC" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FALOC = "")
-  }
-
-  if (("FALNKGRP" %in% names(dataset))) {
-    dataset <- dataset %>%
-      mutate(FALNKGRP = str_to_upper(FALNKGRP))
-  }
-
-  # Variables check for EX
-
-  if (!("EXTPTREF" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXTPTREF = "VACCINATION 1")
-  }
-
-  if (!("EXLAT" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXLAT = "")
-  }
-
-  if (!("EXDIR" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXDIR = "")
-  }
-
-  if (!("EXLOC" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXLOC = "")
-  }
-
-  if (!("EXLNKGRP" %in% names(dataset_ex))) {
-    dataset_ex <- dataset_ex %>%
-      mutate(EXLNKGRP = EXTPTREF)
-
-    if (!("EXLNKID" %in% names(dataset_ex))) {
-      dataset_ex <- dataset_ex %>%
-        mutate(EXLNKID = paste0(EXLNKGRP, EXLOC, EXLAT, EXDIR))
-    }
   }
 
   if ("VISIT" %in% names(dataset_ex)) {
@@ -171,10 +119,6 @@ derive_vars_merged_vaccine <- function(dataset,
 
     dataset <- dataset
   } else {
-    # rename EX variables
-    dataset_ex <- dataset_ex %>%
-      dplyr::rename(FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT, FADIR = EXDIR)
-
     # Filter records for  ADMINISTRATION SITE events and merge it with EX dataset
     dataset_adminstration <- dataset %>%
       filter(FASCAT == "ADMINISTRATION SITE")

@@ -6,7 +6,7 @@ colnames(table) <- c(
   "STUDYID", "DOMAIN", "USUBJID", "ISSEQ", "ISGRPID", "ISREFID", "ISSPID", "ISLNKID",
   "ISTESTCD", "ISTEST", "ISCAT", "ISORRES", "ISORRESU", "ISSTRESC", "ISSTRESN",
   "ISSTRESU", "ISSTAT", "ISREASND", "ISNAM", "ISSPEC", "ISMETHOD", "ISBLFL", "ISLLOQ",
-  "VISITNUM", "EPOCH", "ISDTC", "ISDY", "ULLOQ"
+  "VISITNUM", "EPOCH", "ISDTC", "ISDY", "ISULOQ"
 )
 
 table1 <- as.data.frame(table)
@@ -34,7 +34,7 @@ table1$VISITNUM <- c(
 )
 
 set.seed(1234)
-table1$ISORRES <- sample(c("2.0", "3.0", "5.0", "<2", ">8"), NROW(table1), replace = T)
+table1$ISORRES <- sample(c("2", "3", "5", "<2", ">8"), NROW(table1), replace = T)
 
 is1 <- table1 %>%
   group_by(STUDYID, USUBJID) %>%
@@ -44,7 +44,7 @@ is1 <- table1 %>%
     EPOCH = if_else(VISITNUM == 10, "FIRST TREATMENT", "SECOND TREATMENT"),
     ISDTC = if_else(VISITNUM == 10, "2015-01-10", "2015-03-10"),
     ISDY = if_else(VISITNUM == 10, "1", "61"),
-    ISBLFL = if_else(VISITNUM == 10, "Y", as.character(NA)),
+    ISBLFL = if_else(VISITNUM == 10, "Y", NA_character_),
     ISSTRESU = "titer",
     ISTEST = case_when(
       ISTESTCD == "J0033VN" ~ "J0033VN Antibody",
@@ -58,25 +58,25 @@ is1 <- table1 %>%
       ISTESTCD == "M0019LN" ~ 8,
       ISTESTCD == "R0003MA" ~ 4
     ),
-    ULLOQ = case_when(
+    ISULOQ = case_when(
       ISTESTCD == "J0033VN" ~ 100,
       ISTESTCD == "I0019NT" ~ 200,
       ISTESTCD == "M0019LN" ~ 150,
       ISTESTCD == "R0003MA" ~ 120
     ),
     ISSTRESC = case_when(
-      ISORRES == "2.0" ~ "2",
-      ISORRES == "3.0" ~ "3",
-      ISORRES == "5.0" ~ "5",
-      ISORRES == "<2" ~ as.character(NA),
-      ISORRES == ">8" ~ as.character(NA)
+      ISORRES == "2" ~ "2",
+      ISORRES == "3" ~ "3",
+      ISORRES == "5" ~ "5",
+      ISORRES == "<2" ~ NA_character_,
+      ISORRES == ">8" ~ NA_character_
     ),
     ISSTRESN = case_when(
-      ISORRES == "2.0" ~ 2,
-      ISORRES == "3.0" ~ 3,
-      ISORRES == "5.0" ~ 5,
-      ISORRES == "<2" ~ as.numeric(NA),
-      ISORRES == ">8" ~ as.numeric(NA)
+      ISORRES == "2" ~ 2,
+      ISORRES == "3" ~ 3,
+      ISORRES == "5" ~ 5,
+      ISORRES == "<2" ~ NA_real_,
+      ISORRES == ">8" ~ NA_real_
     )
   ) %>%
   group_by(STUDYID, USUBJID, VISITNUM) %>%
@@ -92,30 +92,31 @@ is1 <- table1 %>%
 # To add NOT DONE records
 is <- is1 %>%
   mutate(
-    ISORRES = if_else(row_number() == 1 | row_number() == 10, as.character(NA), ISORRES),
-    ISSTRESC = if_else(row_number() == 1 | row_number() == 10, as.character(NA), ISSTRESC),
-    ISSTRESN = if_else(row_number() == 1 | row_number() == 10, as.numeric(NA), ISSTRESN),
-    ISSTRESU = if_else(row_number() == 1 | row_number() == 10, as.character(NA), ISSTRESU),
-    ISSTAT = if_else(row_number() == 1 | row_number() == 10, "NOT DONE", as.character(NA)),
-    ISREASND = if_else(row_number() == 1 | row_number() == 10, "NO SAMPLE TAKEN", as.character(NA)),
+    ISORRES = if_else(row_number() == 1 | row_number() == 10, NA_character_, ISORRES),
+    ISSTRESC = if_else(row_number() == 1 | row_number() == 10, NA_character_, ISSTRESC),
+    ISSTRESN = if_else(row_number() == 1 | row_number() == 10, NA_real_, ISSTRESN),
+    ISSTRESU = if_else(row_number() == 1 | row_number() == 10, NA_character_, ISSTRESU),
+    ISORRESU = if_else(row_number() == 1 | row_number() == 10, NA_character_, ISORRESU),
+    ISSTAT = if_else(row_number() == 1 | row_number() == 10, "NOT DONE", NA_character_),
+    ISREASND = if_else(row_number() == 1 | row_number() == 10, "INVALID RESULT", NA_character_),
     # Add missing dates
     ISDTC = case_when(
-      row_number() == 1 ~ "2015-01",
-      row_number() == 2 ~ "2015-01",
-      row_number() == 3 ~ "2015-01",
-      row_number() == 4 ~ "2015-01",
-      row_number() == 5 ~ "2015-03",
-      row_number() == 6 ~ "2015-03",
-      row_number() == 7 ~ "2015-03",
-      row_number() == 8 ~ "2015-03",
-      row_number() == 9 ~ "2015",
-      row_number() == 10 ~ "2015",
-      row_number() == 11 ~ "2015",
-      row_number() == 12 ~ "2015",
-      row_number() == 13 ~ as.character(NA),
-      row_number() == 14 ~ as.character(NA),
-      row_number() == 15 ~ as.character(NA),
-      row_number() == 16 ~ as.character(NA),
+      row_number() == 1 ~ NA_character_,
+      row_number() == 2 ~ "2021-11",
+      row_number() == 3 ~ "2021-11",
+      row_number() == 4 ~ "2021-11",
+      row_number() == 5 ~ "2021-12",
+      row_number() == 6 ~ "2021-12",
+      row_number() == 7 ~ "2021-12",
+      row_number() == 8 ~ "2021-12",
+      row_number() == 9 ~ "2021",
+      row_number() == 10 ~ NA_character_,
+      row_number() == 11 ~ "2021",
+      row_number() == 12 ~ "2021",
+      row_number() == 13 ~ "2021",
+      row_number() == 14 ~ "2021",
+      row_number() == 15 ~ "2021",
+      row_number() == 16 ~ "2021",
       TRUE ~ ISDTC
     ),
     # Add higher ISSTRESN values
@@ -146,6 +147,12 @@ is <- is1 %>%
       ISORRES == ">8" & ISTESTCD == "M0019LN" ~ ">150",
       ISORRES == ">8" & ISTESTCD == "R0003MA" ~ ">120",
       TRUE ~ ISORRES
+    ),
+    ISSTRESC = ISORRES,
+    ISDY = case_when(
+      row_number() == 1 ~ NA_character_,
+      row_number() == 10 ~ NA_character_,
+      TRUE ~ ISDY
     )
   )
 
@@ -178,16 +185,8 @@ var_label(is$EPOCH) <- "Epoch"
 var_label(is$ISDTC) <- "Date/Time of Collection"
 var_label(is$ISDY) <- "Study Day of Visit/Collection/Exam"
 var_label(is$LOD) <- "Limit of Detection"
-var_label(is$ULLOQ) <- "Upper Limit of Quantitation"
-
+var_label(is$ISULOQ) <- "Upper Limit of Quantitation"
 
 
 vx_is <- is %>%
   select(-c(ISGRPID, ISREFID, ISSPID, ISLNKID, LOD))
-
-
-# Save RDA file
-getwd()
-setwd("C:/ADMIRALPROJECT/admiralvaccine/data")
-str(vx_is)
-save("vx_is", file = "vx_is.rda")

@@ -1,36 +1,33 @@
-#' Creating FEVER records
+#' Creating Fever Records
 #'
-#' Getting `FAOBJ = "FEVER" and FATESTCD = "OCCUR"` records from `SDTM.VS` dataset, if there are no
-#' FEVER records in input dataset
+#' Creating Fever records from the `VS` SDTM dataset.
 #'
-#' @param dataset Input dataset
-#'      Input dataset is expected to have variables `USUBJID`,`FAOBJ`,
-#'      `FACAT`,`FATESTCD` and `FATEST`
+#' @param dataset Input Dataset
+#' Input dataset is expected to have variables `USUBJID` and `FAOBJ`.
 #'
-#' @param source_data Input SDTM dataset(VS)
-#'       Input SDTM dataset is expected to have temperature records
-#' *Default: "VS"*
+#' @param dataset_source Source Dataset - SDTM Vital Sign (`VS`)
+#' Source Dataset (VS) is expected to have temperature records.
 #'
-#' @param source_filter Filter condition for Input SDTM dataset(VS)
-#' *Default: "VSCAT == 'REACTOGENICITY' & VSTESTCD = 'TEMP'"*
+#' @param filter_source Filter condition for Source dataset.
 #'
-#' @param faobj  FAOBJ Value for FEVER records in output dataset
-#' *Default: "FEVER"*
+#' @param faobj FAOBJ Value for fever records in output dataset.
 #'
-#' @return The output dataset contains records with `FATESTCD = "OCCUR"`for
+#' @return The output dataset contains records with `FATESTCD = "OCCUR"` for
 #' `FAOBJ = FEVER` records.
 #'
-#' @author Dhivya Kanagaraj
+#' @export
 #'
 #' @details Check if `FAOBJ = FEVER` record is present in input dataset,
-#'          if not then use `SDTM.VS` to get FEVER records.
-#'          With temperature values from VSSTRESN we decide if FEVER
-#'          has occurred or not(`FAORRES = "Y"/"N"`).
-#'          Since records are derived, these FEVER records are considered
-#'          `DTYPE = "DERIVED"`
-#'          if `FAOBJ = FEVER` record is present, then input dataset will be
-#'          made as output with no further analysis.
-#' @export
+#' if not then use `SDTM.VS` to get FEVER records.
+#' With temperature values from `VSSTRESN` we decide if FEVER has
+#' occurred or not (`FAORRES = "Y"/"N"`).
+#' Since records are derived, these FEVER records are considered `DTYPE = "DERIVED"`
+#' if `FAOBJ = FEVER` record is present, then input dataset will be made as output with no further
+#' analysis.
+#'
+#' The temperature value greater or equal 38° C will be considered as FEVER records.
+#'
+#' @author Dhivya Kanagaraj
 #'
 #' @family der_rec
 #'
@@ -61,34 +58,35 @@
 #'   "ABC101", "TEMP", "REACTOGENICITY", 38, "C", "DAY 7"
 #' )
 #'
-#' derive_param_fever_occur(
+#' derive_fever_records(
 #'   dataset = input,
-#'   source_data = vs,
-#'   source_filter = "VSCAT == 'REACTOGENICITY' & VSTESTCD == 'TEMP'",
+#'   dataset_source = vs,
+#'   filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
 #'   faobj = "FEVER"
 #' )
 #'
-derive_param_fever_occur <- function(dataset,
-                                     source_data,
-                                     source_filter,
-                                     faobj) {
+derive_fever_records <- function(dataset,
+                                 dataset_source,
+                                 filter_source,
+                                 faobj) {
   # Checking if there are fever records in face
   assert_data_frame(dataset,
     required_vars = exprs(USUBJID, FAOBJ)
   )
-  assert_data_frame(source_data,
-    required_vars = exprs(USUBJID, VSTESTCD)
+  assert_data_frame(dataset_source,
+    required_vars = exprs(USUBJID, VSTESTCD, VSSTRESN, VSSTRESU)
   )
+  filter_source <- assert_filter_cond(enexpr(filter_source))
 
-  temp1 <- dataset %>% filter(FAOBJ == faobj)
-  x <- nrow(temp1)
+  # filtering whether we have fever records in input dataset
+  fil_fev <- dataset %>% filter(FAOBJ == faobj)
+  row_rec <- nrow(fil_fev)
   # Renaming VS variables as FA variables
-  lookup <-
+  vs_to_fa <-
     c(
       FASEQ = "VSSEQ",
-      FACAT = "VSCAT",
       FAREASND = "VSREASND",
-      FSSCAT = "VSSCAT",
+      FASCAT = "VSSCAT",
       FAEVAL = "VSEVAL",
       FARFTDTC = "VSRFTDTC",
       FAEVLINT = "VSEVLINT",
@@ -101,16 +99,18 @@ derive_param_fever_occur <- function(dataset,
       FALNKGRP = "VSLNKGRP",
       FATPT = "VSTPT"
     )
+
   # Getting fever records from VS
-  if (x == 0) {
+  if (row_rec == 0) {
     # Filter Reacto records from VS
 
-    fever <- source_data %>%
-      filter(eval(parse(text = source_filter))) %>%
-      rename(any_of(lookup)) %>%
+    fev_rec <- dataset_source %>%
+      filter(!!filter_source) %>%
+      rename(any_of(vs_to_fa)) %>%
       mutate(
         FATEST = "Occurrence Indicator",
         FATESTCD = "OCCUR",
+        FACAT = "REACTOGENICITY",
         FASCAT = "SYSTEMIC",
         FAOBJ = faobj
       ) %>%
@@ -122,12 +122,12 @@ derive_param_fever_occur <- function(dataset,
           VSSTRESU == "C" &
             VSSTRESN < 38 ~ "N"
         ),
-        FASTRESC = FAORRES,
-        DTYPE = "DERIVED"
-      )
-    adface <- bind_rows(dataset, fever)
-    return(adface)
-  } else if (x > 0) {
-    adface <- dataset
+        FASTRESC = FAORRES
+      ) %>%
+      select(-(starts_with("VS")), VSSTRESN)
+
+    bind_rows(dataset, fev_rec)
+  } else if (row_rec > 0) {
+    return(dataset)
   }
 }

@@ -2,30 +2,25 @@
 % Please edit documentation in R/derive_vars_max_flag.R
 \name{derive_vars_max_flag}
 \alias{derive_vars_max_flag}
-\title{Creating Maximum flags}
+\title{Creating ANLxxFL Variables To Flag The Maximum Records}
 \usage{
 derive_vars_max_flag(dataset, flag1 = "ANL01FL", flag2 = "ANL02FL")
 }
 \arguments{
 \item{dataset}{Input dataset}
 
-\item{flag1}{\itemize{
-\item Flags the maximum record per subject per event per
-Vaccination
-\emph{Default: "ANL01FL"}
-\emph{Permitted value: Any variable name or NULL}
-\code{NULL} denotes not to create the flag
-}}
+\item{flag1}{Flags the maximum record per subject per event per
+vaccination.
+\emph{Permitted value: Any variable name as a string or NULL}
+\code{NULL} denotes not to create the flag}
 
-\item{flag2}{\itemize{
-\item Flags the maximum record per subject per event for Overall
-\emph{Default: "ANL02FL"}
-\emph{Permitted value: Any variable name or NULL}
-\code{NULL} denotes not to create the flag
-}}
+\item{flag2}{Flags the maximum record per subject per event for Overall
+
+\emph{Permitted value: Any variable name as a string or NULL}
+\code{NULL} denotes not to create the flag}
 }
 \value{
-The output dataset creates \code{ANLxxFL} flags
+The output dataframe with \code{ANLxxFL} flags
 }
 \description{
 Adds Flags variables for maximum record per subject per event for overall
@@ -34,7 +29,7 @@ and per vaccination
 \details{
 This utility flags the maximum record per subject per event
 per vaccination/Overall
-If both parameters \code{flag1} & \code{flag2} are passed as NULL then
+If both parameters \code{flag1} & \code{flag2} are passed as \code{NULL} then
 utility will throw error and flags will not be created.
 }
 \examples{
@@ -42,16 +37,17 @@ library(dplyr)
 library(admiraldev)
 library(admiral)
 library(tibble)
+
 input <- tribble(
-  ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FADTC, ~PARAMCD,
-  "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "2015-01-10", "DIARE",
-  "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "2015-01-11", "DIARE",
-  "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "2015-02-10", "DIARE",
-  "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "2015-02-11", "DIARE",
-  "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-10", "SEVFAT",
-  "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "2015-01-11", "SEVFAT",
-  "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "2015-02-10", "SEVFAT",
-  "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "2015-02-11", "SEVFAT"
+  ~USUBJID, ~FAOBJ, ~FATESTCD, ~FATPTREF, ~AVAL, ~FATPT, ~PARAMCD,
+  "ABC101", "REDNESS", "DIAMETER", "VACC 1", 10, "DAY 1", "DIARE",
+  "ABC101", "REDNESS", "DIAMETER", "VACC 1", 7, "DAY 2", "DIARE",
+  "ABC101", "REDNESS", "DIAMETER", "VACC 2", 3, "DAY 1", "DIARE",
+  "ABC101", "REDNESS", "DIAMETER", "VACC 2", 8, "DAY 2", "DIARE",
+  "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 1", "SEVFAT",
+  "ABC101", "FATIQUE", "SEV", "VACC 1", 1, "DAY 2", "SEVFAT",
+  "ABC101", "FATIQUE", "SEV", "VACC 2", 2, "DAY 1", "SEVFAT",
+  "ABC101", "FATIQUE", "SEV", "VACC 2", 3, "DAY 2", "SEVFAT"
 )
 
 derive_vars_max_flag(
@@ -73,6 +69,7 @@ derive_vars_max_flag(
 }
 \seealso{
 Other der_var: 
+\code{\link{derive_var_aval_adis}()},
 \code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},

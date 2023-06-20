@@ -1,5 +1,6 @@
-# test
-testthat::test_that("testcase-1: Getting Vaccination dates from EX and
+## Test 1: Getting Vaccination dates from EX and check if output is merged with ADSL
+
+test_that("derive_vars_vaxdt Test 1: Getting Vaccination dates from EX and
 check if output is merged with ADSL", {
   input <- tibble::tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXLNKGRP, ~VISIT,
@@ -15,10 +16,6 @@ check if output is merged with ADSL", {
     "ABC001", "MALE", 23,
     "ABC002", "FEMALE", 26,
   )
-
-  # Test 1: Getting Vaccination dates from EX and check if output is merged with
-  # ADSL
-  # Expected Output
 
   temp <- input %>%
     group_by(USUBJID) %>%
@@ -48,7 +45,6 @@ check if output is merged with ADSL", {
     keep = FALSE
   )
 
-  # Actual Output
   actual <- derive_vars_vaxdt(
     dataset = input,
     dataset_adsl = adsl,
@@ -59,8 +55,10 @@ check if output is merged with ADSL", {
 })
 
 
-# testthat
-testthat::test_that("testcase-2: Check if Vaccination date variables are getting
+## Test 2: Check if Vaccination date variables are getting created when multiple
+## vaccination given on same visit
+
+test_that("derive_vars_vaxdt Test 2: Check if Vaccination date variables are getting
           created when multiple vaccination given on same visit", {
   input <- tibble::tribble(
     ~USUBJID, ~EXSTDTC, ~VISITNUM, ~EXTRT, ~EXLNKGRP, ~VISIT,
@@ -76,10 +74,6 @@ testthat::test_that("testcase-2: Check if Vaccination date variables are getting
     "ABC002", "FEMALE", 26,
   )
 
-  # Test 2: Check if Vaccination date variables are getting created when multiple
-  # vaccination given on same visit
-
-  # Expected Output
   temp <- input %>%
     group_by(USUBJID, VISITNUM, VISIT, EXSTDTC) %>%
     distinct(USUBJID, VISITNUM, VISIT, EXSTDTC, .keep_all = TRUE) %>%
@@ -108,7 +102,6 @@ testthat::test_that("testcase-2: Check if Vaccination date variables are getting
     keep = FALSE
   )
 
-  # Actual Output
   actual <- derive_vars_vaxdt(
     dataset = input,
     dataset_adsl = adsl,

@@ -45,21 +45,6 @@ admiral_homepage <- "https://pharmaverse.github.io/admiral"
 [![Test Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml)
 <!-- badges: end -->
 
-## Release Schedule
-
-`{admiralvaccine}` initial release is tentatively targeted for end of sem1 2023.
-
-
-| Release Schedule | Phase 1- Date              |  
-| ---------------- | -------------------------- |  
-| Q1-2023          |  March end                 | 
-|                  |    Complete development    | 
-|                  |      ADFACE,ADCE,ADIS      | 
-| Q2-2023          |  June end                  | 
-|                  |     Validation and         | 
-|                  |        release to CRAN     |
-
-
 Vaccine extension package for ADaM in R Asset Library `{admiral}`
 
 ## Purpose
@@ -68,7 +53,26 @@ To provide a complementary (to `{admiral}`) toolbox that enables users to develo
 
 ## Installation
 
-The package is currently on development stage.
+To install the latest development version of the package directly from GitHub use the following code:
+
+```r
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+
+remotes::install_github("pharmaverse/admiraldev", ref = "devel") # This is a required dependency of {admiralvaccine}
+remotes::install_github("pharmaverse/admiral", ref = "devel") # This is a required dependency of {admiralvaccine}
+remotes::install_github("pharmaverse/admiralvaccine", ref = "devel")
+```
+
+### Dependencies
+
+The latest version of the package works with the latest versions of the packages
+stated in `DESCRIPTION`.
+
+If a previous version of the package should be used, it is recommended to use
+latest version of the dependencies at the point of time when the previous
+version of {admiralvaccine} was released.
 
 ## Scope
 
@@ -97,3 +101,17 @@ We use the following for support and communications between user and developer c
 
 * [Slack](https://app.slack.com/client/T028PB489D3/C02M8KN8269) - for informal discussions, Q&A and building our user community. If you don't have access, use this [link](https://join.slack.com/t/pharmaverse/shared_invite/zt-yv5atkr4-Np2ytJ6W_QKz_4Olo7Jo9A) to join the pharmaverse Slack workspace
 * [GitHub Issues](https://github.com/pharmaverse/admiralonco/issues) - for direct feedback, enhancement requests or raising bugs
+
+## {admiralvaccine} R Package Collaboration: Pfizer, GSK and J&J
+
+- Project Lead & Contributor: Neetu Sangari
+
+- Maintainer: Sukalpo Saha
+
+- Developers: Vikram S, Arjun Rubalingam, Dhivya Kanagaraj, Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla
+
+- Support lead & Reviewer: Ben Straub
+
+- Other Reviewers: Stefan Bundfuss, Edoardo Mancini
+
+- Other Contributors: Ross Farrugia, Abdul Khayat, Jayashree V, Jagadish Katam, Ankur Jindal, Andrea Pammolli, Daniele Bottigliengo, Ranya Ben Hsain, Lee Armishaw, Hilde Delanghe, Marleen Nijs, Mandy Peng, Tina Zhai
