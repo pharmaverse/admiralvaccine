@@ -36,14 +36,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -89,7 +81,7 @@
     <dl><dt>dataset</dt>
 <dd><p>Input data set</p>
 <p>The variables <code>USUBJID</code>,<code>FAOBJ</code>,<code>AVAL</code>, <code>AVALC</code>, <code>FATESTCD</code> and <code>FATEST</code> are expected
-for Input data set.(<code>dataset</code>)</p></dd>
+for Input data set.</p></dd>
 
 
 <dt>diam_code</dt>
@@ -108,38 +100,27 @@ to derive severity records by passing the events from <code>FAOBJ</code>.</p></d
 
 
 <dt>testcd_sev</dt>
-<dd><p><code>FATESTCD</code> value for severity</p>
-<p><em>Permitted Value</em>: A Character scalar</p>
+<dd><p>To assign <code>FATESTCD</code> value for severity</p>
+<p><em>Permitted Value</em>: A character scalar</p>
 <p>Assign the value for <code>FATESTCD</code> variable to indicate the severity records.
-Ignore the argument if you want to set the default value (<code>SEV</code>).</p>
-<p><em>Note</em>: Basically, This function will derive and create the severity records from the
-diameter record for the particular events specified in the <code>faobj_values</code> that user wants.
-If you want to derive the Severity from diameter, even though you have the severity in SDTM data.
-This function will re-derive the severity and remove the derived SDTM severity records.</p></dd>
+Ignore the argument if you want to set the default value (<code>SEV</code>).</p></dd>
 
 
 <dt>test_sev</dt>
 <dd><p><code>FATEST</code> Value for severity</p>
 <p><em>Permitted Value</em>: A Character scalar</p>
 <p>Assign the value for <code>FATEST</code> variable to indicate the severity records.
-Ignore the argument if you want to set the default value.</p>
-<p><em>Assign the lower limit to derive the Severity Grade (AVALC)</em>
-<em>For Example: User passing 0 to <code>none</code> and 2 to <code>mild</code>, 0 will act as lower limit and 2 will act</em>
-<em>as upper limit</em>
-<em>Note: Use the limit reference to pass the values in argument</em>
-<em>Since the condition was coded like this,</em>
-<em>NONE : none &lt; AVAL &lt;= mild</em>
-<em>MILD : mild &lt; AVAL &lt;= mod</em>
-<em>MODERATE: mod &lt; AVAL &lt;= sev</em>
-<em>SEVERE: sev &lt; AVAL</em>
-<em>User should pass the values as numeric vectors. Refer the default values.</em></p></dd>
+Ignore the argument if you want to set the default value.</p></dd>
 
 
 <dt>none</dt>
 <dd><p>Pass the lower limit for grade <code>"NONE"</code></p>
 <p><em>Permitted Value:</em> A numeric vector</p>
 <p>The <code>none</code> and the following arguments (<code>mild</code>, <code>mode</code> and <code>sev</code>) will be
-used for assigning the diameter limits to derive the <code>AVALC</code> (severity grade).</p></dd>
+used for assigning the diameter limit to derive the <code>AVALC</code> (severity grade).</p>
+<p><em>Assign the lower limit to derive the Severity Grade (<code>AVALC</code>).</em><br><em>For Example: User passing 0 to <code>none</code> and 2 to <code>mild</code>, 0 will act as lower limit and 2 will act</em>
+<em>as upper limit.</em><br></p>
+<p><em>Note: Use the limit reference to pass the values to these arguments</em><br><em>Since the condition was coded like this,</em><br><em>NONE : <code>none</code> &lt; AVAL &lt;= <code>mild</code></em><br><em>MILD : <code>mild</code> &lt; AVAL &lt;= <code>mod</code></em><br><em>MODERATE : <code>mod</code> &lt; AVAL &lt;= <code>sev</code></em><br><em>SEVERE : <code>sev</code> &lt; AVAL</em><br><em>User should pass the values as numeric scalar. Refer the default values.</em></p></dd>
 
 
 <dt>mild</dt>
@@ -164,6 +145,13 @@ used for assigning the diameter limits to derive the <code>AVALC</code> (severit
 <p>The Input data with the new severity records for Redness and swelling which
 is specified in <code>faobj_values</code> and AVAL, AVALC will be derived and <code>FATESTCD</code>,
 <code>FATEST</code> will be changed as per the values.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Basically, This function will derive and create the severity records from the
+diameter record for the particular events specified in the <code>faobj_values</code> that user wants.
+If you want to derive the Severity from diameter, even though you have the severity in SDTM data.
+This function will re-derive the severity and remove the derived SDTM severity records.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -242,7 +230,7 @@ is specified in <code>faobj_values</code> and AVAL, AVALC will be derived and <c
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Sukalpo Saha, Vikram S, Ben Straub, Arjun Rubalingam, Dhivya Kanagaraj, Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla, Hilde Delanghe.</p>
+  <p></p><p>Developed by Sukalpo Saha, Vikram S, Ben Straub, Arjun Rubalingam, Dhivya Kanagaraj, Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla, Hilde Delanghe, Pfizer Inc., GlaxoSmithKline LLC, Johnson &amp; Johnson.</p>
 </div>
 
 <div class="pkgdown-footer-right">
