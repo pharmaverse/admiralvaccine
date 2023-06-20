@@ -34,9 +34,8 @@ otherwise specified.*
 * [Derive Treatment Variables (`TRT0xP`, `TRT0xA`)](#treatmentvar)
 * [Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDT`, `TRTEDT`, `TRTDURD`)](#trtdatetime)
 * [Population Flags (e.g. `SAFFL`)](#popflag)
-* [Derive vaccination date Variables](#vax_date)
-* [Derive vaccination date Variables](#vax_date)
-* [Create period variables (Study Specific)](#period)
+* [Derive Vaccination Date Variables](#vax_date)
+* [Create Period Variables (Study Specific)](#period)
 * [Add Labels and Attributes](#attributes)
 
 
@@ -202,7 +201,7 @@ dataset_vignette(
 )
 ```
 
-## Derive vaccination date Variables  {#vax_date}
+## Derive Vaccination Date Variables  {#vax_date}
 
 In this step, we will create a vaccination date variables from `EX` domain. The function `derive_vars_vaxdt` returns the variables `VAX01DT`,`VAX02DT`... added to the `adsl` dataset based on number of vaccinations.
 
@@ -229,7 +228,7 @@ dataset_vignette(
 
 This call would return the input dataset with columns VAX01DT, VAX02DT added.
 
-## Create period variables (Study Specific)  {#period}
+## Create Period Variables (Study Specific)  {#period}
 
 In this step this we will create period variables which will be study specific, User can change the logic as per their study requirement.
 
