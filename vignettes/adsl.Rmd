@@ -92,9 +92,19 @@ example mapping for a study without periods may be:
 adsl <- dm %>%
   mutate(
     TRT01P = substring(ARM, 1, 9),
-    TRT02P = substring(ARM, 11, 100),
-    TRT01A = substring(ACTARM, 1, 9),
-    TRT02A = substring(ACTARM, 11, 100)
+    TRT02P = substring(ARM, 11, 100)
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex_ext,
+    filter_add = EXLNKGRP == "VACCINATION 1",
+    new_vars = exprs(TRT01A = EXTRT),
+    by_vars = exprs(STUDYID, USUBJID)
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex_ext,
+    filter_add = EXLNKGRP == "VACCINATION 2",
+    new_vars = exprs(TRT02A = EXTRT),
+    by_vars = exprs(STUDYID, USUBJID)
   )
 ```
 

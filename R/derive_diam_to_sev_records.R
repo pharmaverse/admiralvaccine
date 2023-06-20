@@ -10,7 +10,7 @@
 #'
 #' @param diam_code Diameter record filter
 #'
-#' **Permitted Value**: A character vector or scalar.
+#' *Permitted Value*: A character vector or scalar.
 #'
 #' Helps to filter the diameter records to derive the severity records by
 #' passing the `FATESTCD` value for diameter which is corresponding to the

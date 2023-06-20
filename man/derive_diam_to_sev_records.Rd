@@ -24,7 +24,7 @@ for Input data set.}
 
 \item{diam_code}{Diameter record filter
 
-\strong{Permitted Value}: A character vector or scalar.
+\emph{Permitted Value}: A character vector or scalar.
 
 Helps to filter the diameter records to derive the severity records by
 passing the \code{FATESTCD} value for diameter which is corresponding to the
