@@ -41,7 +41,7 @@ if they have supplementary dataset in their case.}
 \item{ex_vars}{Variables to be added to the output dataset from EX dataset}
 }
 \value{
-the dataset with variables added from the EX dataset.
+The dataset with variables added from the EX dataset.
 }
 \description{
 Add new variables to the input dataset based on variables from another dataset.

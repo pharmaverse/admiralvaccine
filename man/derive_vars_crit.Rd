@@ -36,7 +36,7 @@ if the criterion is met or not, respectively.
 Returns NA for not selected rows (not taken into account from condition)}
 }
 \value{
-dataset with criterion variables
+Dataset with criterion variables
 }
 \description{
 Derive analysis criterion evaluation result variable, paired with character
