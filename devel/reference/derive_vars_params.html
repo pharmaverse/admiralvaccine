@@ -38,14 +38,6 @@ PARCAT2 variables"><meta property="og:image" content="https://pharmaverse.github
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/devel">devel</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/admiralvaccine/pre-release">pre-release</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -175,6 +167,19 @@ from lookup dataset.</p>
 <span class="r-in">  lookup_dataset <span class="op">=</span> <span class="va">lookup_dataset</span>,</span>
 <span class="r-in">  merge_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/admiral/man/reexport-exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAMCD</span>, <span class="va">PARAMN</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 13</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   USUBJID FACAT  FASCAT   FATESTCD PARAM FAOBJ FATEST FALOC FALAT PARAMCD PARAMN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ABC101  REACTO ADMIN    SEV      Redn… Redn… Sever… ARM   LEFT  SEVREDN      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ABC101  REACTO ADMIN    DIAMETER Redn… Redn… Diame… ARM   RIGHT DIARE        2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ABC101  REACTO ADMIN    MAXDIAM  Redn… Redn… Maxim… <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    MDIRE        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ABC101  REACTO SYSTEMIC MAXTEMP  Feve… Fever Maxim… <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    MAXTEMP      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> ABC101  REACTO SYSTEMIC OCCUR    Feve… Fever Occur… <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    OCFEVER      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> ABC101  REACTO ADMIN    OCCUR    Eryt… Eryt… Occur… <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    OCERYTH      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> ABC101  REACTO ADMIN    SEV      Swel… Swel… Sever… <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> ABC101  REACTO ADMIN    OCCUR    Swel… Swel… Occur… <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    OCSWEL       9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> ABC101  REACTO ADMIN    OCCUR    Swel… Swel… Occur… <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    OCSWEL       9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: PARCAT1 &lt;chr&gt;, PARCAT2 &lt;chr&gt;</span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
