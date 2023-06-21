@@ -3,7 +3,7 @@
 \docType{data}
 \name{vx_suppface}
 \alias{vx_suppface}
-\title{Supplementary FACE Dataset}
+\title{Supplemental Findings About Clinical Events}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 9 columns.
 }

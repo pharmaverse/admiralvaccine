@@ -14,14 +14,16 @@
 #'   The variables specified by the `ex_vars` argument are expected.
 #'
 #' @param dataset_supp Supplementary input dataset
-#'               By default `dataset_supp` will be `NULL`, user has to provide
-#'               supplementary dataset to merge it back with original input dataset
-#'               if they have supplementary dataset in their case.
+#'
+#'    By default `dataset_supp` will be `NULL`, user has to provide
+#'    supplementary dataset to merge it back with original input dataset
+#'    if they have supplementary dataset in their case.
 #'
 #' @param dataset_suppex Supplementary EX dataset
-#'               By default `dataset_suppex` will be `NULL`, user has to provide
-#'               supplementary dataset to merge it back with original `EX` dataset
-#'               if they have supplementary dataset in their case.
+#'
+#'    By default `dataset_suppex` will be `NULL`, user has to provide
+#'    supplementary dataset to merge it back with original `EX` dataset
+#'    if they have supplementary dataset in their case.
 #'
 #' @param by_vars_sys Grouping variables for systemic events.
 #'

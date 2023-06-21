@@ -157,7 +157,7 @@ This call would return the input dataset with columns `RFSTDTC`, `RFENDTC` added
 
 In this step, we will merge fever records from the `VS` domain with the input dataset if the fever records does not present in the input dataset.
 
-The function `derive_param_fever_occur()` is used to merge fever records. These records will also be used in maximum temperature calculation.
+The function `derive_fever_records()` is used to merge fever records. These records will also be used in maximum temperature calculation.
 
 ```{r eval=TRUE}
 adface <- derive_fever_records(
@@ -223,7 +223,7 @@ dataset_vignette(
 The `{admiral}` core package has separate functions to handle period variables since these variables are study specific.
 
 See the ["Visit and Period Variables"
-vignette](visits_periods.html#periods_adsl) for more information.
+vignette](https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html) for more information.
 
 If the variables are not derived based on a period reference dataset, they may
 be derived at a later point of the flow. For example, phases like "Treatment
@@ -255,7 +255,7 @@ dataset_vignette(
 
 ## Derive Direct Mapping Variables {#mapping}
 
-In this step,we will create the user defined function to assign `AVAL` values from `AVALC` which will be user in further steps. 
+In this step,we will create the user defined function to assign `AVAL` values from `AVALC` which will be used in further steps. 
 
 The user defined functions would look like the following:
 
@@ -295,7 +295,7 @@ dataset_vignette(
 
 ## Derive Severity Records for Administration Site Events {#sev}
 
-The function `derive_param_diam_to_sev()` is used to derive the severity records from the diameter records for an event.
+The function `derive_diam_to_sev_records()` is used to derive the severity records from the diameter records for an event.
 
 The severity records created will be useful for calculating the maximum severity.
 

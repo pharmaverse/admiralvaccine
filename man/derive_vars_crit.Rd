@@ -33,7 +33,7 @@ in which the rule is applied.}
 The criterion that each selected row satisfies or not.
 Returns \code{Y} or \code{N} for character variable and \code{1} or \code{0} for numeric variable
 if the criterion is met or not, respectively.
-Returns NA for not selected rows (not taken into account from condition)}
+Returns \code{NA} for not selected rows (not taken into account from condition)}
 }
 \value{
 Dataset with criterion variables

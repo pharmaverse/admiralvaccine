@@ -3,7 +3,7 @@
 \docType{data}
 \name{vx_suppdm}
 \alias{vx_suppdm}
-\title{Supplementary DM Dataset}
+\title{Supplemental Demographics}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 9 columns.
 }

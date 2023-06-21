@@ -1,4 +1,4 @@
-#' IS Dataset
+#' Immunogenicity
 #'
 #' A SDTM IS dataset
 #'
@@ -6,15 +6,7 @@
 #' @family dataset
 "vx_is"
 
-#' Supplemental IS Dataset
-#'
-#' A SDTM Supplemental IS dataset
-#'
-#' @keywords dataset
-#' @family dataset
-"vx_suppis"
-
-#' CE Dataset
+#' Clinical Events
 #'
 #' A SDTM CE dataset
 #'
@@ -22,7 +14,7 @@
 #' @family dataset
 "vx_ce"
 
-#' DM Dataset
+#' Demographics
 #'
 #' A SDTM DM dataset
 #'
@@ -30,7 +22,7 @@
 #' @family dataset
 "vx_dm"
 
-#' EX Dataset
+#' Exposure
 #'
 #' A SDTM EX dataset
 #'
@@ -38,7 +30,7 @@
 #' @family dataset
 "vx_ex"
 
-#' FACE Dataset
+#' Findings About Clinical Events
 #'
 #' A SDTM FACE dataset
 #'
@@ -46,7 +38,7 @@
 #' @family dataset
 "vx_face"
 
-#' VS Dataset
+#' Vital Signs
 #'
 #' A SDTM VS dataset
 #'
@@ -54,7 +46,7 @@
 #' @family dataset
 "vx_vs"
 
-#' Vx - Subject Level Analysis Dataset
+#' Subject Level Analysis - Vaccine Specific
 #'
 #' A subject level analysis dataset
 #'
@@ -62,7 +54,15 @@
 #' @family dataset
 "vx_adsl"
 
-#' Supplementary CE Dataset
+#' Supplemental Immunogenicity
+#'
+#' A SDTM Supplementary IS dataset
+#'
+#' @keywords dataset
+#' @family dataset
+"vx_suppis"
+
+#' Supplemental Clinical Events
 #'
 #' A SDTM Supplementary CE dataset
 #'
@@ -70,7 +70,7 @@
 #' @family dataset
 "vx_suppce"
 
-#' Supplementary DM Dataset
+#' Supplemental Demographics
 #'
 #' A SDTM Supplementary DM dataset
 #'
@@ -78,15 +78,14 @@
 #' @family dataset
 "vx_suppdm"
 
-#' Supplementary EX Dataset
-#'
+#' Supplemental Exposure
 #' A SDTM Supplementary EX dataset
 #'
 #' @keywords dataset
 #' @family dataset
 "vx_suppex"
 
-#' Supplementary FACE Dataset
+#' Supplemental Findings About Clinical Events
 #'
 #' A SDTM Supplementary FACE dataset
 #'

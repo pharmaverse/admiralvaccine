@@ -3,7 +3,7 @@
 \docType{data}
 \name{vx_suppis}
 \alias{vx_suppis}
-\title{Supplemental IS Dataset}
+\title{Supplemental Immunogenicity}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 16 rows and 10 columns.
 }
@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 vx_suppis
 }
 \description{
-A SDTM Supplemental IS dataset
+A SDTM Supplementary IS dataset
 }
 \seealso{
 Other dataset: 

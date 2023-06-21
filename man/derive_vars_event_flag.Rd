@@ -23,7 +23,7 @@ expected.}
 The variables to be considered for grouping for creating a new
 variable \code{new_var1}}
 
-\item{aval_cutoff}{Cutoff value
+\item{aval_cutoff}{Cutoff value for \code{AVAL}
 
 For \code{TESTCD} code list values based on diameter, if \code{AVAL} is greater than
 \code{aval_cutoff} then the event is considered to have occurred. For example,
@@ -66,6 +66,9 @@ observations within by group will be flagged as "N".
 
 For derived maximum records in \code{FATESTCD} , the \code{new_var2} will be
 set to \code{NA}.
+
+If both \code{new_var1} and \code{new_var2} are \code{NULL}, this function will return the
+input dataset as output dataset.
 }
 \examples{
 library(tibble)
