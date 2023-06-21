@@ -69,9 +69,10 @@ be preserved.
 For the vaccine ADaM data structures, an overview of the flow and example function calls
 for the most common steps are provided by the following vignettes:
 
-- [Creating ADSL](adrs.html)
+- [Creating ADSL](adsl.html)
 - [Creating ADCE](adce.html)
 - [Creating ADFACE](adface.html)
+- [Creating ADIS](adis.html)
 
 `{admiralvaccine}` also provides template R scripts as a starting point. They can be
 created by calling `use_ad_template()` from {admiral}, e.g.,

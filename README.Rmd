@@ -78,7 +78,7 @@ version of {admiralvaccine} was released.
 
 * Build a toolbox of re-usable functions and utilities to create vaccine-specific ADaM datasets in R in a modular manner.
 * All functions are created based upon the ADaM Implementation Guide and aim to facilitate the programming of ADaM dataset standards.
-* Initially the package will focus on creating the reactogenecity and immunogenecity domain following flat model as per CBER guidelines.In future we will make enhancements as we get updates on CBER.
+* Initially the package will focus on creating the reactogenicity and immunogenicity domain following flat model as per CBER guidelines.In future we will make enhancements as we get updates on CBER.
 
 ## Expectations
 
@@ -100,7 +100,7 @@ Here's a summary of our strategy for this package related to R versions:
 We use the following for support and communications between user and developer community:
 
 * [Slack](https://app.slack.com/client/T028PB489D3/C02M8KN8269) - for informal discussions, Q&A and building our user community. If you don't have access, use this [link](https://join.slack.com/t/pharmaverse/shared_invite/zt-yv5atkr4-Np2ytJ6W_QKz_4Olo7Jo9A) to join the pharmaverse Slack workspace
-* [GitHub Issues](https://github.com/pharmaverse/admiralonco/issues) - for direct feedback, enhancement requests or raising bugs
+* [GitHub Issues](https://github.com/pharmaverse/admiralvaccine/issues) - for direct feedback, enhancement requests or raising bugs
 
 ## {admiralvaccine} R Package Collaboration: Pfizer, GSK and J&J
 

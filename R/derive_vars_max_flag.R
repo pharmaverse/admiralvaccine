@@ -75,12 +75,14 @@ max_flag <- function(dataset,
 #'
 #' @param flag1 Flags the maximum record per subject per event per
 #' vaccination.
-#' *Permitted value: Any variable name as a string or NULL*
+#' *Permitted value: Any variable name as a string or NULL*.
+#'
 #' `NULL` denotes not to create the flag
 #'
 #' @param flag2 Flags the maximum record per subject per event for Overall
 #'
-#' *Permitted value: Any variable name as a string or NULL*
+#' *Permitted value: Any variable name as a string or NULL*.
+#'
 #' `NULL` denotes not to create the flag
 #'
 #' @return The output dataframe with `ANLxxFL` flags

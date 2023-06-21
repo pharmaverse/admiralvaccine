@@ -15,7 +15,7 @@
 #'  The variables to be considered for grouping for creating a new
 #'  variable `new_var1`
 #'
-#' @param aval_cutoff Cutoff value
+#' @param aval_cutoff Cutoff value for `AVAL`
 #'
 #'
 #'    For `TESTCD` code list values based on diameter, if `AVAL` is greater than
@@ -53,6 +53,8 @@
 #'  For derived maximum records in `FATESTCD` , the `new_var2` will be
 #'  set to `NA`.
 #'
+#'  If both `new_var1` and `new_var2` are `NULL`, this function will return the
+#'  input dataset as output dataset.
 #'
 #' @export
 #'
