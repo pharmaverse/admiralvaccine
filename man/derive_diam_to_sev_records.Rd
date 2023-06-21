@@ -5,7 +5,7 @@
 \title{Creating Severity Records From Diameter}
 \usage{
 derive_diam_to_sev_records(
-  dataset = NULL,
+  dataset,
   diam_code = "DIAMETER",
   faobj_values = c("REDNESS", "SWELLING"),
   testcd_sev = "SEV",

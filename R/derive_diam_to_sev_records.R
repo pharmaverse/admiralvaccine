@@ -120,7 +120,7 @@
 #' @keywords der_rec
 #' @family der_rec
 #'
-derive_diam_to_sev_records <- function(dataset = NULL,
+derive_diam_to_sev_records <- function(dataset,
                                        diam_code = "DIAMETER",
                                        faobj_values = c("REDNESS", "SWELLING"),
                                        testcd_sev = "SEV",
