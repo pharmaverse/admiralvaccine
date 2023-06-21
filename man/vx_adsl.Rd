@@ -3,7 +3,7 @@
 \docType{data}
 \name{vx_adsl}
 \alias{vx_adsl}
-\title{Vx - Subject Level Analysis Dataset}
+\title{Subject Level Analysis - Vaccine Specific}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 47 columns.
 }

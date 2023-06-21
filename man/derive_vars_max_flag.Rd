@@ -11,12 +11,14 @@ derive_vars_max_flag(dataset, flag1 = "ANL01FL", flag2 = "ANL02FL")
 
 \item{flag1}{Flags the maximum record per subject per event per
 vaccination.
-\emph{Permitted value: Any variable name as a string or NULL}
+\emph{Permitted value: Any variable name as a string or NULL}.
+
 \code{NULL} denotes not to create the flag}
 
 \item{flag2}{Flags the maximum record per subject per event for Overall
 
-\emph{Permitted value: Any variable name as a string or NULL}
+\emph{Permitted value: Any variable name as a string or NULL}.
+
 \code{NULL} denotes not to create the flag}
 }
 \value{
