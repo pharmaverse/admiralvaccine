@@ -3,7 +3,8 @@
 \docType{data}
 \name{vx_suppex}
 \alias{vx_suppex}
-\title{Supplementary EX Dataset}
+\title{Supplemental Exposure
+A SDTM Supplementary EX dataset}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 9 columns.
 }
@@ -11,6 +12,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 vx_suppex
 }
 \description{
+Supplemental Exposure
 A SDTM Supplementary EX dataset
 }
 \seealso{

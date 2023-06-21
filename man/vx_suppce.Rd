@@ -3,7 +3,7 @@
 \docType{data}
 \name{vx_suppce}
 \alias{vx_suppce}
-\title{Supplementary CE Dataset}
+\title{Supplemental Clinical Events}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 9 columns.
 }

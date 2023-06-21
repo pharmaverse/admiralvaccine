@@ -3,7 +3,7 @@
 \docType{data}
 \name{vx_ce}
 \alias{vx_ce}
-\title{CE Dataset}
+\title{Clinical Events}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 44 rows and 29 columns.
 }

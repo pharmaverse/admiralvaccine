@@ -3,7 +3,7 @@
 \docType{data}
 \name{vx_dm}
 \alias{vx_dm}
-\title{DM Dataset}
+\title{Demographics}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 28 columns.
 }
