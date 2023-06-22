@@ -20,6 +20,9 @@ to develop vaccine specific domains.
 
 ## Installation
 
+The package is available from CRAN and can be installed by running
+`install.packages("admiralvaccine")`.
+
 To install the latest development version of the package directly from
 GitHub use the following code:
 

@@ -136,6 +136,7 @@ adface <- derive_vars_joined(
     filter_add = FATESTCD == "SEV",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(AVAL),
+    check_type = "none",
     mode = "last",
     set_values_to = exprs(
       FATEST = "Maximum Severity",
@@ -147,6 +148,7 @@ adface <- derive_vars_joined(
     filter_add = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
     by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
     order = exprs(AVAL),
+    check_type = "none",
     mode = "last",
     set_values_to = exprs(
       FATEST = "Maximum Diameter",
@@ -158,6 +160,7 @@ adface <- derive_vars_joined(
     filter_add = FAOBJ == "FEVER",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(VSSTRESN),
+    check_type = "none",
     mode = "last",
     set_values_to = exprs(
       FATEST = "Maximum Temperature",
