@@ -53,6 +53,9 @@ To provide a complementary (to `{admiral}`) toolbox that enables users to develo
 
 ## Installation
 
+The package is available from CRAN and can be installed by running 
+`install.packages("admiralvaccine")`.
+
 To install the latest development version of the package directly from GitHub use the following code:
 
 ```r
