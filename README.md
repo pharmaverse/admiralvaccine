@@ -4,11 +4,11 @@
 
 <!-- badges: start -->
 
-[<img src="https://pharmaverse.org/shields/admiralvaccine.svg/">](https://pharmaverse.org/)
+[<img src="https://pharmaverse.org/shields/admiralvaccine.svg">](https://pharmaverse.org/)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/admiralvaccine/)](https://CRAN.R-project.org/package=admiralvaccine/)
+status](https://www.r-pkg.org/badges/version/admiralvaccine)](https://CRAN.R-project.org/package=admiralvaccine/)
 [![Test
-Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg/)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml/)
+Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml/)
 <!-- badges: end -->
 
 Vaccine extension package for ADaM in R Asset Library `{admiral}`
