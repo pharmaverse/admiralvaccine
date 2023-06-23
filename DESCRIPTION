@@ -42,9 +42,9 @@ Description: Programming vaccine specific Clinical Data Interchange
     <https://www.cdisc.org/standards/foundational/adam/adamig-v1-3-release-package>).
     The package is an extension package of the 'admiral' package.
 License: Apache License (>= 2)
-URL: https://pharmaverse.github.io/admiralvaccine,
-    https://github.com/pharmaverse/admiralvaccine
-BugReports: https://github.com/pharmaverse/admiralvaccine/issues
+URL: https://pharmaverse.github.io/admiralvaccine/,
+    https://github.com/pharmaverse/admiralvaccine/
+BugReports: https://github.com/pharmaverse/admiralvaccine/issues/
 Depends: 
     R (>= 3.5)
 Imports:

@@ -13,9 +13,9 @@ Programming vaccine specific Clinical Data Interchange Standards Consortium (CDI
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://pharmaverse.github.io/admiralvaccine}
-  \item \url{https://github.com/pharmaverse/admiralvaccine}
-  \item Report bugs at \url{https://github.com/pharmaverse/admiralvaccine/issues}
+  \item \url{https://pharmaverse.github.io/admiralvaccine/}
+  \item \url{https://github.com/pharmaverse/admiralvaccine/}
+  \item Report bugs at \url{https://github.com/pharmaverse/admiralvaccine/issues/}
 }
 
 }

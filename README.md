@@ -4,11 +4,11 @@
 
 <!-- badges: start -->
 
-[<img src="http://pharmaverse.org/shields/admiralvaccine.svg">](https://pharmaverse.org)
+[<img src="https://pharmaverse.org/shields/admiralvaccine.svg">](https://pharmaverse.org/)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/admiralvaccine)](https://CRAN.R-project.org/package=admiralvaccine)
+status](https://www.r-pkg.org/badges/version/admiralvaccine)](https://CRAN.R-project.org/package=admiralvaccine/)
 [![Test
-Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml)
+Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml/)
 <!-- badges: end -->
 
 Vaccine extension package for ADaM in R Asset Library `{admiral}`
@@ -62,7 +62,7 @@ for vaccine ADaMs.
 ## References and Documentation
 
 -   Please refer to the [{admiral} References and
-    Documentation](https://pharmaverse.github.io/admiral/main)
+    Documentation](https://pharmaverse.github.io/admiral/main/)
 
 ## R Versions
 
@@ -80,13 +80,13 @@ Here’s a summary of our strategy for this package related to R versions:
 We use the following for support and communications between user and
 developer community:
 
--   [Slack](https://app.slack.com/client/T028PB489D3/C02M8KN8269) - for
+-   [Slack](https://app.slack.com/client/T028PB489D3/C02M8KN8269/) - for
     informal discussions, Q&A and building our user community. If you
     don’t have access, use this
-    [link](https://join.slack.com/t/pharmaverse/shared_invite/zt-yv5atkr4-Np2ytJ6W_QKz_4Olo7Jo9A)
+    [link](https://join.slack.com/t/pharmaverse/shared_invite/zt-yv5atkr4-Np2ytJ6W_QKz_4Olo7Jo9A/)
     to join the pharmaverse Slack workspace
 -   [GitHub
-    Issues](https://github.com/pharmaverse/admiralvaccine/issues) - for
+    Issues](https://github.com/pharmaverse/admiralvaccine/issues/) - for
     direct feedback, enhancement requests or raising bugs
 
 ## {admiralvaccine} R Package Collaboration: Pfizer, GSK and J&J
