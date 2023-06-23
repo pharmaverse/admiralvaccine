@@ -89,7 +89,7 @@ version of {admiralvaccine} was released.
 
 ## References and Documentation
 
-* Please refer to the `r dyn_link("{admiral} References and Documentation", admiral_homepage, "index.html#references-and-documentation")`
+* Please refer to the [{admiral} References and Documentation](https://pharmaverse.github.io/admiral/main/)
 
 ## R Versions
 
