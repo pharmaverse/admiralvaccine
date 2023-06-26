@@ -50,8 +50,10 @@ previous version of {admiralvaccine} was released.
 -   All functions are created based upon the ADaM Implementation Guide
     and aim to facilitate the programming of ADaM dataset standards.
 -   Initially the package will focus on creating the reactogenicity and
-    immunogenicity domain following flat model as per CBER guidelines.In
-    future we will make enhancements as we get updates on CBER.
+    immunogenicity domain following flat model as per Center for
+    Biologics Evaluation and Research (CBER) guidelines.In future we
+    will make enhancements as we get updates on Center for Biologics
+    Evaluation and Research (CBER).
 
 ## Expectations
 
