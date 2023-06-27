@@ -3,7 +3,7 @@
 \docType{data}
 \name{vx_suppis}
 \alias{vx_suppis}
-\title{Supplemental Immunogenicity}
+\title{Supplemental Immunogenicity Specimen}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 16 rows and 10 columns.
 }

@@ -1,4 +1,4 @@
-#' Immunogenicity
+#' Immunogenicity Specimen
 #'
 #' A SDTM IS dataset
 #'
@@ -54,7 +54,7 @@
 #' @family dataset
 "vx_adsl"
 
-#' Supplemental Immunogenicity
+#' Supplemental Immunogenicity Specimen
 #'
 #' A SDTM Supplementary IS dataset
 #'
