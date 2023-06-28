@@ -33,7 +33,8 @@ Authors@R: c(
   )
 Description: Programming vaccine specific Clinical Data Interchange
     Standards Consortium (CDISC) compliant Analysis Data Model (ADaM)
-    datasets in 'R'. Flat model is followed as per CBER guidelines for
+    datasets in 'R'. Flat model is followed as per 
+    Center for Biologics Evaluation and Research (CBER) guidelines for
     creating vaccine specific domains. ADaM datasets are a mandatory part
     of any New Drug or Biologics License Application submitted to the
     United States Food and Drug Administration (FDA). Analysis derivations
