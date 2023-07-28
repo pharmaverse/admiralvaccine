@@ -2,7 +2,7 @@
 #'
 #' A SDTM IS dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_is.rda}
+#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/create_vx_data/create_is.R}
 #' @keywords dataset
 #' @family dataset
 "vx_is"
@@ -65,7 +65,7 @@
 #'
 #' A SDTM Supplementary IS dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_suppis.rda}
+#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/create_vx_data/create_suppis.R}
 #' @keywords dataset
 #' @family dataset
 "vx_suppis"
