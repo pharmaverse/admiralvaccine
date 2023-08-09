@@ -34,3 +34,56 @@
 #'             assert_symbol assert_expr_list expect_dfs_equal
 #' @importFrom metatools combine_supp
 "_PACKAGE"
+
+#' Tweak yml url
+#' @param ... Arguments from pkgdown tweak_page
+#' @keywords internal
+tweak_rdrr_url <- function(...) {
+  html <- ..1
+
+  links <- xml2::xml_find_all(html, ".//a")
+  if (length(links) == 0) {
+    return(invisible())
+  }
+
+  hrefs <- xml2::xml_attr(links, "href")
+  needs_tweak <- grepl("^https://rdrr.io/pkg/", hrefs) & xml2::url_parse(hrefs)$scheme == "https"
+
+  fix_links <- function(x) {
+    pattern <- "/pkg/(\\w+)/man/(\\w+)\\.html"
+
+    matches <- stringr::str_match(x, pattern)
+    package_name <- matches[2]
+    function_name <- matches[3]
+
+    if (!(grepl("^admiral", package_name) || package_name %in% c("matatools", "matacore"))) {
+        return(x)
+    }
+
+    sprintf("https://pharmaverse.github.io/%s/pre-release/reference/%s.html", package_name, function_name)
+  }
+
+  if (any(needs_tweak)) {
+    purrr::walk2(
+      links[needs_tweak],
+      purrr::map(hrefs[needs_tweak], fix_links),
+      xml2::xml_set_attr,
+      attr = "href"
+    )
+  }
+
+  invisible()
+}
+
+#' onLoad function
+#'
+#' This function is called automatically during package loading.
+#'
+#' @param libname lib name
+#' @param pkgname package name
+#' @noRd
+.onLoad <- function(libname, pkgname) { # nolint
+
+  # Tweak page with special custom hook.
+  setHook("UserHook::admiralci::tweak_page", tweak_rdrr_url)
+}
