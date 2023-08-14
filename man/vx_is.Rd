@@ -7,6 +7,9 @@
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 16 rows and 24 columns.
 }
+\source{
+\url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/create_vx_data/create_is.R}
+}
 \usage{
 vx_is
 }

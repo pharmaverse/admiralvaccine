@@ -7,6 +7,9 @@
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 28 columns.
 }
+\source{
+\url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_dm.rda}
+}
 \usage{
 vx_dm
 }
