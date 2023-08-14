@@ -32,3 +32,4 @@
 ^admiralvaccine\.Rcheck$
 ^admiralvaccine.*\.tar\.gz$
 ^admiralvaccine.*\.tgz$
+^\.devcontainer$
