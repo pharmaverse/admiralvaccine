@@ -13,19 +13,7 @@ vx_suppce
 \description{
 A SDTM Supplementary CE dataset
 }
-\seealso{
-Other dataset: 
-\code{\link{vx_adsl}},
-\code{\link{vx_ce}},
-\code{\link{vx_dm}},
-\code{\link{vx_ex}},
-\code{\link{vx_face}},
-\code{\link{vx_is}},
-\code{\link{vx_suppdm}},
-\code{\link{vx_suppex}},
-\code{\link{vx_suppface}},
-\code{\link{vx_suppis}},
-\code{\link{vx_vs}}
-}
-\concept{dataset}
+\concept{dataset
+#' @source
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppis.R})}
 \keyword{dataset}
