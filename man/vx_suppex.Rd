@@ -16,18 +16,12 @@ Supplemental Exposure
 A SDTM Supplementary EX dataset
 }
 \seealso{
-Other dataset: 
-\code{\link{vx_adsl}},
-\code{\link{vx_ce}},
-\code{\link{vx_dm}},
-\code{\link{vx_ex}},
-\code{\link{vx_face}},
-\code{\link{vx_is}},
-\code{\link{vx_suppce}},
-\code{\link{vx_suppdm}},
-\code{\link{vx_suppface}},
-\code{\link{vx_suppis}},
-\code{\link{vx_vs}}
+Other dataset
+#' @source
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppex.R}): 
+\code{\link{vx_suppface}}
 }
-\concept{dataset}
+\concept{dataset
+#' @source
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppex.R})}
 \keyword{dataset}
