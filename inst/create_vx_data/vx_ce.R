@@ -149,18 +149,21 @@ ce_t <- tibble::tribble(
   NA, NA, "VACCINATION 2", "2021-12-16T12:41:00", "SINCE VACCINATION", NA, NA
 )
 
-vx_ce <- ce_t %>% mutate(
-  CELNKGRP = paste(CETPTREF,"-", CETERM),
-  CECAT = "REACTOGENICITY",
-  CESCAT = ifelse(is.na(CELAT), "SYSTEMIC", "ADMINISTRATION SITE"),
-  CETPT = "DAY 7",
-  CETPTNUM = 7
-) %>%
+vx_ce <- ce_t %>%
+  mutate(
+    CELNKGRP = paste(CETPTREF, "-", CETERM),
+    CECAT = "REACTOGENICITY",
+    CESCAT = ifelse(is.na(CELAT), "SYSTEMIC", "ADMINISTRATION SITE"),
+    CETPT = "DAY 7",
+    CETPTNUM = 7
+  ) %>%
   unite(CELNKID, CETPTREF, CELOC, CELAT, CETERM, sep = "-", na.rm = T, remove = F) %>%
-  #ordering the variables
-  select(STUDYID,DOMAIN,USUBJID,CESEQ,CELNKID,CELNKGRP,CETERM,CEDECOD,CELAT,CELOC,CECAT,CESCAT,CEPRESP,
-         CEOCCUR,CESEV,CEREL,CEOUT,EPOCH,CEDTC,CESTDTC,CEENDTC,CEDUR,CETPT,CETPTNUM,CETPTREF,CERFTDTC,
-         CEEVINTX,CESTAT,CEREASND)
+  # ordering the variables
+  select(
+    STUDYID, DOMAIN, USUBJID, CESEQ, CELNKID, CELNKGRP, CETERM, CEDECOD, CELAT, CELOC, CECAT, CESCAT, CEPRESP,
+    CEOCCUR, CESEV, CEREL, CEOUT, EPOCH, CEDTC, CESTDTC, CEENDTC, CEDUR, CETPT, CETPTNUM, CETPTREF, CERFTDTC,
+    CEEVINTX, CESTAT, CEREASND
+  )
 
 dir <- tempdir()
 save(vx_ce, file = file.path(dir, "vx_ce.rda"), compress = "bzip2")
