@@ -7,6 +7,9 @@
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 9 columns.
 }
+\source{
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppex.R})
+}
 \usage{
 vx_suppface
 }
@@ -14,12 +17,18 @@ vx_suppface
 A SDTM Supplementary FACE dataset
 }
 \seealso{
-Other dataset
-#' @source
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/218_data_source\%40main/inst/create_vx_data/vx_suppex.R}): 
-\code{\link{vx_suppex}}
+Other dataset: 
+\code{\link{vx_adsl}},
+\code{\link{vx_ce}},
+\code{\link{vx_dm}},
+\code{\link{vx_ex}},
+\code{\link{vx_face}},
+\code{\link{vx_is}},
+\code{\link{vx_suppce}},
+\code{\link{vx_suppdm}},
+\code{\link{vx_suppex}},
+\code{\link{vx_suppis}},
+\code{\link{vx_vs}}
 }
-\concept{dataset
-#' @source
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/218_data_source\%40main/inst/create_vx_data/vx_suppex.R})}
+\concept{dataset}
 \keyword{dataset}
