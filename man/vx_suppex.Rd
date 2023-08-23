@@ -18,10 +18,10 @@ A SDTM Supplementary EX dataset
 \seealso{
 Other dataset
 #' @source
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppex.R}): 
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/218_data_source\%40main/inst/create_vx_data/vx_suppex.R}): 
 \code{\link{vx_suppface}}
 }
 \concept{dataset
 #' @source
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppex.R})}
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/218_data_source\%40main/inst/create_vx_data/vx_suppex.R})}
 \keyword{dataset}
