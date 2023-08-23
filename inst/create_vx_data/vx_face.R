@@ -877,7 +877,7 @@ vx_face <- ce_face1 %>%
     FAEVLINT = ifelse(FATPTNUM == 1, NA_character_, "-P1D")
   ) %>%
   unite(FALNKID, FATPTREF, FALOC, FALAT, FAOBJ, FATPT, sep = "-", na.rm = T, remove = F) %>%
-  unite(FALNKGRP, FATPTREF, FALOC, FALAT, FAOBJ, sep = "-", na.rm = T, remove = F) %>%
+  unite(FALNKGRP, FATPTREF, FALOC, FALAT, FAOBJ, sep = "-", na.rm = TRUE, remove = FALSE) %>%
   select(
     STUDYID, DOMAIN, USUBJID, FASEQ, FALNKGRP, FALAT, FALNKID, FALOC, FATESTCD, FATEST, FAOBJ,
     FACAT,
