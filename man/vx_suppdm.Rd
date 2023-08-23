@@ -7,13 +7,28 @@
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 9 columns.
 }
+\source{
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppdm.R})
+}
 \usage{
 vx_suppdm
 }
 \description{
 A SDTM Supplementary DM dataset
 }
-\concept{dataset
-#' @source
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/218_data_source\%40main/inst/create_vx_data/vx_suppdm.R})}
+\seealso{
+Other dataset: 
+\code{\link{vx_adsl}},
+\code{\link{vx_ce}},
+\code{\link{vx_dm}},
+\code{\link{vx_ex}},
+\code{\link{vx_face}},
+\code{\link{vx_is}},
+\code{\link{vx_suppce}},
+\code{\link{vx_suppex}},
+\code{\link{vx_suppface}},
+\code{\link{vx_suppis}},
+\code{\link{vx_vs}}
+}
+\concept{dataset}
 \keyword{dataset}
