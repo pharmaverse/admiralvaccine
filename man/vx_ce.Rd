@@ -8,7 +8,7 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 44 rows and 29 columns.
 }
 \source{
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_ce.R})
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/218_data_source\%40main/inst/create_vx_data/vx_ce.R})
 }
 \usage{
 vx_ce
