@@ -1,9 +1,7 @@
-
+# creating SUPPCE vaccine data
 library(tibble)
-library(tidyverse)
+library(dplyr)
 
-
-# suppce
 suppce <- tribble(
   ~STUDYID,
   "ABC"
@@ -54,5 +52,6 @@ vx_suppce <- suppce %>%
     QLABEL = "Evaluator",
     QORIG = "ASSIGNED"
   )
+
 dir <- tempdir()
 save(vx_suppce, file = file.path(dir, "vx_suppce.rda"), compress = "bzip2")
