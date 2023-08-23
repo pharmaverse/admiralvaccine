@@ -876,7 +876,7 @@ vx_face <- ce_face1 %>%
     FAEVINTX = ifelse(FATPTNUM == 1, "SINCE VACCINATION", NA_character_),
     FAEVLINT = ifelse(FATPTNUM == 1, NA_character_, "-P1D")
   ) %>%
-  unite(FALNKID, FATPTREF, FALOC, FALAT, FAOBJ, FATPT, sep = "-", na.rm = T, remove = F) %>%
+  unite(FALNKID, FATPTREF, FALOC, FALAT, FAOBJ, FATPT, sep = "-", na.rm = TRUE, remove = FALSE) %>%
   unite(FALNKGRP, FATPTREF, FALOC, FALAT, FAOBJ, sep = "-", na.rm = TRUE, remove = FALSE) %>%
   select(
     STUDYID, DOMAIN, USUBJID, FASEQ, FALNKGRP, FALAT, FALNKID, FALOC, FATESTCD, FATEST, FAOBJ,
