@@ -2,7 +2,6 @@
 #'
 #' A SDTM IS dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/create_vx_data/create_is.R}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -13,7 +12,6 @@
 #'
 #' A SDTM CE dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_ce.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -24,7 +22,6 @@
 #'
 #' A SDTM DM dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_dm.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -35,7 +32,6 @@
 #'
 #' A SDTM EX dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_ex.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -46,7 +42,6 @@
 #'
 #' A SDTM FACE dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_face.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -57,7 +52,6 @@
 #'
 #' A SDTM VS dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_vs.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -68,7 +62,6 @@
 #'
 #' A subject level analysis dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_adsl.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -79,7 +72,6 @@
 #'
 #' A SDTM Supplementary IS dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/create_vx_data/create_suppis.R}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -90,7 +82,6 @@
 #'
 #' A SDTM Supplementary CE dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_suppce.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -101,7 +92,6 @@
 #'
 #' A SDTM Supplementary DM dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_suppdm.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -111,7 +101,6 @@
 #' Supplemental Exposure
 #' A SDTM Supplementary EX dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_suppex.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
@@ -122,7 +111,6 @@
 #'
 #' A SDTM Supplementary FACE dataset
 #'
-#' @source \url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_suppface.rda}
 #' @keywords dataset
 #' @family dataset
 #' @source
