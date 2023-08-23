@@ -8,7 +8,7 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 28 rows and 23 columns.
 }
 \source{
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/218_data_source\%40main/inst/create_vx_data/vx_vs.R})
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_vs.R})
 }
 \usage{
 vx_vs
@@ -24,6 +24,10 @@ Other dataset:
 \code{\link{vx_ex}},
 \code{\link{vx_face}},
 \code{\link{vx_is}},
+\code{\link{vx_suppce}},
+\code{\link{vx_suppdm}},
+\code{\link{vx_suppex}},
+\code{\link{vx_suppface}},
 \code{\link{vx_suppis}}
 }
 \concept{dataset}
