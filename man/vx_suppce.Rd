@@ -15,5 +15,5 @@ A SDTM Supplementary CE dataset
 }
 \concept{dataset
 #' @source
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppis.R})}
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/218_data_source\%40main/inst/create_vx_data/vx_suppis.R})}
 \keyword{dataset}
