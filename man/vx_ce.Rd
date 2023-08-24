@@ -14,7 +14,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 vx_ce
 }
 \description{
-
+A SDTM CE dataset
 }
 \seealso{
 Other dataset: 
