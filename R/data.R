@@ -4,6 +4,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_is.R})
 "vx_is"
 
 #' Clinical Events
@@ -12,6 +14,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_ce.R})
 "vx_ce"
 
 #' Demographics
@@ -20,6 +24,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_dm.R})
 "vx_dm"
 
 #' Exposure
@@ -28,6 +34,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_ex.R})
 "vx_ex"
 
 #' Findings About Clinical Events
@@ -36,6 +44,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_face.R})
 "vx_face"
 
 #' Vital Signs
@@ -44,6 +54,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_vs.R})
 "vx_vs"
 
 #' Subject Level Analysis - Vaccine Specific
@@ -52,6 +64,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adsl.R})
 "vx_adsl"
 
 #' Supplemental Immunogenicity Specimen
@@ -60,6 +74,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppis.R})
 "vx_suppis"
 
 #' Supplemental Clinical Events
@@ -68,6 +84,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppce.R})
 "vx_suppce"
 
 #' Supplemental Demographics
@@ -76,6 +94,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppdm.R})
 "vx_suppdm"
 
 #' Supplemental Exposure
@@ -83,6 +103,8 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppex.R})
 "vx_suppex"
 
 #' Supplemental Findings About Clinical Events
@@ -91,4 +113,6 @@
 #'
 #' @keywords dataset
 #' @family dataset
+#' @source
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppface.R})
 "vx_suppface"
