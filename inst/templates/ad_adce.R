@@ -156,4 +156,4 @@ if (!file.exists(dir)) {
   # Create the folder
   dir.create(dir)
 }
-save(adface, file = file.path(dir, "adce.rda"), compress = "bzip2")
+save(adce, file = file.path(dir, "adce.rda"), compress = "bzip2")

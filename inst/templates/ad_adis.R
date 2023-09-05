@@ -385,4 +385,4 @@ if (!file.exists(dir)) {
   # Create the folder
   dir.create(dir)
 }
-save(adface, file = file.path(dir, "adis.rda"), compress = "bzip2")
+save(adis, file = file.path(dir, "adis.rda"), compress = "bzip2")
