@@ -8,7 +8,7 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 16 rows and 10 columns.
 }
 \source{
-\url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/create_vx_data/create_suppis.R}
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppis.R})
 }
 \usage{
 vx_suppis

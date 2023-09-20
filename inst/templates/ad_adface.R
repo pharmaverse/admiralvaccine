@@ -260,7 +260,12 @@ adface <- adface %>% select(
   starts_with("EVE"), starts_with("ANL")
 )
 
-# Save output
+# Save output ----
 
-dir <- tempdir()
+dir <- file.path(getwd(), "tmp")
+print(dir)
+if (!file.exists(dir)) {
+  # Create the folder
+  dir.create(dir)
+}
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")

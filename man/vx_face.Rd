@@ -8,7 +8,7 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 307 rows and 30 columns.
 }
 \source{
-\url{https://github.com/pharmaverse/admiralvaccine/blob/main/data/vx_face.rda}
+(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_face.R})
 }
 \usage{
 vx_face

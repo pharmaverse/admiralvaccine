@@ -168,6 +168,10 @@ if ("VAX02DT" %in% names(adsl)) {
     )
 }
 
-# Save output
-dir <- tempdir()
-save(adsl, file = file.path(dir, "vx_adsl.rda"), compress = "bzip2")
+dir <- file.path(getwd(), "tmp")
+print(dir)
+if (!file.exists(dir)) {
+  # Create the folder
+  dir.create(dir)
+}
+save(adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")
