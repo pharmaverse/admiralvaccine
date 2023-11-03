@@ -18,6 +18,7 @@ Authors@R: c(
     person("Ankur", "Jindal", role = "ctb"),
     person("Jayashree", "V", role = "ctb"),
     person("Jagadish", "Katam", role = "ctb"),
+    person("Lee", "Armishaw", role = "ctb")
     person("Andrea", "Pammolli", role = "ctb"),
     person("Daniele", "Bottigliengo", role = "ctb"),
     person("Ranya", "Ben Hsain", role = "ctb"),
