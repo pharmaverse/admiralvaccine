@@ -64,7 +64,7 @@ for vaccine ADaMs.
 ## References and Documentation
 
 -   Please refer to the [{admiral} References and
-    Documentation](https://pharmaverse.github.io/admiral/main/)
+    Documentation](https://pharmaverse.github.io/admiral/)
 
 ## R Versions
 
