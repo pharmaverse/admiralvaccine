@@ -130,10 +130,12 @@ adface <- derive_vars_joined(
     mild = 2,
     mod = 5,
     sev = 10
-  ) %>%
+  )
   # Step 9 - Deriving Maximum Severity for Local and Systemic events
-  derive_extreme_records(
-    filter_add = FATESTCD == "SEV",
+  adface <- adface %>%
+    derive_extreme_records(
+      dataset_add = adface,
+    filter = FATESTCD == "SEV",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(AVAL),
     check_type = "none",
@@ -142,10 +144,12 @@ adface <- derive_vars_joined(
       FATEST = "Maximum Severity",
       FATESTCD = "MAXSEV"
     )
-  ) %>%
+  )
   # Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
+  adface <- adface %>%
   derive_extreme_records(
-    filter_add = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+    dataset_add = adface,
+    filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
     by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
     order = exprs(AVAL),
     check_type = "none",
@@ -157,7 +161,8 @@ adface <- derive_vars_joined(
   ) %>%
   # Step 11 - Deriving Maximum Temperature
   derive_extreme_records(
-    filter_add = FAOBJ == "FEVER",
+    dataset_add = adface,
+    filter = FAOBJ == "FEVER",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(VSSTRESN),
     check_type = "none",
