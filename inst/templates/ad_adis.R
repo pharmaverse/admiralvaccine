@@ -357,7 +357,8 @@ adis_trt <- derive_vars_joined(
   adis_crit,
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
-  filter_join = ADT >= APERSDT & ADT <= APEREDT
+  filter_join = ADT >= APERSDT & ADT <= APEREDT,
+  join_type = "after"
 )
 
 
