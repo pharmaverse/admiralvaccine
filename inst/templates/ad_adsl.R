@@ -169,5 +169,9 @@ if ("VAX02DT" %in% names(adsl)) {
 }
 
 # Save output
-dir <- tempdir()
-save(adsl, file = file.path(dir, "vx_adsl.rda"), compress = "bzip2")
+dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+if (!file.exists(dir)) {
+  # Create the folder
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+}
+save(adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")

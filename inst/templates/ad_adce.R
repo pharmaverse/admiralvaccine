@@ -150,5 +150,9 @@ adce <- adce05 %>%
 
 # Save output
 
-dir <- tempdir() # Change to whichever directory you want to save the dataset in
-saveRDS(adce, file = file.path(dir, "adce.rds"), compress = "bzip2")
+dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+if (!file.exists(dir)) {
+  # Create the folder
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+}
+save(adce, file = file.path(dir, "adce.rda"), compress = "bzip2")

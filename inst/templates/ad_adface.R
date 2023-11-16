@@ -262,5 +262,9 @@ adface <- adface %>% select(
 
 # Save output
 
-dir <- tempdir()
+dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+if (!file.exists(dir)) {
+  # Create the folder
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+}
 save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
