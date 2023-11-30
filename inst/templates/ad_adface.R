@@ -105,7 +105,7 @@ adface <- derive_vars_joined(
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
   filter_join = ADT >= APERSDT & ADT <= APEREDT,
-  join_type = "after"
+  join_type = "all"
 ) %>%
   # Step 7 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN, ATPT,
   # ATPTN)
