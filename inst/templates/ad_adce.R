@@ -85,7 +85,7 @@ adce03 <-
     dataset_add = adperiods,
     by_vars = exprs(STUDYID, USUBJID),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT,
-    join_type = "after"
+    join_type = "all"
   ) %>%
   mutate(
     APERSTDY = as.integer(ASTDT - APERSDT) + 1,
