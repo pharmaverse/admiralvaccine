@@ -243,7 +243,7 @@ adface <- derive_vars_joined(
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
   filter_join = ADT >= APERSDT & ADT <= APEREDT,
-  join_type = "after"
+  join_type = "all"
 )
 ```
 
@@ -334,7 +334,7 @@ In this step, we will derive maximum records for severity, diameter, temperature
 adface <- derive_extreme_records(
   dataset = adface,
   dataset_add = adface,
-  filter = FATESTCD == "SEV",
+  filter_add = FATESTCD == "SEV",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   order = exprs(AVAL),
   check_type = "none",
@@ -348,7 +348,7 @@ adface <- derive_extreme_records(
 adface <- derive_extreme_records(
   dataset = adface,
   dataset_add = adface,
-  filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+  filter_add = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
   by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
   order = exprs(AVAL),
   check_type = "none",
@@ -361,6 +361,7 @@ adface <- derive_extreme_records(
 
 adface <- derive_extreme_records(
   dataset = adface,
+  dataset_add = adface,
   filter_add = FAOBJ == "FEVER",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   order = exprs(VSSTRESN),
