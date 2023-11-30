@@ -358,9 +358,8 @@ adis_trt <- derive_vars_joined(
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
   filter_join = ADT >= APERSDT & ADT <= APEREDT,
-  join_type = "after"
+  join_type = "all"
 )
-
 
 # STEP 11 Derivation of PPSRFL ----
 adis_ppsrfl <- adis_trt %>%
