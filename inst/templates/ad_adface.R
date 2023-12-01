@@ -263,6 +263,7 @@ adface <- adface %>% select(
 # Save output
 
 dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+# Change to whichever directory you want to save the dataset in
 if (!file.exists(dir)) {
   # Create the folder
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
