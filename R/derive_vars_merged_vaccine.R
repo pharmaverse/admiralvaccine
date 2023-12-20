@@ -61,10 +61,11 @@
 #' library(tibble)
 #' library(admiral)
 #' library(dplyr)
+#' library(pharmaversesdtm)
 #'
 #' derive_vars_merged_vaccine(
-#'   dataset = vx_face,
-#'   dataset_ex = vx_ex,
+#'   dataset = face_vaccine,
+#'   dataset_ex = ex_vaccine,
 #'   dataset_supp = NULL,
 #'   dataset_suppex = NULL,
 #'   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
@@ -75,10 +76,10 @@
 #'   head(10)
 #'
 #' derive_vars_merged_vaccine(
-#'   dataset = vx_face,
-#'   dataset_ex = vx_ex,
-#'   dataset_supp = vx_suppface,
-#'   dataset_suppex = vx_suppex,
+#'   dataset = face_vaccine,
+#'   dataset_ex = ex_vaccine,
+#'   dataset_supp = suppface_vaccine,
+#'   dataset_suppex = suppex_vaccine,
 #'   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
 #'   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
 #'   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
