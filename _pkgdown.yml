@@ -43,7 +43,7 @@ reference:
 
 navbar:
   structure:
-    left: [getstarted, reference, articles, community, news]
+    left: [getstarted, reference, articles, news]
     right: [search, slack, newissue, github]
   components:
     getstarted:
@@ -52,13 +52,6 @@ navbar:
     reference:
       text: Reference
       href: reference/index.html
-    community:
-      text: Community
-      menu:
-      - text: Find us on Slack
-        href: https://app.slack.com/client/T028PB489D3/C02M8KN8269
-      - text: Welcome to the Pharmaverse
-        href: https://pharmaverse.org/
     articles:
       text: User Guides
       menu:

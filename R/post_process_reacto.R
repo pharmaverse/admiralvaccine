@@ -46,7 +46,7 @@ post_process_reacto <- function(dataset,
   favars <- names(dataset %>% select(starts_with("FA"), FATESTCD))
 
   dataset %>% mutate(across(
-    favars,
+    all_of(favars),
     function(x) ifelse(!!filter_dataset, NA, x)
   ))
 }

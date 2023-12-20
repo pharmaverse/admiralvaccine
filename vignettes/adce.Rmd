@@ -41,13 +41,13 @@ library(admiral)
 library(dplyr)
 library(lubridate)
 library(admiralvaccine)
+library(pharmaversesdtm)
 
-data("vx_ce")
-data("vx_adsl")
+data("ce_vaccine")
+data("admiralvaccine_adsl")
 
-
-adsl <- vx_adsl
-ce <- vx_ce
+adsl <- admiralvaccine_adsl
+ce <- ce_vaccine
 
 ce <- convert_blanks_to_na(ce)
 adsl <- convert_blanks_to_na(adsl)

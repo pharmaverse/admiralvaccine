@@ -9,9 +9,9 @@
 library(tibble)
 library(dplyr)
 library(stringr)
-library(admiraldev)
 library(admiral)
 library(admiralvaccine)
+library(pharmaversesdtm)
 
 
 # Load source datasets
@@ -20,23 +20,23 @@ library(admiralvaccine)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral vaccine mock SDTM data and ADSL vaccine data
 
-data("vx_ex")
-data("vx_vs")
-data("vx_face")
-data("vx_adsl")
-data("vx_suppex")
-data("vx_suppface")
+data("ex_vaccine")
+data("vs_vaccine")
+data("face_vaccine")
+data("admiralvaccine_adsl")
+data("suppex_vaccine")
+data("suppface_vaccine")
 
 # Missing character values from SAS appear as "" characters in R, instead of appearing
 # as NA values. Further details can be obtained via the following link:
 # https://pharmaverse.github.io/admiral/cran-release/articles/admiral.html#handling-of-missing-values # nolint
 
-ex <- convert_blanks_to_na(vx_ex)
-vs <- convert_blanks_to_na(vx_vs)
-face <- convert_blanks_to_na(vx_face)
-adsl <- convert_blanks_to_na(vx_adsl)
-suppface <- convert_blanks_to_na(vx_suppface)
-suppex <- convert_blanks_to_na(vx_suppex)
+ex <- convert_blanks_to_na(ex_vaccine)
+vs <- convert_blanks_to_na(vs_vaccine)
+face <- convert_blanks_to_na(face_vaccine)
+adsl <- convert_blanks_to_na(admiralvaccine_adsl)
+suppface <- convert_blanks_to_na(suppface_vaccine)
+suppex <- convert_blanks_to_na(suppex_vaccine)
 
 # creating a user defined function for deriving AVAL from AVALC
 
@@ -77,7 +77,7 @@ adface <- derive_vars_merged_vaccine(
   ) %>%
   # Step 4 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not present in FACE
   derive_fever_records(
-    dataset_source = vs,
+    dataset_source = ungroup(vs),
     filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
     faobj = "FEVER"
   ) %>%
@@ -266,12 +266,14 @@ adface <- adface %>% select(
   starts_with("EVE"), starts_with("ANL")
 )
 
+admiralvaccine_adface <- adface
+
 # Save output ----
 
-dir <- file.path(getwd(), "tmp")
-print(dir)
+dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+# Change to whichever directory you want to save the dataset in
 if (!file.exists(dir)) {
   # Create the folder
-  dir.create(dir)
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
-save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
+save(admiralvaccine_adface, file = file.path(dir, "adface.rda"), compress = "bzip2")

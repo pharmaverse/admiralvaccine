@@ -4,24 +4,22 @@
 #
 # Input: dm, ex
 library(admiral)
-library(admiral.test) # Contains example datasets from the CDISC pilot project
+library(pharmaversesdtm)
+library(admiralvaccine)
 library(dplyr)
 library(lubridate)
 library(stringr)
-library(tidyr)
-library(admiraldev)
-library(admiralvaccine)
 # Load source datasets
 
 # Use e.g. haven::read_sas to read in .sas7bdat, or other suitable functions
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-data("vx_dm")
-data("vx_ex")
+data("dm_vaccine")
+data("ex_vaccine")
 
-dm <- vx_dm
-ex <- vx_ex
+dm <- dm_vaccine
+ex <- ex_vaccine
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -168,10 +166,14 @@ if ("VAX02DT" %in% names(adsl)) {
     )
 }
 
-dir <- file.path(getwd(), "tmp")
-print(dir)
+admiralvaccine_adsl <- adsl
+
+# Save output ----
+
+dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+# Change to whichever directory you want to save the dataset in
 if (!file.exists(dir)) {
   # Create the folder
-  dir.create(dir)
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
-save(adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")
+save(admiralvaccine_adsl, file = file.path(dir, "adsl.rda"), compress = "bzip2")
