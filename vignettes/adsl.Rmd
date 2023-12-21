@@ -78,7 +78,7 @@ dataset_vignette(
 The `{admiral}` core package has separate functions to handle period variables since these variables are study specific.
 
 See the ["Visit and Period Variables"
-vignette](https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html) for more information.
+vignette](https://pharmaverse.github.io/admiral/articles/visits_periods.html) for more information.
 
 If the variables are not derived based on a period reference dataset, they may
 be derived at a later point of the flow. For example, phases like "Treatment
@@ -270,7 +270,7 @@ The following functions are helpful for many ADSL derivations:
   - `derive_var_merged_exist_flag()` - Merge an Existence Flag
   - `derive_var_merged_summary()` - Merge a Summary Variable
 
-See also [Generic Functions](https://pharmaverse.github.io/admiral/cran-release/articles/generic.html).
+See also [Generic Functions](https://pharmaverse.github.io/admiral/articles/generic.html).
 
 ## Add Labels and Attributes {#attributes}
 

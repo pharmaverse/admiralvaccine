@@ -8,6 +8,7 @@ library(dplyr)
 library(lubridate)
 library(admiralvaccine)
 library(pharmaversesdtm)
+library(metatools)
 
 
 # Load source datasets ----
