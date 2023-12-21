@@ -9,9 +9,9 @@
 library(tibble)
 library(dplyr)
 library(stringr)
-library(admiraldev)
 library(admiral)
 library(admiralvaccine)
+library(pharmaversesdtm)
 
 
 # Load source datasets
@@ -20,23 +20,23 @@ library(admiralvaccine)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral vaccine mock SDTM data and ADSL vaccine data
 
-data("vx_ex")
-data("vx_vs")
-data("vx_face")
-data("vx_adsl")
-data("vx_suppex")
-data("vx_suppface")
+data("ex_vaccine")
+data("vs_vaccine")
+data("face_vaccine")
+data("admiralvaccine_adsl")
+data("suppex_vaccine")
+data("suppface_vaccine")
 
 # Missing character values from SAS appear as "" characters in R, instead of appearing
 # as NA values. Further details can be obtained via the following link:
 # https://pharmaverse.github.io/admiral/cran-release/articles/admiral.html#handling-of-missing-values # nolint
 
-ex <- convert_blanks_to_na(vx_ex)
-vs <- convert_blanks_to_na(vx_vs)
-face <- convert_blanks_to_na(vx_face)
-adsl <- convert_blanks_to_na(vx_adsl)
-suppface <- convert_blanks_to_na(vx_suppface)
-suppex <- convert_blanks_to_na(vx_suppex)
+ex <- convert_blanks_to_na(ex_vaccine)
+vs <- convert_blanks_to_na(vs_vaccine)
+face <- convert_blanks_to_na(face_vaccine)
+adsl <- convert_blanks_to_na(admiralvaccine_adsl)
+suppface <- convert_blanks_to_na(suppface_vaccine)
+suppex <- convert_blanks_to_na(suppex_vaccine)
 
 # creating a user defined function for deriving AVAL from AVALC
 
@@ -77,7 +77,7 @@ adface <- derive_vars_merged_vaccine(
   ) %>%
   # Step 4 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not present in FACE
   derive_fever_records(
-    dataset_source = vs,
+    dataset_source = ungroup(vs),
     filter_source = VSCAT == "REACTOGENICITY" & VSTESTCD == "TEMP",
     faobj = "FEVER"
   ) %>%
@@ -104,7 +104,8 @@ adface <- derive_vars_joined(
   adface,
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
-  filter_join = ADT >= APERSDT & ADT <= APEREDT
+  filter_join = ADT >= APERSDT & ADT <= APEREDT,
+  join_type = "all"
 ) %>%
   # Step 7 - Creating the direct mapping variables (AVAL, AVALC, ATPTREF, AVISIT, AVISITN, ATPT,
   # ATPTN)
@@ -130,10 +131,12 @@ adface <- derive_vars_joined(
     mild = 2,
     mod = 5,
     sev = 10
-  ) %>%
-  # Step 9 - Deriving Maximum Severity for Local and Systemic events
+  )
+# Step 9 - Deriving Maximum Severity for Local and Systemic events
+adface <- adface %>%
   derive_extreme_records(
-    filter_add = FATESTCD == "SEV",
+    dataset_add = adface,
+    filter = FATESTCD == "SEV",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(AVAL),
     check_type = "none",
@@ -142,10 +145,12 @@ adface <- derive_vars_joined(
       FATEST = "Maximum Severity",
       FATESTCD = "MAXSEV"
     )
-  ) %>%
-  # Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
+  )
+# Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
+adface <- adface %>%
   derive_extreme_records(
-    filter_add = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+    dataset_add = adface,
+    filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
     by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
     order = exprs(AVAL),
     check_type = "none",
@@ -157,7 +162,8 @@ adface <- derive_vars_joined(
   ) %>%
   # Step 11 - Deriving Maximum Temperature
   derive_extreme_records(
-    filter_add = FAOBJ == "FEVER",
+    dataset_add = adface,
+    filter = FAOBJ == "FEVER",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(VSSTRESN),
     check_type = "none",
@@ -260,7 +266,14 @@ adface <- adface %>% select(
   starts_with("EVE"), starts_with("ANL")
 )
 
-# Save output
+admiralvaccine_adface <- adface
 
-dir <- tempdir()
-save(adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
+# Save output ----
+
+dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+# Change to whichever directory you want to save the dataset in
+if (!file.exists(dir)) {
+  # Create the folder
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+}
+save(admiralvaccine_adface, file = file.path(dir, "adface.rda"), compress = "bzip2")

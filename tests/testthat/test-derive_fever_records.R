@@ -30,7 +30,7 @@ test_that('derive_fever_records Test 1: How the actual dataset is generated
       FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N")
     ) %>%
     rename(FATPT = VSTPT) %>%
-    select(-(starts_with("VS")), VSSTRESN)
+    select(-(starts_with("VS")), VSSTRESN) # nolint
 
 
   expected <- bind_rows(face, expected1)

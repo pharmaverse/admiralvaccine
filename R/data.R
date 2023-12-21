@@ -1,118 +1,39 @@
-#' Immunogenicity Specimen
+#' Subject Level Analysis Dataset - Vaccine Specific
 #'
-#' A SDTM IS dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_is.R})
-"vx_is"
-
-#' Clinical Events
-#'
-#' A SDTM CE dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_ce.R})
-"vx_ce"
-
-#' Demographics
-#'
-#' A SDTM DM dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_dm.R})
-"vx_dm"
-
-#' Exposure
-#'
-#' A SDTM EX dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_ex.R})
-"vx_ex"
-
-#' Findings About Clinical Events
-#'
-#' A SDTM FACE dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_face.R})
-"vx_face"
-
-#' Vital Signs
-#'
-#' A SDTM VS dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_vs.R})
-"vx_vs"
-
-#' Subject Level Analysis - Vaccine Specific
-#'
-#' A subject level analysis dataset
+#' An example Subject Level analysis dataset
 #'
 #' @keywords dataset
 #' @family dataset
 #' @source
 #' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adsl.R})
-"vx_adsl"
+"admiralvaccine_adsl"
 
-#' Supplemental Immunogenicity Specimen
+#' Clinical Events Analysis Dataset - Vaccine Specific
 #'
-#' A SDTM Supplementary IS dataset
+#' An example Clinical Events analysis dataset
 #'
 #' @keywords dataset
 #' @family dataset
 #' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppis.R})
-"vx_suppis"
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adce.R})
+"admiralvaccine_adce"
 
-#' Supplemental Clinical Events
+#' Findings About Clinical Events Analysis Dataset - Vaccine Specific
 #'
-#' A SDTM Supplementary CE dataset
+#' An example Findings About Clinical Events analysis dataset
 #'
 #' @keywords dataset
 #' @family dataset
 #' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppce.R})
-"vx_suppce"
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adface.R})
+"admiralvaccine_adface"
 
-#' Supplemental Demographics
+#' Immunogenicity Specimen Assessments Analysis Dataset - Vaccine Specific
 #'
-#' A SDTM Supplementary DM dataset
+#' An example Immunogenicity Specimen Assessments analysis dataset
 #'
 #' @keywords dataset
 #' @family dataset
 #' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppdm.R})
-"vx_suppdm"
-
-#' Supplemental Exposure
-#' A SDTM Supplementary EX dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppex.R})
-"vx_suppex"
-
-#' Supplemental Findings About Clinical Events
-#'
-#' A SDTM Supplementary FACE dataset
-#'
-#' @keywords dataset
-#' @family dataset
-#' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/create_vx_data/vx_suppface.R})
-"vx_suppface"
+#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adis.R})
+"admiralvaccine_adis"
