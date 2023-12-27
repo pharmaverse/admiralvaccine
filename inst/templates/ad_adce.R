@@ -7,6 +7,7 @@ library(admiral)
 library(dplyr)
 library(lubridate)
 library(admiralvaccine)
+library(pharmaversesdtm)
 
 
 # Load source datasets
@@ -15,12 +16,12 @@ library(admiralvaccine)
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 
-data("vx_ce")
-data("vx_adsl")
+data("ce_vaccine")
+data("admiralvaccine_adsl")
 
 
-adsl <- vx_adsl
-ce <- vx_ce
+adsl <- admiralvaccine_adsl
+ce <- ce_vaccine
 
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
@@ -84,7 +85,8 @@ adce03 <-
     adce02,
     dataset_add = adperiods,
     by_vars = exprs(STUDYID, USUBJID),
-    filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT
+    filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT,
+    join_type = "all"
   ) %>%
   mutate(
     APERSTDY = as.integer(ASTDT - APERSDT) + 1,
@@ -148,12 +150,14 @@ adce <- adce05 %>%
   )
 
 
+admiralvaccine_adce <- adce
+
 # Save output ----
 
-dir <- file.path(getwd(), "tmp")
-print(dir)
+dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+# Change to whichever directory you want to save the dataset in
 if (!file.exists(dir)) {
   # Create the folder
-  dir.create(dir)
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
-save(adce, file = file.path(dir, "adce.rda"), compress = "bzip2")
+save(admiralvaccine_adce, file = file.path(dir, "adce.rda"), compress = "bzip2")

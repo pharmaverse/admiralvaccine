@@ -7,13 +7,14 @@ library(admiral)
 library(dplyr)
 library(lubridate)
 library(admiralvaccine)
+library(pharmaversesdtm)
 library(metatools)
 
 
 # Load source datasets ----
-data("vx_is")
-data("vx_suppis")
-data("vx_adsl")
+data("is_vaccine")
+data("suppis_vaccine")
+data("admiralvaccine_adsl")
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -21,9 +22,9 @@ data("vx_adsl")
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 
 
-is <- convert_blanks_to_na(vx_is)
-suppis <- convert_blanks_to_na(vx_suppis)
-adsl <- convert_blanks_to_na(vx_adsl)
+is <- convert_blanks_to_na(is_vaccine)
+suppis <- convert_blanks_to_na(suppis_vaccine)
+adsl <- convert_blanks_to_na(admiralvaccine_adsl)
 
 
 # Derivations ----
@@ -357,9 +358,9 @@ adis_trt <- derive_vars_joined(
   adis_crit,
   dataset_add = period_ref,
   by_vars = exprs(STUDYID, USUBJID),
-  filter_join = ADT >= APERSDT & ADT <= APEREDT
+  filter_join = ADT >= APERSDT & ADT <= APEREDT,
+  join_type = "all"
 )
-
 
 # STEP 11 Derivation of PPSRFL ----
 adis_ppsrfl <- adis_trt %>%
@@ -369,20 +370,23 @@ adis_ppsrfl <- adis_trt %>%
 # STEP 12  Merge with ADSL ----
 
 # Get list of ADSL variables not to be added to ADIS
-vx_adsl_vars <- exprs(RFSTDTC, PPROTFL)
+adsl_vars <- exprs(RFSTDTC, PPROTFL)
 
 adis <- derive_vars_merged(
   dataset = adis_ppsrfl,
-  dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
+  dataset_add = select(admiralvaccine_adsl, !!!negate_vars(adsl_vars)),
   by_vars = exprs(STUDYID, USUBJID)
 )
 
 
+admiralvaccine_adis <- adis
+
 # Save output ----
-dir <- file.path(getwd(), "tmp")
-print(dir)
+
+dir <- tools::R_user_dir("admiralvaccine_templates_data", which = "cache")
+# Change to whichever directory you want to save the dataset in
 if (!file.exists(dir)) {
   # Create the folder
-  dir.create(dir)
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
-save(adis, file = file.path(dir, "adis.rda"), compress = "bzip2")
+save(admiralvaccine_adis, file = file.path(dir, "adis.rda"), compress = "bzip2")

@@ -124,7 +124,7 @@ derive_fever_records <- function(dataset,
         ),
         FASTRESC = FAORRES
       ) %>%
-      select(-(starts_with("VS")), VSSTRESN)
+      select(-(starts_with("VS")), VSSTRESN) # nolint
 
     bind_rows(dataset, fev_rec)
   } else if (row_rec > 0) {

@@ -33,3 +33,4 @@
 ^admiralvaccine.*\.tar\.gz$
 ^admiralvaccine.*\.tgz$
 ^\.devcontainer$
+^doc$
