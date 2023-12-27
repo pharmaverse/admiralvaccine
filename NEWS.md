@@ -1,3 +1,18 @@
+# admiralvaccine 1.0.0
+
+## Documentation
+
+- All vignettes and templates were updated to be in line with the changes in
+`{admiral}` (see [Breaking
+Changes](https://pharmaverse.github.io/admiral/news/index.html#breaking-changes-1-0-0)
+for details) (#229).
+
+- Dummy SDTM data have been replaced with data available in `{pharmaversesdtm}` (#228).
+
+## Various
+
+- Website now has button/links to Slack channel and GitHub Issues (#225).
+
 # admiralvaccine 0.1.0
 
 ## New Features
