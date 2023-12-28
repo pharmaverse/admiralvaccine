@@ -33,6 +33,7 @@ Authors:
   \item Ilse Augustyns
   \item Kalyani Bodicherla
   \item Hilde Delanghe
+  \item Lee Armishaw
 }
 
 Other contributors:
@@ -42,7 +43,6 @@ Other contributors:
   \item Ankur Jindal [contributor]
   \item Jayashree V [contributor]
   \item Jagadish Katam [contributor]
-  \item Lee Armishaw [contributor]
   \item Andrea Pammolli [contributor]
   \item Daniele Bottigliengo [contributor]
   \item Ranya Ben Hsain [contributor]
