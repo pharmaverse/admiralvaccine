@@ -5,7 +5,7 @@
 #' @keywords dataset
 #' @family dataset
 #' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adsl.R})
+#' (\url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adsl.R})
 "admiralvaccine_adsl"
 
 #' Clinical Events Analysis Dataset - Vaccine Specific
@@ -15,7 +15,7 @@
 #' @keywords dataset
 #' @family dataset
 #' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adce.R})
+#' (\url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adce.R})
 "admiralvaccine_adce"
 
 #' Findings About Clinical Events Analysis Dataset - Vaccine Specific
@@ -25,7 +25,7 @@
 #' @keywords dataset
 #' @family dataset
 #' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adface.R})
+#' (\url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adface.R})
 "admiralvaccine_adface"
 
 #' Immunogenicity Specimen Assessments Analysis Dataset - Vaccine Specific
@@ -35,5 +35,5 @@
 #' @keywords dataset
 #' @family dataset
 #' @source
-#' (\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adis.R})
+#' (\url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adis.R})
 "admiralvaccine_adis"
