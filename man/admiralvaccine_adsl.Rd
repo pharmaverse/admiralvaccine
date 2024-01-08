@@ -8,7 +8,7 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 46 columns.
 }
 \source{
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adsl.R})
+(\url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adsl.R})
 }
 \usage{
 admiralvaccine_adsl

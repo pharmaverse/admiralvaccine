@@ -8,7 +8,7 @@
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 64 rows and 102 columns.
 }
 \source{
-(\url{https://github.com/pharmaverse/admiralvaccine/tree/main/inst/templates/ad_adis.R})
+(\url{https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adis.R})
 }
 \usage{
 admiralvaccine_adis
