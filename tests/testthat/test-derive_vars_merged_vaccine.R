@@ -162,7 +162,10 @@ test_that("derive_vars_merged_vaccine Test 2: Check if supp datasets merged
     by_vars_adms = exprs(USUBJID, FATPTREF = EXTPTREF, FALOC = EXLOC, FALAT = EXLAT),
     ex_vars = exprs(EXTRT, EXDOSE, EXTDV)
   )
-  expect_identical(actual, expected)
+  expect_dfs_equal(actual, expected, keys = c(
+    "USUBJID", "FAOBJ", "FATESTCD", "FATPTREF",
+    "FALOC", "FALAT"
+  ))
 })
 
 
