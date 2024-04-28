@@ -78,7 +78,6 @@ Suggests:
     rmarkdown,
     roxygen2,
     spelling,
-    styler,
     testthat,
     tibble,
     usethis
