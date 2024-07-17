@@ -73,7 +73,7 @@ adface <- derive_vars_merged_vaccine(
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   ) %>%
   # Step 4 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not present in FACE
   derive_fever_records(
@@ -103,7 +103,7 @@ period_ref <- create_period_dataset(
 adface <- derive_vars_joined(
   adface,
   dataset_add = period_ref,
-  by_vars = exprs(STUDYID, USUBJID),
+  by_vars = get_admiral_option("subject_keys"),
   filter_join = ADT >= APERSDT & ADT <= APEREDT,
   join_type = "all"
 ) %>%
@@ -208,7 +208,7 @@ lookup_dataset <- tribble(
   "MAXDIAM", "MDISW", 29, "Maximum Diameter", "SWELLING",
   "MAXSEV", "MAXSPIS", 30, "Maximum Severity", "PAIN AT INJECTION SITE",
   "OCCUR", "OCCVOM", 31, "Occurrence Indicator", "VOMITING",
-  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING",
+  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING"
 )
 
 adface <- derive_vars_params(
@@ -237,7 +237,7 @@ adsl <- adsl %>%
 adface <- derive_vars_merged(
   dataset = adface,
   dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
-  by_vars = exprs(STUDYID, USUBJID)
+  by_vars = get_admiral_option("subject_keys")
 ) %>%
   # Step 16 post processing
   post_process_reacto(
