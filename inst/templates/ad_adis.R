@@ -11,12 +11,14 @@ library(lubridate)
 library(rlang)
 library(admiralvaccine)
 library(metatools)
+library(pharmaversesdtm)
 
 
 # Load source datasets ----
-data("vx_is")
-data("vx_suppis")
-data("vx_adsl")
+data("is_vaccine")
+data("suppis_vaccine")
+data("admiralvaccine_adsl")
+
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -24,9 +26,9 @@ data("vx_adsl")
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 
 
-is <- convert_blanks_to_na(vx_is)
-suppis <- convert_blanks_to_na(vx_suppis)
-adsl <- convert_blanks_to_na(vx_adsl)
+is <- convert_blanks_to_na(is_vaccine)
+suppis <- convert_blanks_to_na(suppis_vaccine)
+adsl <- convert_blanks_to_na(admiralvaccine_adsl)
 
 
 # Derivations ----
