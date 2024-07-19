@@ -363,7 +363,7 @@ vx_adsl_vars <- exprs(RFSTDTC, PPROTFL)
 
 adis <- derive_vars_merged(
   dataset = adis,
-  dataset_add = select(vx_adsl, !!!negate_vars(vx_adsl_vars)),
+  dataset_add = select(adsl, !!!negate_vars(vx_adsl_vars)),
   by_vars = get_admiral_option("subject_keys")
 )
 
