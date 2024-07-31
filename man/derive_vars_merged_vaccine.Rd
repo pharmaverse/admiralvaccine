@@ -9,36 +9,22 @@ derive_vars_merged_vaccine(
   dataset_ex,
   by_vars_sys,
   by_vars_adms,
-  dataset_supp = NULL,
-  dataset_suppex = NULL,
   ex_vars
 )
 }
 \arguments{
-\item{dataset}{Input dataset
+\item{dataset}{Input dataset which should have been combined with the supplementary(if exists).
 
 The variables specified by the \code{by_vars} argument inside the
 \code{derive_vars_merged}are expected.}
 
-\item{dataset_ex}{EX dataset to merge with the input dataset.
+\item{dataset_ex}{\code{ex} dataset(combined with \code{suppex}) to merge with the input dataset.
 
 The variables specified by the \code{ex_vars} argument are expected.}
 
 \item{by_vars_sys}{Grouping variables for systemic events.}
 
 \item{by_vars_adms}{Grouping variables for administration site events.}
-
-\item{dataset_supp}{Supplementary input dataset
-
-By default \code{dataset_supp} will be \code{NULL}, user has to provide
-supplementary dataset to merge it back with original input dataset
-if they have supplementary dataset in their case.}
-
-\item{dataset_suppex}{Supplementary EX dataset
-
-By default \code{dataset_suppex} will be \code{NULL}, user has to provide
-supplementary dataset to merge it back with original \code{EX} dataset
-if they have supplementary dataset in their case.}
 
 \item{ex_vars}{Variables to be added to the output dataset from EX dataset}
 }
@@ -61,8 +47,7 @@ is expected to handle if any pre-processing is required.
 Only the variables passed to the \code{ex_vars} will be added in the output dataset
 
 If the input dataset has multiple vaccination for a subject at same visit
-then this function will not merge ex dataset and will return only the input
-dataset merged with its supplementary dataset.
+then this function will not merge ex dataset and will return the \code{dataset}.
 }
 \examples{
 
@@ -74,8 +59,6 @@ library(pharmaversesdtm)
 derive_vars_merged_vaccine(
   dataset = face_vaccine,
   dataset_ex = ex_vaccine,
-  dataset_supp = NULL,
-  dataset_suppex = NULL,
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
@@ -86,8 +69,6 @@ derive_vars_merged_vaccine(
 derive_vars_merged_vaccine(
   dataset = face_vaccine,
   dataset_ex = ex_vaccine,
-  dataset_supp = suppface_vaccine,
-  dataset_suppex = suppex_vaccine,
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
