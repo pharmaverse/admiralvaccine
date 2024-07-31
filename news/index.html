@@ -69,7 +69,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="admiralvaccine-development-version">admiralvaccine (development version)<a class="anchor" aria-label="anchor" href="#admiralvaccine-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.0" id="admiralvaccine-030">admiralvaccine 0.3.0<a class="anchor" aria-label="anchor" href="#admiralvaccine-030"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-3-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-3-0"></a></h3>
+<ul><li>Removed <code>dataset_supp</code> and <code>dataset_suppex</code> arguments from <code><a href="../reference/derive_vars_merged_vaccine.html">derive_vars_merged_vaccine()</a></code> as we are not combining the parental with supplementary inside the function, but can be optionally combined in the ADCE, ADFACE and ADIS templates using <code><a href="https://pharmaverse.github.io/metatools/reference/combine_supp.html" class="external-link">combine_supp()</a></code> function from {metatools}. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/246" class="external-link">#246</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="updates-to-templates-0-3-0">Updates to Templates<a class="anchor" aria-label="anchor" href="#updates-to-templates-0-3-0"></a></h3>
+<ul><li>Supplementary domains are now optionally combined with parental domain within the template. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/246" class="external-link">#246</a>)</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="admiralvaccine-020">admiralvaccine 0.2.0<a class="anchor" aria-label="anchor" href="#admiralvaccine-020"></a></h2><p class="text-muted">CRAN release: 2024-01-08</p>
@@ -82,7 +90,7 @@
 <h3 id="updates-to-documentation-0-2-0">Updates to Documentation<a class="anchor" aria-label="anchor" href="#updates-to-documentation-0-2-0"></a></h3>
 <ul><li><p>Modified calls to <code><a href="https://pharmaverse.github.io/admiral/reference/derive_vars_joined.html" class="external-link">derive_vars_joined()</a></code> in ADCE, ADFACE and ADIS vignettes in line with the updates to this function in the new version of the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> package. The <code>join_type</code> argument is now always specified and populated as <code>all</code> (<a href="https://github.com/pharmaverse/admiralvaccine/issues/229" class="external-link">#229</a>).</p></li>
 <li><p>Modified calls to <code><a href="https://pharmaverse.github.io/admiral/reference/derive_extreme_records.html" class="external-link">derive_extreme_records()</a></code> in ADFACE vignette in line with the updates to this function in the new version of the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> package. The <code>filter</code> argument is now renamed to <code>filter_add</code> and the argument <code>dataset_add</code> is now always specified. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/229" class="external-link">#229</a>).</p></li>
-<li><p>All dummy SDTM data used in the package, have been replaced with data available in <a href="https://pharmaverse.github.io/pharmaversesdtm/main/" class="external-link">pharmaversesdtm</a> package (<a href="https://github.com/pharmaverse/admiralvaccine/issues/228" class="external-link">#228</a>).</p></li>
+<li><p>All dummy SDTM data used in the package, have been replaced with data available in <a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a> package (<a href="https://github.com/pharmaverse/admiralvaccine/issues/228" class="external-link">#228</a>).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="various-0-2-0">Various<a class="anchor" aria-label="anchor" href="#various-0-2-0"></a></h3>
