@@ -103,7 +103,7 @@ adsl <- convert_blanks_to_na(admiralvaccine_adsl)
 ## Combine IS with SUPPIS {#combine_supp}
 Combine `IS` with its supplemental domain `SUPPIS`.
 ```{r eval=TRUE}
-is_suppis <- combine_supp(is, suppis)
+is_suppis <- metatools::combine_supp(is, suppis)
 ```
 
 

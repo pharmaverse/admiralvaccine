@@ -35,7 +35,7 @@ adsl <- convert_blanks_to_na(admiralvaccine_adsl)
 
 # STEP 1 - combine IS with SUPPIS.
 # Please, upload MOCK data
-is_suppis <- combine_supp(is, suppis)
+is_suppis <- metatools::combine_supp(is, suppis)
 
 
 # STEP 2 - Visits and timing variables derivation.
