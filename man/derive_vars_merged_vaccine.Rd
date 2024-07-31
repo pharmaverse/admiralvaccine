@@ -72,9 +72,8 @@ derive_vars_merged_vaccine(
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
-) \%>\%
-  filter(CLTYP == "DAIRY") \%>\%
-  select(USUBJID, FATPTREF, CLTYP, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC)
+)
+
 }
 \seealso{
 Other der_var: 

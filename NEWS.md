@@ -1,4 +1,8 @@
 # admiralvaccine (development version)
+# admiralvaccine 0.3.0
+
+## Updates to Templates and Function
+- Removed `dataset_supp` and `dataset_suppex` arguments from `derive_vars_merged_vaccine()` as we are not combining the parental with supplementary inside the function, but can be combined in the ADCE, ADFACE and ADIS template using `combine_supp()` from {metatools} as the {metatools} has been removed from dependency.
 
 # admiralvaccine 0.2.0
 
