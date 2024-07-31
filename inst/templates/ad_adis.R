@@ -4,13 +4,8 @@
 #
 # Input: is, suppis, adsl
 library(admiral)
-library(admiral.test) # Contains example datasets from the CDISC pilot project
-library(metatools)
 library(dplyr)
-library(lubridate)
-library(rlang)
 library(admiralvaccine)
-library(metatools)
 library(pharmaversesdtm)
 
 
