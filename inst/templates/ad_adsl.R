@@ -87,13 +87,13 @@ adsl <- dm %>%
     dataset_add = ex,
     filter_add = EXLNKGRP == "VACCINATION 1",
     new_vars = exprs(TRT01A = EXTRT),
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   ) %>%
   derive_vars_merged(
     dataset_add = ex,
     filter_add = EXLNKGRP == "VACCINATION 2",
     new_vars = exprs(TRT02A = EXTRT),
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   ) %>%
   ## derive treatment start date (TRTSDTM) ----
   derive_vars_merged(
@@ -105,7 +105,7 @@ adsl <- dm %>%
     new_vars = exprs(TRTSDTM = EXSTDTM),
     order = exprs(EXSTDTM, EXSEQ),
     mode = "first",
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   ) %>%
   ## derive treatment end date (TRTEDTM) ----
   derive_vars_merged(
@@ -116,7 +116,7 @@ adsl <- dm %>%
     new_vars = exprs(TRTEDTM = EXENDTM),
     order = exprs(EXENDTM, EXSEQ),
     mode = "last",
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   ) %>%
   ## Derive treatment end/start date TRTSDT/TRTEDT ----
   derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM))
@@ -124,7 +124,7 @@ adsl <- dm %>%
 adsl <- derive_var_merged_exist_flag(
   dataset = adsl,
   dataset_add = ex,
-  by_vars = exprs(STUDYID, USUBJID),
+  by_vars = get_admiral_option("subject_keys"),
   new_var = SAFFL,
   condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "VACCINE")))
 ) %>%
