@@ -84,12 +84,15 @@ adsl <- convert_blanks_to_na(admiralvaccine_adsl)
 ## Pre-processing of Input Dataset {#input}
 
 This step involves company-specific pre-processing of required input dataset for
-further analysis. In this step, we will filter records that has only reactogenicity events.
+further analysis. In this step, we will filter records that has only reactogenicity events and
+combine the `face` and `ex` with their supplementary datasets `suppface` and `suppex` respectively.
 
 ```{r eval=TRUE}
 face <- face %>%
   filter(FACAT == "REACTOGENICITY" & grepl("ADMIN|SYS", FASCAT)) %>%
-  mutate(FAOBJ = str_to_upper(FAOBJ))
+  mutate(FAOBJ = str_to_upper(FAOBJ)) %>%
+  metatools::combine_supp(suppface)
+ex <- metatools::combine_supp(ex, suppex)
 ```
 
 ```{r, echo=FALSE}
@@ -109,8 +112,6 @@ The function `derive_vars_merged_vaccine()` is used to merge `face` with `ex` do
 adface <- derive_vars_merged_vaccine(
   dataset = face,
   dataset_ex = ex,
-  dataset_supp = suppface,
-  dataset_suppex = suppex,
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
@@ -141,7 +142,7 @@ adface <- derive_vars_merged(
   face,
   dataset_add = adsl,
   new_vars = adsl_vars,
-  by_vars = exprs(STUDYID, USUBJID)
+  by_vars = get_admiral_option("subject_keys")
 )
 ```
 
@@ -242,7 +243,7 @@ period_ref <- create_period_dataset(
 adface <- derive_vars_joined(
   adface,
   dataset_add = period_ref,
-  by_vars = exprs(STUDYID, USUBJID),
+  by_vars = get_admiral_option("subject_keys"),
   filter_join = ADT >= APERSDT & ADT <= APEREDT,
   join_type = "all"
 )
@@ -444,7 +445,7 @@ lookup_dataset <- tribble(
   "MAXDIAM", "MDISW", 29, "Maximum Diameter", "SWELLING",
   "MAXSEV", "MAXSPIS", 30, "Maximum Severity", "PAIN AT INJECTION SITE",
   "OCCUR", "OCCVOM", 31, "Occurrence Indicator", "VOMITING",
-  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING",
+  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING"
 )
 ```
 
@@ -542,7 +543,7 @@ adsl <- adsl %>%
 adface <- derive_vars_merged(
   dataset = adface,
   dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
-  by_vars = exprs(STUDYID, USUBJID)
+  by_vars = get_admiral_option("subject_keys")
 )
 ```
 

@@ -56,7 +56,7 @@ adce02 <- adce01 %>%
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
-    by = exprs(STUDYID, USUBJID)
+    by = get_admiral_option("subject_keys")
   ) %>%
   ## Derive analysis start time
   ## Proposed imputations depending on situation: no needed -> highest imputation = “n”
@@ -84,7 +84,7 @@ adce03 <-
   derive_vars_joined(
     adce02,
     dataset_add = adperiods,
-    by_vars = exprs(STUDYID, USUBJID),
+    by_vars = get_admiral_option("subject_keys"),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT,
     join_type = "all"
   ) %>%
@@ -121,7 +121,7 @@ adce05 <- adce04 %>%
   ## Derive ASEQ
   derive_var_obs_number(
     new_var = ASEQ,
-    by_vars = exprs(STUDYID, USUBJID),
+    by_vars = get_admiral_option("subject_keys"),
     order = exprs(CEDECOD, CELAT, CETPTREF, APERIOD),
     check_type = "error"
   ) %>%
@@ -146,7 +146,7 @@ adsl_list <- adsl %>%
 adce <- adce05 %>%
   derive_vars_merged(
     dataset_add = adsl_list,
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   )
 
 

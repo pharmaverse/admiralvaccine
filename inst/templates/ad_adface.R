@@ -58,13 +58,17 @@ face <- face %>%
 
 adsl_vars <- exprs(RFSTDTC, RFENDTC)
 
+# Combine the parental datasets with their respective supp datasets (only if exist)
+# User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
+
+face <- metatools::combine_supp(face, suppface)
+ex <- metatools::combine_supp(ex, suppex)
+
 # Step 2 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
   dataset = face,
   dataset_ex = ex,
-  dataset_supp = suppface,
-  dataset_suppex = suppex,
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
@@ -73,7 +77,7 @@ adface <- derive_vars_merged_vaccine(
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   ) %>%
   # Step 4 - Deriving Fever OCCUR records from VS if FAOBJ = "FEVER" records not present in FACE
   derive_fever_records(
@@ -103,7 +107,7 @@ period_ref <- create_period_dataset(
 adface <- derive_vars_joined(
   adface,
   dataset_add = period_ref,
-  by_vars = exprs(STUDYID, USUBJID),
+  by_vars = get_admiral_option("subject_keys"),
   filter_join = ADT >= APERSDT & ADT <= APEREDT,
   join_type = "all"
 ) %>%
@@ -208,7 +212,7 @@ lookup_dataset <- tribble(
   "MAXDIAM", "MDISW", 29, "Maximum Diameter", "SWELLING",
   "MAXSEV", "MAXSPIS", 30, "Maximum Severity", "PAIN AT INJECTION SITE",
   "OCCUR", "OCCVOM", 31, "Occurrence Indicator", "VOMITING",
-  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING",
+  "DIAMETER", "DIASWEL", 32, "Diameter", "SWELLING"
 )
 
 adface <- derive_vars_params(
@@ -237,7 +241,7 @@ adsl <- adsl %>%
 adface <- derive_vars_merged(
   dataset = adface,
   dataset_add = select(adsl, !!!negate_vars(adsl_vars)),
-  by_vars = exprs(STUDYID, USUBJID)
+  by_vars = get_admiral_option("subject_keys")
 ) %>%
   # Step 16 post processing
   post_process_reacto(
@@ -261,12 +265,10 @@ keep_vars <- c(
   "APEREDT", "APERETM", "APEREDTM", "APERDY", "FAORRES"
 )
 
-adface <- adface %>% select(
+admiralvaccine_adface <- adface %>% select(
   any_of(keep_vars), starts_with("TRT0"), starts_with("VAX"),
   starts_with("EVE"), starts_with("ANL")
 )
-
-admiralvaccine_adface <- adface
 
 # Save output ----
 
