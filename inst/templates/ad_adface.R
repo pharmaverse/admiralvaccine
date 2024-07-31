@@ -58,13 +58,17 @@ face <- face %>%
 
 adsl_vars <- exprs(RFSTDTC, RFENDTC)
 
+# Combine the parental datasets with their respective supp datasets (only if exist)
+# User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
+
+face <- metatools::combine_supp(face, suppface)
+ex <- metatools::combine_supp(ex, suppex)
+
 # Step 2 - Merging supplementary datasets and FACE with EX
 
 adface <- derive_vars_merged_vaccine(
   dataset = face,
   dataset_ex = ex,
-  dataset_supp = suppface,
-  dataset_suppex = suppex,
   by_vars_sys = exprs(USUBJID, FATPTREF = EXLNKGRP),
   by_vars_adms = exprs(USUBJID, FATPTREF = EXLNKGRP, FALOC = EXLOC, FALAT = EXLAT),
   ex_vars = exprs(EXTRT, EXDOSE, EXSEQ, EXSTDTC, EXENDTC, VISIT, VISITNUM)
@@ -261,12 +265,10 @@ keep_vars <- c(
   "APEREDT", "APERETM", "APEREDTM", "APERDY", "FAORRES"
 )
 
-adface <- adface %>% select(
+admiralvaccine_adface <- adface %>% select(
   any_of(keep_vars), starts_with("TRT0"), starts_with("VAX"),
   starts_with("EVE"), starts_with("ANL")
 )
-
-admiralvaccine_adface <- adface
 
 # Save output ----
 
