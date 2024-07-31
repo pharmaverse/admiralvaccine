@@ -1,8 +1,12 @@
-# admiralvaccine (development version)
 # admiralvaccine 0.3.0
 
-## Updates to Templates and Function
-- Removed `dataset_supp` and `dataset_suppex` arguments from `derive_vars_merged_vaccine()` as we are not combining the parental with supplementary inside the function, but can be combined in the ADCE, ADFACE and ADIS template using `combine_supp()` from {metatools} as the {metatools} has been removed from dependency.
+## Breaking Changes
+
+- Removed `dataset_supp` and `dataset_suppex` arguments from `derive_vars_merged_vaccine()` as we are not combining the parental with supplementary inside the function, but can be optionally combined in the ADCE, ADFACE and ADIS templates using `combine_supp()` function from {metatools}. (#246)
+
+## Updates to Templates
+
+- Supplementary domains are now optionally combined with parental domain within the template. (#246)
 
 # admiralvaccine 0.2.0
 
