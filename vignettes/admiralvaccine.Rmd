@@ -99,4 +99,4 @@ list_all_templates(package = "admiralvaccine")
 # Support
 
 Support is provided via the [admiral Slack
-channel](https://app.slack.com/client/T028PB489D3/C02M8KN8269).
+channel](https://pharmaverse.slack.com/).
