@@ -65,7 +65,7 @@ navbar:
         href: articles/adface.html
     slack:
       icon: fa-slack
-      href: https://app.slack.com/client/T028PB489D3/C02M8KN8269
+      href: https://pharmaverse.slack.com
       aria-label: Slack
     newissue:
       icon: fa-bug
