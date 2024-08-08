@@ -120,22 +120,46 @@ adface <- derive_vars_joined(
     ATPTREF = FATPTREF,
     ATPT = FATPT,
     ATPTN = FATPTNUM
-  ) %>%
-  # Step 8 - Creating severity records from Diameter for Redness, Swelling,etc
-  # Note: Basically, this function will derive and create the severity records from the
-  # diameter record for the particular events that user wants. If you want to derive the Severity
-  # from diameter, even though you have the severity in SDTM level, this function will re-derive the
-  # severity and remove the derived SDTM severity records.
-  derive_diam_to_sev_records(
-    diam_code = "DIAMETER",
-    faobj_values = c("REDNESS", "SWELLING"),
-    testcd_sev = "SEV",
-    test_sev = "Severity/Intensity",
-    none = 0,
-    mild = 2,
-    mod = 5,
-    sev = 10
   )
+
+
+# Version 0.3.0: as per CBER requirement, Investigator assessment has been added into FACE,
+# which is identified by "INVESTIGATOR" value, in FAEVAL.
+# If you need to derive maximum severity from mm reported by subject, please discard Investigator
+# records from the below function. Otherwise, remove intermediates datasets.
+
+inv_mm <- adface %>%
+  filter(FAOBJ %in% c("REDNESS", "SWELLING") & FAEVAL == "INVESTIGATOR")
+
+subj_mm <- adface %>%
+  filter(!(FAOBJ %in% c("REDNESS", "SWELLING") & FAEVAL == "INVESTIGATOR"))
+
+
+adface <-  derive_diam_to_sev_records(
+  dataset = subj_mm,
+  diam_code = "DIAMETER",
+  faobj_values = c("REDNESS", "SWELLING"),
+  testcd_sev = "SEV",
+  test_sev = "Severity/Intensity",
+  none = 0,
+  mild = 2,
+  mod = 5,
+  sev = 10
+  ) %>%
+  bind_rows(inv_mm) %>%
+  arrange(STUDYID,USUBJID,FASEQ) %>%
+  # Please, consider which assessment is needed for your analysis. If you want to prioritize
+  # Instigator assessment, please proceed as follows. Otherwise, change FAEVAL order.
+  derive_var_extreme_flag(
+    by = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM),
+    order = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM, FAEVAL),
+    new_var = ANL01FL,
+    mode = "first",
+    true_value = "Y",
+    false_value = NA_character_
+    )
+
+
 # Step 9 - Deriving Maximum Severity for Local and Systemic events
 adface <- adface %>%
   derive_extreme_records(
