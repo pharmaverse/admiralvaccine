@@ -104,7 +104,7 @@ adce <- adce %>%
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
-    by = exprs(STUDYID, USUBJID)
+    by = get_admiral_option("subject_keys")
   ) %>%
   derive_vars_dt(
     dtc = CESTDTC,
@@ -136,7 +136,7 @@ adce <-
   derive_vars_joined(
     adce,
     dataset_add = adperiods,
-    by_vars = exprs(STUDYID, USUBJID),
+    by_vars = get_admiral_option("subject_keys"),
     filter_join = ASTDT >= APERSDT & ASTDT <= APEREDT,
     join_type = "all"
   ) %>%
@@ -193,7 +193,7 @@ dataset_vignette(
 adce <- adce %>%
   derive_var_obs_number(
     new_var = ASEQ,
-    by_vars = exprs(STUDYID, USUBJID),
+    by_vars = get_admiral_option("subject_keys"),
     order = exprs(CEDECOD, CELAT, CETPTREF, APERIOD),
     check_type = "error"
   ) %>%
@@ -228,7 +228,7 @@ adsl_list <- adsl %>%
 adce <- adce %>%
   derive_vars_merged(
     dataset_add = adsl_list,
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   )
 ```
 

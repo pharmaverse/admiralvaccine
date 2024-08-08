@@ -58,7 +58,6 @@ Imports:
     lifecycle (>= 0.1.0),
     lubridate (>= 1.7.4),
     magrittr (>= 1.5),
-    metatools,
     purrr (>= 0.3.3),
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
@@ -78,10 +77,10 @@ Suggests:
     rmarkdown,
     roxygen2,
     spelling,
-    styler,
     testthat,
     tibble,
-    usethis
+    usethis,
+    metatools
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
