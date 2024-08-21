@@ -120,23 +120,25 @@ adface <- derive_vars_joined(
     ATPTREF = FATPTREF,
     ATPT = FATPT,
     ATPTN = FATPTNUM
-  )
+  ) %>%
 
+# Please, consider which assessment is needed for your analysis. If you want to prioritize
+# Instigator assessment, please proceed as follows. Otherwise, change FAEVAL order.
+  derive_var_extreme_flag(
+  by = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM),
+  order = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM, FAEVAL),
+  new_var = ANL01FL,
+  mode = "first",
+  true_value = "Y",
+  false_value = NA_character_
+)
 
 # Version 0.3.0: as per CBER requirement, Investigator assessment has been added into FACE,
 # which is identified by "INVESTIGATOR" value, in FAEVAL.
-# If you need to derive maximum severity from mm reported by subject, please discard Investigator
-# records from the below function. Otherwise, remove intermediates datasets.
 
-inv_mm <- adface %>%
-  filter(FAOBJ %in% c("REDNESS", "SWELLING") & FAEVAL == "INVESTIGATOR")
-
-subj_mm <- adface %>%
-  filter(!(FAOBJ %in% c("REDNESS", "SWELLING") & FAEVAL == "INVESTIGATOR"))
-
-
-adface <-  derive_diam_to_sev_records(
-  dataset = subj_mm,
+#step 8 - Derive the severity records from the Diameter records for the redness and swelling.
+adface <-  adface %>% derive_diam_to_sev_records(
+  filter_add = ANL01FL == 'Y',
   diam_code = "DIAMETER",
   faobj_values = c("REDNESS", "SWELLING"),
   testcd_sev = "SEV",
@@ -145,26 +147,12 @@ adface <-  derive_diam_to_sev_records(
   mild = 2,
   mod = 5,
   sev = 10
-  ) %>%
-  bind_rows(inv_mm) %>%
-  arrange(STUDYID,USUBJID,FASEQ) %>%
-  # Please, consider which assessment is needed for your analysis. If you want to prioritize
-  # Instigator assessment, please proceed as follows. Otherwise, change FAEVAL order.
-  derive_var_extreme_flag(
-    by = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM),
-    order = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM, FAEVAL),
-    new_var = ANL01FL,
-    mode = "first",
-    true_value = "Y",
-    false_value = NA_character_
-    )
-
+  )
 
 # Step 9 - Deriving Maximum Severity for Local and Systemic events
-adface <- adface %>%
-  derive_extreme_records(
+  adface <- adface %>% derive_extreme_records(
     dataset_add = adface,
-    filter = FATESTCD == "SEV",
+    filter = FATESTCD == "SEV" & ANL01FL == "Y",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(AVAL),
     check_type = "none",
@@ -173,12 +161,11 @@ adface <- adface %>%
       FATEST = "Maximum Severity",
       FATESTCD = "MAXSEV"
     )
-  )
+  ) %>%
 # Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
-adface <- adface %>%
   derive_extreme_records(
     dataset_add = adface,
-    filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+    filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER" & ANL01FL == "Y",
     by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
     order = exprs(AVAL),
     check_type = "none",
@@ -191,7 +178,7 @@ adface <- adface %>%
   # Step 11 - Deriving Maximum Temperature
   derive_extreme_records(
     dataset_add = adface,
-    filter = FAOBJ == "FEVER",
+    filter = FAOBJ == "FEVER" & ANL01FL == "Y",
     by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
     order = exprs(VSSTRESN),
     check_type = "none",
@@ -246,8 +233,8 @@ adface <- derive_vars_params(
 ) %>%
   # Step 13 - Maximum flag ANL01FL and ANL02FL
   derive_vars_max_flag(
-    flag1 = "ANL01FL",
-    flag2 = "ANL02FL"
+    flag1 = "ANL02FL",
+    flag2 = "ANL03FL"
   ) %>%
   # Step 14 - Creating flag variables for occurred events
   derive_vars_event_flag(
@@ -303,3 +290,4 @@ if (!file.exists(dir)) {
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
 save(admiralvaccine_adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
+
