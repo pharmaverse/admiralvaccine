@@ -180,15 +180,16 @@ test_that("derive_diam_to_sev_records Test 3: Check if the arguments `none`,
 test_that("derive_diam_to_sev_records Test 4: Check if the input dataset has
           severity records and remove those records correctly", {
   input <- tibble::tribble(
-    ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD,
-    "XYZ1001", "REDNESS", 1.5, "1.5", "VACCINATION 1", "Diameter", "DIAMETER",
-    "XYZ1001", "REDNESS", 11, "11", "VACCINATION 1", "Diameter", "DIAMETER",
-    "XYZ1001", "SWELLING", 6.5, "7.5", "VACCINATION 1", "Diameter", "DIAMETER",
-    "XYZ1001", "SWELLING", 4.5, "3.5", "VACCINATION 1", "Diameter", "DIAMETER",
-    "XYZ1001", "REDNESS", 1.5, "NONE", "VACCINATION 1", "Severity", "SEV",
-    "XYZ1001", "REDNESS", 11, "SEVERE", "VACCINATION 1", "Severity", "SEV",
-    "XYZ1001", "SWELLING", 6.5, "MODERATE", "VACCINATION 1", "Severity", "SEV",
-    "XYZ1001", "SWELLING", 4.5, "MILD", "VACCINATION 1", "Severity", "SEV"
+    ~USUBJID, ~FAOBJ, ~AVAL, ~AVALC, ~ATPTREF, ~FATEST, ~FATESTCD, ~FAEVAL, ~ANL01FL,
+    "XYZ1001", "REDNESS", 1.5, "1.5", "VACCINATION 1", "Diameter", "DIAMETER", "SUBJECT", "Y",
+    "XYZ1001", "REDNESS", 11, "11", "VACCINATION 1", "Diameter", "DIAMETER", "SUBJECT", "Y",
+    "XYZ1001", "SWELLING", 6.5, "7.5", "VACCINATION 1", "Diameter", "DIAMETER", "SUBJECT", "Y",
+    "XYZ1001", "SWELLING", 4.5, "3.5", "VACCINATION 1", "Diameter", "DIAMETER", "SUBJECT", "Y",
+    "XYZ1001", "REDNESS", 1.5, "NONE", "VACCINATION 1", "Severity", "SEV", "SUBJECT", "N",
+    "XYZ1001", "REDNESS", 1.5, "NONE", "VACCINATION 1", "Severity", "SEV", "INVESTIGATOR", "Y",
+    "XYZ1001", "REDNESS", 11, "SEVERE", "VACCINATION 1", "Severity", "SEV", "SUBJECT", "Y",
+    "XYZ1001", "SWELLING", 6.5, "MODERATE", "VACCINATION 1", "Severity", "SEV", "SUBJECT", "Y",
+    "XYZ1001", "SWELLING", 4.5, "MILD", "VACCINATION 1", "Severity", "SEV", "SUBJECT", "Y",
   )
 
   format_avalc <- function(x) {
@@ -201,7 +202,7 @@ test_that("derive_diam_to_sev_records Test 4: Check if the input dataset has
   }
 
   input <- input %>%
-    filter(FATESTCD != "SEV" & FAOBJ %in% c("REDNESS", "SWELLING"))
+    filter(ANL01FL == "Y" & FATESTCD != "SEV" & FAOBJ %in% c("REDNESS", "SWELLING"))
 
   expected1 <- input %>%
     mutate(
@@ -224,6 +225,7 @@ test_that("derive_diam_to_sev_records Test 4: Check if the input dataset has
 
   actual_output <- derive_diam_to_sev_records(
     dataset = input,
+    filter_add = ANL01FL == "Y",
     diam_code = "DIAMETER",
     faobj_values = c("REDNESS", "SWELLING"),
     testcd_sev = "SEV",
