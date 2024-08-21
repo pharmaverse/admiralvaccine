@@ -295,6 +295,30 @@ dataset_vignette(
   display_vars = exprs(USUBJID, FAOBJ, AVAL, AVALC, ATPTREF, ATPTN)
 )
 ```
+# Creating ANL01FL which would flag the records that will be considered for analysis and if there
+is investigator and subject record for a same day, it would flag the Investigator record over the
+subject record.
+Note: Please, consider which assessment is needed for your analysis. If you want to prioritize
+Instigator assessment, please proceed as follows. Otherwise, change FAEVAL order.
+
+```{r eval = TRUE}
+adface <- adface %>% derive_var_extreme_flag(
+  by = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM),
+  order = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM, FAEVAL),
+  new_var = ANL01FL,
+  mode = "first",
+  true_value = "Y",
+  false_value = NA_character_
+)
+```
+
+```{r, echo=FALSE}
+dataset_vignette(
+  adface,
+  display_vars = exprs(USUBJID, FAOBJ, ATPTREF, FATESTCD, FATEST, AVAL, ANL01FL),
+  filter = ANL01FL == "Y"
+)
+```
 
 ## Derive Severity Records for Administration Site Events {#sev}
 
@@ -305,6 +329,7 @@ The severity records created will be useful for calculating the maximum severity
 ```{r eval=TRUE}
 adface <- derive_diam_to_sev_records(
   dataset = adface,
+  filter_add = ANL01FL == "Y",
   diam_code = "DIAMETER",
   faobj_values = c("REDNESS", "SWELLING"),
   testcd_sev = "SEV",
@@ -336,7 +361,7 @@ In this step, we will derive maximum records for severity, diameter, temperature
 adface <- derive_extreme_records(
   dataset = adface,
   dataset_add = adface,
-  filter_add = FATESTCD == "SEV",
+  filter_add = FATESTCD == "SEV" &  ANL01FL == "Y",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   order = exprs(AVAL),
   check_type = "none",
@@ -350,7 +375,7 @@ adface <- derive_extreme_records(
 adface <- derive_extreme_records(
   dataset = adface,
   dataset_add = adface,
-  filter_add = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER",
+  filter_add = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER" &  ANL01FL == "Y",
   by_vars = exprs(USUBJID, FAOBJ, FALNKGRP),
   order = exprs(AVAL),
   check_type = "none",
@@ -364,7 +389,7 @@ adface <- derive_extreme_records(
 adface <- derive_extreme_records(
   dataset = adface,
   dataset_add = adface,
-  filter_add = FAOBJ == "FEVER",
+  filter_add = FAOBJ == "FEVER" &  ANL01FL == "Y",
   by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
   order = exprs(VSSTRESN),
   check_type = "none",
@@ -476,8 +501,8 @@ The function `derive_vars_max_flag()` is used to derive flag variable for the ma
 ```{r eval=TRUE}
 adface <- derive_vars_max_flag(
   dataset = adface,
-  flag1 = "ANL01FL",
-  flag2 = "ANL02FL"
+  flag1 = "ANL02FL",
+  flag2 = "ANL03FL"
 )
 ```
 
