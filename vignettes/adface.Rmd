@@ -57,7 +57,8 @@ the environment. Some of the data frames needed are `VS`,`EX` and `FACE`.
 
 ```{r message=FALSE}
 library(admiral)
-library(admiralvaccine)
+# library(admiralvaccine)
+devtools::load_all()
 library(admiraldev)
 library(pharmaversesdtm)
 library(dplyr, warn.conflicts = FALSE)
@@ -258,7 +259,8 @@ dataset_vignette(
 
 ## Derive Direct Mapping Variables {#mapping}
 
-In this step,we will create the user defined function to assign `AVAL` values from `AVALC` which will be used in further steps. 
+In this step,we will create the user defined function to assign `AVAL` values from `AVALC` which
+will be used in further steps. 
 
 The user defined functions would look like the following:
 
@@ -295,11 +297,10 @@ dataset_vignette(
   display_vars = exprs(USUBJID, FAOBJ, AVAL, AVALC, ATPTREF, ATPTN)
 )
 ```
-# Creating ANL01FL which would flag the records that will be considered for analysis and if there
-is investigator and subject record for a same day, it would flag the Investigator record over the
-subject record.
-Note: Please, consider which assessment is needed for your analysis. If you want to prioritize
-Instigator assessment, please proceed as follows. Otherwise, change FAEVAL order.
+## Derive AN01FL
+Creating ANL01FL which would flag the records that will be considered for analysis and if there is any Investigator and Subject record for the same day, it would flag the Investigator record over the subject record.
+
+Note: Please, consider which assessment is needed for your analysis. If you want to prioritize Investigator assessment, please proceed as follows. Otherwise, change FAEVAL order.
 
 ```{r eval = TRUE}
 adface <- adface %>% derive_var_extreme_flag(
@@ -513,7 +514,7 @@ dataset_vignette(
 )
 ```
 
-This call would return the input dataset with columns `ANL01FL`, `ANL02FL` added by default. 
+This call would return the input dataset with columns `ANL02FL`, `ANL03FL` added by default. 
 This function allows the user to change the name of the new variables created.
 
 ## Derive Event Occurrence Flag {#eventflag}
