@@ -138,7 +138,7 @@ adface <- derive_vars_joined(
 
 #step 8 - Derive the severity records from the Diameter records for the redness and swelling.
 adface <-  adface %>% derive_diam_to_sev_records(
-  filter_add = ANL01FL == 'Y',
+  filter_add = ANL01FL == "Y",
   diam_code = "DIAMETER",
   faobj_values = c("REDNESS", "SWELLING"),
   testcd_sev = "SEV",
@@ -290,4 +290,3 @@ if (!file.exists(dir)) {
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
 save(admiralvaccine_adface, file = file.path(dir, "adface.rda"), compress = "bzip2")
-
