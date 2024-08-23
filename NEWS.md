@@ -2,13 +2,17 @@
 
 ## ADFACE update after CBER requirements for eDiary data
 
-- Updated ADFACE template as per new SDTM mapping of Investigator assessment for eDiary data, as recommended by CBER. The collection of the Investigator assessment can happen when data reported by the participants was deemed incorrect or the participant did not complete the eDiary. In case of these two scenarios, the Investigator assessment is collected within the eDiary platform as a separate record from the original data reported by the participant (if this is allowed by eCOA system) or in the study eCRF. This leads to a change in Solicited Adverse Event SDTM structure (FACE and VS). Additional records coming from Investigator assessment are added, which can be indentified through an evaluator variable (FAEVAL/VSEVAL). An update in ADFACE has been provided in order to reflect this changes in SDTM. (#243)
+- Updated ADFACE template as per new SDTM mapping of Investigator assessment for eDiary data, as recommended by CBER. The collection of the Investigator assessment can happen when data reported by the participants was deemed incorrect or the participant did not complete the eDiary. In case of these two scenarios, the Investigator assessment is collected within the eDiary platform as a separate record from the original data reported by the participant (if this is allowed by eCOA system) or in the study eCRF. This leads to a change in Solicited Adverse Event SDTM structure (FACE and VS). Additional records coming from Investigator assessment are added, which can be identified through an evaluator variable (FAEVAL/VSEVAL). An update in ADFACE has been provided in order to reflect this changes in SDTM. (#243)
 
 ## Breaking Changes
 
 - Removed `dataset_supp` and `dataset_suppex` arguments from `derive_vars_merged_vaccine()` as we are not combining the parental with supplementary inside the function, but can be optionally combined in the ADCE, ADFACE and ADIS templates using `combine_supp()` function from {metatools}. (#246)
 
+- Included an argument `filter_add` in `derive_diam_to_sev_records()` to pass the subset condition to consider the particular diameter record for convert them to severity records.
+
 ## Updates to Templates
+
+- Included a step to derive ANL01FL to flag the records which would be considered for analysis purpose.
 
 - Supplementary domains are now optionally combined with parental domain within the template. (#246)
 
