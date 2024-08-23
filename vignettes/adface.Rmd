@@ -57,8 +57,7 @@ the environment. Some of the data frames needed are `VS`,`EX` and `FACE`.
 
 ```{r message=FALSE}
 library(admiral)
-# library(admiralvaccine)
-devtools::load_all()
+library(admiralvaccine)
 library(admiraldev)
 library(pharmaversesdtm)
 library(dplyr, warn.conflicts = FALSE)
