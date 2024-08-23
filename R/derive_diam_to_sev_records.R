@@ -154,8 +154,11 @@ derive_diam_to_sev_records <- function(dataset,
   # Replacing FATESTCD and FATEST for Diameter with Severity
   ds <- function(diam_code) {
     if (c(diam_code) %in% diam$FATESTCD) {
+      if(!is.null(filter_add)){
+        fil_rec <- fil_rec %>%
+          filter(!!filter_add)
+      }
       sev <- fil_rec %>%
-        filter_if(filter_add) %>%
         filter(FAOBJ %in% faobj_values & FATESTCD %in% diam_code) %>%
         mutate(
           FATESTCD = testcd_sev,
