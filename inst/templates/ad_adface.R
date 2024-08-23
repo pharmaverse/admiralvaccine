@@ -121,23 +121,22 @@ adface <- derive_vars_joined(
     ATPT = FATPT,
     ATPTN = FATPTNUM
   ) %>%
-
-# Please, consider which assessment is needed for your analysis. If you want to prioritize
-# Instigator assessment, please proceed as follows. Otherwise, change FAEVAL order.
+  # Please, consider which assessment is needed for your analysis. If you want to prioritize
+  # Instigator assessment, please proceed as follows. Otherwise, change FAEVAL order.
   derive_var_extreme_flag(
-  by = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM),
-  order = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM, FAEVAL),
-  new_var = ANL01FL,
-  mode = "first",
-  true_value = "Y",
-  false_value = NA_character_
-)
+    by = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM),
+    order = exprs(STUDYID, USUBJID, FATPTREF, FAOBJ, FATESTCD, FATPTNUM, FAEVAL),
+    new_var = ANL01FL,
+    mode = "first",
+    true_value = "Y",
+    false_value = NA_character_
+  )
 
 # Version 0.3.0: as per CBER requirement, Investigator assessment has been added into FACE,
 # which is identified by "INVESTIGATOR" value, in FAEVAL.
 
-#step 8 - Derive the severity records from the Diameter records for the redness and swelling.
-adface <-  adface %>% derive_diam_to_sev_records(
+# step 8 - Derive the severity records from the Diameter records for the redness and swelling.
+adface <- adface %>% derive_diam_to_sev_records(
   filter_add = ANL01FL == "Y",
   diam_code = "DIAMETER",
   faobj_values = c("REDNESS", "SWELLING"),
@@ -147,22 +146,22 @@ adface <-  adface %>% derive_diam_to_sev_records(
   mild = 2,
   mod = 5,
   sev = 10
-  )
+)
 
 # Step 9 - Deriving Maximum Severity for Local and Systemic events
-  adface <- adface %>% derive_extreme_records(
-    dataset_add = adface,
-    filter = FATESTCD == "SEV" & ANL01FL == "Y",
-    by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
-    order = exprs(AVAL),
-    check_type = "none",
-    mode = "last",
-    set_values_to = exprs(
-      FATEST = "Maximum Severity",
-      FATESTCD = "MAXSEV"
-    )
-  ) %>%
-# Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
+adface <- adface %>% derive_extreme_records(
+  dataset_add = adface,
+  filter = FATESTCD == "SEV" & ANL01FL == "Y",
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+  order = exprs(AVAL),
+  check_type = "none",
+  mode = "last",
+  set_values_to = exprs(
+    FATEST = "Maximum Severity",
+    FATESTCD = "MAXSEV"
+  )
+) %>%
+  # Step 10 - Deriving Maximum Diameter for Administrative Site Reactions
   derive_extreme_records(
     dataset_add = adface,
     filter = FAOBJ %in% c("REDNESS", "SWELLING") & FATESTCD == "DIAMETER" & ANL01FL == "Y",
