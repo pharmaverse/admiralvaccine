@@ -22,7 +22,7 @@ part of Vaccine - Reactogenicity based on the Center for Biologics Evaluation an
 
 See the below links for more information:
 
-[Center for Biologics Evaluation and Research (CBER) Guidelines](https://www.fda.gov/media/112581/download)
+[Center for Biologics Evaluation and Research (CBER) Guidelines](https://www.fda.gov/media/112581/download/)
 
 [Therapeutic Area Data Standards User Guide for Vaccines (TAUG-Vax)](https://www.cdisc.org/standards/therapeutic-areas/vaccines/vaccines-therapeutic-area-user-guide-v11/html)
 
