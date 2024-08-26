@@ -6,6 +6,7 @@
 \usage{
 derive_diam_to_sev_records(
   dataset,
+  filter_add = NULL,
   diam_code = "DIAMETER",
   faobj_values = c("REDNESS", "SWELLING"),
   testcd_sev = "SEV",
@@ -21,6 +22,8 @@ derive_diam_to_sev_records(
 
 The variables \code{USUBJID},\code{FAOBJ},\code{AVAL}, \code{AVALC}, \code{FATESTCD} and \code{FATEST} are expected
 for Input data set.}
+
+\item{filter_add}{filter for the \code{dataset}.}
 
 \item{diam_code}{Diameter record filter
 

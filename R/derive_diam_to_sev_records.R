@@ -7,7 +7,7 @@
 #'
 #' The variables `USUBJID`,`FAOBJ`,`AVAL`, `AVALC`, `FATESTCD` and `FATEST` are expected
 #' for Input data set.
-#'
+#' @param filter_add filter for the `dataset`.
 #' @param diam_code Diameter record filter
 #'
 #' *Permitted Value*: A character vector or scalar.
@@ -121,6 +121,7 @@
 #' @family der_rec
 #'
 derive_diam_to_sev_records <- function(dataset,
+                                       filter_add = NULL,
                                        diam_code = "DIAMETER",
                                        faobj_values = c("REDNESS", "SWELLING"),
                                        testcd_sev = "SEV",
@@ -140,6 +141,8 @@ derive_diam_to_sev_records <- function(dataset,
     optional = FALSE
   )
 
+  filter_add <- assert_filter_cond(enexpr(filter_add), optional = TRUE)
+
   # Checking & Removing the records which has severity records for the FAOBJ
 
   diam <- dataset %>% filter(FAOBJ %in% faobj_values)
@@ -151,6 +154,10 @@ derive_diam_to_sev_records <- function(dataset,
   # Replacing FATESTCD and FATEST for Diameter with Severity
   ds <- function(diam_code) {
     if (c(diam_code) %in% diam$FATESTCD) {
+      if (!is.null(filter_add)) {
+        fil_rec <- fil_rec %>%
+          filter(!!filter_add)
+      }
       sev <- fil_rec %>%
         filter(FAOBJ %in% faobj_values & FATESTCD %in% diam_code) %>%
         mutate(
