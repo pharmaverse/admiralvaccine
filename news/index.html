@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">admiralvaccine</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,21 +77,21 @@
 <div class="section level3">
 <h3 id="breaking-changes-0-3-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-3-0"></a></h3>
 <ul><li><p>Removed <code>dataset_supp</code> and <code>dataset_suppex</code> arguments from <code><a href="../reference/derive_vars_merged_vaccine.html">derive_vars_merged_vaccine()</a></code> as we are not combining parental with supplementary domains inside the function, but can be optionally combined in the ADCE, ADFACE and ADIS templates using <code><a href="https://pharmaverse.github.io/metatools/reference/combine_supp.html" class="external-link">combine_supp()</a></code> function from {metatools}. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/246" class="external-link">#246</a>)</p></li>
-<li><p>Included an argument <code>filter_add</code> in <code><a href="../reference/derive_diam_to_sev_records.html">derive_diam_to_sev_records()</a></code> to pass the subset condition to consider the particular diameter record for convert them to severity records.</p></li>
+<li><p>Included an argument <code>filter_add</code> in <code><a href="../reference/derive_diam_to_sev_records.html">derive_diam_to_sev_records()</a></code> to pass the subset condition to consider the particular diameter record for convert them to severity records. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/243" class="external-link">#243</a>)</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="updates-to-templates-0-3-0">Updates to Templates<a class="anchor" aria-label="anchor" href="#updates-to-templates-0-3-0"></a></h3>
-<ul><li><p>Included a step to derive ANL01FL in ADFACE template, to flag the records which would be considered for analysis purpose.</p></li>
+<ul><li><p>Included a step to derive ANL01FL in ADFACE template, to flag the records which would be considered for analysis purpose. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/243" class="external-link">#243</a>)</p></li>
 <li><p>Supplementary domains are now optionally combined with parental domains in ADFACE and ADIS templates. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/246" class="external-link">#246</a>)</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="updates-to-documentation-0-3-0">Updates to Documentation<a class="anchor" aria-label="anchor" href="#updates-to-documentation-0-3-0"></a></h3>
-<ul><li><p>Included a step to derive ANL01FL in ADFACE vignette, to flag the records which would be considered for analysis purpose.</p></li>
+<ul><li><p>Included a step to derive ANL01FL in ADFACE vignette, to flag the records which would be considered for analysis purpose. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/243" class="external-link">#243</a>)</p></li>
 <li><p>Supplementary domains are now optionally combined with parental domains n ADFACE and ADIS vignettes. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/246" class="external-link">#246</a>)</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="various-0-3-0">Various<a class="anchor" aria-label="anchor" href="#various-0-3-0"></a></h3>
-<ul><li>{metatools} and {styler} were added to ‘Suggests’. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/246" class="external-link">#246</a>, <a href="https://github.com/pharmaverse/admiralvaccine/issues/239" class="external-link">#239</a>)</li>
+<ul><li>{metatools} was added to ‘Suggests’. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/246" class="external-link">#246</a>)</li>
 </ul></div>
 </div>
     <div class="section level2">
