@@ -8,23 +8,23 @@
 
 - Removed `dataset_supp` and `dataset_suppex` arguments from `derive_vars_merged_vaccine()` as we are not combining parental with supplementary domains inside the function, but can be optionally combined in the ADCE, ADFACE and ADIS templates using `combine_supp()` function from {metatools}. (#246)
 
-- Included an argument `filter_add` in `derive_diam_to_sev_records()` to pass the subset condition to consider the particular diameter record for convert them to severity records.
+- Included an argument `filter_add` in `derive_diam_to_sev_records()` to pass the subset condition to consider the particular diameter record for convert them to severity records. (#243)
 
 ## Updates to Templates
 
-- Included a step to derive ANL01FL in ADFACE template, to flag the records which would be considered for analysis purpose.
+- Included a step to derive ANL01FL in ADFACE template, to flag the records which would be considered for analysis purpose. (#243)
 
 - Supplementary domains are now optionally combined with parental domains in ADFACE and ADIS templates. (#246)
 
 ## Updates to Documentation
 
-- Included a step to derive ANL01FL in ADFACE vignette, to flag the records which would be considered for analysis purpose.
+- Included a step to derive ANL01FL in ADFACE vignette, to flag the records which would be considered for analysis purpose. (#243)
 
 - Supplementary domains are now optionally combined with parental domains n ADFACE and ADIS vignettes. (#246)
 
 ## Various
 
-- {metatools} and {styler} were added to 'Suggests'. (#246, #239)
+- {metatools} was added to 'Suggests'. (#246)
 
 # admiralvaccine 0.2.0
 
