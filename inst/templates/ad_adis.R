@@ -324,7 +324,7 @@ adis <- restrict_derivation(adis,
 # STEP 9 Derivation of CRITyFL and CRITyFN ----
 adis <- restrict_derivation(
   dataset = adis,
-  derivation = derive_vars_crit_flag,
+  derivation = admiral::derive_vars_crit_flag,
   args = params(
     crit_nr = 1,
     condition = AVAL >= ISLLOQ,
