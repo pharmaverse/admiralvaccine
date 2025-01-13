@@ -85,7 +85,6 @@ library(admiraldev)
 library(admiralvaccine)
 library(pharmaversesdtm)
 library(metatools)
-library(pharmaversesdtm)
 
 # Load source datasets
 data("is_vaccine")
@@ -543,7 +542,7 @@ adis <- restrict_derivation(
 ```{r, echo=FALSE}
 dataset_vignette(
   adis,
-  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, CRIT1, CRIT1FL, CRIT1FLN)
+  display_vars = exprs(USUBJID, VISITNUM, ISTEST, ISORRES, CRIT1, CRIT1FL, CRIT1FN)
 )
 ```
 
