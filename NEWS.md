@@ -1,3 +1,9 @@
+# admiralvaccine 0.4.0
+
+## Breaking Changes
+
+- Function `derive_vars_crit()` has been deprecated. Please use `admiral::derive_vars_crit_flag()` instead. (#253)
+
 # admiralvaccine 0.3.0
 
 ## Updates related to CBER requirements for eDiary data

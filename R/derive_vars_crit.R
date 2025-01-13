@@ -49,7 +49,7 @@
 #' @family deprecated
 #'
 derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) {
-  deprecate_warn("0.3.0", "derive_vars_crit()", "admiral::derive_vars_crit_flag()")
+  deprecate_warn("0.4.0", "derive_vars_crit()", "admiral::derive_vars_crit_flag()")
   admiral::derive_vars_crit_flag(
     dataset = dataset,
     crit_nr = 1,
