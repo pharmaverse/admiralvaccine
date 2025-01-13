@@ -2,9 +2,9 @@
 #'
 #'
 #' @description
-#' `r derive_vars_crit::admiralvaccine("deprecated")`
+#' `r lifecycle::badge("deprecated")`
 #'
-#' This function is *deprecated*, please use `derive_vars_crit_flag` instead.
+#' This function is *deprecated*, please use `admiral::derive_vars_crit_flag()` instead.
 #'
 #' @param dataset Input dataset
 #'
@@ -48,55 +48,14 @@
 #' @keywords deprecated
 #' @family deprecated
 #'
-#'
 derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) {
-  condition <- assert_filter_cond(enquo(condition))
-  criterion <- assert_filter_cond(enquo(criterion))
-
-  var_char <- paste0(prefix, "FL")
-  var_num <- paste0(prefix, "FN")
-
-  if (grepl("CRIT", prefix)) {
-    data <- dataset %>%
-      mutate(
-        `:=`(
-          !!var_char,
-          case_when(
-            !(!!condition) ~ NA_character_,
-            !!criterion & !!condition ~ "Y",
-            !(!!criterion) & !!condition ~ "N"
-          )
-        ),
-        `:=`(
-          !!var_num,
-          case_when(
-            !(!!condition) ~ NA_real_,
-            !!criterion & !!condition ~ 1,
-            !(!!criterion) & !!condition ~ 0
-          )
-        ),
-        `:=`(
-          !!prefix,
-          case_when(
-            !(!!condition) ~ NA_character_,
-            !!criterion & !!condition ~ crit_label,
-            !(!!criterion) & !!condition ~ crit_label
-          )
-        )
-      )
-  } else {
-    data <- dataset %>%
-      mutate(
-        `:=`(
-          !!var_char,
-          case_when(
-            !(!!condition) ~ NA_character_,
-            !!criterion & !!condition ~ "Y",
-            !(!!criterion) & !!condition ~ "N"
-          )
-        )
-      )
-  }
-
-  return(data)
+  deprecate_warn("0.3.0", "derive_vars_crit()", "admiral::derive_vars_crit_flag()")
+  admiral::derive_vars_crit_flag(
+    dataset = dataset,
+    crit_nr = 1,
+    condition = !!criterion,
+    description = !!crit_label,
+    values_yn = TRUE,
+    create_numeric_flag = TRUE
+  )
 }

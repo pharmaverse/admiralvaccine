@@ -30,36 +30,35 @@ test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
         !is.na(AVAL) & !is.na(ISLLOQ) & AVAL < ISLLOQ ~ "N",
         TRUE ~ as.character(NA)
       ),
-      CRIT1FN = if_else(CRIT1FL == "Y", 1, 0),
-      CRIT1 = if_else(!is.na(CRIT1FL), "Titer >= ISLLOQ", as.character(NA))
+      CRIT1 = if_else(!is.na(CRIT1FL), "Titer >= ISLLOQ", as.character(NA)),
+      CRIT1FN = if_else(CRIT1FL == "Y", 1L, 0L)
     )
 
 
   # actual dataset
-  actual <- derive_vars_crit(
-    dataset = input,
-    prefix = "CRIT1",
-    crit_label = "Titer >= ISLLOQ",
-    condition = !is.na(AVAL) & !is.na(ISLLOQ),
-    criterion = AVAL >= ISLLOQ
+  actual <- admiraldev::suppress_warning(
+    derive_vars_crit(
+      dataset = input,
+      prefix = "CRIT1",
+      crit_label = "Titer >= ISLLOQ",
+      condition = !is.na(AVAL) & !is.na(ISLLOQ),
+      criterion = rlang::expr(AVAL >= ISLLOQ)
+    ),
+    regexpr = "was deprecated"
   )
 
   expect_dfs_equal(actual,
     expected,
     keys = c(
       "USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ", "CRIT1FL",
-      "CRIT1FN", "CRIT1"
+      "CRIT1", "CRIT1FN"
     )
   )
 })
 
-
-
-
 ## Test 2: Derive CRIT1 variables when AVAL is missing
 
-test_that("derive_vars_crit Test 2: Derive CRIT1 variables
-                    when AVAL is missing", {
+test_that("derive_vars_crit Test 2: Derive CRIT1 variables when AVAL is missing", {
   # input data
   input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ,
@@ -89,18 +88,20 @@ test_that("derive_vars_crit Test 2: Derive CRIT1 variables
         !is.na(AVAL) & !is.na(ISLLOQ) & AVAL < ISLLOQ ~ "N",
         TRUE ~ as.character(NA)
       ),
-      CRIT1FN = if_else(CRIT1FL == "Y", 1, 0),
-      CRIT1 = if_else(!is.na(CRIT1FL), "Titer >= ISLLOQ", as.character(NA))
+      CRIT1 = "Titer >= ISLLOQ",
+      CRIT1FN = if_else(CRIT1FL == "Y", 1L, 0L)
     )
 
-
   # actual dataset
-  actual <- derive_vars_crit(
-    dataset = input,
-    prefix = "CRIT1",
-    crit_label = "Titer >= ISLLOQ",
-    condition = !is.na(AVAL) & !is.na(ISLLOQ),
-    criterion = AVAL >= ISLLOQ
+  actual <- admiraldev::suppress_warning(
+    derive_vars_crit(
+      dataset = input,
+      prefix = "CRIT1",
+      crit_label = "Titer >= ISLLOQ",
+      condition = !is.na(AVAL) & !is.na(ISLLOQ),
+      criterion = rlang::expr(AVAL >= ISLLOQ)
+    ),
+    regexpr = "was deprecated"
   )
 
   expect_dfs_equal(actual,
@@ -112,64 +113,10 @@ test_that("derive_vars_crit Test 2: Derive CRIT1 variables
   )
 })
 
+## Test 3: Complicated selections and missing values for AVAL and ISLLOQ
 
-
-
-## Test 3: Try to apply different vars name and missing ISLLOQ or AVAL
-
-test_that("derive_vars_crit Test 3: Try to apply different vars name and
-                    missing ISLLOQ or AVAL", {
-  # input data
-  input <- tibble::tribble(
-    ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ,
-    "999999-000001", 10, "J0033VN", NA, NA,
-    "999999-000001", 10, "I0019NT", NA, 6,
-    "999999-000001", 10, "M0019LN", NA, 4,
-    "999999-000001", 10, "R0003MA", NA, 6,
-    "999999-000001", 30, "J0033VN", NA, NA,
-    "999999-000001", 30, "I0019NT", NA, 6,
-    "999999-000001", 30, "M0019LN", NA, 4,
-    "999999-000001", 30, "R0003MA", NA, 6,
-    "999999-000002", 10, "J0033VN", 2, NA,
-    "999999-000002", 10, "I0019NT", 7, 6,
-    "999999-000002", 10, "M0019LN", 5, 4,
-    "999999-000002", 10, "R0003MA", 3, 6,
-    "999999-000002", 30, "J0033VN", 55, NA,
-    "999999-000002", 30, "I0019NT", 89, 6,
-    "999999-000002", 30, "M0019LN", 990, 4,
-    "999999-000002", 30, "R0003MA", 340, 6
-  )
-
-  # expected dataset
-  expected <- input %>%
-    mutate(
-      ANL01FL = case_when(
-        !is.na(AVAL) & !is.na(ISLLOQ) & AVAL >= ISLLOQ ~ "Y",
-        !is.na(AVAL) & !is.na(ISLLOQ) & AVAL < ISLLOQ ~ "N",
-        TRUE ~ as.character(NA)
-      )
-    )
-
-
-  # actual dataset
-  actual <- derive_vars_crit(
-    dataset = input,
-    prefix = "ANL01",
-    crit_label = "Titer >= ISLLOQ",
-    condition = !is.na(AVAL) & !is.na(ISLLOQ),
-    criterion = AVAL >= ISLLOQ
-  )
-
-  expect_dfs_equal(actual,
-    expected,
-    keys = c("USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ", "ANL01FL")
-  )
-})
-
-## Test 4: Complicated selections and missing values for AVAL and ISLLOQ
-
-test_that("derive_vars_crit Test 4: Complicated selections and missing values
-                    for AVAL and ISLLOQ", {
+test_that("derive_vars_crit Test 3: Complicated selections and missing values for AVAL and
+          ISLLOQ", {
   # input data
   input <- tibble::tribble(
     ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ, ~BASE,
@@ -194,23 +141,23 @@ test_that("derive_vars_crit Test 4: Complicated selections and missing values
   # expected dataset
   expected <- input %>%
     mutate(
-      CRIT1FL = case_when(
-        !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE) & AVAL >= ISLLOQ & AVAL >= 2 * BASE ~ "Y",
-        !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE) & AVAL < ISLLOQ & AVAL >= 2 * BASE ~ "N",
-        TRUE ~ as.character(NA)
+      CRIT1FL = if_else(
+        AVAL >= ISLLOQ & AVAL >= 2 * BASE, "Y", "N"
       ),
-      CRIT1FN = if_else(CRIT1FL == "Y", 1, 0),
-      CRIT1 = if_else(!is.na(CRIT1FL), "Titer >= ISLLOQ", as.character(NA))
+      CRIT1 = "Titer >= ISLLOQ and Titer >= 2*BASE",
+      CRIT1FN = if_else(CRIT1FL == "Y", 1L, 0L)
     )
 
-
   # actual dataset
-  actual <- derive_vars_crit(
-    dataset = input,
-    prefix = "CRIT1",
-    crit_label = "Titer >= ISLLOQ and Titer >= 2*BASE",
-    condition = !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE),
-    criterion = AVAL >= ISLLOQ & AVAL >= 2 * BASE
+  actual <- admiraldev::suppress_warning(
+    derive_vars_crit(
+      dataset = input,
+      prefix = "CRIT1",
+      crit_label = "Titer >= ISLLOQ and Titer >= 2*BASE",
+      condition = !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE),
+      criterion = rlang::expr(AVAL >= ISLLOQ & AVAL >= 2 * BASE)
+    ),
+    regexpr = "was deprecated"
   )
 
   expect_dfs_equal(actual,
