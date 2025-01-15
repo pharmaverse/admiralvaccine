@@ -168,3 +168,38 @@ test_that("derive_vars_crit Test 3: Complicated selections and missing values fo
     )
   )
 })
+
+## Test 4: Deprecation warning for derive_vars_crit
+
+test_that("derive_vars_crit Test 4: Deprecation warning for derive_vars_crit", {
+  input <- tibble::tribble(
+    ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ,
+    "999999-000001", 10, "J0033VN", 2, 4,
+    "999999-000001", 10, "I0019NT", 3, 6,
+    "999999-000001", 10, "M0019LN", 4, 4,
+    "999999-000001", 10, "R0003MA", 3, 6,
+    "999999-000001", 30, "J0033VN", 60, 4,
+    "999999-000001", 30, "I0019NT", 567, 6,
+    "999999-000001", 30, "M0019LN", 659, 4,
+    "999999-000001", 30, "R0003MA", 250, 6,
+    "999999-000002", 10, "J0033VN", 2, 4,
+    "999999-000002", 10, "I0019NT", 7, 6,
+    "999999-000002", 10, "M0019LN", 5, 4,
+    "999999-000002", 10, "R0003MA", 3, 6,
+    "999999-000002", 30, "J0033VN", 55, 4,
+    "999999-000002", 30, "I0019NT", 89, 6,
+    "999999-000002", 30, "M0019LN", 990, 4,
+    "999999-000002", 30, "R0003MA", 340, 6
+  )
+
+  expect_warning(
+    derive_vars_crit(
+      dataset = input,
+      prefix = "CRIT1",
+      crit_label = "Titer >= ISLLOQ",
+      condition = !is.na(AVAL) & !is.na(ISLLOQ),
+      criterion = rlang::expr(AVAL >= ISLLOQ)
+    ),
+    class = "lifecycle_warning_deprecated"
+  )
+})
