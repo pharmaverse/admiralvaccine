@@ -31,7 +31,7 @@ test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
         TRUE ~ as.character(NA)
       ),
       CRIT1 = if_else(!is.na(CRIT1FL), "Titer >= ISLLOQ", as.character(NA)),
-      CRIT1FN = if_else(CRIT1FL == "Y", 1L, 0L)
+      CRIT1FN = if_else(CRIT1FL == "Y", 1, 0)
     )
 
 
@@ -42,7 +42,7 @@ test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
       prefix = "CRIT1",
       crit_label = "Titer >= ISLLOQ",
       condition = !is.na(AVAL) & !is.na(ISLLOQ),
-      criterion = rlang::expr(AVAL >= ISLLOQ)
+      criterion = AVAL >= ISLLOQ
     ),
     regexpr = "was deprecated"
   )
@@ -51,7 +51,7 @@ test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
     expected,
     keys = c(
       "USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ", "CRIT1FL",
-      "CRIT1", "CRIT1FN"
+      "CRIT1FN", "CRIT1"
     )
   )
 })
@@ -88,8 +88,8 @@ test_that("derive_vars_crit Test 2: Derive CRIT1 variables when AVAL is missing"
         !is.na(AVAL) & !is.na(ISLLOQ) & AVAL < ISLLOQ ~ "N",
         TRUE ~ as.character(NA)
       ),
-      CRIT1 = "Titer >= ISLLOQ",
-      CRIT1FN = if_else(CRIT1FL == "Y", 1L, 0L)
+      CRIT1 = if_else(!is.na(CRIT1FL), "Titer >= ISLLOQ", as.character(NA)),
+      CRIT1FN = if_else(CRIT1FL == "Y", 1, 0)
     )
 
   # actual dataset
@@ -99,7 +99,7 @@ test_that("derive_vars_crit Test 2: Derive CRIT1 variables when AVAL is missing"
       prefix = "CRIT1",
       crit_label = "Titer >= ISLLOQ",
       condition = !is.na(AVAL) & !is.na(ISLLOQ),
-      criterion = rlang::expr(AVAL >= ISLLOQ)
+      criterion = AVAL >= ISLLOQ
     ),
     regexpr = "was deprecated"
   )
@@ -144,8 +144,8 @@ test_that("derive_vars_crit Test 3: Complicated selections and missing values fo
       CRIT1FL = if_else(
         AVAL >= ISLLOQ & AVAL >= 2 * BASE, "Y", "N"
       ),
-      CRIT1 = "Titer >= ISLLOQ and Titer >= 2*BASE",
-      CRIT1FN = if_else(CRIT1FL == "Y", 1L, 0L)
+      CRIT1 = if_else(!is.na(CRIT1FL), "Titer >= ISLLOQ and Titer >= 2*BASE", as.character(NA)),
+      CRIT1FN = if_else(CRIT1FL == "Y", 1, 0)
     )
 
   # actual dataset
@@ -154,8 +154,8 @@ test_that("derive_vars_crit Test 3: Complicated selections and missing values fo
       dataset = input,
       prefix = "CRIT1",
       crit_label = "Titer >= ISLLOQ and Titer >= 2*BASE",
-      condition = !is.na(AVAL) & !is.na(ISLLOQ) & is.na(BASE),
-      criterion = rlang::expr(AVAL >= ISLLOQ & AVAL >= 2 * BASE)
+      condition = !is.na(AVAL),
+      criterion = AVAL >= ISLLOQ & AVAL >= 2 * BASE
     ),
     regexpr = "was deprecated"
   )
@@ -166,40 +166,5 @@ test_that("derive_vars_crit Test 3: Complicated selections and missing values fo
       "USUBJID", "AVISITN", "PARAMCD", "AVAL", "ISLLOQ", "CRIT1FL",
       "CRIT1FN", "CRIT1"
     )
-  )
-})
-
-## Test 4: Deprecation warning for derive_vars_crit
-
-test_that("derive_vars_crit Test 4: Deprecation warning for derive_vars_crit", {
-  input <- tibble::tribble(
-    ~USUBJID, ~AVISITN, ~PARAMCD, ~AVAL, ~ISLLOQ,
-    "999999-000001", 10, "J0033VN", 2, 4,
-    "999999-000001", 10, "I0019NT", 3, 6,
-    "999999-000001", 10, "M0019LN", 4, 4,
-    "999999-000001", 10, "R0003MA", 3, 6,
-    "999999-000001", 30, "J0033VN", 60, 4,
-    "999999-000001", 30, "I0019NT", 567, 6,
-    "999999-000001", 30, "M0019LN", 659, 4,
-    "999999-000001", 30, "R0003MA", 250, 6,
-    "999999-000002", 10, "J0033VN", 2, 4,
-    "999999-000002", 10, "I0019NT", 7, 6,
-    "999999-000002", 10, "M0019LN", 5, 4,
-    "999999-000002", 10, "R0003MA", 3, 6,
-    "999999-000002", 30, "J0033VN", 55, 4,
-    "999999-000002", 30, "I0019NT", 89, 6,
-    "999999-000002", 30, "M0019LN", 990, 4,
-    "999999-000002", 30, "R0003MA", 340, 6
-  )
-
-  expect_warning(
-    derive_vars_crit(
-      dataset = input,
-      prefix = "CRIT1",
-      crit_label = "Titer >= ISLLOQ",
-      condition = !is.na(AVAL) & !is.na(ISLLOQ),
-      criterion = rlang::expr(AVAL >= ISLLOQ)
-    ),
-    class = "lifecycle_warning_deprecated"
   )
 })
