@@ -92,7 +92,7 @@
 #' )
 #'
 derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) {
-  deprecate_soft(when = "0.4.0", what = "derive_vars_crit()", with = "admiral::derive_vars_crit_flag()")
+  deprecate_warn(when = "0.4.0", what = "derive_vars_crit()", with = "admiral::derive_vars_crit_flag()")
   condition <- assert_filter_cond(enquo(condition))
   criterion <- assert_filter_cond(enquo(criterion))
 
