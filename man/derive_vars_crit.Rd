@@ -43,8 +43,61 @@ Dataset with criterion variables
 
 This function is \emph{deprecated}, please use \code{admiral::derive_vars_crit_flag()} instead.
 }
+\examples{
+library(tibble)
+library(admiral)
+library(admiraldev)
+library(dplyr)
+
+input <- tribble(
+  ~USUBJID, ~AVISITN, ~ISCAT, ~PARAMCD, ~AVAL, ~ISLLOQ,
+  "999999-000001", 10, "IMMUNOLOGY", "J0033VN", 2, 4,
+  "999999-000001", 10, "IMMUNOLOGY", "I0019NT", 3, 6,
+  "999999-000001", 10, "IMMUNOLOGY", "M0019LN", 4, 4,
+  "999999-000001", 10, "IMMUNOLOGY", "R0003MA", 3, 6,
+  "999999-000001", 30, "IMMUNOLOGY", "J0033VN", 60, 4,
+  "999999-000001", 30, "IMMUNOLOGY", "I0019NT", 567, 6,
+  "999999-000001", 30, "IMMUNOLOGY", "M0019LN", 659, 4,
+  "999999-000001", 30, "IMMUNOLOGY", "R0003MA", 250, 6,
+  "999999-000002", 10, "IMMUNOLOGY", "J0033VN", 2, 4,
+  "999999-000002", 10, "IMMUNOLOGY", "I0019NT", 7, 6,
+  "999999-000002", 10, "IMMUNOLOGY", "M0019LN", 5, 4,
+  "999999-000002", 10, "IMMUNOLOGY", "R0003MA", 3, 6,
+  "999999-000002", 30, "IMMUNOLOGY", "J0033VN", 55, 4,
+  "999999-000002", 30, "IMMUNOLOGY", "I0019NT", 89, 6,
+  "999999-000002", 30, "IMMUNOLOGY", "M0019LN", 990, 4,
+  "999999-000002", 30, "IMMUNOLOGY", "R0003MA", 340, 6,
+  "999999-000003", 10, "IMMUNOLOGY", "J0033VN", 3, 4,
+  "999999-000003", 10, "IMMUNOLOGY", "I0019NT", 6, 6,
+  "999999-000003", 10, "IMMUNOLOGY", "M0019LN", 2, 4,
+  "999999-000003", 10, "IMMUNOLOGY", "R0003MA", 2, 6,
+  "999999-000003", 30, "IMMUNOLOGY", "J0033VN", 45, 4,
+  "999999-000003", 30, "IMMUNOLOGY", "I0019NT", 381, 6,
+  "999999-000003", 30, "IMMUNOLOGY", "M0019LN", 542, 4,
+  "999999-000003", 30, "IMMUNOLOGY", "R0003MA", NA, 6
+)
+
+
+derive_vars_crit(
+  dataset = input,
+  prefix = "CRIT1",
+  crit_label = "Titer >= ISLLOQ",
+  condition = !is.na(AVAL) & !is.na(ISLLOQ),
+  criterion = AVAL >= ISLLOQ
+)
+
+}
+\seealso{
+Other der_var: 
+\code{\link{derive_var_aval_adis}()},
+\code{\link{derive_vars_event_flag}()},
+\code{\link{derive_vars_max_flag}()},
+\code{\link{derive_vars_merged_vaccine}()},
+\code{\link{derive_vars_params}()},
+\code{\link{derive_vars_vaxdt}()}
+}
 \author{
 Federico Baratin
 }
-\concept{deprecated}
-\keyword{deprecated}
+\concept{der_var}
+\keyword{der_var}

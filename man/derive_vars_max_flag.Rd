@@ -72,6 +72,7 @@ derive_vars_max_flag(
 \seealso{
 Other der_var: 
 \code{\link{derive_var_aval_adis}()},
+\code{\link{derive_vars_crit}()},
 \code{\link{derive_vars_event_flag}()},
 \code{\link{derive_vars_merged_vaccine}()},
 \code{\link{derive_vars_params}()},
