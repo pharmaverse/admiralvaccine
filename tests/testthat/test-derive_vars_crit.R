@@ -42,7 +42,7 @@ test_that("derive_vars_crit Test 1: Derive CRIT1 variables", {
       prefix = "CRIT1",
       crit_label = "Titer >= ISLLOQ",
       condition = !is.na(AVAL) & !is.na(ISLLOQ),
-      criterion = input$AVAL >= input$ISLLOQ
+      criterion = AVAL >= ISLLOQ
     ),
     regexpr = "was deprecated"
   )
@@ -99,7 +99,7 @@ test_that("derive_vars_crit Test 2: Derive CRIT1 variables when AVAL is missing"
       prefix = "CRIT1",
       crit_label = "Titer >= ISLLOQ",
       condition = !is.na(AVAL) & !is.na(ISLLOQ),
-      criterion = input$AVAL >= input$ISLLOQ
+      criterion = AVAL >= ISLLOQ
     ),
     regexpr = "was deprecated"
   )
@@ -155,7 +155,7 @@ test_that("derive_vars_crit Test 3: Complicated selections and missing values fo
       prefix = "CRIT1",
       crit_label = "Titer >= ISLLOQ and Titer >= 2*BASE",
       condition = !is.na(AVAL),
-      criterion = input$AVAL >= input$ISLLOQ & input$AVAL >= 2 * input$BASE
+      criterion = AVAL >= ISLLOQ & AVAL >= 2 * BASE
     ),
     regexpr = "was deprecated"
   )

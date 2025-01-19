@@ -92,14 +92,15 @@
 #' )
 #'
 derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) {
-  deprecate_warn("0.4.0", "derive_vars_crit()", "admiral::derive_vars_crit_flag()")
-  admiral::derive_vars_crit_flag(
-    dataset = dataset,
-    crit_nr = 1,
-    condition = !!criterion,
-    description = !!crit_label,
-    values_yn = TRUE,
-    create_numeric_flag = TRUE
+  deprecate_warn(
+    when = "0.4.0",
+    what = "derive_vars_crit()",
+    with = "derive_vars_crit_flag()",
+    details = c(
+      x = "The function will be deprecated from next admiralvaccine release",
+      i = "See admiral's deprecation guidance:
+      https://pharmaverse.github.io/admiraldev/dev/articles/programming_strategy.html#deprecation"
+    )
   )
   condition <- assert_filter_cond(enquo(condition))
   criterion <- assert_filter_cond(enquo(criterion))
