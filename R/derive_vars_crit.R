@@ -97,7 +97,7 @@ derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) 
     what = "derive_vars_crit()",
     with = "derive_vars_crit_flag()",
     details = c(
-      x = "The function will be deprecated from next admiralvaccine release",
+      x = "This message will turn into a error at the beginning of 2026.",
       i = "See admiral's deprecation guidance:
       https://pharmaverse.github.io/admiraldev/dev/articles/programming_strategy.html#deprecation"
     )
