@@ -39,6 +39,8 @@ Returns \code{NA} for not selected rows (not taken into account from condition)}
 Dataset with criterion variables
 }
 \description{
+Derive analysis criterion evaluation result variable, paired with character
+
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 This function is \emph{deprecated}, please use \code{admiral::derive_vars_crit_flag()} instead.

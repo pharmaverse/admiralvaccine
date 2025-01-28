@@ -2,6 +2,8 @@
 #'
 #'
 #' @description
+#' Derive analysis criterion evaluation result variable, paired with character
+#'
 #' `r lifecycle::badge("deprecated")`
 #'
 #' This function is *deprecated*, please use `admiral::derive_vars_crit_flag()` instead.
@@ -95,7 +97,7 @@ derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) 
   deprecate_warn(
     when = "0.4.0",
     what = "derive_vars_crit()",
-    with = "derive_vars_crit_flag()",
+    with = "admiral::derive_vars_crit_flag()",
     details = c(
       x = "This message will turn into a error at the beginning of 2026.",
       i = "See admiral's deprecation guidance:
