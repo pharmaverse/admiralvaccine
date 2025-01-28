@@ -2,11 +2,16 @@
 #'
 #'
 #' @description
-#' Derive analysis criterion evaluation result variable, paired with character
-#'
 #' `r lifecycle::badge("deprecated")`
 #'
 #' This function is *deprecated*, please use `admiral::derive_vars_crit_flag()` instead.
+#'
+#' Derive analysis criterion evaluation result variable, paired with character
+#' and numeric flags.
+#' This function allows also the derivation of a CRIT like variable with a
+#' different name (ex: `ANL01FL`), without generating additional numeric (ex: `ANL01FN`)
+#' and character label (ex: `ANL01`) variables.
+#'
 #'
 #' @param dataset Input dataset
 #'
