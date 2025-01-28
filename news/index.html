@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">admiralvaccine</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0" id="admiralvaccine-030">admiralvaccine 0.3.0<a class="anchor" aria-label="anchor" href="#admiralvaccine-030"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.4.0" id="admiralvaccine-040">admiralvaccine 0.4.0<a class="anchor" aria-label="anchor" href="#admiralvaccine-040"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-4-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-4-0"></a></h3>
+<ul><li>Function <code><a href="../reference/derive_vars_crit.html">derive_vars_crit()</a></code> has been deprecated. Please use <code><a href="https://pharmaverse.github.io/admiral/reference/derive_vars_crit_flag.html" class="external-link">admiral::derive_vars_crit_flag()</a></code> instead. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/253" class="external-link">#253</a>)</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="admiralvaccine-030">admiralvaccine 0.3.0<a class="anchor" aria-label="anchor" href="#admiralvaccine-030"></a></h2><p class="text-muted">CRAN release: 2024-08-29</p>
 <div class="section level3">
 <h3 id="updates-related-to-cber-requirements-for-ediary-data-0-3-0">Updates related to CBER requirements for eDiary data<a class="anchor" aria-label="anchor" href="#updates-related-to-cber-requirements-for-ediary-data-0-3-0"></a></h3>
 <ul><li>Updated ADFACE template and vignette as per new SDTM mapping of Investigator assessment for eDiary data, as recommended by CBER. The collection of the Investigator assessment can happen when data reported by the participants was deemed incorrect or the participant did not complete the eDiary. In these two scenarios, the Investigator assessment is collected within the eDiary platform as a separate record from the original data reported by the participant (if this is allowed by eCOA system) or in the study eCRF. This leads to a change in Solicited Adverse Event SDTM structure (FACE and VS). Additional records coming from Investigator assessment are added, which can be identified through an evaluator variable (FAEVAL/VSEVAL). An update in ADFACE has been provided in order to reflect these changes in SDTM. (<a href="https://github.com/pharmaverse/admiralvaccine/issues/243" class="external-link">#243</a>)</li>
