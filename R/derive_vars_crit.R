@@ -3,10 +3,10 @@
 #'
 #' @description
 #' Derive analysis criterion evaluation result variable, paired with character
-#' and numeric flags.
-#' This function allows also the derivation of a CRIT like variable with a
-#' different name (ex: `ANL01FL`), without generating additional numeric (ex: `ANL01FN`)
-#' and character label (ex: `ANL01`) variables.
+#'
+#' `r lifecycle::badge("deprecated")`
+#'
+#' This function is *deprecated*, please use `admiral::derive_vars_crit_flag()` instead.
 #'
 #' @param dataset Input dataset
 #'
@@ -94,6 +94,16 @@
 #' )
 #'
 derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) {
+  deprecate_warn(
+    when = "0.4.0",
+    what = "derive_vars_crit()",
+    with = "admiral::derive_vars_crit_flag()",
+    details = c(
+      x = "This message will turn into a error at the beginning of 2026.",
+      i = "See admiral's deprecation guidance:
+      https://pharmaverse.github.io/admiraldev/dev/articles/programming_strategy.html#deprecation"
+    )
+  )
   condition <- assert_filter_cond(enquo(condition))
   criterion <- assert_filter_cond(enquo(criterion))
 

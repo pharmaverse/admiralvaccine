@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralvaccine
 Title: Vaccine Extension Package for ADaM in 'R' Asset Library
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(
     person("Sukalpo", "Saha", email = "sukalpo.saha@pfizer.com", role = c("aut", "cre")),
     person("Arjun", "Rubalingam", email = "arjun.rubalingam@pfizer.com", role = "aut"),
@@ -83,8 +83,9 @@ Suggests:
     metatools
 VignetteBuilder: 
     knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

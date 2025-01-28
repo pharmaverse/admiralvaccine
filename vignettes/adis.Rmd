@@ -85,7 +85,6 @@ library(admiraldev)
 library(admiralvaccine)
 library(pharmaversesdtm)
 library(metatools)
-library(pharmaversesdtm)
 
 # Load source datasets
 data("is_vaccine")
@@ -519,20 +518,25 @@ dataset_vignette(
 Derive Criteria Evaluation Analysis Flags.
 
 The function selects a subset of rows from the input dataset and apply a criterion to them. 
-If this criterion is met then `CRIT1FL` (or the name you specified in the first argument) 
-is equal to `Y`; `N` otherwise.
+If this criterion is met then `CRIT1FL` is equal to `Y`; `N` otherwise.
 
 The function returns a relative numeric `CRIT1FN` variable (`1` or `0` if the 
-criterion is met, respectively) and a label `CRIT1` variable
-(with the text specified in label_var argument).
+criterion is met, respectively) and a label `CRIT1` variable.
 ```{r eval=TRUE}
-adis <- derive_vars_crit(
+# STEP 9 Derivation of CRITyFL and CRITyFN ----
+adis <- restrict_derivation(
   dataset = adis,
-  prefix = "CRIT1",
-  crit_label = "Titer >= ISLLOQ",
-  condition = !is.na(AVAL) & !is.na(ISLLOQ),
-  criterion = AVAL >= ISLLOQ
-)
+  derivation = derive_vars_crit_flag,
+  args = params(
+    crit_nr = 1,
+    condition = AVAL >= ISLLOQ,
+    description = "Titer >= ISLLOQ",
+    values_yn = TRUE,
+    create_numeric_flag = TRUE
+  ),
+  filter = !is.na(AVAL)
+) %>%
+  arrange(STUDYID, USUBJID, DERIVED, ISSEQ)
 ```
 
 ```{r, echo=FALSE}

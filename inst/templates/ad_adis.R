@@ -322,13 +322,19 @@ adis <- restrict_derivation(adis,
 
 
 # STEP 9 Derivation of CRITyFL and CRITyFN ----
-adis <- derive_vars_crit(
+adis <- restrict_derivation(
   dataset = adis,
-  prefix = "CRIT1",
-  crit_label = "Titer >= ISLLOQ",
-  condition = !is.na(AVAL) & !is.na(ISLLOQ),
-  criterion = AVAL >= ISLLOQ
-)
+  derivation = derive_vars_crit_flag,
+  args = params(
+    crit_nr = 1,
+    condition = AVAL >= ISLLOQ,
+    description = "Titer >= ISLLOQ",
+    values_yn = TRUE,
+    create_numeric_flag = TRUE
+  ),
+  filter = !is.na(AVAL)
+) %>%
+  arrange(STUDYID, USUBJID, DERIVED, ISSEQ)
 
 
 # STEP 10 Derivation of TRTP/A treatment variables ----

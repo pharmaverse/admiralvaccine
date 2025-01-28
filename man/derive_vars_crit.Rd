@@ -40,10 +40,10 @@ Dataset with criterion variables
 }
 \description{
 Derive analysis criterion evaluation result variable, paired with character
-and numeric flags.
-This function allows also the derivation of a CRIT like variable with a
-different name (ex: \code{ANL01FL}), without generating additional numeric (ex: \code{ANL01FN})
-and character label (ex: \code{ANL01}) variables.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This function is \emph{deprecated}, please use \code{admiral::derive_vars_crit_flag()} instead.
 }
 \examples{
 library(tibble)
