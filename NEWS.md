@@ -2,7 +2,15 @@
 
 ## Breaking Changes
 
-- Function `derive_vars_crit()` has been deprecated. Please use `admiral::derive_vars_crit_flag()` instead. (#253)
+- Function `derive_vars_crit()` was deprecated in favor of `admiral::derive_vars_crit_flag()`. (#253)
+
+## Updates to Templates
+
+- Calls to `derive_vars_crit()` within `ADIS` template were replaced with `admiral::derive_vars_crit_flag()`. (#253)
+
+## Updates to Documentation
+
+- Calls to `derive_vars_crit()` within `ADIS` vignette were replaced with `admiral::derive_vars_crit_flag()`. (#253)
 
 # admiralvaccine 0.3.0
 
