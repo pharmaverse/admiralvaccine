@@ -95,10 +95,10 @@ developer community:
 
 -   Project Lead & Contributor: Neetu Sangari
 
--   Maintainer: Sukalpo Saha
+-   Maintainer: Arjun Rubalingam
 
--   Developers: Vikram S, Arjun Rubalingam, Dhivya Kanagaraj, Federico
-    Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla
+-   Developers: Arjun Rubalingam,  Sukalpo Saha, Vikram S, Dhivya Kanagaraj,
+    Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla
 
 -   Support lead & Reviewer: Ben Straub
 

@@ -1,3 +1,9 @@
+# admiralvaccine 0.5.0
+
+## Note
+
+The Maintainer role has moved from Sukalpo Saha to Arjun Rubalingam. (#256)
+
 # admiralvaccine 0.4.0
 
 ## Breaking Changes
