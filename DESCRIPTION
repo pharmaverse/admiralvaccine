@@ -1,11 +1,11 @@
 Type: Package
 Package: admiralvaccine
 Title: Vaccine Extension Package for ADaM in 'R' Asset Library
-Version: 0.5.0
+Version: 0.5.0.9000
 Authors@R: c(
-    person("Arjun", "Rubalingam", email = "arjun.rubalingam@pfizer.com",  role = c("aut", "cre")),
-    person("Sukalpo", "Saha", email = "sukalpo.saha@pfizer.com", role = c("aut","ctb")),
-    person("Ben", "Straub", email = "ben.x.straub@gsk.com", role = "aut"),
+    person("Arjun", "Rubalingam", , "arjun.rubalingam@pfizer.com", role = c("aut", "cre")),
+    person("Sukalpo", "Saha", , "sukalpo.saha@pfizer.com", role = c("aut", "ctb")),
+    person("Ben", "Straub", , "ben.x.straub@gsk.com", role = "aut"),
     person("Vikram", "S", role = "aut"),
     person("Dhivya", "Kanagaraj", role = "aut"),
     person("Federico", "Baratin", role = "aut"),
@@ -34,13 +34,13 @@ Authors@R: c(
   )
 Description: Programming vaccine specific Clinical Data Interchange
     Standards Consortium (CDISC) compliant Analysis Data Model (ADaM)
-    datasets in 'R'. Flat model is followed as per 
-    Center for Biologics Evaluation and Research (CBER) guidelines for
-    creating vaccine specific domains. ADaM datasets are a mandatory part
-    of any New Drug or Biologics License Application submitted to the
-    United States Food and Drug Administration (FDA). Analysis derivations
-    are implemented in accordance with the "Analysis Data Model
-    Implementation Guide" (CDISC Analysis Data Model Team (2021),
+    datasets in 'R'. Flat model is followed as per Center for Biologics
+    Evaluation and Research (CBER) guidelines for creating vaccine
+    specific domains. ADaM datasets are a mandatory part of any New Drug
+    or Biologics License Application submitted to the United States Food
+    and Drug Administration (FDA). Analysis derivations are implemented in
+    accordance with the "Analysis Data Model Implementation Guide" (CDISC
+    Analysis Data Model Team (2021),
     <https://www.cdisc.org/standards/foundational/adam/adamig-v1-3-release-package>).
     The package is an extension package of the 'admiral' package.
 License: Apache License (>= 2)
@@ -70,6 +70,7 @@ Suggests:
     DT,
     knitr,
     lintr,
+    metatools,
     methods,
     miniUI,
     pharmaversesdtm,
@@ -79,8 +80,7 @@ Suggests:
     spelling,
     testthat,
     tibble,
-    usethis,
-    metatools
+    usethis
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
