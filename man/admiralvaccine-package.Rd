@@ -20,11 +20,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Sukalpo Saha \email{sukalpo.saha@pfizer.com}
+\strong{Maintainer}: Arjun Rubalingam \email{arjun.rubalingam@pfizer.com}
 
 Authors:
 \itemize{
-  \item Arjun Rubalingam \email{arjun.rubalingam@pfizer.com}
+  \item Sukalpo Saha \email{sukalpo.saha@pfizer.com} [contributor]
   \item Ben Straub \email{ben.x.straub@gsk.com}
   \item Vikram S
   \item Dhivya Kanagaraj
