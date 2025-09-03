@@ -4,6 +4,10 @@
 
 The Maintainer role has moved from Sukalpo Saha to Arjun Rubalingam. (#256)
 
+## Updates to Templates
+
+- The `ADIS` template was updated so that the datasets are saved in the same way as the other templates. (#260)
+
 # admiralvaccine 0.4.0
 
 ## Breaking Changes
