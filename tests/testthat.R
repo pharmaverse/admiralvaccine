@@ -1,4 +1,2 @@
-library(testthat)
-library(admiralvaccine)
-
-test_check("admiralvaccine")
+library(admiralvaccine) #nolint
+testthat::test_check("admiralvaccine")

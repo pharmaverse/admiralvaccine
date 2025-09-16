@@ -87,7 +87,7 @@ derive_vars_merged_vaccine <- function(dataset,
 
   if (nrow(dataset_ex) != nrow(ex_distinct)) {
     warning("Subjects have multiple vaccinations at same visit")
-    return(dataset)
+    dataset
   } else {
     # Filter records for  ADMINISTRATION SITE events and merge it with EX dataset
     dataset_adminstration <- dataset %>%
@@ -112,6 +112,6 @@ derive_vars_merged_vaccine <- function(dataset,
     )
 
     # bind face1 and face2 datasets
-    return(bind_rows(face1, face2))
+    bind_rows(face1, face2)
   }
 }

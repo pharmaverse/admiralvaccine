@@ -20,11 +20,11 @@ authors:
     text: "Developed by Pfizer Inc,"
   sidebar:
     roles: [aut, fnd]
-  Pfizer Inc:
-    html: "<a href='https://www.pfizer.com/'><img src='man/figures/pfizer_logo.png' height='20' alt='Pfizer logo' /></a>"
+  Pfizer Inc.:
+    html: "<a href='https://www.pfizer.com/'><img src='man/figures/pfizer_logo.png' height='20'  alt='Pfizer logo' /></a>"
     href: https://pfizer.com/
   GlaxoSmithKline LLC:
-    html: "<a href='https://www.gsk.com/'><img src='man/figures/pfizer_logo.png' height='20' alt='GSK logo' /></a>"
+    html: "<a href='https://www.gsk.com/'><img src='man/figures/gsk_logo.png' height='20' alt='GSK logo' /></a>"
     href: https://gsk.com/
   Johnson & Johnson:
     html: "<a href='https://www.jnj.com/'><img src='man/figures/jnj_logo.png' height='20' alt='jnj logo' /></a>"

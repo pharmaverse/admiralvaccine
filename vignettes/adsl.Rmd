@@ -125,11 +125,13 @@ Example calls:
 ex_ext <- ex %>%
   derive_vars_dtm(
     dtc = EXSTDTC,
-    new_vars_prefix = "EXST"
+    new_vars_prefix = "EXST",
+    ignore_seconds_flag = FALSE
   ) %>%
   derive_vars_dtm(
     dtc = EXENDTC,
-    new_vars_prefix = "EXEN"
+    new_vars_prefix = "EXEN",
+    ignore_seconds_flag = FALSE
   )
 adsl <- adsl %>%
   derive_vars_merged(
