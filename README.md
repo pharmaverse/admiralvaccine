@@ -1,21 +1,14 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 <!-- Please do not edit the README.md file as it is auto-generated. Only edit the README.Rmd file -->
 
 # Admiral Extension for Vaccines <img src="man/figures/logo.png" align="right" width="200" style="margin-left:50px;"/>
 
 <!-- badges: start -->
 
-[<img src="https://pharmaverse.org/shields/admiralvaccine.svg"/>](https://pharmaverse.org/)
+[<img src="https://pharmaverse.org/shields/admiralvaccine.svg">](https://pharmaverse.org/)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/admiralvaccine)](https://CRAN.R-project.org/package=admiralvaccine/)
 [![Test
 Coverage](https://raw.githubusercontent.com/pharmaverse/admiralvaccine/badges/main/test-coverage.svg)](https://github.com/pharmaverse/admiralvaccine/actions/workflows/code-coverage.yml/)
-
 <!-- badges: end -->
 
 Vaccine extension package for ADaM in R Asset Library `{admiral}`
@@ -33,15 +26,13 @@ The package is available from CRAN and can be installed by running
 To install the latest development version of the package directly from
 GitHub use the following code:
 
-```         
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
+    if (!requireNamespace("remotes", quietly = TRUE)) {
+      install.packages("remotes")
+    }
 
-remotes::install_github("pharmaverse/admiraldev", ref = "devel") # This is a required dependency of {admiralvaccine}
-remotes::install_github("pharmaverse/admiral", ref = "devel") # This is a required dependency of {admiralvaccine}
-remotes::install_github("pharmaverse/admiralvaccine", ref = "devel")
-```
+    remotes::install_github("pharmaverse/admiraldev", ref = "devel") # This is a required dependency of {admiralvaccine}
+    remotes::install_github("pharmaverse/admiral", ref = "devel") # This is a required dependency of {admiralvaccine}
+    remotes::install_github("pharmaverse/admiralvaccine", ref = "devel")
 
 ### Dependencies
 
@@ -103,9 +94,7 @@ developer community:
 ## Acknowledgments
 
 Along with the authors and contributors, thanks to the following people
-for their work on the package:
-
-Neetu Sangari, Ben Straub, Stefan Bundfuss, Edoardo Mancini, Ross
-Farrugia, Abdul Khayat, Ankur Jindal, Andrea Pammolli, Daniele
-Bottigliengo, Ranya Ben Hsain, Lee Armishaw, Hilde Delanghe, Marleen
-Nijs, Mandy Peng and Tina Zhai.
+for their work on the package: Neetu Sangari, Ben Straub, Stefan
+Bundfuss, Edoardo Mancini, Ross Farrugia, Abdul Khayat, Ankur Jindal,
+Andrea Pammolli, Daniele Bottigliengo, Ranya Ben Hsain, Lee Armishaw,
+Hilde Delanghe, Marleen Nijs, Mandy Peng and Tina Zhai.
