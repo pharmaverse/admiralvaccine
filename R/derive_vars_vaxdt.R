@@ -117,5 +117,5 @@ derive_vars_vaxdt <- function(dataset,
     dataset_add = vaxdt_vars,
     by_vars = exprs(USUBJID)
   )
-  return(adsl)
+  adsl
 }

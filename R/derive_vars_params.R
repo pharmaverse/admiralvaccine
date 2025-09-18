@@ -134,5 +134,5 @@ derive_vars_params <- function(dataset,
     adface <- adface %>%
       mutate(PARCAT2 = FASCAT)
   }
-  return(adface)
+  adface
 }

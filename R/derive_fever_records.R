@@ -128,6 +128,6 @@ derive_fever_records <- function(dataset,
 
     bind_rows(dataset, fev_rec)
   } else if (row_rec > 0) {
-    return(dataset)
+    dataset
   }
 }

@@ -91,20 +91,10 @@ developer community:
     Issues](https://github.com/pharmaverse/admiralvaccine/issues/) - for
     direct feedback, enhancement requests or raising bugs
 
-## {admiralvaccine} R Package Collaboration: Pfizer, GSK and J&J
+## Acknowledgments
 
--   Project Lead & Contributor: Neetu Sangari
-
--   Maintainer: Arjun Rubalingam
-
--   Developers: Arjun Rubalingam,  Sukalpo Saha, Vikram S, Dhivya Kanagaraj,
-    Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla
-
--   Support lead & Reviewer: Ben Straub
-
--   Other Reviewers: Stefan Bundfuss, Edoardo Mancini
-
--   Other Contributors: Ross Farrugia, Abdul Khayat, Jayashree V,
-    Jagadish Katam, Ankur Jindal, Andrea Pammolli, Daniele Bottigliengo,
-    Ranya Ben Hsain, Lee Armishaw, Hilde Delanghe, Marleen Nijs, Mandy
-    Peng, Tina Zhai
+Along with the authors and contributors, thanks to the following people
+for their work on the package: Neetu Sangari, Ben Straub, Stefan
+Bundfuss, Edoardo Mancini, Ross Farrugia, Abdul Khayat, Ankur Jindal,
+Andrea Pammolli, Daniele Bottigliengo, Ranya Ben Hsain, Lee Armishaw,
+Hilde Delanghe, Marleen Nijs, Mandy Peng and Tina Zhai.

@@ -157,5 +157,5 @@ derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) 
       )
   }
 
-  return(data)
+  data
 }

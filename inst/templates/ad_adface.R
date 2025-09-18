@@ -93,7 +93,8 @@ adface <- derive_vars_merged_vaccine(
   derive_vars_dtm(
     new_vars_prefix = "A",
     dtc = FADTC,
-    highest_imputation = "n"
+    highest_imputation = "n",
+    ignore_seconds_flag = FALSE
   ) %>%
   mutate(RFSTDTC = as.Date(RFSTDTC)) %>%
   derive_vars_dy(reference_date = RFSTDTC, source_vars = exprs(ADT))

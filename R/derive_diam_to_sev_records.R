@@ -188,11 +188,11 @@ derive_diam_to_sev_records <- function(dataset,
         )
       # binding with Input data set
 
-      return(sev)
+      sev
     } else {
       warning(diam_code, " ", "doesn't exist in the filtered record")
 
-      return(NULL)
+      NULL
     }
   }
 

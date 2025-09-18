@@ -105,16 +105,12 @@ We use the following for support and communications between user and developer c
 * [Slack](https://pharmaverse.slack.com/) - for informal discussions, Q&A and building our user community. If you don't have access, use this [link](https://join.slack.com/t/pharmaverse/shared_invite/zt-yv5atkr4-Np2ytJ6W_QKz_4Olo7Jo9A/) to join the pharmaverse Slack workspace
 * [GitHub Issues](https://github.com/pharmaverse/admiralvaccine/issues/) - for direct feedback, enhancement requests or raising bugs
 
-## {admiralvaccine} R Package Collaboration: Pfizer, GSK and J&J
 
-- Project Lead & Contributor: Neetu Sangari
+## Acknowledgments
 
-- Maintainer: Sukalpo Saha
-
-- Developers: Vikram S, Arjun Rubalingam, Dhivya Kanagaraj, Federico Baratin, Yamini Purna Bollu, Ilse Augustyns, Kalyani Bodicherla
-
-- Support lead & Reviewer: Ben Straub
-
-- Other Reviewers: Stefan Bundfuss, Edoardo Mancini
-
-- Other Contributors: Ross Farrugia, Abdul Khayat, Jayashree V, Jagadish Katam, Ankur Jindal, Andrea Pammolli, Daniele Bottigliengo, Ranya Ben Hsain, Lee Armishaw, Hilde Delanghe, Marleen Nijs, Mandy Peng, Tina Zhai
+Along with the authors and contributors, thanks to the following people
+for their work on the package:
+Neetu Sangari, Ben Straub, Stefan Bundfuss, Edoardo Mancini, Ross
+Farrugia, Abdul Khayat, Ankur Jindal, Andrea Pammolli, Daniele
+Bottigliengo, Ranya Ben Hsain, Lee Armishaw, Hilde Delanghe, Marleen
+Nijs, Mandy Peng and Tina Zhai.
