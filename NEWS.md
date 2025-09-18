@@ -1,4 +1,4 @@
-# admiralvaccine 0.5.0.9002
+# admiralvaccine 0.5.0
 
 ## Note
 
