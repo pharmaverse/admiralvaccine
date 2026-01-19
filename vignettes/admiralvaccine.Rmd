@@ -51,9 +51,9 @@ use `{admiralvaccine}`.
 
 # Derivations
 
-The most important functions in `{admiralvaccine}` are the
-[derivations](../reference/index.html#section-derivations). Again these follow the same
+The most important functions in `{admiralvaccine}` follows the same
 conventions as `{admiral}` but are focused to vaccine-specific needs.
+Please see the Reference page for more details.
 
 # Input and Output
 
