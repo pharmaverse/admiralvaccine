@@ -35,7 +35,7 @@ test_that("derive_vars_merged_vaccine Test 1: Merging EXTRT variable from EX to 
     mutate(LOC = EXLOC, LAT = EXLAT, TPTREF = EXTPTREF) %>%
     select(-c("VISITNUM", "VISIT", "EXLOC", "EXLAT", "EXSTDTC", "EXTPTREF"))
 
-  expected <- left_join(face1, ex1, by = c("USUBJID", "LOC", "LAT", "TPTREF"), keep = FALSE) %>%
+  expected <- dplyr::left_join(face1, ex1, by = c("USUBJID", "LOC", "LAT", "TPTREF"), keep = FALSE) %>%
     select(-c("LOC", "LAT", "TPTREF"))
 
   actual <- derive_vars_merged_vaccine(

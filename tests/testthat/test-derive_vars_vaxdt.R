@@ -38,7 +38,7 @@ check if output is merged with ADSL", {
     i <- i + 1
   }
 
-  expected <- left_join(
+  expected <- dplyr::left_join(
     x = adsl,
     y = expected,
     by = c("USUBJID"),
@@ -95,18 +95,23 @@ test_that("derive_vars_vaxdt Test 2: Check if Vaccination date variables are get
     expected[col_name] <- as.Date(expected[[col_name]], format = "%Y-%m-%d")
     i <- i + 1
   }
-  expected <- left_join(
+  expected <- dplyr::left_join(
     x = adsl,
     y = expected,
     by = c("USUBJID"),
     keep = FALSE
   )
-
-  actual <- derive_vars_vaxdt(
+  expect_warning(derive_vars_vaxdt(
     dataset = input,
     dataset_adsl = adsl,
     by_vars = exprs(USUBJID, VISITNUM),
     order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
-  )
-  expect_dfs_equal(actual, expected, keys = c("USUBJID"))
+  ))
+  expect_dfs_equal(suppressWarnings(derive_vars_vaxdt(
+    dataset = input,
+    dataset_adsl = adsl,
+    by_vars = exprs(USUBJID, VISITNUM),
+    order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
+  )),
+  expected, keys = c("USUBJID"))
 })

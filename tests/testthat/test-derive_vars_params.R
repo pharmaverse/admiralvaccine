@@ -28,7 +28,7 @@ test_that("derive_vars_params Test 1: Check if the variables in the lookup datas
   )
 
   expout1 <- input %>%
-    left_join(lookup_dataset,
+    dplyr::left_join(lookup_dataset,
       by = c("FATESTCD", "FAOBJ")
     ) %>%
     convert_na_to_blanks() %>%
@@ -100,7 +100,7 @@ test_that("derive_vars_params Test 2: Checking whether PARAM  getting concatenat
 
 
   expout1 <- input %>%
-    left_join(lookup_dataset,
+    dplyr::left_join(lookup_dataset,
       by = c("FATESTCD", "FAOBJ")
     ) %>%
     mutate(
@@ -175,7 +175,7 @@ test_that("derive_vars_params Test 3: Checking whether PARAM, PARCAT1 and PARCAT
   )
 
   expected_output <- input %>%
-    left_join(lookup_dataset,
+    dplyr::left_join(lookup_dataset,
       by = c("FATESTCD", "FAOBJ")
     ) %>%
     mutate(
