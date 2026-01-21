@@ -51,7 +51,7 @@ use `{admiralvaccine}`.
 
 # Derivations
 
-The most important functions in `{admiralvaccine}` follows the same
+The most important functions in `{admiralvaccine}` follow the same
 conventions as `{admiral}` but are focused to vaccine-specific needs.
 Please see the Reference page for more details.
 
