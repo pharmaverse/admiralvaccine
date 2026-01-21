@@ -190,7 +190,7 @@ derive_diam_to_sev_records <- function(dataset,
 
       sev
     } else {
-      warning(diam_code, " ", "doesn't exist in the filtered record")
+      cli::cli_warning(diam_code, " ", "doesn't exist in the filtered record")
 
       NULL
     }

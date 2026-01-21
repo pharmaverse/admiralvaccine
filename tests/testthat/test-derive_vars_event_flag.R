@@ -38,7 +38,7 @@ test_that("derive_vars_event_flag Test 1: Checking whether its handling the NA v
         !is.na(AVAL) & AVAL > 2.0 | AVALC %in% c("Y", "MILD", "MODERATE", "SEVERE") ~ "Y",
         TRUE ~ "N"
       ),
-      EVENTDL = ifelse(is.na(AVAL) & is.na(AVALC), NA_character_, EVENTDL)
+      EVENTDL = if_else(is.na(AVAL) & is.na(AVALC), NA_character_, EVENTDL)
     )
   expect_dfs_equal(
     expected_output,

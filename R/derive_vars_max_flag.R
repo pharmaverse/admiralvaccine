@@ -56,7 +56,7 @@ max_flag <- function(dataset,
     arrange(desc(AVAL), FATPT, .by_group = TRUE) %>%
     filter(AVAL == max(AVAL)) %>%
     mutate(
-      !!fl := ifelse(row_number() == 1 & AVAL > 0, "Y", NA_character_)
+      !!fl := if_else(row_number() == 1 & AVAL > 0, "Y", NA_character_)
     )
 
   left_join(
@@ -143,7 +143,7 @@ derive_vars_max_flag <- function(dataset,
   )
 
   if (is.null(flag1) && is.null(flag2)) {
-    stop("Both flag names cannot be NULL")
+    cli::cli_abort("Both flag names cannot be NULL")
   }
 
   if (!is.null(flag1)) {
@@ -160,5 +160,5 @@ derive_vars_max_flag <- function(dataset,
     )
   }
 
-  return(dataset)
+  dataset
 }

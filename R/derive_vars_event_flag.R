@@ -163,9 +163,9 @@ derive_vars_event_flag <- function(dataset,
   if (!is.null(new_var2)) {
     data_flag <- data_flag %>%
       mutate(
-        !!new_var2 := if_else(grepl("MAX", FATESTCD), NA_character_, !!new_var2)
+        !!new_var2 := if_else(str_detect(FATESTCD, "MAX"), NA_character_, !!new_var2)
       )
   }
   data_flag <- convert_blanks_to_na(data_flag)
-  return(data_flag)
+  data_flag
 }

@@ -28,27 +28,27 @@ test_that("derive_var_aval_adis Test 1: Derive AVAL variable
     mutate(
       AVAL = case_when(
         # ISORRES values without > or <
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
         ~ ISSTRESN,
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
         ~ log10(ISSTRESN),
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
 
         # ISORRES values with > or <
-        !grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~ ISULOQ,
-        grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ISULOQ)
+        !str_detect(PARAM, "LOG") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ ISLLOQ / 2,
+        !str_detect(PARAM, "LOG") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~ ISULOQ,
+        str_detect(PARAM, "LOG") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
+        str_detect(PARAM, "LOG") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~ log10(ISULOQ)
       )
     )
 
 
   # actual dataset
   actual_a <- input %>%
-    filter(!grepl("LOG", PARAM)) %>%
+    filter(!str_detect(PARAM, "LOG")) %>%
     derive_var_aval_adis(
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN,
@@ -56,7 +56,7 @@ test_that("derive_var_aval_adis Test 1: Derive AVAL variable
     )
 
   actual_b <- input %>%
-    filter(grepl("LOG", PARAM)) %>%
+    filter(str_detect(PARAM, "LOG")) %>%
     derive_var_aval_adis(
       lower_rule = log10(ISLLOQ / 2),
       middle_rule = log10(ISSTRESN),
@@ -73,7 +73,6 @@ test_that("derive_var_aval_adis Test 1: Derive AVAL variable
     )
   )
 })
-
 
 
 ## Test 2: Derive AVAL variable by applying different rules per PARAMETER. No rounding applied
@@ -98,27 +97,27 @@ test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
     mutate(
       AVAL = case_when(
         # ISORRES values without > or <
-        !grepl("4FOLD", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
-        !grepl("4FOLD", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
+        !str_detect(PARAM, "4FOLD") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
+        !str_detect(PARAM, "4FOLD") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
         ~ ISSTRESN,
-        !grepl("4FOLD", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
-        grepl("4FOLD", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
-        grepl("4FOLD", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
+        !str_detect(PARAM, "4FOLD") & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
+        str_detect(PARAM, "4FOLD") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ,
+        str_detect(PARAM, "4FOLD") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
         ~ ISSTRESN,
-        grepl("4FOLD", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
+        str_detect(PARAM, "4FOLD") & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
 
         # ISORRES values with > or <
-        !grepl("4FOLD", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
-        !grepl("4FOLD", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~ ISULOQ,
-        grepl("4FOLD", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ,
-        grepl("4FOLD", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~ ISULOQ
+        !str_detect(PARAM, "4FOLD") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ ISLLOQ / 2,
+        !str_detect(PARAM, "4FOLD") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~ ISULOQ,
+        str_detect(PARAM, "4FOLD") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ ISLLOQ,
+        str_detect(PARAM, "4FOLD") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~ ISULOQ
       )
     )
 
 
   # actual dataset
   actual_a <- input %>%
-    filter(!grepl("4FOLD", PARAM)) %>%
+    filter(!str_detect(PARAM, "4FOLD")) %>%
     derive_var_aval_adis(
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN,
@@ -126,7 +125,7 @@ test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
     )
 
   actual_b <- input %>%
-    filter(grepl("4FOLD", PARAM)) %>%
+    filter(str_detect(PARAM, "4FOLD")) %>%
     derive_var_aval_adis(
       lower_rule = ISLLOQ,
       middle_rule = ISSTRESN,
@@ -143,8 +142,6 @@ test_that("derive_var_aval_adis Test 2: Derive AVAL variable by
     )
   )
 })
-
-
 
 
 ## Test 3: Derive AVAL variable without ISULOQ
@@ -176,17 +173,17 @@ test_that("derive_var_aval_adis Test 3: Derive AVAL variable without ISULOQ", {
     mutate(
       AVAL = case_when(
         # ISORRES values without > or <
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ ISSTRESN,
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ log10(ISSTRESN),
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ ISSTRESN,
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ log10(ISSTRESN),
 
         # ISORRES values with > or <
-        !grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~
+        !str_detect(PARAM, "LOG") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ ISLLOQ / 2,
+        !str_detect(PARAM, "LOG") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~
           as.numeric(gsub("^.*?>", "", ISORRES)),
-        grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~
+        str_detect(PARAM, "LOG") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
+        str_detect(PARAM, "LOG") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~
           log10(as.numeric(gsub("^.*?>", "", ISORRES)))
       )
     )
@@ -194,14 +191,14 @@ test_that("derive_var_aval_adis Test 3: Derive AVAL variable without ISULOQ", {
 
   # actual dataset
   actual_a <- input %>%
-    filter(!grepl("LOG", PARAM)) %>%
+    filter(!str_detect(PARAM, "LOG")) %>%
     derive_var_aval_adis(
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN
     )
 
   actual_b <- input %>%
-    filter(grepl("LOG", PARAM)) %>%
+    filter(str_detect(PARAM, "LOG")) %>%
     derive_var_aval_adis(
       lower_rule = log10(ISLLOQ / 2),
       middle_rule = log10(ISSTRESN)
@@ -217,8 +214,6 @@ test_that("derive_var_aval_adis Test 3: Derive AVAL variable without ISULOQ", {
     )
   )
 })
-
-
 
 
 ## Test 4: Derive AVAL variable by applying rounding
@@ -251,20 +246,20 @@ test_that("derive_var_aval_adis Test 4: Derive AVAL variable
     mutate(
       AVAL = case_when(
         # ISORRES values without > or <
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
         ~ ISSTRESN,
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ ISULOQ,
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ
         ~ log10(ISSTRESN),
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISULOQ ~ log10(ISULOQ),
 
         # ISORRES values with > or <
-        !grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~ ISULOQ,
-        grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~ log10(ISULOQ)
+        !str_detect(PARAM, "LOG") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ ISLLOQ / 2,
+        !str_detect(PARAM, "LOG") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~ ISULOQ,
+        str_detect(PARAM, "LOG") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
+        str_detect(PARAM, "LOG") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~ log10(ISULOQ)
       ),
       AVAL = round(AVAL, 2)
     )
@@ -272,7 +267,7 @@ test_that("derive_var_aval_adis Test 4: Derive AVAL variable
 
   # actual dataset
   actual_a <- input %>%
-    filter(!grepl("LOG", PARAM)) %>%
+    filter(!str_detect(PARAM, "LOG")) %>%
     derive_var_aval_adis(
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN,
@@ -281,7 +276,7 @@ test_that("derive_var_aval_adis Test 4: Derive AVAL variable
     )
 
   actual_b <- input %>%
-    filter(grepl("LOG", PARAM)) %>%
+    filter(str_detect(PARAM, "LOG")) %>%
     derive_var_aval_adis(
       lower_rule = log10(ISLLOQ / 2),
       middle_rule = log10(ISSTRESN),
@@ -299,7 +294,6 @@ test_that("derive_var_aval_adis Test 4: Derive AVAL variable
     )
   )
 })
-
 
 
 ## Test 5: Derive AVAL variable by applying rounding without ISULOQ
@@ -332,17 +326,17 @@ test_that("derive_var_aval_adis Test 5: Derive AVAL variable
     mutate(
       AVAL = case_when(
         # ISORRES values without > or <
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ ISSTRESN,
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ log10(ISSTRESN),
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ ISLLOQ / 2,
+        !str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ ISSTRESN,
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN < ISLLOQ ~ log10(ISLLOQ / 2),
+        str_detect(PARAM, "LOG") & !is.na(ISSTRESN) & ISSTRESN >= ISLLOQ ~ log10(ISSTRESN),
 
         # ISORRES values with > or <
-        !grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ ISLLOQ / 2,
-        !grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~
+        !str_detect(PARAM, "LOG") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ ISLLOQ / 2,
+        !str_detect(PARAM, "LOG") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~
           as.numeric(gsub("^.*?>", "", ISORRES)),
-        grepl("LOG", PARAM) & grepl("<", ISORRES) & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
-        grepl("LOG", PARAM) & grepl(">", ISORRES) & !is.na(ISORRES) ~
+        str_detect(PARAM, "LOG") & str_detect(ISORRES, "<") & !is.na(ISORRES) ~ log10(ISLLOQ / 2),
+        str_detect(PARAM, "LOG") & str_detect(ISORRES, ">") & !is.na(ISORRES) ~
           log10(as.numeric(gsub("^.*?>", "", ISORRES)))
       ),
       AVAL = round(AVAL, 2)
@@ -351,7 +345,7 @@ test_that("derive_var_aval_adis Test 5: Derive AVAL variable
 
   # actual dataset
   actual_a <- input %>%
-    filter(!grepl("LOG", PARAM)) %>%
+    filter(!str_detect(PARAM, "LOG")) %>%
     derive_var_aval_adis(
       lower_rule = ISLLOQ / 2,
       middle_rule = ISSTRESN,
@@ -359,7 +353,7 @@ test_that("derive_var_aval_adis Test 5: Derive AVAL variable
     )
 
   actual_b <- input %>%
-    filter(grepl("LOG", PARAM)) %>%
+    filter(str_detect(PARAM, "LOG")) %>%
     derive_var_aval_adis(
       lower_rule = log10(ISLLOQ / 2),
       middle_rule = log10(ISSTRESN),
