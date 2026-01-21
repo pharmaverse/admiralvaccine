@@ -84,7 +84,7 @@ derive_vars_vaxdt <- function(dataset,
   }
 
   if (nrow(dataset) != nrow(ex_distinct)) {
-    cli::cli_warning("Subjects have multiple vaccinations at same visit")
+    cli_warn("Subjects have multiple vaccinations at same visit")
   }
   # Derive vaccination date variables.
   dt_var <- dataset %>%

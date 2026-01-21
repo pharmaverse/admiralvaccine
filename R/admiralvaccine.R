@@ -7,6 +7,7 @@
 #'             summarise_at summarise coalesce bind_cols na_if any_of tibble first left_join
 #'             between slice_tail across
 #' @importFrom magrittr %>%
+#' @importFrom cli cli_warn cli_abort
 #' @importFrom rlang := abort arg_match as_function as_string call2 caller_env
 #'             call_name current_env .data enexpr enquo eval_bare eval_tidy expr
 #'             expr_interp expr_label f_lhs f_rhs inform

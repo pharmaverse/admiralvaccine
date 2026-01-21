@@ -143,7 +143,7 @@ derive_vars_max_flag <- function(dataset,
   )
 
   if (is.null(flag1) && is.null(flag2)) {
-    cli::cli_abort("Both flag names cannot be NULL")
+    cli_abort("Both flag names cannot be NULL")
   }
 
   if (!is.null(flag1)) {

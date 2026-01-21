@@ -63,6 +63,7 @@ Imports:
     stringr (>= 1.4.0),
     tidyr (>= 1.0.2),
     tidyselect (>= 1.0.0)
+    cli (>= 3.6.2)
 Suggests:
     covr,
     devtools,
@@ -88,4 +89,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
