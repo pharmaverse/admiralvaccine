@@ -2,6 +2,8 @@
 
 # Admiral Extension for Vaccines <img src="man/figures/logo.png" align="right" width="200" style="margin-left:50px;"/>
 
+*Explore all the other packages in the [{admiral} ecosystem](https://pharmaverse.org/e2eclinical/adam/) to learn more about ADaM programming in R.*
+
 <!-- badges: start -->
 
 [<img src="https://pharmaverse.org/shields/admiralvaccine.svg">](https://pharmaverse.org/)
