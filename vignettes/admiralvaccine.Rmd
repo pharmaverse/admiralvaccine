@@ -48,12 +48,12 @@ reading would be this `r dyn_link("Get Started", admiral_homepage, "articles/adm
 guide. This extension package follows the same main idea and conventions, and re-uses many
 functions from `{admiral}`, so it is important to thoroughly understand these to be able to
 use `{admiralvaccine}`.
-
+s
 # Derivations
 
-The most important functions in `{admiralvaccine}` are the
-[derivations](../reference/index.html#section-derivations). Again these follow the same
-conventions as `{admiral}` but are focused to vaccine-specific needs.
+The most important functions in `{admiralvaccine}` follow the same
+conventions as `{admiral}` but are focused to vaccine-specific needs. Please
+refer the Reference Page for more details.
 
 # Input and Output
 

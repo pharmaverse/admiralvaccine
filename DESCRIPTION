@@ -50,8 +50,8 @@ BugReports: https://github.com/pharmaverse/admiralvaccine/issues/
 Depends: 
     R (>= 3.5)
 Imports:
-    admiral (>= 1.0.0),
-    admiraldev (>= 1.0.0),
+    admiral (>= 1.4.0),
+    admiraldev (>= 1.4.0),
     assertthat (>= 0.2.1),
     dplyr (>= 0.8.4),
     hms (>= 0.5.3),
