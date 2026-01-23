@@ -14,4 +14,3 @@ exclusions <- list(
   "vignettes" = list(undesirable_function_linter = Inf),
   "data-raw" = list(undesirable_function_linter = Inf)
 )
-
