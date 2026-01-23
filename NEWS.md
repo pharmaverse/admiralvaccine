@@ -1,4 +1,17 @@
-# admiralvaccine 0.5.0.9000
+# admiralvaccine 0.6.0
+
+## Documentation
+
+- In the function documentation references to vignettes were updated to meet CRAN requirements. (#272)
+- The "Ask AI" widget was added to the bottom right of each page. It enables users to ask questions about {admiralvaccine} and {admiraldev} and receive answers from an LLM. It is trained on the documentation of both packages and provided by kapa.ai. (#271)
+- A link to the {admiral} ecosystem page was added to the README sidebar and main text. (#270)
+
+<details>
+<summary>Developer Notes</summary>
+- Updated the `{lintr}` preferences to use the shared `{admiraldev}` configurations. (#266)
+</details>
+
+# admiralvaccine 0.5.0
 
 ## Note
 
