@@ -50,8 +50,8 @@ BugReports: https://github.com/pharmaverse/admiralvaccine/issues/
 Depends: 
     R (>= 3.5)
 Imports:
-    admiral (>= 1.0.0),
-    admiraldev (>= 1.0.0),
+    admiral (>= 1.4.0),
+    admiraldev (>= 1.4.0),
     assertthat (>= 0.2.1),
     dplyr (>= 0.8.4),
     hms (>= 0.5.3),
@@ -62,7 +62,8 @@ Imports:
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
     tidyr (>= 1.0.2),
-    tidyselect (>= 1.0.0)
+    tidyselect (>= 1.0.0),
+    cli (>= 3.6.2)
 Suggests:
     covr,
     devtools,
@@ -88,4 +89,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

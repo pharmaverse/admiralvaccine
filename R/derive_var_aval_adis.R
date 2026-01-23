@@ -88,8 +88,8 @@ derive_var_aval_adis <-
               ISSTRESN < ISLLOQ ~ {{ lower_rule }},
               ISSTRESN >= ISLLOQ & ISSTRESN < ISULOQ ~ {{ middle_rule }},
               ISSTRESN >= ISULOQ ~ {{ upper_rule }},
-              grepl("<", ISORRES) ~ {{ lower_rule }},
-              grepl(">", ISORRES) ~ {{ upper_rule }}
+              str_detect(ISORRES, "<") ~ {{ lower_rule }},
+              str_detect(ISORRES, ">") ~ {{ upper_rule }}
             )
           )
         )
@@ -102,8 +102,8 @@ derive_var_aval_adis <-
             case_when(
               ISSTRESN < ISLLOQ ~ {{ lower_rule }},
               ISSTRESN >= ISLLOQ ~ {{ middle_rule }},
-              grepl("<", ISORRES) ~ {{ lower_rule }},
-              grepl(">", ISORRES) ~ as.numeric(gsub("^.*?>", "", ISORRES))
+              str_detect(ISORRES, "<") ~ {{ lower_rule }},
+              str_detect(ISORRES, ">") ~ as.numeric(gsub("^.*?>", "", ISORRES))
             )
           )
         )
@@ -116,5 +116,5 @@ derive_var_aval_adis <-
           )
         )
     }
-    return(data)
+    data
   }

@@ -115,7 +115,7 @@ derive_vars_crit <- function(dataset, prefix, crit_label, condition, criterion) 
   var_char <- paste0(prefix, "FL")
   var_num <- paste0(prefix, "FN")
 
-  if (grepl("CRIT", prefix)) {
+  if (str_detect(prefix, "CRIT")) {
     data <- dataset %>%
       mutate(
         `:=`(

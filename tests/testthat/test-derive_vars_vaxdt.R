@@ -102,11 +102,20 @@ test_that("derive_vars_vaxdt Test 2: Check if Vaccination date variables are get
     keep = FALSE
   )
 
-  actual <- derive_vars_vaxdt(
+  expect_warning(
+    derive_vars_vaxdt(
+      dataset = input,
+      dataset_adsl = adsl,
+      by_vars = exprs(USUBJID, VISITNUM),
+      order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
+    )
+  )
+
+  actual <- suppressWarnings(derive_vars_vaxdt(
     dataset = input,
     dataset_adsl = adsl,
     by_vars = exprs(USUBJID, VISITNUM),
     order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
-  )
+  ))
   expect_dfs_equal(actual, expected, keys = c("USUBJID"))
 })

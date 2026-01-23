@@ -26,8 +26,8 @@ test_that('derive_fever_records Test 1: How the actual dataset is generated
     mutate(
       FAOBJ = "FEVER", FATESTCD = "OCCUR", FACAT = "REACTOGENICITY",
       FASCAT = "SYSTEMIC", FATEST = "Occurrence Indicator",
-      FAORRES = ifelse(VSSTRESN >= 38, "Y", "N"),
-      FASTRESC = ifelse(VSSTRESN >= 38, "Y", "N")
+      FAORRES = if_else(VSSTRESN >= 38, "Y", "N"),
+      FASTRESC = if_else(VSSTRESN >= 38, "Y", "N")
     ) %>%
     rename(FATPT = VSTPT) %>%
     select(-(starts_with("VS")), VSSTRESN) # nolint
@@ -47,7 +47,6 @@ test_that('derive_fever_records Test 1: How the actual dataset is generated
     keys = c("USUBJID", "FAOBJ", "FATESTCD", "FATEST", "FATPT")
   )
 })
-
 
 
 ## Test 2: How the actual dataset is generated if FAOBJ="FEVER", if the FEVER records are  in FACE

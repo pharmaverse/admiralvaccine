@@ -98,7 +98,6 @@ test_that("derive_vars_params Test 2: Checking whether PARAM  getting concatenat
   )
 
 
-
   expout1 <- input %>%
     left_join(lookup_dataset,
       by = c("FATESTCD", "FAOBJ")
@@ -113,7 +112,6 @@ test_that("derive_vars_params Test 2: Checking whether PARAM  getting concatenat
       na.rm = TRUE, remove = FALSE
     ) %>%
     mutate(PARAM = str_to_sentence(PARAM))
-
 
 
   expout2 <- expout1 %>%

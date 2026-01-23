@@ -47,6 +47,6 @@ post_process_reacto <- function(dataset,
 
   dataset %>% mutate(across(
     all_of(favars),
-    function(x) ifelse(!!filter_dataset, NA, x)
+    function(x) if_else(!!filter_dataset, NA, x)
   ))
 }

@@ -86,7 +86,7 @@ derive_vars_merged_vaccine <- function(dataset,
   }
 
   if (nrow(dataset_ex) != nrow(ex_distinct)) {
-    warning("Subjects have multiple vaccinations at same visit")
+    cli_warn("Subjects have multiple vaccinations at same visit")
     dataset
   } else {
     # Filter records for  ADMINISTRATION SITE events and merge it with EX dataset
