@@ -1,5 +1,32 @@
 # Changelog
 
+## admiralvaccine 0.6.0
+
+### Documentation
+
+- In the function documentation references to vignettes were updated to
+  meet CRAN requirements.
+  ([\#272](https://github.com/pharmaverse/admiralvaccine/issues/272))
+- The “Ask AI” widget was added to the bottom right of each page. It
+  enables users to ask questions about
+  [admiralvaccine](https://pharmaverse.github.io/admiralvaccine/) and
+  the rest of the [admiral](https://pharmaverse.github.io/admiral/)
+  ecosystem and receive answers from an LLM. It is trained on the
+  documentation of all [admiral](https://pharmaverse.github.io/admiral/)
+  packages and provided by
+  [kapa.ai](https://docs.kapa.ai/kapa-for-open-source).
+  ([\#271](https://github.com/pharmaverse/admiralvaccine/issues/271))
+- A link to the [admiral](https://pharmaverse.github.io/admiral/)
+  ecosystem page was added to the README sidebar and main text.
+  ([\#270](https://github.com/pharmaverse/admiralvaccine/issues/270))
+
+Developer Notes
+
+- Updated the [lintr](https://lintr.r-lib.org) preferences to use the
+  shared [admiraldev](https://pharmaverse.github.io/admiraldev/)
+  configurations.
+  ([\#266](https://github.com/pharmaverse/admiralvaccine/issues/266))
+
 ## admiralvaccine 0.5.0
 
 CRAN release: 2025-09-18
