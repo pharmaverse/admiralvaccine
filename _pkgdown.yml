@@ -12,7 +12,7 @@ template:
       data-website-id="2c7249cc-f1dc-4a63-8674-6ecbcb34d95c"
       data-project-name="admiralvaccine"
       data-project-color="#2c3e50"
-      data-project-logo="https://pharmaverse.github.io/admiralvaccine/cran-release/logo.png"
+      data-project-logo="man/figures/logo.png"
       data-consent-required="true"
       data-user-analytics-cookie-enabled="true"
       data-consent-screen-title="Help us improve our AI assistant"
