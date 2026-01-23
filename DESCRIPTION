@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralvaccine
 Title: Vaccine Extension Package for ADaM in 'R' Asset Library
-Version: 0.5.0
+Version: 0.5.0.9000
 Authors@R: c(
     person("Arjun", "Rubalingam", , "arjun.rubalingam@pfizer.com", role = c("aut", "cre")),
     person("Sukalpo", "Saha", , "sukalpo.saha@pfizer.com", role = c("aut", "ctb")),
@@ -53,6 +53,7 @@ Imports:
     admiral (>= 1.4.0),
     admiraldev (>= 1.4.0),
     assertthat (>= 0.2.1),
+    cli (>= 3.6.2),
     dplyr (>= 0.8.4),
     hms (>= 0.5.3),
     lifecycle (>= 0.1.0),
@@ -62,8 +63,7 @@ Imports:
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
     tidyr (>= 1.0.2),
-    tidyselect (>= 1.0.0),
-    cli (>= 3.6.2)
+    tidyselect (>= 1.0.0)
 Suggests:
     covr,
     devtools,
