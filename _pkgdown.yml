@@ -4,7 +4,7 @@ template:
   bootstrap: 5
   params:
     bootswatch: flatly
-includes:
+  includes:
     in_header: |
       <script
       async
@@ -12,7 +12,7 @@ includes:
       data-website-id="2c7249cc-f1dc-4a63-8674-6ecbcb34d95c"
       data-project-name="admiralvaccine"
       data-project-color="#2c3e50"
-      data-project-logo="https://github.com/pharmaverse/admiralvaccine/blob/main/man/figures/logo.png"
+      data-project-logo="https://pharmaverse.github.io/admiralvaccine/cran-release/logo.png"
       data-consent-required="true"
       data-user-analytics-cookie-enabled="true"
       data-consent-screen-title="Help us improve our AI assistant"
@@ -35,8 +35,6 @@ home:
   links:
   - text: 🌍 {admiral} ecosystem 🌍
     href: https://pharmaverse.org/e2eclinical/adam/
-  - text: 🧭 ADaM templates 🧭
-    href: articles/templates.html
 
 authors:
   before: "We define *authors* as those who are actively maintaining the code base, and *contributors* as those who made a significant contribution in the past. For all acknowledgements, see the eponymous section in the [Home Page](https://pharmaverse.github.io/admiralvaccine/)."
