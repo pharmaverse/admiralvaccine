@@ -34,3 +34,4 @@
 ^admiralvaccine.*\.tgz$
 ^\.devcontainer$
 ^doc$
+^.lintr.R$
