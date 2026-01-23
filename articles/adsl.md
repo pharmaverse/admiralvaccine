@@ -1,0 +1,278 @@
+# Creating ADSL
+
+## Introduction
+
+This article describes creating an `ADSL` ADaM specific to Vaccines.
+Examples are currently presented and tested using `DM`, `EX` SDTM
+domains. However, other domains could be used.
+
+**Note:** *All examples assume CDISC SDTM and/or ADaM format as input
+unless otherwise specified.*
+
+## Programming Flow
+
+- [Read in Data](#readdata)
+- [Derive Period, Subperiod, and Phase Variables (e.g. `APxxSDT`,
+  `APxxEDT`, …)](#periodvars)
+- [Derive Treatment Variables (`TRT0xP`, `TRT0xA`)](#treatmentvar)
+- [Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDT`,
+  `TRTEDT`, `TRTDURD`)](#trtdatetime)
+- [Population Flags (e.g. `SAFFL`)](#popflag)
+- [Derive Vaccination Date Variables](#vax_date)
+- [Create Period Variables (Study Specific)](#period)
+- [Derive Other Variables)](#other)
+- [Add Labels and Attributes](#attributes)
+
+### Read in Data
+
+To start, all data frames needed for the creation of `ADSL` should be
+read into the environment. This will be a company specific process. Some
+of the data frames needed may be `DM`, `EX`.
+
+``` r
+library(admiral)
+library(admiralvaccine)
+library(pharmaversesdtm)
+library(dplyr, warn.conflicts = FALSE)
+library(lubridate)
+library(stringr)
+library(admiraldev)
+
+data("dm_vaccine")
+data("ex_vaccine")
+
+dm <- convert_blanks_to_na(dm_vaccine)
+ex <- convert_blanks_to_na(ex_vaccine)
+```
+
+The `DM` domain is used as the basis for `ADSL`:
+
+``` r
+adsl <- dm %>%
+  select(-DOMAIN)
+```
+
+### Derive Period, Subperiod, and Phase Variables (e.g. `APxxSDT`, `APxxEDT`, …)
+
+The [admiral](https://pharmaverse.github.io/admiral/) core package has
+separate functions to handle period variables since these variables are
+study specific.
+
+See the [“Visit and Period Variables”
+vignette](https://pharmaverse.github.io/admiral/articles/visits_periods.html)
+for more information.
+
+If the variables are not derived based on a period reference dataset,
+they may be derived at a later point of the flow. For example, phases
+like “Treatment Phase” and “Follow up” could be derived based on
+treatment start and end date.
+
+### Derive Treatment Variables (`TRT0xP`, `TRT0xA`)
+
+The mapping of the treatment variables is left to the ADaM programmer.
+An example mapping for a study without periods may be:
+
+``` r
+adsl <- dm %>%
+  mutate(
+    TRT01P = substring(ARM, 1, 9),
+    TRT02P = substring(ARM, 11, 100)
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex,
+    filter_add = EXLNKGRP == "VACCINATION 1",
+    new_vars = exprs(TRT01A = EXTRT),
+    by_vars = get_admiral_option("subject_keys")
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex,
+    filter_add = EXLNKGRP == "VACCINATION 2",
+    new_vars = exprs(TRT02A = EXTRT),
+    by_vars = get_admiral_option("subject_keys")
+  )
+```
+
+### Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDTM`, `TRTEDTM`, `TRTDURD`)
+
+The function
+[`derive_vars_merged()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_merged.html)
+can be used to derive the treatment start and end date/times using the
+`ex` domain. A pre-processing step for `ex` is required to convert the
+variable `EXSTDTC` and `EXSTDTC` to datetime variables and impute
+missing date or time components. Conversion and imputation is done by
+[`derive_vars_dtm()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dtm.html).
+
+Example calls:
+
+``` r
+# impute start and end time of exposure to first and last respectively, do not impute date
+ex_ext <- ex %>%
+  derive_vars_dtm(
+    dtc = EXSTDTC,
+    new_vars_prefix = "EXST",
+    ignore_seconds_flag = FALSE
+  ) %>%
+  derive_vars_dtm(
+    dtc = EXENDTC,
+    new_vars_prefix = "EXEN",
+    ignore_seconds_flag = FALSE
+  )
+adsl <- adsl %>%
+  derive_vars_merged(
+    dataset_add = ex_ext,
+    filter_add = (EXDOSE > 0 |
+      (EXDOSE == 0 &
+        str_detect(EXTRT, "VACCINE"))) &
+      !is.na(EXSTDTM),
+    new_vars = exprs(TRTSDTM = EXSTDTM),
+    order = exprs(EXSTDTM, EXSEQ),
+    mode = "first",
+    by_vars = get_admiral_option("subject_keys")
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ex_ext,
+    filter_add = (EXDOSE > 0 |
+      (EXDOSE == 0 &
+        str_detect(EXTRT, "VACCINE"))) & !is.na(EXENDTM),
+    new_vars = exprs(TRTEDTM = EXENDTM),
+    order = exprs(EXENDTM, EXSEQ),
+    mode = "last",
+    by_vars = get_admiral_option("subject_keys")
+  )
+```
+
+This call returns the original data frame with the column `TRTSDTM`,
+`TRTSTMF`, `TRTEDTM`, and `TRTETMF` added. Exposure observations with
+incomplete date and zero doses of non placebo treatments are ignored.
+Missing time parts are imputed as first or last for start and end date
+respectively.
+
+The datetime variables returned can be converted to dates using the
+[`derive_vars_dtm_to_dt()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dtm_to_dt.html)
+function.
+
+``` r
+adsl <- adsl %>%
+  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM))
+```
+
+Now, that `TRTSDT` and `TRTEDT` are derived, the function
+[`derive_var_trtdurd()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_var_trtdurd.html)
+can be used to calculate the Treatment duration (`TRTDURD`).
+
+``` r
+adsl <- adsl %>%
+  derive_var_trtdurd()
+```
+
+#### Population Flags (e.g. `SAFFL`)
+
+Since the populations flags are mainly company/study specific no
+dedicated functions are provided, but in most cases they can easily be
+derived using
+[`derive_var_merged_exist_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_var_merged_exist_flag.html).
+
+An example of an implementation could be:
+
+``` r
+adsl <- derive_var_merged_exist_flag(
+  dataset = adsl,
+  dataset_add = ex,
+  by_vars = exprs(STUDYID, USUBJID),
+  new_var = SAFFL,
+  condition = (EXDOSE > 0 | (EXDOSE == 0 & str_detect(EXTRT, "VACCINE")))
+) %>%
+  mutate(
+    PPROTFL = "Y"
+  )
+```
+
+### Derive Vaccination Date Variables
+
+In this step, we will create a vaccination date variables from `EX`
+domain. The function
+[`derive_vars_vaxdt()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_vaxdt.md)
+returns the variables `VAX01DT`,`VAX02DT`… added to the `adsl` dataset
+based on number of vaccinations.
+
+If there are multiple vaccinations for a visit per subject, a warning
+will be provided and only first observation will be filtered based on
+the variable order specified on the `order` argument. In this case, a
+user needs to select the `by_vars` appropriately.
+
+``` r
+adsl <- derive_vars_vaxdt(
+  dataset = ex,
+  dataset_adsl = adsl,
+  by_vars = exprs(USUBJID, VISITNUM),
+  order = exprs(USUBJID, VISITNUM, VISIT, EXSTDTC)
+)
+```
+
+This call would return the input dataset with columns `VAX01DT`,
+`VAX02DT` added.
+
+### Create Period Variables (Study Specific)
+
+In this step this we will create period variables which will be study
+specific, User can change the logic as per their study requirement.
+
+``` r
+adsl <- adsl %>%
+  mutate(
+    AP01SDT = VAX01DT,
+    AP01EDT = if_else(!is.na(VAX02DT), VAX02DT - 1, as.Date(RFPENDTC)),
+    AP02SDT = if_else(!is.na(VAX02DT), VAX02DT, NA_Date_),
+    AP02EDT = if_else(!is.na(AP02SDT), as.Date(RFPENDTC), NA_Date_)
+  )
+```
+
+This call would return the input dataset with columns `AP01SDT`,
+`AP01EDT`, `AP02SDT`, `AP02EDT` added.
+
+### Derive Other Variables
+
+The users can add specific code to cover their need for the analysis.
+
+The following functions are helpful for many ADSL derivations:
+
+- [`derive_vars_merged()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_merged.html) -
+  Merge Variables from a Dataset to the Input Dataset
+- [`derive_var_merged_exist_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_var_merged_exist_flag.html) -
+  Merge an Existence Flag
+- [`derive_var_merged_summary()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_var_merged_summary.html) -
+  Merge a Summary Variable
+
+See also [Generic
+Functions](https://pharmaverse.github.io/admiral/articles/generic.html).
+
+### Add Labels and Attributes
+
+Adding labels and attributes for SAS transport files is supported by the
+following packages:
+
+- [metacore](https://atorus-research.github.io/metacore/): establish a
+  common foundation for the use of metadata within an R session.
+
+- [metatools](https://pharmaverse.github.io/metatools/): enable the use
+  of metacore objects. Metatools can be used to build datasets or
+  enhance columns in existing datasets as well as checking datasets
+  against the metadata.
+
+- [xportr](https://atorus-research.github.io/xportr/): functionality to
+  associate all metadata information to a local R data frame, perform
+  data set level validation checks and convert into a [transport v5
+  file(xpt)](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/movefile/n1xbwdre0giahfn11c99yjkpi2yb.htm).
+
+NOTE: All these packages are in the experimental phase, but the vision
+is to have them associated with an End to End pipeline under the
+umbrella of the [pharmaverse](https://github.com/pharmaverse). An
+example of applying metadata and perform associated checks can be found
+at the [pharmaverse E2E
+example](https://pharmaverse.github.io/examples/adam/adsl.html).
+
+## Example Script
+
+| ADaM | Sample Code                                                                                   |
+|------|-----------------------------------------------------------------------------------------------|
+| ADSL | [ad_adsl.R](https://github.com/pharmaverse/admiralvaccine/blob/main/inst/templates/ad_adsl.R) |

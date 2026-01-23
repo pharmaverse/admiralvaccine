@@ -1,0 +1,145 @@
+# Adds Flag Variables for an Occurred Event .
+
+Creates two flag variables for the event occurred, one for the event
+occurred within each by group and one to flag if the event occurred or
+not for each day.
+
+## Usage
+
+``` r
+derive_vars_event_flag(
+  dataset,
+  by_vars,
+  aval_cutoff,
+  new_var1 = NULL,
+  new_var2 = NULL
+)
+```
+
+## Arguments
+
+- dataset:
+
+  Input dataset
+
+  The variables specified by the `by_vars` argument are expected.
+
+- by_vars:
+
+  Grouping variables
+
+  The variables to be considered for grouping for creating a new
+  variable `new_var1`
+
+- aval_cutoff:
+
+  Cutoff value for `AVAL`
+
+  For `TESTCD` code list values based on diameter, if `AVAL` is greater
+  than `aval_cutoff` then the event is considered to have occurred. For
+  example, if `aval_cutoff` = 2.5 then the subjects with `AVAL` value
+  greater than 2.5 are considered.
+
+- new_var1:
+
+  Name of the new flag variable 1
+
+      A new flag variable will be created with values `Y` or `N`.
+      If the event is occurred at least once during a observation period for
+      a subject then the new variable will be flagged as `Y` otherwise `N`.
+
+- new_var2:
+
+  Name of the new flag variable 2.
+
+      A new flag variable will be created with values `Y` or `N`.
+      If the event is occurred on the particular day then the new variable will
+      be flagged as `Y` otherwise `N`.
+
+## Value
+
+The dataset with the flag variables added to it.
+
+## Details
+
+The event is considered to have occurred if `AVAL` is greater than the
+`aval_cutoff` or `AVALC` has values `Y`, `MILD`, `MODERATE`, `SEVERE`.
+In all other cases, the event is not considered to have occurred.
+
+The names for the new flag variables created will be sponsor specific.
+
+For the `new_var1` it will flag all observations as "Y" within the by
+group if the event occurred at least once during observation period. If
+the event is not at all occurred during the observation period then all
+the observations within by group will be flagged as "N".
+
+For derived maximum records in `FATESTCD` , the `new_var2` will be set
+to `NA`.
+
+If both `new_var1` and `new_var2` are `NULL`, this function will return
+the input dataset as output dataset.
+
+## See also
+
+Other der_var:
+[`derive_var_aval_adis()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_var_aval_adis.md),
+[`derive_vars_crit()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_crit.md),
+[`derive_vars_max_flag()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_max_flag.md),
+[`derive_vars_merged_vaccine()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_merged_vaccine.md),
+[`derive_vars_params()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_params.md),
+[`derive_vars_vaxdt()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_vaxdt.md)
+
+## Examples
+
+``` r
+library(tibble)
+library(admiral)
+library(dplyr)
+
+input <- tribble(
+  ~USUBJID, ~FAOBJ, ~ATPTREF, ~AVAL, ~AVALC, ~FATEST, ~FATESTCD, ~FASCAT,
+  "1", "REDNESS", "VAC1", 3.5, "3.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC1", 1.5, "1.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC1", 4.5, "4.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "FATIGUE", "VAC1", 1, "MILD", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC1", 0, "NONE", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC1", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+  "1", "REDNESS", "VAC2", 6.5, "6.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC2", 2.5, "2.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "REDNESS", "VAC2", 7.5, "7.5", "Diameter", "DIAMETER", "ADMIN-SITE",
+  "1", "FATIGUE", "VAC2", 1, "MILD", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC2", 0, "NONE", "Severity", "SEV", "SYSTEMIC",
+  "1", "FATIGUE", "VAC2", 2, "MODERATE", "Severity", "SEV", "SYSTEMIC",
+)
+
+derive_vars_event_flag(
+  dataset = input,
+  by_vars = exprs(USUBJID, FAOBJ, ATPTREF),
+  aval_cutoff = 2.5,
+  new_var1 = EVENTL,
+  new_var2 = EVENTDL
+)
+#> # A tibble: 16 × 10
+#>    USUBJID FAOBJ   ATPTREF  AVAL AVALC    FATEST  FATESTCD FASCAT EVENTL EVENTDL
+#>    <chr>   <chr>   <chr>   <dbl> <chr>    <chr>   <chr>    <chr>  <chr>  <chr>  
+#>  1 1       REDNESS VAC1      3.5 3.5      Diamet… DIAMETER ADMIN… Y      Y      
+#>  2 1       REDNESS VAC1      4.5 4.5      Diamet… DIAMETER ADMIN… Y      Y      
+#>  3 1       REDNESS VAC1      1.5 1.5      Diamet… DIAMETER ADMIN… Y      N      
+#>  4 1       REDNESS VAC1      4.5 4.5      Diamet… DIAMETER ADMIN… Y      Y      
+#>  5 1       FATIGUE VAC1      1   MILD     Severi… SEV      SYSTE… Y      Y      
+#>  6 1       FATIGUE VAC1      2   MODERATE Severi… SEV      SYSTE… Y      Y      
+#>  7 1       FATIGUE VAC1      0   NONE     Severi… SEV      SYSTE… Y      N      
+#>  8 1       FATIGUE VAC1      2   MODERATE Severi… SEV      SYSTE… Y      Y      
+#>  9 1       REDNESS VAC2      6.5 6.5      Diamet… DIAMETER ADMIN… Y      Y      
+#> 10 1       REDNESS VAC2      7.5 7.5      Diamet… DIAMETER ADMIN… Y      Y      
+#> 11 1       REDNESS VAC2      2.5 2.5      Diamet… DIAMETER ADMIN… Y      N      
+#> 12 1       REDNESS VAC2      7.5 7.5      Diamet… DIAMETER ADMIN… Y      Y      
+#> 13 1       FATIGUE VAC2      1   MILD     Severi… SEV      SYSTE… Y      Y      
+#> 14 1       FATIGUE VAC2      2   MODERATE Severi… SEV      SYSTE… Y      Y      
+#> 15 1       FATIGUE VAC2      0   NONE     Severi… SEV      SYSTE… Y      N      
+#> 16 1       FATIGUE VAC2      2   MODERATE Severi… SEV      SYSTE… Y      Y      
+```
