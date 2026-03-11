@@ -95,12 +95,12 @@ adsl <- dm %>%
 ### Derive/Impute Numeric Treatment Date/Time and Duration (`TRTSDTM`, `TRTEDTM`, `TRTDURD`)
 
 The function
-[`derive_vars_merged()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_merged.html)
+[`derive_vars_merged()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_merged.html)
 can be used to derive the treatment start and end date/times using the
 `ex` domain. A pre-processing step for `ex` is required to convert the
 variable `EXSTDTC` and `EXSTDTC` to datetime variables and impute
 missing date or time components. Conversion and imputation is done by
-[`derive_vars_dtm()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dtm.html).
+[`derive_vars_dtm()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_dtm.html).
 
 Example calls:
 
@@ -148,7 +148,7 @@ Missing time parts are imputed as first or last for start and end date
 respectively.
 
 The datetime variables returned can be converted to dates using the
-[`derive_vars_dtm_to_dt()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dtm_to_dt.html)
+[`derive_vars_dtm_to_dt()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_dtm_to_dt.html)
 function.
 
 ``` r
@@ -157,7 +157,7 @@ adsl <- adsl %>%
 ```
 
 Now, that `TRTSDT` and `TRTEDT` are derived, the function
-[`derive_var_trtdurd()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_var_trtdurd.html)
+[`derive_var_trtdurd()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_var_trtdurd.html)
 can be used to calculate the Treatment duration (`TRTDURD`).
 
 ``` r
@@ -170,7 +170,7 @@ adsl <- adsl %>%
 Since the populations flags are mainly company/study specific no
 dedicated functions are provided, but in most cases they can easily be
 derived using
-[`derive_var_merged_exist_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_var_merged_exist_flag.html).
+[`derive_var_merged_exist_flag()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_var_merged_exist_flag.html).
 
 An example of an implementation could be:
 
@@ -236,11 +236,11 @@ The users can add specific code to cover their need for the analysis.
 
 The following functions are helpful for many ADSL derivations:
 
-- [`derive_vars_merged()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_merged.html) -
+- [`derive_vars_merged()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_merged.html) -
   Merge Variables from a Dataset to the Input Dataset
-- [`derive_var_merged_exist_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_var_merged_exist_flag.html) -
+- [`derive_var_merged_exist_flag()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_var_merged_exist_flag.html) -
   Merge an Existence Flag
-- [`derive_var_merged_summary()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_var_merged_summary.html) -
+- [`derive_var_merged_summary()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_var_merged_summary.html) -
   Merge a Summary Variable
 
 See also [Generic

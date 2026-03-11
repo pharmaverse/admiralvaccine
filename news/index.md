@@ -1,6 +1,10 @@
 # Changelog
 
+## admiralvaccine (development version)
+
 ## admiralvaccine 0.6.0
+
+CRAN release: 2026-01-23
 
 ### Documentation
 
@@ -51,7 +55,7 @@ CRAN release: 2025-01-31
 - Function
   [`derive_vars_crit()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_crit.md)
   was deprecated in favor of
-  [`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_crit_flag.html).
+  [`admiral::derive_vars_crit_flag()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_crit_flag.html).
   ([\#253](https://github.com/pharmaverse/admiralvaccine/issues/253))
 
 ### Updates to Templates
@@ -59,7 +63,7 @@ CRAN release: 2025-01-31
 - Calls to
   [`derive_vars_crit()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_crit.md)
   within `ADIS` template were replaced with
-  [`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_crit_flag.html).
+  [`admiral::derive_vars_crit_flag()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_crit_flag.html).
   ([\#253](https://github.com/pharmaverse/admiralvaccine/issues/253))
 
 ### Updates to Documentation
@@ -67,7 +71,7 @@ CRAN release: 2025-01-31
 - Calls to
   [`derive_vars_crit()`](https://pharmaverse.github.io/admiralvaccine/reference/derive_vars_crit.md)
   within `ADIS` vignette were replaced with
-  [`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_crit_flag.html).
+  [`admiral::derive_vars_crit_flag()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_crit_flag.html).
   ([\#253](https://github.com/pharmaverse/admiralvaccine/issues/253))
 
 ## admiralvaccine 0.3.0
@@ -139,7 +143,7 @@ CRAN release: 2024-01-08
 ### Updates to Templates
 
 - Modified calls to
-  [`derive_vars_joined()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_joined.html)
+  [`derive_vars_joined()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_joined.html)
   in ADCE, ADFACE and ADIS templates in line with the updates to this
   function in the new version of the
   [admiral](https://pharmaverse.github.io/admiral/) package. The
@@ -147,7 +151,7 @@ CRAN release: 2024-01-08
   ([\#229](https://github.com/pharmaverse/admiralvaccine/issues/229)).
 
 - Modified calls to
-  [`derive_extreme_records()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html)
+  [`derive_extreme_records()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_extreme_records.html)
   in ADFACE template in line with the updates to this function in the
   new version of the [admiral](https://pharmaverse.github.io/admiral/)
   package. The `filter` argument is now renamed to `filter_add` and the
@@ -157,7 +161,7 @@ CRAN release: 2024-01-08
 ### Updates to Documentation
 
 - Modified calls to
-  [`derive_vars_joined()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_joined.html)
+  [`derive_vars_joined()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_joined.html)
   in ADCE, ADFACE and ADIS vignettes in line with the updates to this
   function in the new version of the
   [admiral](https://pharmaverse.github.io/admiral/) package. The
@@ -165,7 +169,7 @@ CRAN release: 2024-01-08
   ([\#229](https://github.com/pharmaverse/admiralvaccine/issues/229)).
 
 - Modified calls to
-  [`derive_extreme_records()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html)
+  [`derive_extreme_records()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_extreme_records.html)
   in ADFACE vignette in line with the updates to this function in the
   new version of the [admiral](https://pharmaverse.github.io/admiral/)
   package. The `filter` argument is now renamed to `filter_add` and the

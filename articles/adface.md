@@ -161,12 +161,12 @@ input dataset does not have `FEVER` records. If the input dataset has
 ### Derive/Impute Numeric Date/Time and Analysis Day (`ADT`, `ADTM`, `ADTF`, `ATMF`, `ADY`)
 
 The function
-[`derive_vars_dt()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dt.html)
+[`derive_vars_dt()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_dt.html)
 can be used to derive `ADT`. This function allows the user to impute the
 date as well.
 
 Similarly, `ADTM` can be created using the function
-[`derive_vars_dtm()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dtm.html).
+[`derive_vars_dtm()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_dtm.html).
 Imputation can be done on both the date and time components of `ADTM`.
 
 Example calls:
@@ -186,7 +186,7 @@ adface <- adface %>%
 ```
 
 Once `ADT` is derived, the function
-[`derive_vars_dy()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dy.html)
+[`derive_vars_dy()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_dy.html)
 can be used to derive `ADY`. This example assumes both `ADT` and
 `RFSTDTC` exist on the data frame.
 
@@ -320,7 +320,7 @@ the user to change the `FATESTCD` and `FATEST` as well.
 
 In this step, we will derive maximum records for severity, diameter,
 temperature using the function
-[`derive_extreme_records()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html).
+[`derive_extreme_records()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_extreme_records.html).
 
 ``` r
 adface <- derive_extreme_records(

@@ -3,7 +3,7 @@
 **\[deprecated\]**
 
 This function is *deprecated*, please use
-[`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_crit_flag.html)
+[`admiral::derive_vars_crit_flag()`](https://pharmaverse.github.io/admiral/cran-release/reference/derive_vars_crit_flag.html)
 instead.
 
 Derive analysis criterion evaluation result variable, paired with

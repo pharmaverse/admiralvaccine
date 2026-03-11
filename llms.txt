@@ -151,7 +151,7 @@ Parameter Derivation Functions helpful for building the ADFACE datasets
 ## Example Datasets
 
 You can run
-[`admiral::use_ad_template()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/use_ad_template.html)
+[`admiral::use_ad_template()`](https://pharmaverse.github.io/admiral/cran-release/reference/use_ad_template.html)
 to produce additional datasets
 
 - [`admiralvaccine_adce`](https://pharmaverse.github.io/admiralvaccine/reference/admiralvaccine_adce.md)

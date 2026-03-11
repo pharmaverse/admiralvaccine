@@ -47,7 +47,7 @@ following vignettes:
 [admiralvaccine](https://pharmaverse.github.io/admiralvaccine/) also
 provides template R scripts as a starting point. They can be created by
 calling
-[`use_ad_template()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/use_ad_template.html)
+[`use_ad_template()`](https://pharmaverse.github.io/admiral/cran-release/reference/use_ad_template.html)
 from {admiral}, e.g.,
 
 ``` r
@@ -63,7 +63,7 @@ use_ad_template(
 ```
 
 A list of all available templates can be obtained by
-[`list_all_templates()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/list_all_templates.html)
+[`list_all_templates()`](https://pharmaverse.github.io/admiral/cran-release/reference/list_all_templates.html)
 from {admiral}:
 
 ``` r
