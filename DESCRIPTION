@@ -69,6 +69,7 @@ Suggests:
     devtools,
     diffdf,
     DT,
+    here,
     knitr,
     lintr,
     metatools,
