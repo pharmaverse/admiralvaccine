@@ -88,7 +88,11 @@ navbar:
   components:
     getstarted:
       text: Get Started
-      href: articles/admiralvaccine.html
+      menu:
+      - text: Get Started
+        href: articles/admiralvaccine.html
+      - text: Explore ADaM Templates 🧭
+        href: articles/templates.html
     reference:
       text: Reference
       href: reference/index.html
