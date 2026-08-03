@@ -1,5 +1,12 @@
 # admiralvaccine (development version)
 
+# admiralvaccine 0.7.0
+
+## New Features
+- New vignette “Explore ADaM Templates” added under the “Get Started” section to allow users to peruse the admiral ADaM templates directly from the documentation website. (#282)
+- Added light switch option. (#282)
+
+
 # admiralvaccine 0.6.0
 
 ## Documentation
