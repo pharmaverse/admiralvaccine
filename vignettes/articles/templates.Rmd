@@ -40,10 +40,10 @@ template_files <- list.files(
 for (file_path in template_files) {
   file_name <- basename(file_path)
   code_content <- readLines(file_path, warn = FALSE)
-  
+
   # Escape characters like < and > in the code to prevent them from breaking vignette
   escaped_code <- htmltools::htmlEscape(paste(code_content, collapse = "\n"))
-  
+
   # Construct collapsible block
   cat(paste0(
     "<details style='margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; padding: 5px;'>\n",
