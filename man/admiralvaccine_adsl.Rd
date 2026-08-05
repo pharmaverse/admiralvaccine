@@ -17,7 +17,7 @@ admiralvaccine_adsl
 An example Subject Level analysis dataset
 }
 \seealso{
-Other dataset: 
+Other dataset:
 \code{\link{admiralvaccine_adce}},
 \code{\link{admiralvaccine_adface}},
 \code{\link{admiralvaccine_adis}}
