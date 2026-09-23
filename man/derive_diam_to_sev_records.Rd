@@ -138,8 +138,8 @@ derive_diam_to_sev_records(
 
 }
 \seealso{
-Other der_rec: 
-\code{\link{derive_fever_records}()}
+Other der_rec:
+\code{\link[=derive_fever_records]{derive_fever_records()}}
 }
 \author{
 Arjun Rubalingam

@@ -87,13 +87,13 @@ derive_var_aval_adis(
 
 }
 \seealso{
-Other der_var: 
-\code{\link{derive_vars_crit}()},
-\code{\link{derive_vars_event_flag}()},
-\code{\link{derive_vars_max_flag}()},
-\code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_params}()},
-\code{\link{derive_vars_vaxdt}()}
+Other der_var:
+\code{\link[=derive_vars_crit]{derive_vars_crit()}},
+\code{\link[=derive_vars_event_flag]{derive_vars_event_flag()}},
+\code{\link[=derive_vars_max_flag]{derive_vars_max_flag()}},
+\code{\link[=derive_vars_merged_vaccine]{derive_vars_merged_vaccine()}},
+\code{\link[=derive_vars_params]{derive_vars_params()}},
+\code{\link[=derive_vars_vaxdt]{derive_vars_vaxdt()}}
 }
 \author{
 Federico Baratin

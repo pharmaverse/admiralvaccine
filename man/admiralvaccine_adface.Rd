@@ -17,7 +17,7 @@ admiralvaccine_adface
 An example Findings About Clinical Events analysis dataset
 }
 \seealso{
-Other dataset: 
+Other dataset:
 \code{\link{admiralvaccine_adce}},
 \code{\link{admiralvaccine_adis}},
 \code{\link{admiralvaccine_adsl}}

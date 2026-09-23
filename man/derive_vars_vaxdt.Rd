@@ -69,13 +69,13 @@ derive_vars_vaxdt(
 )
 }
 \seealso{
-Other der_var: 
-\code{\link{derive_var_aval_adis}()},
-\code{\link{derive_vars_crit}()},
-\code{\link{derive_vars_event_flag}()},
-\code{\link{derive_vars_max_flag}()},
-\code{\link{derive_vars_merged_vaccine}()},
-\code{\link{derive_vars_params}()}
+Other der_var:
+\code{\link[=derive_var_aval_adis]{derive_var_aval_adis()}},
+\code{\link[=derive_vars_crit]{derive_vars_crit()}},
+\code{\link[=derive_vars_event_flag]{derive_vars_event_flag()}},
+\code{\link[=derive_vars_max_flag]{derive_vars_max_flag()}},
+\code{\link[=derive_vars_merged_vaccine]{derive_vars_merged_vaccine()}},
+\code{\link[=derive_vars_params]{derive_vars_params()}}
 }
 \author{
 Vikram S

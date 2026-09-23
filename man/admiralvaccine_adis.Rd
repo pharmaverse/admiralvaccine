@@ -17,7 +17,7 @@ admiralvaccine_adis
 An example Immunogenicity Specimen Assessments analysis dataset
 }
 \seealso{
-Other dataset: 
+Other dataset:
 \code{\link{admiralvaccine_adce}},
 \code{\link{admiralvaccine_adface}},
 \code{\link{admiralvaccine_adsl}}
