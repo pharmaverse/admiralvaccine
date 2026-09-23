@@ -1,8 +1,13 @@
 # admiralvaccine (development version)
 
 ## New Features
+
 - New vignette “Explore ADaM Templates” added under the “Get Started” section to allow users to peruse the admiral ADaM templates directly from the documentation website. (#282)
 - Added light switch option. (#282)
+
+## Various
+
+- Upversioned {roxygen2} to 8.1.0 (#282)
 
 
 # admiralvaccine 0.6.0
@@ -69,6 +74,7 @@ The Maintainer role has moved from Sukalpo Saha to Arjun Rubalingam. (#256)
 ## Various
 
 - {metatools} was added to 'Suggests'. (#246)
+
 
 # admiralvaccine 0.2.0
 
